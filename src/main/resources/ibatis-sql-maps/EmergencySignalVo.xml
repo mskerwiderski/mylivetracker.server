@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="EmergencySignalVo">  	
+	<typeAlias alias="emergencySignal" type="de.msk.mylivetracker.domain.EmergencySignalVo"/>
+	
+	<resultMap id="minEmergencySignalResult" class="emergencySignal">
+		<result property="emergencySignalId" column="E_EMERGENCY_SIGNAL_ID" />
+        <result property="timeReceived"  column="E_TIME_RECEIVED" />
+        <result property="active"  column="E_ACTIVE" />
+		<result property="message"  column="E_MESSAGE" /> 
+		<result property="smsSuccessfullySent"  column="E_SMS_SUCCESSFULLY_SENT" />		                    		                                     	
+    </resultMap>
+    
+	<resultMap id="detailedEmergencySignalResult" class="emergencySignal" extends="minEmergencySignalResult">
+		<result property="track" resultMap="TrackVo.minTrackResult" />   
+		<result property="position" resultMap="PositionVo.detailedPositionResult" />                       
+    </resultMap>
+    
+    <resultMap id="recentDetailedEmergencySignalResult" class="emergencySignal">
+		<result property="emergencySignalId" column="RE_EMERGENCY_SIGNAL_ID" />
+        <result property="track" resultMap="TrackVo.minTrackResult" />   
+		<result property="position" resultMap="PositionVo.minPositionOfRecentSenderStateResult" />     
+        <result property="timeReceived"  column="RE_TIME_RECEIVED" />
+        <result property="active"  column="RE_ACTIVE" /> 
+        <result property="message"  column="RE_MESSAGE" />    
+        <result property="smsSuccessfullySent"  column="RE_SMS_SUCCESSFULLY_SENT" />                     
+    </resultMap>
+            
+    <insert id="storeEmergencySignal" parameterClass="emergencySignal" >
+    	insert into T_EMERGENCY_SIGNAL (
+    		EMERGENCY_SIGNAL_ID,
+    		TRACK_ID,
+    		POSITION_ID,
+    		TIME_RECEIVED,
+    		ACTIVE,
+    		MESSAGE,
+    		SMS_SUCCESSFULLY_SENT	
+    	)
+    	values (
+    		#emergencySignalId#,
+    		#track.trackId#,
+    		#position.positionId#,
+    		#timeReceived#,
+    		#active#,
+    		#message#,
+    		#smsSuccessfullySent#    
+    	)
+    </insert>  	  	  	  
+</sqlMap>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL MAP Config 2.0//EN" 
+	"/dtd/sql-map-config-2.dtd">
+	
+<sqlMapConfig> 
+    <settings useStatementNamespaces="true" />
+    <typeHandler
+		javaType="de.msk.mylivetracker.commons.util.datetime.DateTime"
+		callback="de.msk.mylivetracker.dao.typehandler.DateTimeTypeHandlerCallback" />
+    <sqlMap resource="ibatis-sql-maps/Statistics.xml"/>
+    <sqlMap resource="ibatis-sql-maps/Application.xml"/>
+    <sqlMap resource="ibatis-sql-maps/StatusParams.xml"/>
+    <sqlMap resource="ibatis-sql-maps/UserVo.xml"/>
+    <sqlMap resource="ibatis-sql-maps/TrackVo.xml"/>
+    <sqlMap resource="ibatis-sql-maps/PositionVo.xml"/>
+    <sqlMap resource="ibatis-sql-maps/MobNwCellVo.xml"/>
+    <sqlMap resource="ibatis-sql-maps/MessageVo.xml"/>
+    <sqlMap resource="ibatis-sql-maps/SenderStateVo.xml"/>
+    <sqlMap resource="ibatis-sql-maps/CardiacFunctionVo.xml"/>
+    <sqlMap resource="ibatis-sql-maps/EmergencySignalVo.xml"/>      
+    <sqlMap resource="ibatis-sql-maps/SenderVo.xml"/>   
+    <sqlMap resource="ibatis-sql-maps/DemoTrackVo.xml"/>     
+</sqlMapConfig>

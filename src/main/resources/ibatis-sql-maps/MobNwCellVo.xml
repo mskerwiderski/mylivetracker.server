@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="MobNwCellVo">  	
+	<typeAlias alias="mobNwCell" type="de.msk.mylivetracker.domain.MobNwCellVo"/>
+	
+	<resultMap id="minMobNwCellResult" class="mobNwCell">
+		<result property="mobNwCellId" column="C_MOB_NW_CELL_ID" />
+		<result property="cellId" column="C_CELL_ID" />                 
+		<result property="localAreaCode" column="C_LOCAL_AREA_CODE" />          
+		<result property="networkName" column="C_NETWORK_NAME" />            
+		<result property="mobileCountryCode" column="C_MOBILE_COUNTRY_CODE" />      
+		<result property="mobileNetworkCode" column="C_MOBILE_NETWORK_CODE" />      
+		<result property="mobileMode" column="C_MOBILE_MODE" /> 		   
+		<result property="timeReceived" column="C_TIME_RECEIVED" />                                    
+    </resultMap>
+    
+	<resultMap id="detailedMobNwCellResult" class="mobNwCell" extends="minMobNwCellResult">
+		<result property="track" resultMap="TrackVo.minTrackResult" />   
+		<result property="position" resultMap="PositionVo.detailedPositionResult" />      		          		                      
+    </resultMap>
+              
+    <resultMap id="recentDetailedMobNwCellResult" class="mobNwCell">
+		<result property="mobNwCellId" column="RC_MOB_NW_CELL_ID" />
+		<result property="track" resultMap="TrackVo.minTrackResult" />   
+		<result property="position" resultMap="PositionVo.minPositionOfRecentMobNwCellResult" />      		          
+		<result property="cellId" column="RC_CELL_ID" />                 
+		<result property="localAreaCode" column="RC_LOCAL_AREA_CODE" />          
+		<result property="networkName" column="RC_NETWORK_NAME" />            
+		<result property="mobileCountryCode" column="RC_MOBILE_COUNTRY_CODE" />      
+		<result property="mobileNetworkCode" column="RC_MOBILE_NETWORK_CODE" />      
+		<result property="mobileMode" column="RC_MOBILE_MODE" /> 		   
+		<result property="timeReceived" column="RC_TIME_RECEIVED" />                       
+    </resultMap>
+              
+    <insert id="storeMobNwCell" parameterClass="mobNwCell" >
+    	insert into T_MOB_NW_CELL (
+    		MOB_NW_CELL_ID,           
+			TRACK_ID, 
+			POSITION_ID,          			     
+			CELL_ID,            
+			LOCAL_AREA_CODE,    
+			NETWORK_NAME,       
+			MOBILE_COUNTRY_CODE,
+			MOBILE_NETWORK_CODE,
+			MOBILE_MODE,
+			TIME_RECEIVED        
+    	)
+    	values (
+    		#mobNwCellId#,
+			#track.trackId#,	
+			#position.positionId#,									 					
+			#cellId#, 								
+			#localAreaCode#, 					
+			#networkName#, 						
+			#mobileCountryCode#, 			
+			#mobileNetworkCode#, 			
+			#mobileMode#,
+			#timeReceived# 		
+    	)
+    </insert>  	  	  	  	  	  
+</sqlMap>

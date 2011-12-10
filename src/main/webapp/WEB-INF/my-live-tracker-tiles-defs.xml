@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="layout" template="/WEB-INF/jsp/layout/layout.jsp">		
+		<put-attribute name="style_and_scripts" value="/WEB-INF/jsp/layout/style_and_scripts.jsp" />	
+		<put-attribute name="header" value="/WEB-INF/jsp/layout/header.jsp" />	
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/footer.jsp" />		
+	</definition>
+
+	<definition name="layout_simple" template="/WEB-INF/jsp/layout/layout_simple.jsp">
+		<put-attribute name="style_and_scripts" value="/WEB-INF/jsp/layout/style_and_scripts.jsp" />
+	</definition>	
+		
+	<definition name="general_error" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/general_error.jsp" />
+	</definition>
+		
+	<definition name="impressum" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/impressum.jsp" />
+	</definition>
+	
+	<definition name="changes" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/changes.jsp" />
+	</definition>
+	
+	<definition name="admin" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/admin.jsp" />
+	</definition>
+	
+	<definition name="login" extends="layout">
+		<put-attribute name="content" value="/WEB-INF/jsp/login.jsp" />
+	</definition>
+				
+	<definition name="tracks_overview" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/tracks_overview.jsp" />
+	</definition>	
+	
+	<definition name="track_as_status_info" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_status_info.jsp" />
+	</definition>
+		
+	<definition name="track_as_status_info_layout_simple" extends="layout_simple" >
+	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_status_info.jsp" />
+	</definition>
+	
+	<definition name="track_as_google_maps" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_google_maps.jsp" />
+	</definition>
+		
+	<definition name="track_as_google_maps_layout_simple" extends="layout_simple" >
+	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_google_maps.jsp" />
+	</definition>
+	
+	<definition name="track_as_cloudmade_maps" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_cloudmade_maps.jsp" />
+	</definition>
+		
+	<definition name="track_as_cloudmade_maps_layout_simple" extends="layout_simple" >
+	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_cloudmade_maps.jsp" />
+	</definition>
+	
+	<!-- options -->
+	<definition name="options" extends="layout">
+	  	<put-attribute name="content" type="definition" value="options-tabs" />	  	
+	</definition>
+		
+	<definition name="options-tabs" template="/WEB-INF/jsp/options/options.jsp" >
+		<put-attribute name="user-master-data" value="/WEB-INF/jsp/options/options_user_master_data.jsp" />
+		<put-attribute name="user-options" value="/WEB-INF/jsp/options/options_user_options.jsp" />
+	  	<put-attribute name="sender-maintenance" value="/WEB-INF/jsp/options/options_sender_maintenance.jsp" />
+	  	<put-attribute name="status-page" value="/WEB-INF/jsp/options/options_status_page.jsp" />
+	  	<put-attribute name="emergency" value="/WEB-INF/jsp/options/options_emergency.jsp" />
+	</definition>		
+		
+</tiles-definitions>

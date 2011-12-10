@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util 
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/aop 
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/context 
+        				   http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+                           >	
+	
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+	    	<props>
+				<prop key="de.msk.mylivetracker.web.exception.MyLiveTrackerException">
+					general_error
+				</prop>
+	        	<prop key="java.lang.Exception">
+	        		general_error
+	        	</prop>
+	     </props>
+	   </property>
+	</bean>
+
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
+    
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+            	<!--
+            		all urls with ending '.do' are catched by spring security.
+            		all urls with ending '.sec' are not catched by spring security.  
+            	-->
+            	<prop key="/impressum.sec">impressumCtrl</prop>
+            	<prop key="/changes.do">changesCtrl</prop>
+            	<prop key="/admin.do">adminCtrl</prop>
+            	<prop key="/login.sec">loginCtrl</prop>
+            	<prop key="/tracks_overview.do">tracksOverviewCtrl</prop>
+            	<prop key="/track_as_google_maps.sec">trackAsGoogleMapsCtrl</prop>
+            	<prop key="/track_as_cloudmade_maps.sec">trackAsCloudmadeMapsCtrl</prop>
+            	<prop key="/track_as_status_info.sec">trackAsStatusInfoCtrl</prop>
+            	<prop key="/track_as_google_earth.sec">trackAsGoogleEarthCtrl</prop>
+            	<prop key="/track_as_kml_export.sec">trackAsKmlExportCtrl</prop>
+            	<prop key="/track_as_gpx_export.sec">trackAsGpxExportCtrl</prop>
+            	<prop key="/options.do">optionsCtrl</prop>
+            	<prop key="/upl*.sec">uploaderCtrl</prop>
+            	<prop key="/demo.do">demoCtrl</prop>            	
+            </props>
+        </property>
+    </bean>
+            
+	<bean id="tilesConfigurer"
+    	class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/my-live-tracker-tiles-defs.xml</value>
+            </list>
+        </property>
+    </bean>	
+	
+	 <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+  		<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+	</bean>
+	  
+	<bean name="impressumCtrl"
+		class="de.msk.mylivetracker.web.frontend.impressum.ImpressumCtrl"
+        p:viewName="impressum" >                	
+    </bean>   
+           
+    <bean name="changesCtrl"
+		class="de.msk.mylivetracker.web.frontend.changes.ChangesCtrl"
+        p:viewName="changes" >                	
+    </bean>
+    
+    <bean name="adminCtrl"
+		class="de.msk.mylivetracker.web.frontend.admin.AdminCtrl"
+        p:viewName="admin" >
+        <property name="applicationService" ref="applicationService" />
+        <property name="userService" ref="userService" />
+        <property name="trackService" ref="trackService" />
+        <property name="demoService" ref="demoService" />
+        <property name="applicationCache" ref="applicationCache" />
+        <property name="userWithoutRoleCache" ref="userWithoutRoleCache" />
+        <property name="senderCache" ref="senderCache" />
+        <property name="ticketCache" ref="ticketCache" />
+        <property name="userStorePositionQueues" ref="userStorePositionQueues" />                       
+    </bean>
+            
+    <bean name="loginCtrl"
+		class="de.msk.mylivetracker.web.frontend.login.LoginCtrl"
+        p:viewName="login" >                         
+    </bean>                       
+    
+    <bean name="tracksOverviewCtrl"
+        class="de.msk.mylivetracker.web.frontend.tracksoverview.TracksOverviewCtrl">
+        <property name="liveTrackingOpts" ref="commonsOptsOnOff"/>
+        <property name="liveTrackingOptsKeepRecentPos" ref="liveTrackingOptsKeepRecentPos"/>
+        <property name="liveTrackingOptsUpdateInterval" ref="liveTrackingOptsUpdateInterval"/>
+        <property name="liveTrackingOptsFlyToMode" ref="liveTrackingOptsFlyToMode"/>
+        <property name="tracksOverviewOptsRefresh" ref="tracksOverviewOptsRefresh"/>
+        <property name="trackOptsReleaseStatus" ref="trackOptsReleaseStatus" />
+        <property name="trackOptsActivityStatus" ref="trackOptsActivityStatus" />
+        <property name="commandClass" 
+        	value="de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd"/>
+        <property name="commandName" value="tracksOverviewCmd" />
+        <property name="formView" value="tracks_overview"/>
+        <property name="successView" value="tracks_overview"/>
+        <property name="userService" ref="userService" />
+        <property name="applicationService" ref="applicationService" />
+        <property name="trackService" ref="trackService" />
+        <property name="senderService" ref="senderService" />                                        
+    </bean>
+           
+    <bean name="trackAsStatusInfoCtrl"
+        class="de.msk.mylivetracker.web.frontend.tracking.TrackAsStatusInfoCtrl">    
+        <property name="view" value="track_as_status_info"/>
+        <property name="viewLayoutSimple" value="track_as_status_info_layout_simple"/>
+        <property name="trackAsDetailed" value="false"/>
+        <property name="useJsonReqId" value="false"/>        
+        <property name="applicationService" ref="applicationService" />
+        <property name="ticketService" ref="ticketService" />
+        <property name="senderService" ref="senderService" />
+        <property name="userService" ref="userService" />        
+        <property name="trackService" ref="trackService" />
+        <property name="statusParamsService" ref="statusParamsService" />                                                                     
+    </bean>        
+    
+    <bean name="trackAsGoogleMapsCtrl"
+        class="de.msk.mylivetracker.web.frontend.tracking.TrackAsGoogleMapsCtrl">     
+        <property name="view" value="track_as_google_maps"/>
+        <property name="viewLayoutSimple" value="track_as_google_maps_layout_simple"/>
+        <property name="trackAsDetailed" value="true"/>
+        <property name="useJsonReqId" value="true"/>        
+        <property name="applicationService" ref="applicationService" />
+        <property name="ticketService" ref="ticketService" />
+        <property name="senderService" ref="senderService" />
+        <property name="userService" ref="userService" />        
+        <property name="trackService" ref="trackService" />   
+        <property name="statusParamsService" ref="statusParamsService" />
+    </bean>         
+    
+    <bean name="trackAsCloudmadeMapsCtrl"
+        class="de.msk.mylivetracker.web.frontend.tracking.TrackAsCloudmadeMapsCtrl">     
+        <property name="view" value="track_as_cloudmade_maps"/>
+        <property name="viewLayoutSimple" value="track_as_cloudmade_maps_layout_simple"/>
+        <property name="trackAsDetailed" value="true"/>
+        <property name="useJsonReqId" value="true"/>        
+        <property name="applicationService" ref="applicationService" />
+        <property name="ticketService" ref="ticketService" />
+        <property name="senderService" ref="senderService" />
+        <property name="userService" ref="userService" />        
+        <property name="trackService" ref="trackService" />   
+        <property name="statusParamsService" ref="statusParamsService" />
+    </bean>  
+    
+    <bean name="jaxbContext4TrackExporterGpx" factory-method="newInstance"
+    	class="javax.xml.bind.JAXBContext">
+    	<constructor-arg value="de.msk.mylivetracker.web.frontend.tracking.export.gpx.jaxbgenerated" />
+    </bean>
+    
+    <bean name="trackExporterGpx" 
+    	class="de.msk.mylivetracker.web.frontend.tracking.export.gpx.TrackExporterGpx">    	
+        <property name="jaxbContext" ref="jaxbContext4TrackExporterGpx" />
+    </bean>
+    
+    <bean name="trackExporterKml" 
+    	class="de.msk.mylivetracker.web.frontend.tracking.export.kml.TrackExporterKml">
+    	<property name="onlyStaticExport" value="true" /> 
+    	<property name="applicationService" ref="applicationService" />
+        <property name="ticketService" ref="ticketService" />    	    	
+    </bean>
+    
+    <bean name="trackExporterKml4Tracking" 
+    	class="de.msk.mylivetracker.web.frontend.tracking.export.kml.TrackExporterKml">
+    	<property name="onlyStaticExport" value="false" /> 
+    	<property name="applicationService" ref="applicationService" />
+        <property name="ticketService" ref="ticketService" />    	    	
+    </bean>
+    
+    <bean name="trackAsGpxExportCtrl"
+        class="de.msk.mylivetracker.web.frontend.tracking.export.gpx.TrackAsGpxFileExportCtrl"
+        >
+        <property name="httpHeaderInfo" value="application/gpx" />
+        <property name="fileExtension" value="gpx" />
+        <property name="trackAsDetailed" value="true" />
+        <property name="useJsonReqId" value="false"/>
+        <property name="applicationService" ref="applicationService" />
+        <property name="ticketService" ref="ticketService" />
+        <property name="senderService" ref="senderService" />
+        <property name="userService" ref="userService" />        
+        <property name="trackService" ref="trackService" />
+        <property name="statusParamsService" ref="statusParamsService" />
+        <property name="trackExporter" ref="trackExporterGpx" />                                  
+    </bean>
+    
+    <bean name="trackAsKmlExportCtrl"
+        class="de.msk.mylivetracker.web.frontend.tracking.export.kml.TrackAsKmlFileExportCtrl"
+        >
+        <property name="httpHeaderInfo" value="application/vnd.google-earth.kmz" />
+        <property name="fileExtension" value="kml" />
+        <property name="trackAsDetailed" value="true" />
+        <property name="useJsonReqId" value="false"/>
+        <property name="applicationService" ref="applicationService" />
+        <property name="ticketService" ref="ticketService" />
+        <property name="senderService" ref="senderService" />
+        <property name="userService" ref="userService" />        
+        <property name="trackService" ref="trackService" />
+        <property name="statusParamsService" ref="statusParamsService" />
+        <property name="trackExporter" ref="trackExporterKml" />                                  
+    </bean>
+    	  
+    <bean name="trackAsGoogleEarthCtrl"
+        class="de.msk.mylivetracker.web.frontend.tracking.TrackAsGoogleEarthCtrl"
+        >
+        <property name="trackAsDetailed" value="true"/>
+        <property name="useJsonReqId" value="false"/>
+        <property name="applicationService" ref="applicationService" />
+        <property name="ticketService" ref="ticketService" />
+        <property name="senderService" ref="senderService" />
+        <property name="userService" ref="userService" />        
+        <property name="trackService" ref="trackService" />
+        <property name="statusParamsService" ref="statusParamsService" />
+        <property name="trackExporterKml" ref="trackExporterKml4Tracking" />                                  
+    </bean>
+    
+    <bean name="optionsVdtor" 
+    	class="de.msk.mylivetracker.web.frontend.options.OptionsVdtor">
+    	<property name="senderService" ref="senderService" />
+   	</bean>
+   	 	
+    <bean name="optionsCtrl"
+        class="de.msk.mylivetracker.web.frontend.options.OptionsCtrl">
+        <property name="userOptsLanguage" ref="userOptsLanguage" />
+        <property name="trackOptsReleaseStatus" ref="trackOptsReleaseStatus" />
+        <property name="trackOptsAutoClose" ref="trackOptsAutoClose" />
+        <property name="trackRouteOptsWidth" ref="trackRouteOptsWidth" />
+        <property name="commonsOptsYesNo" ref="commonsOptsYesNo" />
+        <property name="commonsOptsOnOff" ref="commonsOptsOnOff" />
+        <property name="commonsOptsEnDisabled" ref="commonsOptsEnDisabled" />        
+        <property name="commonsOptsTimeZone" ref="commonsOptsTimeZone" />        
+        <property name="senderOptsRunningMode" ref="senderOptsRunningMode" />                
+        <property name="stPgTrOptsFlyToMode" ref="liveTrackingOptsFlyToMode" />
+        <property name="stPgTrOptsKeepRecentPos" ref="liveTrackingOptsKeepRecentPos" />
+		<property name="stPgTrOptsUpdateInterval" ref="liveTrackingOptsUpdateInterval" />
+		<property name="commandClass" 
+        	value="de.msk.mylivetracker.web.frontend.options.OptionsCmd"/>
+        <property name="commandName" value="optionsCmd" />
+        <property name="validator" ref="optionsVdtor" />	
+        <property name="formView" value="options"/>
+        <property name="successView" value="options"/>  
+        <property name="applicationService" ref="applicationService" />
+        <property name="userService" ref="userService" />
+        <property name="senderService" ref="senderService" />        
+        <property name="geocodingService" ref="geocodingService" />
+        <property name="smsService" ref="smsService" />          
+        <property name="statusParamsService" ref="statusParamsService" />
+        <property name="trackService" ref="trackService" />   
+    </bean>    
+     
+    <bean name="uploaderCtrl"
+        class="de.msk.mylivetracker.web.uploader.processor.server.http.HttpServletCtrl"
+        >
+        <property name="applicationService" ref="applicationService" />
+        <property name="statisticsService" ref="statisticsService" />
+        <property name="supportedServices" ref="supportedServices" />
+        <property name="dataPacketCreator" ref="httpServerDataPacketCreator" />        
+    </bean>
+              
+</beans>

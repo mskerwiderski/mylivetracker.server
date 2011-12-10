@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="DemoTrackVo">  	
+	<typeAlias alias="demoTrack" type="de.msk.mylivetracker.domain.demo.DemoTrackVo"/>
+	<typeAlias alias="demoPosition" type="de.msk.mylivetracker.domain.demo.DemoPositionVo"/>
+	
+	<resultMap id="demoPositionResult" class="demoPosition">
+		<result property="trackId" column="TRACK_ID" />
+		<result property="trackName" column="TRACK_NAME" />	               
+		<result property="latitudeInDecimal"  column="LATITUDE_IN_DECIMAL" />
+        <result property="longitudeInDecimal"  column="LONGITUDE_IN_DECIMAL" />
+        <result property="message"  column="MESSAGE" />
+        <result property="address"  column="ADDRESS" />
+        <result property="senderState"  column="SENDER_STATE" />
+        <result property="mobileCountryCode"  column="MOBILE_COUNTRY_CODE" />
+        <result property="mobileNetworkCode"  column="MOBILE_NETWORK_CODE" />
+        <result property="mobileNetworkName"  column="MOBILE_NETWORK_NAME" />
+        <result property="mobileCellId"  column="MOBILE_CELL_ID" />
+        <result property="mobileLocalAreaCode"  column="MOBILE_LOCAL_AREA_CODE" />
+        <result property="heartrateInBpm"  column="HEARTRATE_IN_BPM" />
+        <result property="heartrateMinInBpm"  column="HEARTRATE_MIN_IN_BPM" />
+        <result property="heartrateMaxInBpm"  column="HEARTRATE_MAX_IN_BPM" />
+        <result property="heartrateAvgInBpm"  column="HEARTRATE_AVG_IN_BPM" />    
+        <result property="offsetInSeconds"  column="OFFSET_IN_SECONDS" />
+	</resultMap>
+	
+	<resultMap id="demoTrackResult" class="demoTrack">
+		<result property="trackId" column="TRACK_ID" />
+		<result property="trackName" column="TRACK_NAME" />     
+		<result property="positions" column="TRACK_ID" select="DemoTrackVo.getDemoPositionsByTrackId" />                  
+    </resultMap>
+            
+  	<select id="getDemoTrackByTrackId" parameterClass="string" resultMap="demoTrackResult">
+  		select t.TRACK_ID, t.TRACK_NAME from T_DEMO_TRACK t
+  		where t.TRACK_ID = #?#
+  		group by t.TRACK_ID 		
+  	</select>  	
+  	
+  	<select id="getDemoPositionsByTrackId" parameterClass="string" resultMap="demoPositionResult">
+  		select * from T_DEMO_TRACK t
+  		where t.TRACK_ID = #value#
+  		order by t.OFFSET_IN_SECONDS asc 		
+  	</select>
+  	
+  	<insert id="insertDemoTrackRecord" parameterClass="demoPosition">
+  		insert into T_DEMO_TRACK (
+  			TRACK_ID,
+  			TRACK_NAME,
+	  		LATITUDE_IN_DECIMAL,
+	  		LONGITUDE_IN_DECIMAL,
+	  		ALTITUDE_IN_MTR,
+	  		MESSAGE,
+	  		ADDRESS,
+	  		SENDER_STATE,
+	  		MOBILE_COUNTRY_CODE,
+	  		MOBILE_NETWORK_CODE,
+	  		MOBILE_NETWORK_NAME,
+	  		MOBILE_CELL_ID,
+	  		MOBILE_LOCAL_AREA_CODE,
+	  		HEARTRATE_IN_BPM,
+	  		HEARTRATE_MIN_IN_BPM,
+	  		HEARTRATE_MAX_IN_BPM,
+	  		HEARTRATE_AVG_IN_BPM,
+	  		OFFSET_IN_SECONDS  			  
+  		) values (
+  			#trackId#,
+  			#trackName#,
+  			#latitudeInDecimal#,  
+	        #longitudeInDecimal#,  
+	        #altitudeInMtr#,
+	        #message#,  
+	        #address#,  
+	        #senderState#,  
+	        #mobileCountryCode#,  
+	        #mobileNetworkCode#,  
+	        #mobileNetworkName#,  
+	        #mobileCellId#,  
+	        #mobileLocalAreaCode#,  
+	        #heartrateInBpm#,  
+	        #heartrateMinInBpm#,  
+	        #heartrateMaxInBpm#,  
+	        #heartrateAvgInBpm#,      
+	        #offsetInSeconds#  			
+  		)
+  	</insert>
+</sqlMap>

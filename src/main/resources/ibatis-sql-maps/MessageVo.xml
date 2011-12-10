@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="MessageVo">  	
+	<typeAlias alias="message" type="de.msk.mylivetracker.domain.MessageVo"/>
+	
+	<resultMap id="minMessageResult" class="message">
+		<result property="messageId" column="M_MESSAGE_ID" />     
+		<result property="content" column="M_CONTENT" />
+        <result property="timeReceived" column="M_TIME_RECEIVED" />                                    
+    </resultMap>
+    
+	<resultMap id="detailedMessageResult" class="message" extends="minMessageResult">
+		<result property="track" resultMap="TrackVo.minTrackResult" />   
+		<result property="position" resultMap="PositionVo.detailedPositionResult" />                                                    
+    </resultMap>
+	
+	<resultMap id="recentDetailedMessageResult" class="message">
+		<result property="messageId" column="RM_MESSAGE_ID" />        
+		<result property="track" resultMap="TrackVo.minTrackResult" />
+		<result property="position" resultMap="PositionVo.minPositionOfRecentMessageResult" />        
+        <result property="content" column="RM_CONTENT" />
+        <result property="timeReceived" column="RM_TIME_RECEIVED" />                                    
+    </resultMap>
+    
+  	<insert id="storeMessage" parameterClass="message" >
+  		insert into T_MESSAGE (
+  			MESSAGE_ID,
+  			TRACK_ID,
+    		POSITION_ID,
+    		CONTENT,
+    		TIME_RECEIVED
+    	)
+    	values (    	
+    		#messageId#,
+    		#track.trackId#,	
+    		#position.positionId#,
+    		#content#,
+    		#timeReceived#
+    	)
+  	</insert>	  	  	    
+</sqlMap>

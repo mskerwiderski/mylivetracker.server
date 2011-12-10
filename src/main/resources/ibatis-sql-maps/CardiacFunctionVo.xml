@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="CardiacFunctionVo">  	
+	<typeAlias alias="cardiacFunction" type="de.msk.mylivetracker.domain.CardiacFunctionVo"/>
+	
+	<resultMap id="minCardiacFunctionResult" class="cardiacFunction">
+		<result property="cardiacFunctionId" column="H_CARDIAC_FUNCTION_ID" />
+        <result property="timeReceived"  column="H_TIME_RECEIVED" />
+        <result property="heartrateInBpm"  column="H_HEARTRATE_IN_BPM" />
+        <result property="heartrateMinInBpm"  column="H_HEARTRATE_MIN_IN_BPM" />
+        <result property="heartrateMaxInBpm"  column="H_HEARTRATE_MAX_IN_BPM" />
+        <result property="heartrateAvgInBpm"  column="H_HEARTRATE_AVG_IN_BPM" />
+    </resultMap>
+
+	<resultMap id="detailedCardiacFunctionResult" class="cardiacFunction" extends="minCardiacFunctionResult">
+		<result property="track" resultMap="TrackVo.minTrackResult" />   
+		<result property="position" resultMap="PositionVo.detailedPositionResult" />                       
+    </resultMap>
+    
+    <resultMap id="recentDetailedCardiacFunctionResult" class="cardiacFunction">
+		<result property="cardiacFunctionId" column="RH_CARDIAC_FUNCTION_ID" />
+        <result property="track" resultMap="TrackVo.minTrackResult" />   
+		<result property="position" resultMap="PositionVo.minPositionOfRecentCardiacFunctionResult" />     
+        <result property="timeReceived"  column="RH_TIME_RECEIVED" />
+        <result property="heartrateInBpm"  column="RH_HEARTRATE_IN_BPM" />
+        <result property="heartrateMinInBpm"  column="RH_HEARTRATE_MIN_IN_BPM" />
+        <result property="heartrateMaxInBpm"  column="RH_HEARTRATE_MAX_IN_BPM" />
+        <result property="heartrateAvgInBpm"  column="RH_HEARTRATE_AVG_IN_BPM" />               
+    </resultMap>
+            
+    <insert id="storeCardiacFunction" parameterClass="cardiacFunction" >
+    	insert into T_CARDIAC_FUNCTION (
+    		CARDIAC_FUNCTION_ID,
+    		TRACK_ID,
+    		POSITION_ID,
+    		TIME_RECEIVED,
+    		HEARTRATE_IN_BPM,
+    		HEARTRATE_MIN_IN_BPM,
+    		HEARTRATE_MAX_IN_BPM,
+    		HEARTRATE_AVG_IN_BPM
+    	)
+    	values (
+    		#cardiacFunctionId#,
+    		#track.trackId#,
+    		#position.positionId#,
+    		#timeReceived#,
+    		#heartrateInBpm#,
+    		#heartrateMinInBpm#,
+    		#heartrateMaxInBpm#,
+    		#heartrateAvgInBpm#	    
+    	)
+    </insert>  		   
+</sqlMap>

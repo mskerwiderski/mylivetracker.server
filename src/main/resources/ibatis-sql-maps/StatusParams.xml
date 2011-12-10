@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="StatusParams">  	
+	  	
+	<typeAlias alias="statusParamsVo" 
+		type="de.msk.mylivetracker.domain.StatusParamsVo"/>
+		
+	<resultMap id="statusParamsResult" class="statusParamsVo" >
+		<result property="statusParamsId" column="STATUS_PARAMS_ID" />
+		<result property="userId" column="USER_ID" />	
+		<result property="ticketId" column="TICKET_ID" />
+		<result property="senderId" column="SENDER_ID" />
+		<result property="trackId" column="TRACK_ID" />
+		<result property="trackingLive" column="TRACKING_LIVE" />
+		<result property="trackingKeepRecentPositions" column="TRACKING_KEEP_RECENT_POSITIONS" />
+		<result property="trackingUpdateIntervalInSecs" column="TRACKING_UPDATE_INTERVAL_IN_SECS" />	
+		<result property="trackingFlyToMode" column="TRACKING_FLY_TO_MODE" />
+		<result property="windowFullscreen" column="WINDOW_FULLSCREEN" />
+		<result property="windowWidth" column="WINDOW_WIDTH" />
+		<result property="windowHeight" column="WINDOW_HEIGHT" />
+		<result property="showTrackInfo" column="SHOW_TRACK_INFO" />
+		<result property="cssStyle" column="CSS_STYLE" />		
+    </resultMap> 
+        	
+   	<select id="getStatusParamsByStatusParamsId" parameterClass="string" resultMap="statusParamsResult">
+  		select * from T_STATUS_PARAMS t where 
+  		t.STATUS_PARAMS_ID = #?#		
+  	</select>
+  		
+   	<insert id="saveStatusParams" parameterClass="statusParamsVo">
+  		insert into T_STATUS_PARAMS (
+  			STATUS_PARAMS_ID,									
+			USER_ID, 												 
+			TICKET_ID, 											 
+			SENDER_ID, 											 
+			TRACK_ID, 											   
+			TRACKING_LIVE, 										
+			TRACKING_KEEP_RECENT_POSITIONS,   
+			TRACKING_UPDATE_INTERVAL_IN_SECS, 
+			TRACKING_FLY_TO_MODE,             
+			WINDOW_FULLSCREEN,               
+			WINDOW_WIDTH,                    
+			WINDOW_HEIGHT,                   
+			SHOW_TRACK_INFO,                  
+			CSS_STYLE 		                    			
+  		) values (
+  			#statusParamsId#, 	 						
+			#userId#, 											
+			#ticketId#, 										
+			#senderId#, 										
+			#trackId#, 										
+			#trackingLive#, 								
+			#trackingKeepRecentPositions#, 
+			#trackingUpdateIntervalInSecs#,
+			#trackingFlyToMode#, 					
+			#windowFullscreen#, 						
+			#windowWidth#, 								
+			#windowHeight#, 								
+			#showTrackInfo#, 							
+			#cssStyle# 													  			
+  		)    		
+  	</insert>  	 
+  	
+  	<delete id="removeStatusParamsByUserId" parameterClass="string">
+  		delete t FROM T_STATUS_PARAMS t where t.USER_ID = #?#
+  	</delete> 	  
+</sqlMap>

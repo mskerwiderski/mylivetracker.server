@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="SenderVo">  	
+	<typeAlias alias="sender" type="de.msk.mylivetracker.domain.sender.SenderVo"/>
+		
+	<resultMap id="senderResult" class="sender">
+		<result property="senderId" column="SENDER_ID" />
+		<result property="senderType" column="SENDER_TYPE" />
+        <result property="userId" column="USER_ID" />        
+        <result property="name" column="NAME" />
+        <result property="timeZone" column="TIME_ZONE" />        
+        <result property="switches" column="SWITCHES" />
+        <result property="authRequired"  column="AUTH_REQUIRED" />        
+        <result property="authUsername" column="AUTH_USERNAME" />     
+        <result property="authPlainPassword"  column="AUTH_PLAIN_PASSWORD" /> 
+        <result property="active" column="ACTIVE" />      
+		<result property="redirectTo" column="REDIRECT_TO" />
+    </resultMap>
+
+	<select id="getSenderCount" parameterClass="String" resultClass="integer">
+  		select count(*) from T_SENDER t
+  		where t.USER_ID = #?#  		  		
+  	</select> 
+  	
+  	<select id="getSenderBySenderId" parameterClass="String" resultMap="senderResult">
+  		select * from T_SENDER t where t.SENDER_ID = #?#
+  	</select>
+
+	<insert id="storeSender" parameterClass="sender" >
+  		replace into T_SENDER (
+  			SENDER_ID,
+    		USER_ID,
+    		NAME,
+    		TIME_ZONE,  
+    		SWITCHES,
+    		AUTH_REQUIRED,
+    		AUTH_USERNAME,
+    		AUTH_PLAIN_PASSWORD,
+    		ACTIVE,
+    		REDIRECT_TO
+    	)
+    	values (    	
+    		#senderId#,	
+    		#userId#,
+    		#name#,
+    		#timeZone#,  
+    		#switches#,
+    		#authRequired#,
+    		#authUsername#,
+    		#authPlainPassword#,
+    		#active#,
+    		#redirectTo#
+    	)
+  	</insert>
+  	
+  	<update id="updateSenderType" parameterClass="java.util.Map">
+  		update T_SENDER t
+  		set 
+  			t.SENDER_TYPE = #senderType#
+  		where t.SENDER_ID = #senderId#   		
+  	</update> 
+  	
+  	<delete id="removeSender" parameterClass="string">
+  		delete FROM T_SENDER
+		where SENDER_ID = #?#
+  	</delete>
+  	  	
+  	<select id="getSendersByUserId" parameterClass="java.util.Map" resultMap="senderResult">
+  		select * from T_SENDER t
+  		<isNotNull prepend="where" property="userId">
+  			t.USER_ID = #userId#
+  		</isNotNull> 
+  		order by t.SENDER_ID asc  		
+  	</select>   	
+</sqlMap>

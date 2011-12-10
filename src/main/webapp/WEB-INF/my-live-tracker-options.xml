@@ -1,0 +1,2678 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util 
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/aop 
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/context 
+        				   http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+                           >                          	
+   	                           
+	<util:list id="commonsOptsYesNo">
+    	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
+    	 	<constructor-arg index="0" value="false"/>
+    	 	<constructor-arg index="1" value="commons.opts.no"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
+    	 	<constructor-arg index="0" value="true"/>
+    	 	<constructor-arg index="1" value="commons.opts.yes"/>
+   	 	</bean>
+   	</util:list>
+   	
+   	<util:list id="commonsOptsOnOff">
+    	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
+    	 	<constructor-arg index="0" value="false"/>
+    	 	<constructor-arg index="1" value="commons.opts.off"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
+    	 	<constructor-arg index="0" value="true"/>
+    	 	<constructor-arg index="1" value="commons.opts.on"/>
+   	 	</bean>
+   	</util:list>
+   	
+   	<util:list id="commonsOptsEnDisabled">
+    	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
+    	 	<constructor-arg index="0" value="false"/>
+    	 	<constructor-arg index="1" value="commons.opts.disabled"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
+    	 	<constructor-arg index="0" value="true"/>
+    	 	<constructor-arg index="1" value="commons.opts.enabled"/>
+   	 	</bean>
+   	</util:list>
+   	
+   	<util:list id="commonsOptsTimeZone">
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+12"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz0"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+11"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz1"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="MIT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz2"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Apia"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz3"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Midway"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz4"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Niue"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz5"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Pago_Pago"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz6"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Samoa"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz7"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Samoa"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz8"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Adak"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz9"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Atka"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz10"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+10"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz11"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="HST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz12"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Fakaofo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz13"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Honolulu"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz14"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Johnston"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz15"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Rarotonga"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz16"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Tahiti"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz17"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/HST10"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz18"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Aleutian"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz19"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Hawaii"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz20"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Marquesas"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz21"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="AST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz22"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Anchorage"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz23"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Juneau"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz24"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Nome"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz25"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Yakutat"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz26"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+9"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz27"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Gambier"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz28"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/YST9"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz29"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/YST9YDT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz30"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Alaska"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz31"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Dawson"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz32"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Ensenada"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz33"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Los_Angeles"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz34"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Tijuana"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz35"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Vancouver"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz36"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Whitehorse"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz37"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Canada/Pacific"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz38"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Canada/Yukon"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz39"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+8"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz40"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Mexico/BajaNorte"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz41"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="PST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz42"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="PST8PDT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz43"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Pitcairn"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz44"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/PST8"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz45"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/PST8PDT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz46"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Pacific"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz47"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Pacific-New"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz48"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Boise"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz49"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Cambridge_Bay"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz50"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Chihuahua"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz51"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Dawson_Creek"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz52"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Denver"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz53"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Edmonton"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz54"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Hermosillo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz55"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Inuvik"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz56"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Mazatlan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz57"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Phoenix"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz58"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Shiprock"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz59"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Yellowknife"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz60"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Canada/Mountain"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz61"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+7"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz62"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="MST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz63"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="MST7MDT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz64"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Mexico/BajaSur"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz65"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Navajo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz66"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="PNT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz67"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/MST7"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz68"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/MST7MDT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz69"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Arizona"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz70"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Mountain"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz71"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Belize"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz72"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Cancun"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz73"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Chicago"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz74"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Costa_Rica"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz75"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/El_Salvador"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz76"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Guatemala"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz77"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Indiana/Knox"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz78"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Indiana/Tell_City"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz79"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Knox_IN"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz80"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Managua"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz81"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Menominee"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz82"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Merida"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz83"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Mexico_City"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz84"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Monterrey"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz85"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/North_Dakota/Center"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz86"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/North_Dakota/New_Salem"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz87"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Rainy_River"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz88"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Rankin_Inlet"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz89"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Regina"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz90"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Swift_Current"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz91"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Tegucigalpa"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz92"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Winnipeg"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz93"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="CST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz94"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="CST6CDT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz95"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Canada/Central"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz96"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Canada/East-Saskatchewan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz97"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Canada/Saskatchewan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz98"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Chile/EasterIsland"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz99"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+6"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz100"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Mexico/General"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz101"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Easter"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz102"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Galapagos"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz103"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/CST6"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz104"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/CST6CDT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz105"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Central"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz106"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Indiana-Starke"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz107"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Atikokan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz108"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Bogota"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz109"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Cayman"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz110"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Coral_Harbour"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz111"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Detroit"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz112"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Fort_Wayne"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz113"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Grand_Turk"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz114"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Guayaquil"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz115"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Havana"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz116"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Indiana/Indianapolis"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz117"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Indiana/Marengo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz118"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Indiana/Petersburg"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz119"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Indiana/Vevay"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz120"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Indiana/Vincennes"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz121"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Indiana/Winamac"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz122"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Indianapolis"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz123"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Iqaluit"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz124"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Jamaica"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz125"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Kentucky/Louisville"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz126"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Kentucky/Monticello"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz127"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Lima"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz128"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Louisville"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz129"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Montreal"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz130"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Nassau"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz131"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/New_York"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz132"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Nipigon"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz133"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Panama"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz134"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Pangnirtung"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz135"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Port-au-Prince"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz136"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Resolute"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz137"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Thunder_Bay"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz138"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Toronto"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz139"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Canada/Eastern"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz140"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Cuba"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz141"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="EST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz142"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="EST5EDT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz143"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+5"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz144"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="IET"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz145"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Jamaica"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz146"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/EST5"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz147"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/EST5EDT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz148"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/East-Indiana"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz149"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Eastern"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz150"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="US/Michigan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz151"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Caracas"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz152"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Anguilla"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz153"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Antigua"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz154"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/San_Luis"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz155"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Aruba"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz156"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Asuncion"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz157"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Barbados"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz158"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Blanc-Sablon"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz159"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Boa_Vista"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz160"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Campo_Grande"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz161"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Cuiaba"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz162"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Curacao"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz163"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Dominica"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz164"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Eirunepe"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz165"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Glace_Bay"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz166"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Goose_Bay"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz167"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Grenada"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz168"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Guadeloupe"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz169"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Guyana"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz170"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Halifax"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz171"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/La_Paz"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz172"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Manaus"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz173"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Marigot"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz174"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Martinique"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz175"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Moncton"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz176"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Montserrat"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz177"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Port_of_Spain"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz178"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Porto_Acre"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz179"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Porto_Velho"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz180"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Puerto_Rico"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz181"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Rio_Branco"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz182"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Santiago"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz183"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Santo_Domingo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz184"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/St_Barthelemy"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz185"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/St_Kitts"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz186"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/St_Lucia"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz187"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/St_Thomas"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz188"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/St_Vincent"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz189"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Thule"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz190"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Tortola"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz191"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Virgin"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz192"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Antarctica/Palmer"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz193"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/Bermuda"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz194"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/Stanley"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz195"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Brazil/Acre"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz196"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Brazil/West"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz197"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Canada/Atlantic"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz198"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Chile/Continental"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz199"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+4"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz200"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="PRT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz201"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/AST4"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz202"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SystemV/AST4ADT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz203"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/St_Johns"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz204"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="CNT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz205"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Canada/Newfoundland"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz206"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="AGT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz207"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Araguaina"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz208"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/Buenos_Aires"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz209"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/Catamarca"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz210"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/ComodRivadavia"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz211"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/Cordoba"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz212"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/Jujuy"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz213"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/La_Rioja"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz214"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/Mendoza"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz215"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/Rio_Gallegos"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz216"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/Salta"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz217"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/San_Juan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz218"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/Tucuman"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz219"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Argentina/Ushuaia"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz220"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Bahia"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz221"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Belem"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz222"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Buenos_Aires"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz223"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Catamarca"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz224"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Cayenne"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz225"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Cordoba"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz226"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Fortaleza"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz227"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Godthab"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz228"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Jujuy"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz229"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Maceio"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz230"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Mendoza"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz231"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Miquelon"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz232"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Montevideo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz233"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Paramaribo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz234"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Recife"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz235"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Rosario"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz236"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Santarem"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz237"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Sao_Paulo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz238"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Antarctica/Rothera"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz239"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="BET"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz240"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Brazil/East"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz241"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+3"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz242"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Noronha"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz243"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/South_Georgia"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz244"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Brazil/DeNoronha"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz245"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+2"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz246"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Scoresbysund"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz247"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/Azores"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz248"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/Cape_Verde"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz249"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+1"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz250"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Abidjan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz251"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Accra"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz252"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Bamako"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz253"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Banjul"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz254"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Bissau"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz255"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Casablanca"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz256"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Conakry"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz257"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Dakar"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz258"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/El_Aaiun"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz259"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Freetown"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz260"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Lome"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz261"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Monrovia"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz262"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Nouakchott"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz263"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Ouagadougou"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz264"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Sao_Tome"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz265"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Timbuktu"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz266"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="America/Danmarkshavn"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz267"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/Canary"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz268"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/Faeroe"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz269"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/Faroe"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz270"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/Madeira"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz271"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/Reykjavik"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz272"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/St_Helena"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz273"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Eire"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz274"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz275"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT+0"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz276"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-0"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz277"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT0"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz278"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/Greenwich"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz279"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/UCT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz280"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/UTC"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz281"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/Universal"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz282"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/Zulu"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz283"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Belfast"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz284"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Dublin"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz285"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Guernsey"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz286"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Isle_of_Man"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz287"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Jersey"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz288"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Lisbon"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz289"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/London"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz290"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="GB"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz291"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="GB-Eire"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz292"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="GMT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz293"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="GMT0"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz294"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Greenwich"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz295"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Iceland"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz296"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Portugal"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz297"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="UCT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz298"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="UTC"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz299"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Universal"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz300"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="WET"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz301"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Zulu"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz302"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Algiers"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz303"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Bangui"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz304"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Brazzaville"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz305"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Ceuta"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz306"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Douala"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz307"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Kinshasa"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz308"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Lagos"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz309"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Libreville"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz310"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Luanda"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz311"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Malabo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz312"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Ndjamena"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz313"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Niamey"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz314"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Porto-Novo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz315"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Tunis"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz316"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Windhoek"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz317"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Arctic/Longyearbyen"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz318"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Atlantic/Jan_Mayen"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz319"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="CET"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz320"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="ECT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz321"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-1"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz322"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Amsterdam"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz323"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Andorra"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz324"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Belgrade"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz325"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Berlin"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz326"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Bratislava"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz327"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Brussels"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz328"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Budapest"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz329"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Copenhagen"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz330"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Gibraltar"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz331"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Ljubljana"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz332"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Luxembourg"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz333"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Madrid"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz334"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Malta"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz335"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Monaco"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz336"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Oslo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz337"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Paris"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz338"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Podgorica"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz339"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Prague"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz340"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Rome"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz341"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/San_Marino"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz342"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Sarajevo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz343"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Skopje"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz344"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Stockholm"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz345"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Tirane"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz346"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Vaduz"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz347"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Vatican"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz348"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Vienna"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz349"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Warsaw"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz350"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Zagreb"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz351"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Zurich"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz352"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="MET"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz353"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Poland"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz354"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="ART"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz355"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Blantyre"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz356"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Bujumbura"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz357"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Cairo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz358"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Gaborone"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz359"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Harare"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz360"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Johannesburg"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz361"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Kigali"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz362"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Lubumbashi"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz363"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Lusaka"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz364"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Maputo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz365"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Maseru"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz366"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Mbabane"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz367"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Tripoli"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz368"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Amman"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz369"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Beirut"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz370"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Damascus"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz371"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Gaza"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz372"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Istanbul"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz373"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Jerusalem"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz374"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Nicosia"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz375"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Tel_Aviv"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz376"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="CAT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz377"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="EET"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz378"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Egypt"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz379"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-2"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz380"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Athens"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz381"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Bucharest"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz382"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Chisinau"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz383"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Helsinki"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz384"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Istanbul"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz385"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Kaliningrad"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz386"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Kiev"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz387"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Mariehamn"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz388"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Minsk"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz389"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Nicosia"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz390"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Riga"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz391"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Simferopol"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz392"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Sofia"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz393"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Tallinn"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz394"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Tiraspol"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz395"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Uzhgorod"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz396"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Vilnius"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz397"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Zaporozhye"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz398"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Israel"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz399"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Libya"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz400"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Turkey"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz401"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Addis_Ababa"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz402"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Asmara"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz403"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Asmera"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz404"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Dar_es_Salaam"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz405"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Djibouti"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz406"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Kampala"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz407"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Khartoum"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz408"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Mogadishu"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz409"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Africa/Nairobi"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz410"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Antarctica/Syowa"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz411"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Aden"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz412"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Baghdad"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz413"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Bahrain"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz414"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Kuwait"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz415"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Qatar"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz416"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Riyadh"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz417"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="EAT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz418"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-3"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz419"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Moscow"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz420"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Volgograd"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz421"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Antananarivo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz422"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Comoro"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz423"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Mayotte"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz424"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="W-SU"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz425"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Riyadh87"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz426"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Riyadh88"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz427"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Riyadh89"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz428"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Mideast/Riyadh87"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz429"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Mideast/Riyadh88"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz430"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Mideast/Riyadh89"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz431"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Tehran"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz432"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Iran"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz433"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Baku"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz434"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Dubai"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz435"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Muscat"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz436"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Tbilisi"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz437"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Yerevan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz438"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-4"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz439"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Europe/Samara"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz440"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Mahe"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz441"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Mauritius"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz442"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Reunion"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz443"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="NET"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz444"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Kabul"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz445"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Aqtau"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz446"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Aqtobe"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz447"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Ashgabat"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz448"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Ashkhabad"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz449"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Dushanbe"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz450"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Karachi"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz451"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Oral"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz452"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Samarkand"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz453"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Tashkent"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz454"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Yekaterinburg"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz455"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-5"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz456"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Kerguelen"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz457"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Maldives"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz458"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="PLT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz459"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Calcutta"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz460"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Colombo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz461"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Kolkata"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz462"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="IST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz463"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Kathmandu"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz464"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Katmandu"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz465"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Antarctica/Mawson"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz466"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Antarctica/Vostok"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz467"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Almaty"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz468"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Bishkek"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz469"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Dacca"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz470"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Dhaka"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz471"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Novosibirsk"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz472"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Omsk"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz473"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Qyzylorda"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz474"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Thimbu"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz475"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Thimphu"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz476"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="BST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz477"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-6"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz478"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Chagos"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz479"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Rangoon"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz480"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Cocos"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz481"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Antarctica/Davis"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz482"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Bangkok"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz483"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Ho_Chi_Minh"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz484"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Hovd"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz485"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Jakarta"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz486"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Krasnoyarsk"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz487"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Phnom_Penh"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz488"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Pontianak"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz489"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Saigon"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz490"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Vientiane"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz491"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-7"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz492"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Indian/Christmas"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz493"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="VST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz494"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Antarctica/Casey"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz495"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Brunei"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz496"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Choibalsan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz497"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Chongqing"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz498"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Chungking"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz499"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Harbin"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz500"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Hong_Kong"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz501"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Irkutsk"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz502"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Kashgar"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz503"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Kuala_Lumpur"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz504"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Kuching"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz505"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Macao"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz506"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Macau"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz507"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Makassar"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz508"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Manila"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz509"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Shanghai"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz510"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Singapore"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz511"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Taipei"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz512"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Ujung_Pandang"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz513"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Ulaanbaatar"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz514"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Ulan_Bator"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz515"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Urumqi"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz516"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Perth"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz517"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/West"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz518"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="CTT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz519"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-8"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz520"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Hongkong"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz521"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="PRC"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz522"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Singapore"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz523"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Eucla"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz524"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Dili"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz525"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Jayapura"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz526"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Pyongyang"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz527"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Seoul"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz528"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Tokyo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz529"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Yakutsk"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz530"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-9"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz531"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="JST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz532"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Japan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz533"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Palau"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz534"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="ROK"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz535"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="ACT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz536"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Adelaide"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz537"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Broken_Hill"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz538"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Darwin"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz539"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/North"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz540"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/South"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz541"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Yancowinna"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz542"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="AET"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz543"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Antarctica/DumontDUrville"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz544"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Sakhalin"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz545"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Vladivostok"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz546"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/ACT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz547"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Brisbane"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz548"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Canberra"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz549"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Currie"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz550"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Hobart"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz551"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Lindeman"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz552"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Melbourne"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz553"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/NSW"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz554"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Queensland"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz555"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Sydney"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz556"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Tasmania"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz557"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Victoria"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz558"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-10"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz559"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Guam"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz560"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Port_Moresby"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz561"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Saipan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz562"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Truk"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz563"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Yap"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz564"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/LHI"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz565"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Australia/Lord_Howe"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz566"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Magadan"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz567"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-11"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz568"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Efate"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz569"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Guadalcanal"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz570"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Kosrae"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz571"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Noumea"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz572"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Ponape"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz573"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="SST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz574"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Norfolk"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz575"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Antarctica/McMurdo"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz576"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Antarctica/South_Pole"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz577"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Anadyr"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz578"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Asia/Kamchatka"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz579"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-12"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz580"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Kwajalein"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz581"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="NST"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz582"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="NZ"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz583"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Auckland"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz584"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Fiji"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz585"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Funafuti"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz586"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Kwajalein"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz587"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Majuro"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz588"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Nauru"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz589"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Tarawa"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz590"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Wake"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz591"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Wallis"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz592"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="NZ-CHAT"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz593"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Chatham"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz594"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-13"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz595"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Enderbury"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz596"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Tongatapu"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz597"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Etc/GMT-14"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz598"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+			<constructor-arg index="0" value="Pacific/Kiritimati"/>
+			<constructor-arg index="1" value="commons.opts.timezone.tz599"/>
+		</bean>
+	</util:list>
+   	   	
+   	<util:list id="senderOptsRunningMode">
+    	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="StandAlone"/>
+    	 	<constructor-arg index="1" value="sender.opts.runningmode.standalone"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="Redirector"/>
+    	 	<constructor-arg index="1" value="sender.opts.runningmode.redirector"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="RedirectionsReceiver"/>
+    	 	<constructor-arg index="1" value="sender.opts.runningmode.redirectionsreceiver"/>
+   	 	</bean>
+   	</util:list>
+   	
+	<util:list id="userOptsLanguage">
+    	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="en"/>
+    	 	<constructor-arg index="1" value="user.opts.language.english"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="de"/>
+    	 	<constructor-arg index="1" value="user.opts.language.german"/>
+   	 	</bean>
+   	</util:list>
+   	
+	<util:list id="trackOptsReleaseStatus">
+    	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
+    	 	<constructor-arg index="0" value="false"/>
+    	 	<constructor-arg index="1" value="track.opts.release.status.private"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
+    	 	<constructor-arg index="0" value="true"/>
+    	 	<constructor-arg index="1" value="track.opts.release.status.public"/>
+   	 	</bean>
+   	</util:list>
+   	   	
+   	<util:list id="trackOptsAutoClose">
+   		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="-1"/>
+    	 	<constructor-arg index="1" value="track.opts.autoclose.thenextday"/>
+   	 	</bean>
+    	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="0"/>
+    	 	<constructor-arg index="1" value="track.opts.autoclose.never"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="1"/>
+    	 	<constructor-arg index="1" value="track.opts.autoclose.after1hour"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="2"/>
+    	 	<constructor-arg index="1" value="track.opts.autoclose.after2hours"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="4"/>
+    	 	<constructor-arg index="1" value="track.opts.autoclose.after4hours"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="8"/>
+    	 	<constructor-arg index="1" value="track.opts.autoclose.after8hours"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="24"/>
+    	 	<constructor-arg index="1" value="track.opts.autoclose.after24hours"/>
+   	 	</bean>
+   	</util:list>
+   	 	
+   	<util:list id="trackOptsActivityStatus">
+    	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
+    	 	<constructor-arg index="0" value="false"/>
+    	 	<constructor-arg index="1" value="track.opts.activity.status.closed"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
+    	 	<constructor-arg index="0" value="true"/>
+    	 	<constructor-arg index="1" value="track.opts.activity.status.active"/>
+   	 	</bean>
+   	</util:list>
+   		    
+    <util:list id="liveTrackingOptsKeepRecentPos">
+    	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="0"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.keeprecentposition.allpositions"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="1"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.keeprecentposition.recentposition"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="3"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.keeprecentposition.recent3positions"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="10"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.keeprecentposition.recent10positions"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="20"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.keeprecentposition.recent20positions"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="30"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.keeprecentposition.recent30positions"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="50"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.keeprecentposition.recent50positions"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="100"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.keeprecentposition.recent100positions"/>
+   	 	</bean>   	 	
+    </util:list>
+    
+	<util:list id="liveTrackingOptsUpdateInterval">
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="5"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.updateinterval.every5seconds"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="10"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.updateinterval.every10seconds"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="30"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.updateinterval.every30seconds"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="60"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.updateinterval.every60seconds"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="180"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.updateinterval.every3minutes"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="600"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.updateinterval.every10minutes"/>
+   	 	</bean>
+   	</util:list>     	
+   	
+   	<util:list id="trackRouteOptsWidth">
+    	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="1"/>
+    	 	<constructor-arg index="1" value="track.route.width.1pixel"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="2"/>
+    	 	<constructor-arg index="1" value="track.route.width.2pixel"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="3"/>
+    	 	<constructor-arg index="1" value="track.route.width.3pixel"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="4"/>
+    	 	<constructor-arg index="1" value="track.route.width.4pixel"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="5"/>
+    	 	<constructor-arg index="1" value="track.route.width.5pixel"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="6"/>
+    	 	<constructor-arg index="1" value="track.route.width.6pixel"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="7"/>
+    	 	<constructor-arg index="1" value="track.route.width.7pixel"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="8"/>
+    	 	<constructor-arg index="1" value="track.route.width.8pixel"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="9"/>
+    	 	<constructor-arg index="1" value="track.route.width.9pixel"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="10"/>
+    	 	<constructor-arg index="1" value="track.route.width.10pixel"/>
+   	 	</bean>
+   	</util:list>
+   	
+   	 <util:list id="liveTrackingOptsFlyToMode">
+    	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="0"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.flytomode.none"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="1"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.flytomode.flytoview"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="2"/>
+    	 	<constructor-arg index="1" value="livetracking.opts.flytomode.flytocurrpos"/>
+   	 	</bean>   	 	   	 
+    </util:list>
+    
+    <util:list id="tracksOverviewOptsRefresh">
+    	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="-1"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.refresh.disabled"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="5"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.refresh.every5secs"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="10"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.refresh.every10secs"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="30"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.refresh.every30secs"/>
+   	 	</bean>   	 	   	 
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="60"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.refresh.every60secs"/>
+   	 	</bean>
+    </util:list> 	
+</beans>

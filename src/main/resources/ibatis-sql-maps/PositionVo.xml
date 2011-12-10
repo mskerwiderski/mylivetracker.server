@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="PositionVo">  	
+	<typeAlias alias="position" type="de.msk.mylivetracker.domain.PositionVo"/>
+	
+	<resultMap id="minPositionResult" class="position">
+		<result property="positionId" column="P_POSITION_ID" />
+		<result property="sequenceId" column="P_SEQUENCE_ID" />
+        <result property="timeRecorded"  column="P_TIME_RECORDED" />
+        <result property="timeReceived"  column="P_TIME_RECEIVED" />
+        <result property="latitudeInDecimal"  column="P_LATITUDE_IN_DECIMAL" />
+        <result property="longitudeInDecimal"  column="P_LONGITUDE_IN_DECIMAL" />
+        <result property="accuracyInMtr"  column="P_ACCURACY_IN_MTR" />        
+        <result property="altitudeInMtr"  column="P_ALTITUDE_IN_MTR" />
+        <result property="speedInKmPerHour"  column="P_SPEED_IN_KM_PER_HOUR" />    
+        <result property="address"  column="P_ADDRESS" />          
+    </resultMap>           
+    
+	<resultMap id="detailedPositionResult" class="position" extends="minPositionResult">
+		<result property="track" resultMap="TrackVo.minTrackResult" />                      
+    </resultMap>           
+    
+    <resultMap id="startDetailedPositionResult" class="position">
+		<result property="positionId" column="SP_POSITION_ID" />
+		<result property="sequenceId" column="SP_SEQUENCE_ID" />
+        <result property="track" resultMap="TrackVo.minTrackResult" />     
+        <result property="timeRecorded"  column="SP_TIME_RECORDED" />
+        <result property="timeReceived"  column="SP_TIME_RECEIVED" />
+        <result property="latitudeInDecimal"  column="SP_LATITUDE_IN_DECIMAL" />
+        <result property="longitudeInDecimal"  column="SP_LONGITUDE_IN_DECIMAL" />
+        <result property="accuracyInMtr"  column="SP_ACCURACY_IN_MTR" />
+        <result property="altitudeInMtr"  column="SP_ALTITUDE_IN_MTR" />
+        <result property="speedInKmPerHour"  column="SP_SPEED_IN_KM_PER_HOUR" />    
+        <result property="address"  column="SP_ADDRESS" />          
+    </resultMap>
+    
+    <resultMap id="recentDetailedPositionResult" class="position">
+		<result property="positionId" column="RP_POSITION_ID" />
+		<result property="sequenceId" column="RP_SEQUENCE_ID" />
+        <result property="track" resultMap="TrackVo.minTrackResult" />     
+        <result property="timeRecorded"  column="RP_TIME_RECORDED" />
+        <result property="timeReceived"  column="RP_TIME_RECEIVED" />
+        <result property="latitudeInDecimal"  column="RP_LATITUDE_IN_DECIMAL" />
+        <result property="longitudeInDecimal"  column="RP_LONGITUDE_IN_DECIMAL" />
+        <result property="accuracyInMtr"  column="RP_ACCURACY_IN_MTR" />
+        <result property="altitudeInMtr"  column="RP_ALTITUDE_IN_MTR" />
+        <result property="speedInKmPerHour"  column="RP_SPEED_IN_KM_PER_HOUR" />    
+        <result property="address"  column="RP_ADDRESS" />          
+    </resultMap>
+    
+    <resultMap id="minPositionOfRecentMessageResult" class="position">
+		<result property="positionId" column="PRM_POSITION_ID" />
+		<result property="sequenceId" column="PRM_SEQUENCE_ID" />
+        <result property="timeRecorded"  column="PRM_TIME_RECORDED" />
+        <result property="timeReceived"  column="PRM_TIME_RECEIVED" />
+        <result property="latitudeInDecimal"  column="PRM_LATITUDE_IN_DECIMAL" />
+        <result property="longitudeInDecimal"  column="PRM_LONGITUDE_IN_DECIMAL" />
+        <result property="accuracyInMtr"  column="PRM_ACCURACY_IN_MTR" />
+        <result property="altitudeInMtr"  column="PRM_ALTITUDE_IN_MTR" />
+        <result property="speedInKmPerHour"  column="PRM_SPEED_IN_KM_PER_HOUR" />    
+        <result property="address"  column="PRM_ADDRESS" />          
+    </resultMap>
+    
+    <resultMap id="minPositionOfRecentMobNwCellResult" class="position">
+		<result property="positionId" column="PRC_POSITION_ID" />
+		<result property="sequenceId" column="PRC_SEQUENCE_ID" />
+        <result property="timeRecorded"  column="PRC_TIME_RECORDED" />
+        <result property="timeReceived"  column="PRC_TIME_RECEIVED" />
+        <result property="latitudeInDecimal"  column="PRC_LATITUDE_IN_DECIMAL" />
+        <result property="longitudeInDecimal"  column="PRC_LONGITUDE_IN_DECIMAL" />
+        <result property="accuracyInMtr"  column="PRC_ACCURACY_IN_MTR" />
+        <result property="altitudeInMtr"  column="PRC_ALTITUDE_IN_MTR" />
+        <result property="speedInKmPerHour"  column="PRC_SPEED_IN_KM_PER_HOUR" />    
+        <result property="address"  column="PRC_ADDRESS" />          
+    </resultMap>
+    
+    <resultMap id="minPositionOfRecentSenderStateResult" class="position">
+		<result property="positionId" column="PRS_POSITION_ID" />
+		<result property="sequenceId" column="PRS_SEQUENCE_ID" />
+        <result property="timeRecorded"  column="PRS_TIME_RECORDED" />
+        <result property="timeReceived"  column="PRS_TIME_RECEIVED" />
+        <result property="latitudeInDecimal"  column="PRS_LATITUDE_IN_DECIMAL" />
+        <result property="longitudeInDecimal"  column="PRS_LONGITUDE_IN_DECIMAL" />
+        <result property="accuracyInMtr"  column="PRS_ACCURACY_IN_MTR" />
+        <result property="altitudeInMtr"  column="PRS_ALTITUDE_IN_MTR" />
+        <result property="speedInKmPerHour"  column="PRS_SPEED_IN_KM_PER_HOUR" />    
+        <result property="address"  column="PRS_ADDRESS" />          
+    </resultMap>
+    
+    <resultMap id="minPositionOfRecentCardiacFunctionResult" class="position">
+		<result property="positionId" column="PRH_POSITION_ID" />
+		<result property="sequenceId" column="PRH_SEQUENCE_ID" />
+        <result property="timeRecorded"  column="PRH_TIME_RECORDED" />
+        <result property="timeReceived"  column="PRH_TIME_RECEIVED" />
+        <result property="latitudeInDecimal"  column="PRH_LATITUDE_IN_DECIMAL" />
+        <result property="longitudeInDecimal"  column="PRH_LONGITUDE_IN_DECIMAL" />
+        <result property="accuracyInMtr"  column="PRH_ACCURACY_IN_MTR" />
+        <result property="altitudeInMtr"  column="PRH_ALTITUDE_IN_MTR" />
+        <result property="speedInKmPerHour"  column="PRH_SPEED_IN_KM_PER_HOUR" />    
+        <result property="address"  column="PRH_ADDRESS" />          
+    </resultMap>
+    
+    <resultMap id="minPositionOfRecentEmergencySignalResult" class="position">
+		<result property="positionId" column="PRE_POSITION_ID" />
+		<result property="sequenceId" column="PRE_SEQUENCE_ID" />
+        <result property="timeRecorded"  column="PRE_TIME_RECORDED" />
+        <result property="timeReceived"  column="PRE_TIME_RECEIVED" />
+        <result property="latitudeInDecimal"  column="PRE_LATITUDE_IN_DECIMAL" />
+        <result property="longitudeInDecimal"  column="PRE_LONGITUDE_IN_DECIMAL" />
+        <result property="accuracyInMtr"  column="PRE_ACCURACY_IN_MTR" />
+        <result property="altitudeInMtr"  column="PRE_ALTITUDE_IN_MTR" />
+        <result property="speedInKmPerHour"  column="PRE_SPEED_IN_KM_PER_HOUR" />    
+        <result property="address"  column="PRE_ADDRESS" />          
+    </resultMap>
+        
+    <insert id="storePosition" parameterClass="position" >
+    	insert into T_POSITION (
+    		POSITION_ID,
+    		TRACK_ID,
+    		TIME_RECORDED,
+    		TIME_RECEIVED,
+    		LATITUDE_IN_DECIMAL,
+    		LONGITUDE_IN_DECIMAL,
+    		ACCURACY_IN_MTR,
+    		ALTITUDE_IN_MTR,
+    		SPEED_IN_KM_PER_HOUR,
+    		ADDRESS
+    	)
+    	values (
+    		#positionId#,
+    		#track.trackId#,
+    		#timeRecorded#,
+    		#timeReceived#,
+    		#latitudeInDecimal#,
+    		#longitudeInDecimal#,
+    		#accuracyInMtr#,
+    		#altitudeInMtr#,
+    		#speedInKmPerHour#,
+    		#address#
+    	)
+    </insert> 	  	    	  	  	  	   
+</sqlMap>

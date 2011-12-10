@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util 
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/aop 
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/context 
+        				   http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+                           >
+    
+    <!-- used by all uploaders -->                       
+   	<bean id="supportedServices" 
+		class="de.msk.mylivetracker.web.uploader.processor.SupportedServices">
+	 	<property name="statisticsService" ref="statisticsService" />
+	 	<property name="userService" ref="userService" />
+        <property name="senderService" ref="senderService" />
+        <property name="trackService" ref="trackService" />  		
+        <property name="mobileNetworkService" ref="mobileNetworkService" />
+        <property name="smsService" ref="smsService" />
+	</bean>
+                               
+	<!-- tcp servers -->    	
+	<bean id="tcpServerAt51395" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="TcpServerAt51395" />
+		<property name="tcpServerConfig" ref="tcpServerAt51395Config" />
+		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
+		<property name="supportedServices" ref="supportedServices" />
+        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
+        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	
+	<bean id="tcpServerAt51395Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
+	 	<property name="listenPort" value="51395" />        		
+	</bean>
+	                       
+	<bean id="tcpServerAt31395" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="TcpServerAt31395" />
+		<property name="tcpServerConfig" ref="tcpServerAt31395Config" />
+		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_SingleRecords" />
+		<property name="supportedServices" ref="supportedServices" />
+        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
+        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	
+	<bean id="tcpServerAt31395Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
+	 	<property name="listenPort" value="31395" />        		
+	</bean>
+	
+	<bean id="tcpServerAt30175" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="TcpServerAt30175" />
+		<property name="tcpServerConfig" ref="tcpServerAt30175Config" />
+		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_SingleRecords" />
+		<property name="supportedServices" ref="supportedServices" />
+        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
+        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	 
+	<bean id="tcpServerAt30175Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
+	 	<property name="listenPort" value="30175" />        		
+	</bean>
+	 
+	<bean id="tcpSrvSockProcCfg_SingleRecords" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.SocketProcessorConfig">
+	 	<property name="doReadLine" value="false" /> 
+	 	<property name="supportsMultipleRecordsPerReception" value="false" />       
+		<property name="socketReadTimeoutInMSecs" value="500" />
+		<property name="maxDataStringLengthInBytes" value="2048" />
+		<property name="connectionTimeoutInMSecs" value="900000" />	
+	</bean>      
+			
+	<bean id="tcpSrvSockProcCfg_MultipleRecords" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.SocketProcessorConfig">
+	 	<property name="doReadLine" value="false" /> 
+	 	<property name="supportsMultipleRecordsPerReception" value="true" />       
+		<property name="socketReadTimeoutInMSecs" value="500" />
+		<property name="maxDataStringLengthInBytes" value="16384" />
+		<property name="connectionTimeoutInMSecs" value="900000" />	
+	</bean>
+				
+	<bean id="tcpServerDataPacketCreator" 
+		class="de.msk.mylivetracker.web.uploader.processor.DataPacketCreator">
+		<constructor-arg>
+			<util:list>				
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.msk.mylivetracker.TcpInterpreter">
+					<property name="id" value="mlt" />
+					<property name="name" value="MyLiveTracker for Android" />
+					<property name="version" value="1.00" />						
+					<property name="senderService" ref="senderService" />          				
+				</bean>	
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.aspicore.gsmtracker.TcpInterpreter">
+					<property name="id" value="agt" />
+					<property name="name" value="Aspicore GsmTracker for Symbian" />
+					<property name="version" value="1.00" />
+					<property name="senderService" ref="senderService" />
+				</bean>
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.meitrack.gtvt.TcpInterpreter">
+					<property name="id" value="mei" />
+					<property name="name" value="Meitrack GT/VT" />
+					<property name="version" value="1.00" />
+					<property name="senderService" ref="senderService" />
+				</bean>
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.TcpInterpreter">
+					<property name="id" value="xtk" />
+					<property name="name" value="Xexun Tk102" />
+					<property name="version" value="1.00" />	
+					<property name="senderService" ref="senderService" />				
+				</bean>				
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.coban.gps103a.TcpInterpreter">
+					<property name="id" value="cob" />
+					<property name="name" value="Coban GPS 103a" />
+					<property name="version" value="1.00" />	
+					<property name="senderService" ref="senderService" />				
+				</bean>
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.incutex.tk5000.TcpInterpreter">
+					<property name="id" value="tk5" />
+					<property name="name" value="Incutex Tk5000" />
+					<property name="version" value="1.10" />
+					<property name="senderService" ref="senderService" />
+				</bean>
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.brandsemotion.begps.TcpInterpreter">
+					<property name="id" value="beg" />
+					<property name="name" value="Brandsemotion beGPS for BlackBerry" />
+					<property name="version" value="1.00" />
+					<property name="senderService" ref="senderService" />
+				</bean>			
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.ecotec.yourtracks.TcpInterpreter">
+					<property name="id" value="eyt" />
+					<property name="name" value="Ecotec YourTracks for iOS" />
+					<property name="version" value="1.00" />
+					<property name="senderService" ref="senderService" />
+				</bean>					
+			</util:list>
+		</constructor-arg>  		
+	</bean>
+	
+	<bean id="tcpServerTaskExecutor" 
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+  		<property name="corePoolSize" value="30" />
+  		<property name="maxPoolSize" value="30" />
+  		<property name="queueCapacity" value="30" />
+	</bean>
+	
+	<!-- udp servers -->                           
+	<bean id="udpServerAt41395" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.udp.UdpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="UdpServerAt41395" />
+		<property name="udpServerConfig" ref="udpServerAt41395Config" />
+		<property name="supportedServices" ref="supportedServices" />
+        <property name="dataPacketCreator" ref="udpServerDataPacketCreator" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	 
+	<bean id="udpServerAt41395Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.udp.UdpServerConfig">
+	 	<property name="listenPort" value="41395" />        		
+	</bean>
+	 			
+	<bean id="udpServerDataPacketCreator" 
+		class="de.msk.mylivetracker.web.uploader.processor.DataPacketCreator">
+		<constructor-arg>
+			<util:list>				
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.aspicore.gsmtracker.UdpInterpreter">
+					<property name="id" value="agt" />
+					<property name="name" value="Aspicore GsmTracker for Symbian" />
+					<property name="version" value="1.00" />
+					<property name="senderService" ref="senderService" />
+				</bean>									
+			</util:list>
+		</constructor-arg>  		
+	</bean>
+	
+	<!-- http servers -->	
+	<bean id="httpServerDataPacketCreator" 
+		class="de.msk.mylivetracker.web.uploader.processor.DataPacketCreator">
+		<constructor-arg>
+			<util:list>
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.msk.simple.HttpInterpreter">
+					<property name="id" value="spl" />
+					<property name="name" value="Simple" />
+					<property name="version" value="1.00" />		
+					<property name="senderService" ref="senderService" />								
+				</bean>	
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.msk.mylivetracker.HttpInterpreter">
+					<property name="id" value="mlt" />
+					<property name="name" value="MyLiveTracker for Android" />
+					<property name="version" value="1.00" />		
+					<property name="senderService" ref="senderService" />								
+				</bean>			
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.aspicore.gsmtracker.HttpInterpreter">
+					<property name="id" value="agt" />
+					<property name="name" value="Aspicore GsmTracker for Symbian" />
+					<property name="version" value="1.00" />	
+					<property name="senderService" ref="senderService" />									
+				</bean>
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.jounierola.sendlocation.HttpInterpreter">
+					<property name="id" value="isl" />
+					<property name="name" value="Jouni Erola SendLocation for iOS" />
+					<property name="version" value="1.00" />	
+					<property name="senderService" ref="senderService" />				
+				</bean>
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.afischer.aftrack.HttpInterpreter">
+					<property name="id" value="aft" />
+					<property name="name" value="Axel Fischer AFTrack for Symbian" />
+					<property name="version" value="1.00" />
+					<property name="senderService" ref="senderService" />					
+				</bean>
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.brandsemotion.begps.HttpInterpreter">
+					<property name="id" value="beg" />
+					<property name="name" value="Brandsemotion beGPS for BlackBerry" />
+					<property name="version" value="1.00" />
+					<property name="senderService" ref="senderService" />
+				</bean>	
+				<bean class="de.msk.mylivetracker.web.uploader.interpreter.wiebej.gps2opengts.HttpInterpreter">
+					<property name="id" value="gts" />
+					<property name="name" value="Wiebej GPS2OpenGTS for Android" />
+					<property name="version" value="1.00" />
+					<property name="senderService" ref="senderService" />
+				</bean>				
+			</util:list>
+		</constructor-arg>  		
+	</bean>
+</beans>

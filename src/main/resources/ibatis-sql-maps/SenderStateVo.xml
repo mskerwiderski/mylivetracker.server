@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="SenderStateVo">  	
+	<typeAlias alias="senderState" type="de.msk.mylivetracker.domain.SenderStateVo"/>
+	
+	<resultMap id="minSenderStateResult" class="senderState">
+		<result property="senderStateId" column="S_SENDER_STATE_ID" />
+        <result property="timeReceived"  column="S_TIME_RECEIVED" />
+        <result property="state"  column="S_STATE" />
+    </resultMap>
+    
+	<resultMap id="detailedSenderStateResult" class="senderState" extends="minSenderStateResult">
+		<result property="track" resultMap="TrackVo.minTrackResult" />   
+		<result property="position" resultMap="PositionVo.detailedPositionResult" />                       
+    </resultMap>
+    
+    <resultMap id="recentDetailedSenderStateResult" class="senderState">
+		<result property="senderStateId" column="RS_SENDER_STATE_ID" />
+        <result property="track" resultMap="TrackVo.minTrackResult" />   
+		<result property="position" resultMap="PositionVo.minPositionOfRecentSenderStateResult" />     
+        <result property="timeReceived"  column="RS_TIME_RECEIVED" />
+        <result property="state"  column="RS_STATE" />                  
+    </resultMap>
+            
+    <insert id="storeSenderState" parameterClass="senderState" >
+    	insert into T_SENDER_STATE (
+    		SENDER_STATE_ID,
+    		TRACK_ID,
+    		POSITION_ID,
+    		TIME_RECEIVED,
+    		STATE  		
+    	)
+    	values (
+    		#senderStateId#,
+    		#track.trackId#,
+    		#position.positionId#,
+    		#timeReceived#,
+    		#state#    
+    	)
+    </insert>  		   
+</sqlMap>

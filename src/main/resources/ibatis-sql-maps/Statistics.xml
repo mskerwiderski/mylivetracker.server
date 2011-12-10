@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="Statistics">  	
+	<typeAlias alias="dateTime" type="de.msk.mylivetracker.commons.util.datetime.DateTime"/>
+	<typeAlias alias="applicationStartUpVo" 
+		type="de.msk.mylivetracker.domain.statistics.ApplicationStartUpVo"/>
+	<typeAlias alias="uploaderServerStatusVo" 
+		type="de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo"/>	
+	<typeAlias alias="uploadedDataProcessVo" 
+		type="de.msk.mylivetracker.domain.statistics.UploadedDataProcessVo"/>
+	<typeAlias alias="serviceCallCountVo" 
+		type="de.msk.mylivetracker.domain.statistics.ServiceCallCountVo"/>
+	<typeAlias alias="storePositionProcessorInfoVo" 
+		type="de.msk.mylivetracker.domain.statistics.StorePositionProcessorInfoVo"/>	
+    <typeAlias alias="smsTransportVo" 
+		type="de.msk.mylivetracker.domain.statistics.SmsTransportVo"/>
+		
+	<resultMap id="applicationStartUpResult" class="applicationStartUpVo" >
+		<result property="logId" column="LOG_ID" />
+		<result property="logTimestamp" column="LOG_TIMESTAMP" />
+		<result property="version" column="VERSION" />										
+    </resultMap> 
+        	
+    <resultMap id="uploaderServerStatusResult" class="uploaderServerStatusVo" >
+		<result property="logId" column="LOG_ID" />
+		<result property="logTimestamp" column="LOG_TIMESTAMP" />
+		<result property="serverName" column="SERVER_NAME" />										
+		<result property="serverPort" column="SERVER_PORT" />		
+		<result property="serverProtocol" column="SERVER_PROTOCOL" />
+		<result property="status" column="STATUS" />
+		<result property="started" column="STARTED" />
+		<result property="optionDoReadLine" column="OPT_DO_READ_LINE" />
+		<result property="optionMultipleRecordsPerReception" column="OPT_MULTIPLE_RECORDS_PER_RECEPTION" />
+		<result property="optionSocketReadTimeoutInMSecs" column="OPT_SOCKET_READ_TIMEOUT_IN_MSECS" />
+		<result property="optionMaxDataStrLengthInBytes" column="OPT_MAX_DATA_STR_LENGTH_IN_BYTES" />
+		<result property="optionConnectionTimeoutInMSecs" column="OPT_CONNECTION_TIMEOUT_IN_MSECS" />
+    </resultMap>
+        	
+    <resultMap id="uploadedDataProcessResult" class="uploadedDataProcessVo" >
+    	<result property="logId" column="LOG_ID" />
+		<result property="logTimestamp" column="LOG_TIMESTAMP" />
+		<result property="protocol" column="PROTOCOL" />
+		<result property="remoteIpAddress" column="REMOTE_IP_ADDRESS" />
+		<result property="remoteHost" column="REMOTE_HOST" />
+		<result property="remotePort" column="REMOTE_PORT" />
+		<result property="server" column="SERVER" />		
+		<result property="serverPort" column="SERVER_PORT" />
+		<result property="processor" column="PROCESSOR" />
+		<result property="interpreter" column="INTERPRETER" />
+		<result property="interpreterVersion" column="INTERPRETER_VERSION" />
+		<result property="senderId" column="SENDER_ID" />
+		<result property="itemNumber" column="ITEM_NUMBER" />
+		<result property="dataStr" column="DATA_STR" />		
+		<result property="addInfo" column="ADD_INFO" />
+		<result property="responseStr" column="RESPONSE_STR" />
+		<result property="connectionStatus" column="CONNECTION_STATUS" />
+    </resultMap> 
+    
+    <resultMap id="serviceCallCountResult" class="serviceCallCountVo" >
+    	<result property="logId" column="LOG_ID" />
+		<result property="logTimestamp" column="LOG_TIMESTAMP" />
+		<result property="service" column="SERVICE" />
+		<result property="date" column="DATE" />				
+		<result property="callCount" column="CALL_COUNT" />
+    </resultMap> 
+    
+    <resultMap id="storePositionProcessorInfoResult" class="storePositionProcessorInfoVo" >
+    	<result property="logId" column="LOG_ID" />
+		<result property="logTimestamp" column="LOG_TIMESTAMP" />
+		<result property="senderId" column="SENDER_ID" />
+		<result property="started" column="STARTED" />				
+		<result property="updated" column="UPDATED" />
+		<result property="processedPositions" column="PROCESSED_POSITIONS" />
+		<result property="skippedPositions" column="SKIPPED_POSITIONS" />
+		<result property="errorCount" column="ERROR_COUNT" />
+		<result property="retryCount" column="RETRY_COUNT" />
+		<result property="maxNumberOfRetriesOccurred" column="MAX_NUMBER_OF_RETRIES_OCCURRED" />
+		<result property="lastErrorMsg" column="LAST_ERROR_MSG" />
+		<result property="lastErrorOccurred" column="LAST_ERROR_OCCURRED" />
+		<result property="lastStatus" column="LAST_STATUS" />		
+		<result property="reasonStopped" column="REASON_STOPPED" />
+    </resultMap>
+    
+    <resultMap id="smsTransportResult" class="smsTransportVo" >
+		<result property="logId" column="LOG_ID" />          
+		<result property="logTimestamp" column="LOG_TIMESTAMP" />   
+		<result property="userId" column="USER_ID" />         
+		<result property="smsType" column="SMS_TYPE" />        
+		<result property="transportType" column="TRANSPORT_TYPE" />  
+		<result property="caption" column="CAPTION" />         
+		<result property="sender" column="SENDER" />          
+		<result property="recipient" column="RECIPIENT" />       
+		<result property="message" column="MESSAGE" />         
+		<result property="resultCode" column="RESULT_CODE" />  
+		<result property="exception" column="EXCEPTION" />   
+		<result property="success" column="SUCCESS" />             
+    </resultMap>
+    	
+   	<insert id="insertApplicationStartUp" parameterClass="applicationStartUpVo">
+  		insert into T_STAT_APP_START_UP (
+  			LOG_ID,
+  			LOG_TIMESTAMP,
+  			VERSION
+  		) values (
+  			#logId#,
+  			#logTimestamp#,
+  			#version#
+  		)    		
+  	</insert>  	   	
+  	  	      	
+	<delete id="cleanApplicationStartUpTable" parameterClass="dateTime">
+  		delete FROM T_STAT_APP_START_UP
+		where LOG_TIMESTAMP &lt;= #timestamp# 
+  	</delete>
+  	  	
+  	<insert id="insertUploaderServerStatus" parameterClass="uploaderServerStatusVo">
+  		insert into T_STAT_UPLOADER_SERVER_STATUS (
+  			LOG_ID,
+  			LOG_TIMESTAMP,
+  			SERVER_NAME,
+  			SERVER_PORT,
+  			SERVER_PROTOCOL,
+  			STATUS,
+  			STARTED,
+  			OPT_DO_READ_LINE,
+  			OPT_MULTIPLE_RECORDS_PER_RECEPTION,
+  			OPT_SOCKET_READ_TIMEOUT_IN_MSECS,
+  			OPT_MAX_DATA_STR_LENGTH_IN_BYTES,
+  			OPT_CONNECTION_TIMEOUT_IN_MSECS
+  		) values (
+  			#logId#,
+  			#logTimestamp#,
+  			#serverName#,
+  			#serverPort#,
+  			#serverProtocol#,
+  			#status#,
+  			#started#,
+  			#optionDoReadLine#,
+  			#optionMultipleRecordsPerReception#,
+  			#optionSocketReadTimeoutInMSecs#,
+  			#optionMaxDataStrLengthInBytes#,
+  			#optionConnectionTimeoutInMSecs#
+  		)    		
+  	</insert>  	  	 
+      	
+    <delete id="cleanUploaderServerStatusTable" parameterClass="dateTime">
+  		delete FROM T_STAT_UPLOADER_SERVER_STATUS
+		where LOG_TIMESTAMP &lt;= #timestamp# 
+  	</delete>
+  	  	      	
+  	<insert id="insertUploadedDataProcess" parameterClass="uploadedDataProcessVo">
+  		insert into T_STAT_UPL_DATA_PROC (
+  			LOG_ID,
+  			LOG_TIMESTAMP,
+  			PROTOCOL,
+  			REMOTE_IP_ADDRESS,
+  			REMOTE_HOST,
+  			REMOTE_PORT,
+  			SERVER,
+  			SERVER_PORT,
+  			PROCESSOR,
+  			INTERPRETER,
+  			INTERPRETER_VERSION,
+  			SENDER_ID,
+  			ITEM_NUMBER,
+  			DATA_STR,  			
+  			ADD_INFO, 
+  			RESPONSE_STR,
+  			CONNECTION_STATUS 			
+  		) values (
+  			#logId#,
+  			#logTimestamp#,
+  			#protocol#,
+  			#remoteIpAddress#,
+  			#remoteHost#,
+  			#remotePort#,
+  			#server#,
+  			#serverPort#,
+  			#processor#,
+  			#interpreter#,
+  			#interpreterVersion#,
+  			#senderId#,
+  			#itemNumber#,
+  			#dataStr#,
+  			#addInfo#,
+  			#responseStr#,
+  			#connectionStatus#  			
+  		)    		
+  	</insert>  	  
+  	
+  	<delete id="cleanUploadedDataProcessTable" parameterClass="dateTime">
+  		delete FROM T_STAT_UPL_DATA_PROC
+		where LOG_TIMESTAMP &lt;= #timestamp# 
+  	</delete>	  	     	
+  	
+  	<select id="selectServiceCallCount" parameterClass="java.util.Map" resultMap="serviceCallCountResult">
+  		select * from T_STAT_SERVICE_CALL_COUNT t 
+  		where 
+  			t.SERVICE = #service# AND
+  			t.DATE = #date# 	
+  	</select>
+  		
+   	<insert id="insertServiceCallCount" parameterClass="serviceCallCountVo">
+  		insert into T_STAT_SERVICE_CALL_COUNT (
+  			LOG_ID,
+  			LOG_TIMESTAMP,
+  			SERVICE,
+  			DATE,
+  			CALL_COUNT  			
+  		) values (
+  			#logId#,
+  			#logTimestamp#,
+  			#service#,
+  			#date#,
+  			#callCount#  			  			
+  		)    		
+  	</insert>  	 
+  	
+  	<update id="updateServiceCallCount" parameterClass="serviceCallCountVo">
+  		update T_STAT_SERVICE_CALL_COUNT t
+  		set 
+  			t.CALL_COUNT = #callCount#  		   
+  		where 
+  			t.SERVICE = #service# AND
+  			t.DATE = #date#   		
+  	</update>   
+  	
+  	<delete id="cleanServiceCallCountTable" parameterClass="dateTime">
+  		delete FROM T_STAT_SERVICE_CALL_COUNT
+		where LOG_TIMESTAMP &lt;= #timestamp# 
+  	</delete>
+  	
+  	<insert id="insertStorePositionProcessorInfo" parameterClass="storePositionProcessorInfoVo">
+  		insert into T_STAT_STORE_POS_PROC_INFO (
+  			LOG_ID,
+  			LOG_TIMESTAMP,
+  			SENDER_ID,                      
+			STARTED,				                 
+			UPDATED,                        
+			PROCESSED_POSITIONS,            
+			SKIPPED_POSITIONS,              
+			ERROR_COUNT,                    
+			RETRY_COUNT,                    
+			MAX_NUMBER_OF_RETRIES_OCCURRED, 
+			LAST_ERROR_MSG,                 
+			LAST_ERROR_OCCURRED,            
+			LAST_STATUS,
+			REASON_STOPPED		                 		
+  		) values (
+  			#logId#,
+  			#logTimestamp#,
+  			#senderId#, 									
+			#started#, 										
+			#updated#, 										
+			#processedPositions#, 					
+			#skippedPositions#, 						
+			#errorCount#, 									
+			#retryCount#, 									
+			#maxNumberOfRetriesOccurred#, 	
+			#lastErrorMsg#, 								
+			#lastErrorOccurred#, 					
+			#lastStatus#,
+			#reasonStopped# 						
+  		)    		
+  	</insert>  	  
+  	  	
+  	<delete id="cleanStorePositionProcessorInfoTable" parameterClass="dateTime">
+  		delete FROM T_STAT_STORE_POS_PROC_INFO
+		where LOG_TIMESTAMP &lt;= #timestamp# 
+  	</delete>	
+  	
+  	<insert id="insertSmsTransport" parameterClass="smsTransportVo">
+  		insert into T_STAT_SMS_TRANSPORT (
+  			LOG_ID,        
+			LOG_TIMESTAMP, 
+			USER_ID,       
+			SMS_TYPE,      
+			TRANSPORT_TYPE,
+			CAPTION,       
+			SENDER,        
+			RECIPIENT,     
+			MESSAGE,      
+			RESULT_CODE,
+			EXCEPTION,   
+			SUCCESS                 	
+  		) values (
+  			#logId#,
+  			#logTimestamp#,
+  			#userId#, 			
+			#smsType#,			
+			#transportType#,
+			#caption#,			
+			#sender#, 			
+			#recipient#,		
+			#message#,			
+			#resultCode#,
+			#exception#,		
+			#success#				  			 						
+  		)    		
+  	</insert>
+  	
+  	<delete id="cleanSmsTransportTable" parameterClass="dateTime">
+  		delete FROM T_STAT_SMS_TRANSPORT
+		where LOG_TIMESTAMP &lt;= #timestamp# 
+  	</delete>	  	  
+</sqlMap>

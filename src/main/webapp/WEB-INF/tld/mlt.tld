@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+        PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+        "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+	<tlib-version>1.0</tlib-version>
+  	<jsp-version>1.2</jsp-version>
+  	<short-name>mlt</short-name>
+  	<tag>
+		<name>dateTime</name>
+	    <tag-class>de.msk.mylivetracker.web.frontend.util.DateTimeTag</tag-class>
+	    <body-content>JSP</body-content>
+	    <attribute>
+	    	<name>dateTime</name>
+	      	<required>true</required>
+	      	<rtexprvalue>true</rtexprvalue>
+	    </attribute>	    
+	</tag>  
+	<tag>
+		<name>position</name>
+	    <tag-class>de.msk.mylivetracker.web.frontend.util.PositionTag</tag-class>
+	    <body-content>JSP</body-content>
+	    <attribute>
+	    	<name>latitude</name>
+	      	<required>true</required>
+	      	<rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	    	<name>longitude</name>
+	      	<required>true</required>
+	      	<rtexprvalue>true</rtexprvalue>
+	    </attribute>	    
+	</tag>
+</taglib>

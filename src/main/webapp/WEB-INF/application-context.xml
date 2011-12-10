@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jetm="http://jetm.void.fm/schema/jetm_spring_config_1_2"       
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://jetm.void.fm/schema/jetm_spring_config_1_2 http://jetm.void.fm/schema/jetm_spring_config_1_2.xsd">
+       
+    <jetm:runtime />
+     
+    <jetm:monitoring>  
+    	<jetm:bean-pattern>
+    		*Service    		  		
+    	</jetm:bean-pattern>  		
+	</jetm:monitoring> 	
+  	
+  	<!--
+  	
+  		Here are Sun’s rules for thread creation in simple terms:
+
+		If the number of threads is less than the corePoolSize, create a new Thread to run a new task.
+		If the number of threads is equal (or greater than) the corePoolSize, put the task into the queue.
+		If the queue is full, and the number of threads is less than the maxPoolSize, create a new thread to run tasks in.
+		If the queue is full, and the number of threads is greater than or equal to maxPoolSize, reject the task.
+		 
+  	 -->
+  	   	    
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+  		<property name="basenames">
+   			<list>  
+   				<value>de.msk.mylivetracker.messages.mlt-exception</value>
+   				<value>de.msk.mylivetracker.messages.spring</value>
+   				<value>de.msk.mylivetracker.messages.calendar</value>
+   				<value>de.msk.mylivetracker.messages.common-options</value>
+   				<value>de.msk.mylivetracker.messages.layout</value>
+   				<value>de.msk.mylivetracker.messages.login</value>
+   				<value>de.msk.mylivetracker.messages.tracks-overview</value>
+   				<value>de.msk.mylivetracker.messages.track-as-google-maps</value>
+    			<value>de.msk.mylivetracker.messages.track-as-status-info</value>
+    			<value>de.msk.mylivetracker.messages.options</value>
+    			<value>de.msk.mylivetracker.messages.master-data</value>    			    			
+    			<value>de.msk.mylivetracker.messages.sender-maintenance</value>
+    			<value>de.msk.mylivetracker.messages.status-page</value>
+    			<value>de.msk.mylivetracker.messages.emergency</value>
+    			<value>de.msk.mylivetracker.messages.google-kml</value>    			
+    			<value>de.msk.mylivetracker.messages.sms-templates</value>
+    			<value>de.msk.mylivetracker.messages.format-utils</value>
+   			</list>
+  		</property>
+ 	</bean>
+ 	
+ 	<bean id="localeResolver"
+       class="de.msk.mylivetracker.web.util.UsersLocaleResolver">    
+    </bean>   
+    
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+  		<property name="configLocation">
+    		<value>classpath:ehcache.xml</value>
+  		</property>
+	</bean>
+
+	<bean id="applicationCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+	  	<property name="cacheManager">
+	    	<ref local="cacheManager"/>
+	  	</property>
+	  	<property name="cacheName">
+	    	<value>de.msk.mylivetracker.APPLICATION_CACHE</value>
+	  	</property>
+	</bean>	
+	
+	<bean id="userWithoutRoleCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+	  	<property name="cacheManager">
+	    	<ref local="cacheManager"/>
+	  	</property>
+	  	<property name="cacheName">
+	    	<value>de.msk.mylivetracker.USER_WITHOUT_ROLE_CACHE</value>
+	  	</property>
+	</bean>	
+		
+	<bean id="senderCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+	  	<property name="cacheManager">
+	    	<ref local="cacheManager"/>
+	  	</property>
+	  	<property name="cacheName">
+	    	<value>de.msk.mylivetracker.SENDER_CACHE</value>
+	  	</property>
+	</bean>	
+		
+	<bean id="ticketCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+	  	<property name="cacheManager">
+	    	<ref local="cacheManager"/>
+	  	</property>
+	  	<property name="cacheName">
+	    	<value>de.msk.mylivetracker.TICKET_CACHE</value>
+	  	</property>
+	</bean>	
+		
+	<bean id="dataSourceMyLiveTracker" 
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:/comp/env/jdbc/MyLiveTrackerDb</value>
+		</property>
+	</bean>	
+    
+    <!-- transactions -->
+    <bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceMyLiveTracker" />
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="clean*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="close*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="create*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="log*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="open*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="privatize*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="publish*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="remove*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="rename*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="reset*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="save*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="service*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="send*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="store*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="update*" propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="get*" propagation="SUPPORTS" read-only="true" />					
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="daoExecution" expression="execution(* de.msk.mylivetracker.dao.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="daoExecution" />
+	</aop:config>	
+	
+    <bean id="sqlMapMyLiveTracker"
+    	class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation">
+            <value>classpath:mylivetracker-sql-map-config.xml</value>
+        </property>
+        <property name="dataSource" ref="dataSourceMyLiveTracker" />
+    </bean>               
+   
+    <bean id="statisticsDao"
+        class="de.msk.mylivetracker.dao.statistics.StatisticsDao">
+        <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
+    </bean>
+         
+    <bean id="applicationDao"
+        class="de.msk.mylivetracker.dao.ApplicationDao">
+        <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
+    </bean>
+    
+    <bean id="userDao"
+        class="de.msk.mylivetracker.dao.UserDao">
+        <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
+        <property name="messageSource" ref="messageSource" />   
+        <property name="passwordEncoder" ref="passwordEncoder" />   
+        <property name="statusParamsService" ref="statusParamsService" />          
+        <property name="applicationService" ref="applicationService" />
+    </bean>                      
+        
+    <bean id="trackDao"
+        class="de.msk.mylivetracker.dao.TrackDao">
+        <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />                
+    </bean>
+    
+    <bean id="senderDao"
+        class="de.msk.mylivetracker.dao.SenderDao">
+        <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
+    </bean>                  
+    
+    <bean id="statusParamsDao"
+        class="de.msk.mylivetracker.dao.StatusParamsDao">
+        <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
+    </bean>  
+     	       
+    <bean id="applicationService"
+        class="de.msk.mylivetracker.service.ApplicationService"
+        init-method="init">
+        <property name="applicationDao" ref="applicationDao" />
+        <property name="applicationCache" ref="applicationCache" />        
+    </bean>
+           
+    <bean id="ticketService"
+        class="de.msk.mylivetracker.service.TicketService">
+        <property name="ticketCache" ref="ticketCache" />        
+    </bean>
+            
+    <bean id="statisticsService"
+        class="de.msk.mylivetracker.service.statistics.StatisticsService">               
+        <property name="statisticsDao" ref="statisticsDao" />
+    </bean>    
+      
+    <bean id="userService"
+        class="de.msk.mylivetracker.service.UserService">
+        <property name="userWithoutRoleCache" ref="userWithoutRoleCache" />
+        <property name="applicationService" ref="applicationService" />        
+        <property name="senderService" ref="senderService" />
+        <property name="userDao" ref="userDao" />                        
+    </bean>
+    
+    <bean id="geocodingService"
+        class="de.msk.mylivetracker.service.geocoding.yahoo.GeocodingService">
+        <property name="name" value="Yahoo PlaceFinder" />
+        <property name="requestLimit" value="50000" />        
+        <property name="applicationService" ref="applicationService" />
+        <property name="statisticsService" ref="statisticsService" />        
+    </bean> 
+    
+  	<bean id="statusParamsService"
+        class="de.msk.mylivetracker.service.StatusParamsService">        
+        <property name="statusParamsDao" ref="statusParamsDao" />
+    </bean>   
+    
+    <bean id="mobileNetworkService"
+        class="de.msk.mylivetracker.service.MobileNetworkService">                
+    </bean> 
+    
+    <bean id="smsService"
+        class="de.msk.mylivetracker.service.SmsService">        
+        <property name="minPauseInMSecsForUserBetweenTwoSmsSent" value="300000" />
+        <property name="applicationService" ref="applicationService" />
+        <property name="userService" ref="userService" />
+        <property name="messageSource" ref="messageSource" />
+        <property name="statisticsService" ref="statisticsService" />  
+    </bean> 
+    
+    <bean id="utilTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+  		<property name="corePoolSize" value="10" />
+  		<property name="maxPoolSize" value="20" />
+  		<property name="queueCapacity" value="30" />
+	</bean>
+	
+	<bean id="utilService" init-method="start"
+        class="de.msk.mylivetracker.service.UtilService">        
+        <property name="utilTaskExecutor" ref="utilTaskExecutor" />
+        <property name="applicationService" ref="applicationService" />
+        <property name="trackService" ref="trackService" />        
+        <property name="statisticsService" ref="statisticsService" />        
+        <property name="demoService" ref="demoService" />
+    </bean>
+                
+    <bean id="storePositionTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+  		<property name="corePoolSize" value="30" />
+  		<property name="maxPoolSize" value="30" />
+  		<property name="queueCapacity" value="30" />
+	</bean>
+	                                    
+    <bean id="userStorePositionQueues"
+    	class="de.msk.mylivetracker.service.track.UserStorePositionQueues">
+    	<property name="trackDao" ref="trackDao" />
+    	<property name="geocodingService" ref="geocodingService" />
+    	<property name="senderService" ref="senderService" />
+    	<property name="smsService" ref="smsService" />    	
+    	<property name="storePositionTaskExecutor" ref="storePositionTaskExecutor" />
+    	<property name="maxNumberOfRetriesOnDataAccessException" value="5" />
+    	<property name="pauseBeforeRetryOfStorePositionInMSecs" value="500" />        	
+    	<property name="queueTimeoutInSecs" value="600" />
+    	<property name="queuePollIntervalInMSecs" value="500" />    
+    	<property name="statisticsService" ref="statisticsService" />	
+    </bean>                                    	
+    
+    <bean id="trackService"
+        class="de.msk.mylivetracker.service.track.TrackService">        
+        <property name="trackDao" ref="trackDao" />
+        <property name="userStorePositionQueues" ref="userStorePositionQueues" />
+    </bean> 
+      
+    <bean id="senderService"
+        class="de.msk.mylivetracker.service.SenderService">
+        <property name="senderCache" ref="senderCache" />
+        <property name="senderDao" ref="senderDao" />
+    </bean>          
+</beans>

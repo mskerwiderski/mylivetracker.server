@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="UserVo">
+  	
+  	<typeAlias alias="userPlain" 
+		type="de.msk.mylivetracker.domain.user.UserPlainVo"/>
+	<typeAlias alias="userWithoutRole" 
+		type="de.msk.mylivetracker.domain.user.UserWithoutRoleVo"/>
+	<typeAlias alias="userWithRole" 
+		type="de.msk.mylivetracker.domain.user.UserWithRoleVo"/>			
+    		
+    <insert id="registerUser" parameterClass="userPlain" >
+    	insert into T_USER (
+    		USER_ID,
+    		LAST_NAME,
+    		FIRST_NAME,
+    		EMAIL_ADDRESS,
+    		HASHED_PASSWORD,
+    		ROLE,
+    		SENDER_LIMIT,
+    		IS_ENABLED    		
+    	)
+    	values (
+    		#userId#,
+    		#lastName#,
+    		#firstName#,
+    		#emailAddress#,
+    		#password#,
+    		#role#,
+    		#senderLimit#,
+    		#enabled#
+    	)
+    </insert> 	
+    		
+	<resultMap id="userWithoutRoleResult" class="userWithoutRole">
+	    <result property="userId" column="USER_ID" />
+	    <result property="masterData.lastName" column="LAST_NAME" />
+	    <result property="masterData.firstName" column="FIRST_NAME" />
+	    <result property="masterData.emailAddress" column="EMAIL_ADDRESS" />
+	    <result property="masterData.password" column="HASHED_PASSWORD" />     	    
+	    <result property="senderLimit"  column="SENDER_LIMIT" />               
+	    <result property="lastLogin"  column="LAST_LOGIN" />
+	    <result property="loginCount"  column="LOGIN_COUNT" />
+        <result property="enabled"  column="IS_ENABLED" />  
+        <result property="options.optionsSaved" column="IS_OPTIONS_SAVED" />
+        <result property="options.timeZone" column="TIME_ZONE" />
+        <result property="options.language" column="LANGUAGE" />
+        <result property="options.googleLanguage" column="GOOGLE_LANGUAGE" />
+        <result property="options.scaleUnit" column="SCALE_UNIT" />
+        <result property="options.defTrackName" column="DEF_TRACK_NAME" />
+        <result property="options.defTrackReleaseStatus" column="DEF_TRACK_RELEASE_STATUS" />
+        <result property="options.trackAutoClose" column="TRACK_AUTO_CLOSE" />        
+        <result property="options.guestAccEnabled" column="IS_GUEST_ACC_ENABLED" />
+        <result property="options.guestAccPassword"  column="GUEST_ACC_PASSWORD" />
+        <result property="options.guestAccClosedTrEnabled"  column="IS_GUEST_ACC_CLOSED_TR_ENABLED" />
+        <result property="options.guestAccPrivTrEnabled"  column="IS_GUEST_ACC_PRIV_TR_ENABLED" />
+        <result property="options.recTrAccEnabled" column="IS_REC_TR_ACC_ENABLED" />
+	    <result property="options.recTrAccCode" column="REC_TR_ACC_CODE" />
+	    <result property="options.recTrAccPrivTrEnabled"  column="IS_REC_ACC_PRIV_TR_ENABLED" />	    
+	    <result property="options.trackRouteColor" column="TRACK_ROUTE_COLOR" />
+	    <result property="options.trackRouteWidth" column="TRACK_ROUTE_WIDTH" />
+	    <result property="options.geocodingEnabled" column="GEOCODING_ENABLED" />
+	    <result property="options.homeLocAddress" column="HOME_LOC_ADDRESS" />
+	    <result property="options.homeLocLatitude" column="HOME_LOC_LATITUDE" />     
+	    <result property="options.homeLocLongitude" column="HOME_LOC_LONGITUDE" />
+	    <result property="statusPage.statusPageSaved" column="IS_STATUS_PAGE_SAVED" />
+	    <result property="statusPage.senderId" column="STATUS_PAGE_SENDER_ID" />
+	    <result property="statusPage.trackingLive" column="STATUS_PAGE_TRACKING_LIVE" />                                    
+		<result property="statusPage.trackingKeepRecentPositions" column="STATUS_PAGE_TRACKING_KEEP_RECENT_POSITIONS" />    
+		<result property="statusPage.trackingUpdateIntervalInSecs" column="STATUS_PAGE_TRACKING_UPDATE_INTERVAL_IN_SECS" /> 
+		<result property="statusPage.trackingFlyToMode" column="STATUS_PAGE_TRACKING_FLY_TO_MODE" />
+		<result property="statusPage.fullScreen" column="STATUS_PAGE_FULL_SCREEN" />		                        
+		<result property="statusPage.windowWidth" column="STATUS_PAGE_WINDOW_WIDTH" />                                      
+		<result property="statusPage.windowHeight" column="STATUS_PAGE_WINDOW_HEIGHT" />            
+		<result property="statusPage.showTrackInfo" column="STATUS_PAGE_SHOW_TRACK_INFO" />                        
+		<result property="statusPage.cssStyle" column="STATUS_PAGE_CSS_STYLE" />  
+		<result property="statusPage.linkTrackAsStatusInfo" column="STATUS_PAGE_LINK_TRACK_AS_STATUS_INFO" />
+		<result property="statusPage.linkTrackAsGoogleMaps" column="STATUS_PAGE_LINK_TRACK_AS_GOOGLE_MAPS" />
+		<result property="emergency.smsUnlocked" column="EMERGENCY_SMS_UNLOCKED" />
+		<result property="emergency.smsEnabled" column="EMERGENCY_SMS_ENABLED" />
+	    <result property="emergency.smsSender" column="EMERGENCY_SMS_SENDER" /> 
+	    <result property="emergency.smsRecipient" column="EMERGENCY_SMS_RECIPIENT" /> 
+	    <result property="emergency.smsLastSent" column="EMERGENCY_SMS_LAST_SENT" />
+	    <result property="emergency.smsSentCount" column="EMERGENCY_SMS_SENT_COUNT" />                                          	   	    
+    </resultMap>
+    
+    <resultMap id="userWithRoleResult" extends="userWithoutRoleResult" class="userWithRole">
+    	<result property="role"  column="ROLE" />
+    </resultMap>
+        
+    <select id="selectEmailAddressesOfAllUsers" resultClass="string">
+  		select t.EMAIL_ADDRESS from T_USER t  		  		
+  	</select>
+  	    
+  	<select id="selectUserWithRoleByUserId" parameterClass="string" resultMap="userWithRoleResult">
+  		select * from T_USER t 
+  		where (t.USER_ID = #?#)  		
+  	</select>  	
+  	
+  	<select id="selectUserWithoutRoleByUserId" parameterClass="string" resultMap="userWithoutRoleResult">
+  		select * from T_USER t 
+  		where (t.USER_ID = #?#)  		
+  	</select>
+  	 
+  	<select id="selectUserWithoutRoleByEmailAddress" parameterClass="string" resultMap="userWithoutRoleResult">
+  		select * from T_USER t 
+  		where (t.EMAIL_ADDRESS = #?#)  		
+  	</select>
+  	 
+  	<select id="selectUserCount" parameterClass="java.util.Map" resultClass="integer">
+  		select count(t.USER_ID) from T_USER t
+  		where t.IS_ENABLED = true
+  		<isEqual prepend="and" property="excludeRole" compareValue="true">
+  			t.ROLE &lt;&gt; #role#
+  		</isEqual>  				
+  	</select>
+  	
+  	<update id="updateLoginInfoByUserId" parameterClass="userWithoutRole">
+  		update T_USER t
+  		set 
+  			t.LAST_LOGIN = #lastLogin#,
+  			t.LOGIN_COUNT = #loginCount#			 
+  		where (t.USER_ID = #userId#)  
+  	</update>
+  	
+  	<update id="updateUserMasterDataByUserId" parameterClass="userWithoutRole">
+  		update T_USER t
+  		set 
+  			t.LAST_NAME = #masterData.lastName#,
+  			t.FIRST_NAME = #masterData.firstName#,
+  			t.EMAIL_ADDRESS = #masterData.emailAddress#
+  			<isNotEmpty prepend="," property="masterData.password">
+  				t.HASHED_PASSWORD = #masterData.password#
+  			</isNotEmpty>  		
+  		where (t.USER_ID = #userId#)  
+  	</update>
+  	  	
+  	<update id="updateUserStatusPageByUserId" parameterClass="userWithoutRole">
+  		update T_USER t
+  		set 
+  			t.IS_STATUS_PAGE_SAVED = #statusPage.statusPageSaved#,  	
+  			t.STATUS_PAGE_SENDER_ID = #statusPage.senderId#,		
+  			t.STATUS_PAGE_TRACKING_LIVE = #statusPage.trackingLive#, 									
+			t.STATUS_PAGE_TRACKING_KEEP_RECENT_POSITIONS = #statusPage.trackingKeepRecentPositions#, 	
+			t.STATUS_PAGE_TRACKING_UPDATE_INTERVAL_IN_SECS = #statusPage.trackingUpdateIntervalInSecs#, 
+			t.STATUS_PAGE_TRACKING_FLY_TO_MODE = #statusPage.trackingFlyToMode#,
+			t.STATUS_PAGE_FULL_SCREEN = #statusPage.fullScreen#,			            
+			t.STATUS_PAGE_WINDOW_WIDTH = #statusPage.windowWidth#, 									
+			t.STATUS_PAGE_WINDOW_HEIGHT = #statusPage.windowHeight#, 
+			t.STATUS_PAGE_SHOW_TRACK_INFO = #statusPage.showTrackInfo#,				
+			t.STATUS_PAGE_CSS_STYLE = #statusPage.cssStyle#, 
+			t.STATUS_PAGE_LINK_TRACK_AS_STATUS_INFO = #statusPage.linkTrackAsStatusInfo#,
+			t.STATUS_PAGE_LINK_TRACK_AS_GOOGLE_MAPS = #statusPage.linkTrackAsGoogleMaps#											 
+  		where (t.USER_ID = #userId#)  
+  	</update> 	
+  	
+  	<update id="updateUserEmergencyByUserId" parameterClass="userWithoutRole">
+  		update T_USER t
+  		set 
+			t.EMERGENCY_SMS_ENABLED = #emergency.smsEnabled#,
+			t.EMERGENCY_SMS_SENDER = #emergency.smsSender#,
+			t.EMERGENCY_SMS_RECIPIENT = #emergency.smsRecipient#,		
+			t.EMERGENCY_SMS_LAST_SENT = #emergency.smsLastSent#,				
+			t.EMERGENCY_SMS_SENT_COUNT = #emergency.smsSentCount#			 
+  		where (t.USER_ID = #userId#)  
+  	</update> 	
+	    
+  	<update id="updateUserOptionsByUserId" parameterClass="userWithoutRole">
+  		update T_USER t
+  		set 
+  			t.IS_OPTIONS_SAVED = #options.optionsSaved#,
+  			t.TIME_ZONE = #options.timeZone#,
+  			t.LANGUAGE = #options.language#,
+  			t.GOOGLE_LANGUAGE = #options.googleLanguage#,
+  			t.SCALE_UNIT = #options.scaleUnit#,
+			t.DEF_TRACK_NAME = #options.defTrackName#, 	         
+			t.DEF_TRACK_RELEASE_STATUS = #options.defTrackReleaseStatus#,   
+			t.TRACK_AUTO_CLOSE = #options.trackAutoClose#, 		     
+			t.IS_GUEST_ACC_ENABLED = #options.guestAccEnabled#, 		     
+			t.GUEST_ACC_PASSWORD = #options.guestAccPassword#,  	     
+			t.IS_GUEST_ACC_CLOSED_TR_ENABLED = #options.guestAccClosedTrEnabled#, 
+			t.IS_GUEST_ACC_PRIV_TR_ENABLED = #options.guestAccPrivTrEnabled#,   
+			t.IS_REC_TR_ACC_ENABLED = #options.recTrAccEnabled#,         
+			t.REC_TR_ACC_CODE = #options.recTrAccCode#,            
+			t.IS_REC_ACC_PRIV_TR_ENABLED = #options.recTrAccPrivTrEnabled#,   
+			t.TRACK_ROUTE_COLOR = #options.trackRouteColor#,         
+			t.TRACK_ROUTE_WIDTH = #options.trackRouteWidth#,    
+			t.GEOCODING_ENABLED = #options.geocodingEnabled#,     
+			t.HOME_LOC_ADDRESS = #options.homeLocAddress#,          
+			t.HOME_LOC_LATITUDE = #options.homeLocLatitude#,         
+			t.HOME_LOC_LONGITUDE = #options.homeLocLongitude#                                                                              			  						
+  		where (t.USER_ID = #userId#)  
+  	</update> 
+</sqlMap>
+

@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="TrackVo">  	
+	<typeAlias alias="dateTime" type="de.msk.mylivetracker.commons.util.datetime.DateTime"/>
+	<typeAlias alias="track" type="de.msk.mylivetracker.domain.track.TrackVo"/>
+	<typeAlias alias="trackFilter" type="de.msk.mylivetracker.domain.track.TrackFilterVo"/>
+	
+	<resultMap id="minTrackResult" class="track">
+		<result property="trackId" column="TRACK_ID" />
+		<result property="trackClientId" column="TRACK_CLIENT_ID" />
+		<result property="versionMajor" column="VERSION_MAJOR" />
+        <result property="name" column="NAME" />
+        <result property="active" column="IS_ACTIVE" />
+        <result property="released" column="IS_RELEASED" />        
+        <result property="senderId" column="SENDER_ID" />  
+        <result property="senderName" column="SENDER_NAME" />
+        <result property="phoneNumber" column="PHONE_NUMBER" />
+        <result property="userId" column="USER_ID" />        
+        <result property="timestamps.trackCreated"  column="TRACK_CREATED" />
+        <result property="timestamps.trackUpdated"  column="TRACK_UPDATED" />
+        <result property="timestamps.firstPositionReceived"  column="FIRST_POSITION_RECEIVED" />
+        <result property="timestamps.recentPositionUpdated"  column="RECENT_POSITION_UPDATED" />
+        <result property="timestamps.lastHeartbeatSent"  column="LAST_HEARTBEAT_SENT" />
+        <result property="countPositions" column="COUNT_POSITIONS" />
+        <result property="countMobNwCells" column="COUNT_MOB_NW_CELLS" />
+        <result property="countMessages" column="COUNT_MESSAGES" />   
+        <result property="countSenderStates" column="COUNT_SENDER_STATES" />
+        <result property="countCardiacFunctions" column="COUNT_CARDIAC_FUNCTIONS" />
+        <result property="countEmergencySignals" column="COUNT_EMERGENCY_SIGNALS" />
+        <result property="distanceInMtr" column="DISTANCE_IN_MTR" />           
+        <result property="clientStartMileageInMtr" column="CLIENT_START_MILEAGE_IN_MTR" />                     
+        <result property="clientMileageInMtr" column="CLIENT_MILEAGE_IN_MTR" />
+        <result property="clientRuntimeWithoutPausesInMSecs" column="CLIENT_RUNTIME_WITHOUT_PAUSES_IN_MSECS" />
+        <result property="clientRuntimeWithPausesInMSecs" column="CLIENT_RUNTIME_WITH_PAUSES_IN_MSECS" />
+        <result property="speedInMtrPerHour" column="SPEED_IN_MTR_PER_HOUR" />
+    </resultMap>
+    
+    <resultMap id="recentTrackResult" class="track" extends="minTrackResult">
+    	<result property="startPosition" resultMap="PositionVo.startDetailedPositionResult" />
+		<result property="recentPosition" resultMap="PositionVo.recentDetailedPositionResult" />
+		<result property="recentMobNwCell" resultMap="MobNwCellVo.recentDetailedMobNwCellResult" />
+		<result property="recentMessage" resultMap="MessageVo.recentDetailedMessageResult" />
+		<result property="recentSenderState" resultMap="SenderStateVo.recentDetailedSenderStateResult" />		
+		<result property="recentCardiacFunction" resultMap="CardiacFunctionVo.recentDetailedCardiacFunctionResult" />
+		<result property="recentEmergencySignal" resultMap="EmergencySignalVo.recentDetailedEmergencySignalResult" />
+    </resultMap>       
+    
+    <resultMap id="detailedTrackResult" class="track" extends="recentTrackResult" groupBy="trackId">
+		<result property="positions" resultMap="PositionVo.detailedPositionResult" />
+		<result property="mobNwCells" resultMap="MobNwCellVo.detailedMobNwCellResult" />
+		<result property="messages" resultMap="MessageVo.detailedMessageResult" />
+		<result property="senderStates" resultMap="SenderStateVo.detailedSenderStateResult" />
+		<result property="cardiacFunctions" resultMap="CardiacFunctionVo.detailedCardiacFunctionResult" />
+		<result property="emergencySignals" resultMap="EmergencySignalVo.detailedEmergencySignalResult" />				
+    </resultMap>  
+    
+    <update id="lockTable" parameterClass="java.util.Map">
+  		update T_LOCK_TABLE t
+  		set 
+  			t.UPDATED = #updated#		   
+  		where t.TABLE_NAME = #tableName#   		
+  	</update>  
+  	
+    <sql id="columnsForRecentDetails">
+    	sp.POSITION_ID as SP_POSITION_ID,
+    	sp.SEQUENCE_ID as SP_SEQUENCE_ID,
+    	sp.TRACK_ID as SP_TRACK_ID,     
+       	sp.TIME_RECORDED as SP_TIME_RECORDED,
+       	sp.TIME_RECEIVED as SP_TIME_RECEIVED,
+       	sp.LATITUDE_IN_DECIMAL as SP_LATITUDE_IN_DECIMAL,
+       	sp.LONGITUDE_IN_DECIMAL as SP_LONGITUDE_IN_DECIMAL,
+       	sp.ACCURACY_IN_MTR as SP_ACCURACY_IN_MTR,
+       	sp.ALTITUDE_IN_MTR as SP_ALTITUDE_IN_MTR,
+       	sp.SPEED_IN_KM_PER_HOUR as SP_SPEED_IN_KM_PER_HOUR,    
+       	sp.ADDRESS as SP_ADDRESS,
+    	rp.POSITION_ID as RP_POSITION_ID,
+    	rp.SEQUENCE_ID as RP_SEQUENCE_ID,
+    	rp.TRACK_ID as RP_TRACK_ID,     
+       	rp.TIME_RECORDED as RP_TIME_RECORDED,
+       	rp.TIME_RECEIVED as RP_TIME_RECEIVED,
+       	rp.LATITUDE_IN_DECIMAL as RP_LATITUDE_IN_DECIMAL,
+       	rp.LONGITUDE_IN_DECIMAL as RP_LONGITUDE_IN_DECIMAL,
+       	rp.ACCURACY_IN_MTR as RP_ACCURACY_IN_MTR,
+       	rp.ALTITUDE_IN_MTR as RP_ALTITUDE_IN_MTR,
+       	rp.SPEED_IN_KM_PER_HOUR as RP_SPEED_IN_KM_PER_HOUR,    
+       	rp.ADDRESS as RP_ADDRESS, 
+		rm.MESSAGE_ID as RM_MESSAGE_ID,
+		rm.TRACK_ID as RM_TRACK_ID,
+		rm.POSITION_ID as RM_POSITION_ID,
+		rm.CONTENT as RM_CONTENT,
+		rm.TIME_RECEIVED as RM_TIME_RECEIVED,
+		rc.MOB_NW_CELL_ID as RC_MOB_NW_CELL_ID,
+		rc.TRACK_ID as RC_TRACK_ID,        
+		rc.POSITION_ID as RC_POSITION_ID,  
+		rc.CELL_ID as RC_CELL_ID,          
+		rc.LOCAL_AREA_CODE as RC_LOCAL_AREA_CODE,          
+		rc.NETWORK_NAME as RC_NETWORK_NAME,      
+		rc.MOBILE_COUNTRY_CODE as RC_MOBILE_COUNTRY_CODE,      
+		rc.MOBILE_NETWORK_CODE as RC_MOBILE_NETWORK_CODE,   
+		rc.MOBILE_MODE as RC_MOBILE_MODE,
+		rc.TIME_RECEIVED as RC_TIME_RECEIVED,
+		rs.SENDER_STATE_ID as RS_SENDER_STATE_ID,		
+        rs.TRACK_ID as RS_TRACK_ID,
+        rs.POSITION_ID as RS_POSITION_ID,
+        rs.TIME_RECEIVED as RS_TIME_RECEIVED,
+        rs.STATE as RS_STATE,
+        rh.CARDIAC_FUNCTION_ID as RH_CARDIAC_FUNCTION_ID,
+        rh.TRACK_ID as RH_TRACK_ID,
+        rh.POSITION_ID as RH_POSITION_ID,
+        rh.TIME_RECEIVED as RH_TIME_RECEIVED,
+        rh.HEARTRATE_IN_BPM as RH_HEARTRATE_IN_BPM,
+        rh.HEARTRATE_MIN_IN_BPM as RH_HEARTRATE_MIN_IN_BPM,
+        rh.HEARTRATE_MAX_IN_BPM as RH_HEARTRATE_MAX_IN_BPM,
+        rh.HEARTRATE_AVG_IN_BPM as RH_HEARTRATE_AVG_IN_BPM,
+       	re.EMERGENCY_SIGNAL_ID as RE_EMERGENCY_SIGNAL_ID,
+        re.TRACK_ID as RE_TRACK_ID,
+        re.POSITION_ID as RE_POSITION_ID,
+        re.TIME_RECEIVED as RE_TIME_RECEIVED,
+        re.ACTIVE as RE_ACTIVE,
+        re.MESSAGE as RE_MESSAGE,
+        re.SMS_SUCCESSFULLY_SENT as RE_SMS_SUCCESSFULLY_SENT,
+       	prm.POSITION_ID as PRM_POSITION_ID,
+       	prm.SEQUENCE_ID as PRM_SEQUENCE_ID,
+       	prm.TRACK_ID as PRM_TRACK_ID,     
+       	prm.TIME_RECORDED as PRM_TIME_RECORDED,
+       	prm.TIME_RECEIVED as PRM_TIME_RECEIVED,
+       	prm.LATITUDE_IN_DECIMAL as PRM_LATITUDE_IN_DECIMAL,
+       	prm.LONGITUDE_IN_DECIMAL as PRM_LONGITUDE_IN_DECIMAL,
+       	prm.ACCURACY_IN_MTR as PRM_ACCURACY_IN_MTR,
+       	prm.ALTITUDE_IN_MTR as PRM_ALTITUDE_IN_MTR,
+       	prm.SPEED_IN_KM_PER_HOUR as PRM_SPEED_IN_KM_PER_HOUR,    
+       	prm.ADDRESS as PRM_ADDRESS,   			  			
+		prc.POSITION_ID as PRC_POSITION_ID,
+		prc.SEQUENCE_ID as PRC_SEQUENCE_ID,
+       	prc.TRACK_ID as PRC_TRACK_ID,     
+       	prc.TIME_RECORDED as PRC_TIME_RECORDED,
+       	prc.TIME_RECEIVED as PRC_TIME_RECEIVED,
+       	prc.LATITUDE_IN_DECIMAL as PRC_LATITUDE_IN_DECIMAL,
+       	prc.LONGITUDE_IN_DECIMAL as PRC_LONGITUDE_IN_DECIMAL,
+       	prc.ACCURACY_IN_MTR as PRC_ACCURACY_IN_MTR,
+       	prc.ALTITUDE_IN_MTR as PRC_ALTITUDE_IN_MTR,
+       	prc.SPEED_IN_KM_PER_HOUR as PRC_SPEED_IN_KM_PER_HOUR,    
+       	prc.ADDRESS as PRC_ADDRESS,
+       	prs.POSITION_ID as PRS_POSITION_ID,
+       	prs.SEQUENCE_ID as PRS_SEQUENCE_ID,
+       	prs.TRACK_ID as PRS_TRACK_ID,     
+       	prs.TIME_RECORDED as PRS_TIME_RECORDED,
+       	prs.TIME_RECEIVED as PRS_TIME_RECEIVED,
+       	prs.LATITUDE_IN_DECIMAL as PRS_LATITUDE_IN_DECIMAL,
+       	prs.LONGITUDE_IN_DECIMAL as PRS_LONGITUDE_IN_DECIMAL,
+       	prs.ACCURACY_IN_MTR as PRS_ACCURACY_IN_MTR,
+       	prs.ALTITUDE_IN_MTR as PRS_ALTITUDE_IN_MTR,
+       	prs.SPEED_IN_KM_PER_HOUR as PRS_SPEED_IN_KM_PER_HOUR,    
+       	prs.ADDRESS as PRS_ADDRESS,
+       	prh.POSITION_ID as PRH_POSITION_ID,
+       	prh.SEQUENCE_ID as PRH_SEQUENCE_ID,
+       	prh.TRACK_ID as PRH_TRACK_ID,     
+       	prh.TIME_RECORDED as PRH_TIME_RECORDED,
+       	prh.TIME_RECEIVED as PRH_TIME_RECEIVED,
+       	prh.LATITUDE_IN_DECIMAL as PRH_LATITUDE_IN_DECIMAL,
+       	prh.LONGITUDE_IN_DECIMAL as PRH_LONGITUDE_IN_DECIMAL,
+       	prh.ACCURACY_IN_MTR as PRH_ACCURACY_IN_MTR,
+       	prh.ALTITUDE_IN_MTR as PRH_ALTITUDE_IN_MTR,
+       	prh.SPEED_IN_KM_PER_HOUR as PRH_SPEED_IN_KM_PER_HOUR,    
+       	prh.ADDRESS as PRH_ADDRESS,
+       	pre.POSITION_ID as PRE_POSITION_ID,
+       	pre.SEQUENCE_ID as PRE_SEQUENCE_ID,
+       	pre.TRACK_ID as PRE_TRACK_ID,     
+       	pre.TIME_RECORDED as PRE_TIME_RECORDED,
+       	pre.TIME_RECEIVED as PRE_TIME_RECEIVED,
+       	pre.LATITUDE_IN_DECIMAL as PRE_LATITUDE_IN_DECIMAL,
+       	pre.LONGITUDE_IN_DECIMAL as PRE_LONGITUDE_IN_DECIMAL,
+       	pre.ACCURACY_IN_MTR as PRE_ACCURACY_IN_MTR,
+       	pre.ALTITUDE_IN_MTR as PRE_ALTITUDE_IN_MTR,
+       	pre.SPEED_IN_KM_PER_HOUR as PRE_SPEED_IN_KM_PER_HOUR,    
+       	pre.ADDRESS as PRE_ADDRESS
+    </sql>
+    
+    <sql id="joinsForRecentDetails">
+    	left outer join T_POSITION sp
+           on t.START_POSITION_ID = sp.POSITION_ID
+    	left outer join T_POSITION rp
+           on t.RECENT_POSITION_ID = rp.POSITION_ID
+        left outer join T_MOB_NW_CELL rc
+           on t.RECENT_MOB_NW_CELL_ID = rc.MOB_NW_CELL_ID
+        left outer join T_MESSAGE rm
+           on t.RECENT_MESSAGE_ID = rm.MESSAGE_ID
+        left outer join T_SENDER_STATE rs
+           on t.RECENT_SENDER_STATE_ID = rs.SENDER_STATE_ID                   
+        left outer join T_CARDIAC_FUNCTION rh
+           on t.RECENT_CARDIAC_FUNCTION_ID = rh.CARDIAC_FUNCTION_ID   
+        left outer join T_EMERGENCY_SIGNAL re
+           on t.RECENT_EMERGENCY_SIGNAL_ID = re.EMERGENCY_SIGNAL_ID   
+		left outer join T_POSITION prc
+           on rc.POSITION_ID = prc.POSITION_ID
+        left outer join T_POSITION prm
+           on rm.POSITION_ID = prm.POSITION_ID
+        left outer join T_POSITION prs
+           on rs.POSITION_ID = prs.POSITION_ID	
+        left outer join T_POSITION prh
+           on rs.POSITION_ID = prh.POSITION_ID   
+        left outer join T_POSITION pre
+           on re.POSITION_ID = pre.POSITION_ID   
+    </sql>
+    
+    <sql id="joinsForListDetails">
+    	left outer join T_POSITION lp
+			on t.TRACK_ID = lp.TRACK_ID
+        left outer join T_MOB_NW_CELL lc
+			on lp.POSITION_ID = lc.POSITION_ID
+		left outer join T_MESSAGE lm
+			on lp.POSITION_ID = lm.POSITION_ID  
+		left outer join T_SENDER_STATE ls
+			on lp.POSITION_ID = ls.POSITION_ID
+		left outer join T_CARDIAC_FUNCTION lh
+			on lp.POSITION_ID = lh.POSITION_ID	
+		left outer join T_EMERGENCY_SIGNAL le
+			on lp.POSITION_ID = le.POSITION_ID	
+    </sql>
+    
+    <sql id="columnsForListDetails">
+    	lp.POSITION_ID as P_POSITION_ID,
+    	lp.SEQUENCE_ID as P_SEQUENCE_ID,
+       	lp.TRACK_ID as P_TRACK_ID,     
+       	lp.TIME_RECORDED as P_TIME_RECORDED,
+       	lp.TIME_RECEIVED as P_TIME_RECEIVED,
+       	lp.LATITUDE_IN_DECIMAL as P_LATITUDE_IN_DECIMAL,
+       	lp.LONGITUDE_IN_DECIMAL as P_LONGITUDE_IN_DECIMAL,
+       	lp.ACCURACY_IN_MTR as P_ACCURACY_IN_MTR,
+       	lp.ALTITUDE_IN_MTR as P_ALTITUDE_IN_MTR,
+       	lp.SPEED_IN_KM_PER_HOUR as P_SPEED_IN_KM_PER_HOUR,    
+       	lp.ADDRESS as P_ADDRESS, 
+       	lm.MESSAGE_ID as M_MESSAGE_ID,
+		lm.TRACK_ID as M_TRACK_ID,
+		lm.POSITION_ID as M_POSITION_ID,
+		lm.CONTENT as M_CONTENT,
+		lm.TIME_RECEIVED as M_TIME_RECEIVED,
+		lc.MOB_NW_CELL_ID as C_MOB_NW_CELL_ID,
+		lc.TRACK_ID as C_TRACK_ID,        
+		lc.POSITION_ID as C_POSITION_ID,      		          
+		lc.CELL_ID as C_CELL_ID,          
+		lc.LOCAL_AREA_CODE as C_LOCAL_AREA_CODE,          
+		lc.NETWORK_NAME as C_NETWORK_NAME,      
+		lc.MOBILE_COUNTRY_CODE as C_MOBILE_COUNTRY_CODE,      
+		lc.MOBILE_NETWORK_CODE as C_MOBILE_NETWORK_CODE,   
+		lc.MOBILE_MODE as C_MOBILE_MODE,
+		lc.TIME_RECEIVED as C_TIME_RECEIVED,
+		ls.SENDER_STATE_ID as S_SENDER_STATE_ID,
+        ls.TRACK_ID as S_TRACK_ID,
+        ls.POSITION_ID as S_POSITION_ID,
+        ls.TIME_RECEIVED as S_TIME_RECEIVED,
+        ls.STATE as S_STATE,
+        lh.CARDIAC_FUNCTION_ID as H_CARDIAC_FUNCTION_ID,
+        lh.TRACK_ID as H_TRACK_ID,
+        lh.POSITION_ID as H_POSITION_ID,
+        lh.TIME_RECEIVED as H_TIME_RECEIVED,
+        lh.HEARTRATE_IN_BPM as H_HEARTRATE_IN_BPM,
+        lh.HEARTRATE_MIN_IN_BPM as H_HEARTRATE_MIN_IN_BPM,
+        lh.HEARTRATE_MAX_IN_BPM as H_HEARTRATE_MAX_IN_BPM,
+        lh.HEARTRATE_AVG_IN_BPM as H_HEARTRATE_AVG_IN_BPM,
+       	le.EMERGENCY_SIGNAL_ID as E_EMERGENCY_SIGNAL_ID,
+        le.TRACK_ID as E_TRACK_ID,
+        le.POSITION_ID as E_POSITION_ID,
+        le.TIME_RECEIVED as E_TIME_RECEIVED,
+        le.ACTIVE as E_ACTIVE,
+        le.MESSAGE as E_MESSAGE,
+        le.SMS_SUCCESSFULLY_SENT as E_SMS_SUCCESSFULLY_SENT              
+    </sql>
+           
+    <select id="getTrackByIdAsRecentTrack" parameterClass="java.util.Map" resultMap="recentTrackResult">
+  		select t.*, 
+  			<include refid="columnsForRecentDetails"/>  			
+  		from T_TRACK t   
+			<include refid="joinsForRecentDetails"/>								   								 			
+        where t.TRACK_ID = #trackId#          	  		  		  			
+  	</select>
+  	    
+  	<select id="getTrackByIdAsDetailedTrack" parameterClass="java.util.Map" resultMap="detailedTrackResult">
+	  		select t.*, 
+	  			<include refid="columnsForRecentDetails"/>,
+	  			<include refid="columnsForListDetails"/>
+	  		from T_TRACK t   
+				<include refid="joinsForRecentDetails"/>
+				<include refid="joinsForListDetails"/>  						   								 			
+	        where t.TRACK_ID = #trackId#	         
+	        <isGreaterThan property="cntCutPositions" compareValue="0">
+	        	order by lp.SEQUENCE_ID desc
+	  			limit 0, #absCntCutPositions#
+	  		</isGreaterThan>
+	  		<isLessThan property="cntCutPositions" compareValue="0">
+	        	order by lp.SEQUENCE_ID asc
+	  			limit #absCntCutPositions#, #maxPositions#	  			       
+	  		</isLessThan>
+	  		<isEqual property="cntCutPositions" compareValue="0">
+	  			order by P_SEQUENCE_ID desc
+	  		</isEqual>
+  	</select>
+  	
+  	<select id="getRecentTrackAsRecentTrack" parameterClass="java.util.Map" resultMap="recentTrackResult">
+  		select t.*, 
+  			<include refid="columnsForRecentDetails"/>  			  			
+  		from T_TRACK t   
+  			<include refid="joinsForRecentDetails"/>			
+		where t.TRACK_ID = (
+			select t.TRACK_ID 
+			from T_TRACK t
+			where t.USER_ID = #userId#
+	  		<isNotNull property="senderId">
+	  			and t.SENDER_ID = #senderId#
+	  		</isNotNull>
+	  		<isEqual property="onlyPublic" compareValue="true">
+	  		  	and t.IS_RELEASED = true	
+	  		</isEqual>
+	  		and t.IS_ACTIVE = true
+	  		order by t.RECENT_POSITION_UPDATED desc
+	  		limit 1)  		  		  
+  	</select>
+  	  
+    <select id="getRecentTrackAsMinTrack" parameterClass="java.util.Map" resultMap="minTrackResult">
+  		select t.* 
+		from T_TRACK t
+		where t.USER_ID = #userId#
+  		<isNotNull property="senderId">
+  			and t.SENDER_ID = #senderId#
+  		</isNotNull>
+  		<isEqual property="onlyPublic" compareValue="true">
+  		  	and t.IS_RELEASED = true	
+  		</isEqual>
+  		and t.IS_ACTIVE = true
+  		order by t.RECENT_POSITION_UPDATED desc
+  		limit 1 			  		  			  
+  	</select>
+  	   
+  	<select id="getActiveTrackOfSenderAsMinTrack" parameterClass="string" resultMap="minTrackResult">
+  		select * from T_TRACK t where
+  		t.SENDER_ID = #?# and
+  		t.IS_ACTIVE = true  		  		
+  	</select>
+  	
+  	<select id="getActiveTrackOfSenderAsRecentTrack" parameterClass="string" resultMap="recentTrackResult">
+  		select  t.*, 
+  			<include refid="columnsForRecentDetails"/> 
+  		from T_TRACK t
+  			<include refid="joinsForRecentDetails"/>
+  		where
+  			t.SENDER_ID = #?# and
+  			t.IS_ACTIVE = true  		  	  				
+  	</select>
+  	   	     
+  	<select id="getTracksCountForGuestAsRecentTrack" parameterClass="trackFilter" resultClass="integer">
+  		select count(*), 
+  			<include refid="columnsForRecentDetails"/>
+        from T_TRACK t
+  		 	<include refid="joinsForRecentDetails"/>
+  		where t.USER_ID = #userId#  		
+  		<isEqual prepend="and" property="guestAccPrivTrEnabled" compareValue="false">
+  			t.IS_RELEASED = true
+  		</isEqual>
+  		<isEqual prepend="and" property="guestAccClosedTrEnabled" compareValue="false">
+  			t.IS_ACTIVE = true
+  		</isEqual>  		
+  		<isNotNull prepend="and" property="bySenderId">
+  			t.SENDER_ID = #bySenderId#
+  		</isNotNull>
+  		<isNotNull prepend="and" property="byDateFrom">
+  			t.TRACK_CREATED &gt;= #byDateFrom#
+  		</isNotNull>
+  		<isNotNull prepend="and" property="byDateTo">
+  			t.TRACK_CREATED &lt;= #byDateTo#
+  		</isNotNull>
+  		<isNotEmpty prepend="and" property="bySearchStr">
+  			t.NAME like #bySearchStr#
+  		</isNotEmpty>  	
+  		<isNotNull prepend="and" property="byActive">
+  			t.IS_ACTIVE = #byActive#
+  		</isNotNull>
+  	</select>
+  	   	      
+  	<select id="getTracksForGuestAsRecentTrack" parameterClass="trackFilter" resultMap="recentTrackResult">
+  		select t.*, 
+  			<include refid="columnsForRecentDetails"/>
+        from T_TRACK t
+  		 	<include refid="joinsForRecentDetails"/>
+  		where t.USER_ID = #userId#  		
+  		<isEqual prepend="and" property="guestAccPrivTrEnabled" compareValue="false">
+  			t.IS_RELEASED = true
+  		</isEqual>
+  		<isEqual prepend="and" property="guestAccClosedTrEnabled" compareValue="false">
+  			t.IS_ACTIVE = true
+  		</isEqual>  		
+  		<isNotNull prepend="and" property="bySenderId">
+  			t.SENDER_ID = #bySenderId#
+  		</isNotNull>
+  		<isNotNull prepend="and" property="byDateFrom">
+  			t.TRACK_CREATED &gt;= #byDateFrom#
+  		</isNotNull>
+  		<isNotNull prepend="and" property="byDateTo">
+  			t.TRACK_CREATED &lt;= #byDateTo#
+  		</isNotNull>
+  		<isNotEmpty prepend="and" property="bySearchStr">
+  			t.NAME like #bySearchStr#
+  		</isNotEmpty>
+  		<isNotNull prepend="and" property="byActive">
+  			t.IS_ACTIVE = #byActive#
+  		</isNotNull>
+  		order by t.IS_ACTIVE desc, t.COUNT_EMERGENCY_SIGNALS desc, t.LAST_HEARTBEAT_SENT desc
+  		limit #maxCountOfRecords#
+  	</select>   
+  	
+  	<select id="getTracksCountForUserAsRecentTrack" parameterClass="trackFilter" resultClass="integer">
+  		select count(*), 
+  			<include refid="columnsForRecentDetails"/> 
+  		from T_TRACK t
+  			<include refid="joinsForRecentDetails"/>
+  		where t.USER_ID = #userId# 	  		 		
+  		<isNotNull prepend="and" property="bySenderId">
+  			t.SENDER_ID = #bySenderId#
+  		</isNotNull>
+  		<isNotNull prepend="and" property="byDateFrom">
+  			t.TRACK_CREATED &gt;= #byDateFrom#
+  		</isNotNull>
+  		<isNotNull prepend="and" property="byDateTo">
+  			t.TRACK_CREATED &lt;= #byDateTo#
+  		</isNotNull>
+  		<isNotEmpty prepend="and" property="bySearchStr">
+  			t.NAME like #bySearchStr#
+  		</isNotEmpty>
+  		<isNotNull prepend="and" property="byActive">
+  			t.IS_ACTIVE = #byActive#
+  		</isNotNull>
+  	</select>
+  	
+  	<select id="getTracksForUserAsRecentTrack" parameterClass="trackFilter" resultMap="recentTrackResult">
+  		select  t.*, 
+  			<include refid="columnsForRecentDetails"/> 
+  		from T_TRACK t
+  			<include refid="joinsForRecentDetails"/>
+  		where t.USER_ID = #userId#  		
+  		<isNotNull prepend="and" property="bySenderId">
+  			t.SENDER_ID = #bySenderId#
+  		</isNotNull>
+  		<isNotNull prepend="and" property="byDateFrom">
+  			t.TRACK_CREATED &gt;= #byDateFrom#
+  		</isNotNull>
+  		<isNotNull prepend="and" property="byDateTo">
+  			t.TRACK_CREATED &lt;= #byDateTo#
+  		</isNotNull>
+  		<isNotEmpty prepend="and" property="bySearchStr">
+  			t.NAME like #bySearchStr#
+  		</isNotEmpty>
+  		<isNotNull prepend="and" property="byActive">
+  			t.IS_ACTIVE = #byActive#
+  		</isNotNull>
+  		order by t.IS_ACTIVE desc, t.COUNT_EMERGENCY_SIGNALS desc, t.LAST_HEARTBEAT_SENT desc
+  		limit #maxCountOfRecords#
+  	</select>     	
+  	
+  	<select id="getTracksCountOverallAsRecentTrack" parameterClass="trackFilter" resultClass="integer">
+  		select count(*), 
+  			<include refid="columnsForRecentDetails"/> 
+  		from T_TRACK t
+  			<include refid="joinsForRecentDetails"/>
+  		where t.LAST_HEARTBEAT_SENT &gt;= #byDateFrom#
+  		and t.LAST_HEARTBEAT_SENT &lt;= #byDateTo#
+  		and t.IS_ACTIVE = #byActive#  		
+  	</select>
+  	
+  	<select id="getTracksOverallAsRecentTrack" parameterClass="trackFilter" resultMap="recentTrackResult">
+  		select  t.*, 
+  			<include refid="columnsForRecentDetails"/> 
+  		from T_TRACK t
+  			<include refid="joinsForRecentDetails"/>
+  		where t.LAST_HEARTBEAT_SENT &gt;= #byDateFrom#
+  		and t.LAST_HEARTBEAT_SENT &lt;= #byDateTo#
+  		and t.IS_ACTIVE = #byActive# 
+  		order by t.COUNT_EMERGENCY_SIGNALS desc, t.LAST_HEARTBEAT_SENT desc
+  		limit #maxCountOfRecords#
+  	</select>
+  	  	  
+  	<select id="getTrackByIdAsMinTrack" parameterClass="string" resultMap="minTrackResult">
+  		select * from T_TRACK t where t.TRACK_ID = #?#  			
+  	</select>  	
+  	
+  	<select id="getClosedTrackIdsByUserId" 
+  		parameterClass="string" resultClass="string">
+  		select t.TRACK_ID from T_TRACK t where 
+  		t.USER_ID = #?# and
+  		t.IS_ACTIVE = FALSE 			
+  	</select>
+  	
+  	<select id="getOldTrackIdsByTimestamp" 
+  		parameterClass="dateTime" resultClass="string">
+  		select t.TRACK_ID from T_TRACK t where 
+  		t.TRACK_UPDATED &lt;= #?#		
+  	</select>
+  	
+  	<sql id="stmntInsertTrack">
+  		insert into T_TRACK (
+  			TRACK_ID,
+  			VERSION_MAJOR,
+  			NAME,
+  			IS_ACTIVE,
+  			IS_RELEASED,  			
+  			SENDER_ID,
+  			SENDER_NAME,
+  			PHONE_NUMBER,
+  			USER_ID,
+  			TRACK_CREATED,
+  			TRACK_UPDATED,
+  			FIRST_POSITION_RECEIVED,
+  			RECENT_POSITION_UPDATED,
+  			LAST_HEARTBEAT_SENT,
+  			COUNT_POSITIONS,
+  			COUNT_MOB_NW_CELLS,
+  			COUNT_MESSAGES,
+  			COUNT_SENDER_STATES,
+  			COUNT_CARDIAC_FUNCTIONS,
+  			COUNT_EMERGENCY_SIGNALS,
+  			DISTANCE_IN_MTR,
+  			CLIENT_START_MILEAGE_IN_MTR,
+  			CLIENT_MILEAGE_IN_MTR,
+  			CLIENT_RUNTIME_WITHOUT_PAUSES_IN_MSECS,
+  			CLIENT_RUNTIME_WITH_PAUSES_IN_MSECS,
+  			SPEED_IN_MTR_PER_HOUR,
+  			START_POSITION_ID,
+  			RECENT_POSITION_ID,
+  		   	RECENT_MOB_NW_CELL_ID,
+  		   	RECENT_MESSAGE_ID,
+  		   	RECENT_SENDER_STATE_ID,
+  		   	RECENT_EMERGENCY_SIGNAL_ID
+  		) values (
+  			#trackId#,
+  			#versionMajor#,
+  			#name#,
+  			#active#,
+  			#released#,  			
+  			#senderId#,
+  			#senderName#,
+  			#phoneNumber#,
+  			#userId#,  			
+  			#timestamps.trackCreated#,
+  			#timestamps.trackUpdated#,
+  			#timestamps.firstPositionReceived#,
+  			#timestamps.recentPositionUpdated#,
+  			#timestamps.lastHeartbeatSent#,
+  			#countPositions#,
+  			#countMobNwCells#,
+  			#countMessages#,
+  			#countSenderStates#,
+  			#countCardiacFunctions#,
+  			#countEmergencySignals#,
+  			#distanceInMtr#,
+  			#clientStartMileageInMtr#,
+  			#clientMileageInMtr#,
+  			#clientRuntimeWithoutPausesInMSecs#,
+  			#clientRuntimeWithPausesInMSecs#,
+  			#speedInMtrPerHour#,
+  			#startPosition.positionId#,
+  			#recentPosition.positionId#,
+  		   	#recentMobNwCell.mobNwCellId#,
+  		   	#recentMessage.messageId#,
+  		   	#recentSenderState.senderStateId#,
+  		   	#recentEmergencySignal.emergencySignalId#  			
+  		)
+  	</sql>
+  	  	 
+  	<insert id="insertTrack" parameterClass="track">
+  		<include refid="stmntInsertTrack"/>    		    		
+  	</insert>
+  	
+  	<update id="openTrack" parameterClass="java.util.Map">
+  		update T_TRACK t
+  		set 
+  			t.IS_ACTIVE = TRUE,  
+  			t.TRACK_UPDATED = #trackUpdated#		   
+  		where t.TRACK_ID = #trackId#   		
+  	</update>  
+  	
+  	<update id="closeTrack" parameterClass="java.util.Map">
+  		update T_TRACK t
+  		set 
+  			t.IS_ACTIVE = FALSE, 
+  			t.TRACK_UPDATED = #trackUpdated# 		   
+  		where t.TRACK_ID = #trackId#   		
+  	</update>  
+  	
+  	<update id="closeActiveTrack" parameterClass="java.util.Map">
+  		update T_TRACK t
+  		set 
+  			t.IS_ACTIVE = FALSE, 
+  			t.TRACK_UPDATED = #trackUpdated# 		   
+  		where t.SENDER_ID = #senderId#
+  		and t.IS_ACTIVE = TRUE   		
+  	</update>  
+  	
+  	<update id="publishTrack" parameterClass="java.util.Map">
+  		update T_TRACK t
+  		set 
+  			t.IS_RELEASED = TRUE,
+  			t.TRACK_UPDATED = #trackUpdated#  		   
+  		where t.TRACK_ID = #trackId#   		
+  	</update>
+  	
+  	<update id="privatizeTrack" parameterClass="java.util.Map">
+  		update T_TRACK t
+  		set 
+  			t.IS_RELEASED = FALSE,  
+  			t.TRACK_UPDATED = #trackUpdated#		   
+  		where t.TRACK_ID = #trackId#   		
+  	</update>
+  	
+  	<update id="renameTrack" parameterClass="java.util.Map">
+  		update T_TRACK t
+  		set 
+  			t.NAME = #trackName#,
+  			t.TRACK_UPDATED = #trackUpdated#  		   	
+  		where t.TRACK_ID = #trackId#   		
+  	</update>
+  	  	
+  	<update id="updateTrack" parameterClass="track">
+  		update T_TRACK t
+  		set   		
+  			t.TRACK_CLIENT_ID = #trackClientId#,
+  			t.PHONE_NUMBER = #phoneNumber#,	
+  			t.TRACK_UPDATED = #timestamps.trackUpdated#,
+  			t.FIRST_POSITION_RECEIVED = #timestamps.firstPositionReceived#,
+  			t.RECENT_POSITION_UPDATED = #timestamps.recentPositionUpdated#,
+  			t.LAST_HEARTBEAT_SENT = #timestamps.lastHeartbeatSent#,
+  		   	t.COUNT_POSITIONS = #countPositions#,
+  		   	t.COUNT_MOB_NW_CELLS = #countMobNwCells#,
+  		   	t.COUNT_MESSAGES = #countMessages#,
+  		   	t.COUNT_SENDER_STATES = #countSenderStates#,
+  		   	t.COUNT_CARDIAC_FUNCTIONS = #countCardiacFunctions#,
+  		   	t.COUNT_EMERGENCY_SIGNALS = #countEmergencySignals#,
+  		   	t.DISTANCE_IN_MTR = #distanceInMtr#,
+  		   	t.CLIENT_START_MILEAGE_IN_MTR = #clientStartMileageInMtr#,
+  		   	t.CLIENT_MILEAGE_IN_MTR = #clientMileageInMtr#,
+  		   	t.CLIENT_RUNTIME_WITHOUT_PAUSES_IN_MSECS = #clientRuntimeWithoutPausesInMSecs#,
+  		   	t.CLIENT_RUNTIME_WITH_PAUSES_IN_MSECS = #clientRuntimeWithPausesInMSecs#,
+  		   	t.SPEED_IN_MTR_PER_HOUR = #speedInMtrPerHour#,  
+  		   	t.START_POSITION_ID = #startPosition.positionId#,	
+  		   	t.RECENT_POSITION_ID = #recentPosition.positionId#,
+  		   	t.RECENT_MOB_NW_CELL_ID = #recentMobNwCell.mobNwCellId#,
+  		   	t.RECENT_MESSAGE_ID = #recentMessage.messageId#,
+  		   	t.RECENT_SENDER_STATE_ID = #recentSenderState.senderStateId#,
+  		   	t.RECENT_CARDIAC_FUNCTION_ID = #recentCardiacFunction.cardiacFunctionId#,
+  		   	t.RECENT_EMERGENCY_SIGNAL_ID = #recentEmergencySignal.emergencySignalId#
+  		where t.TRACK_ID = #trackId#   		
+  	</update>
+  	
+  	<update id="updateTrackHeartbeat" parameterClass="track">
+  		update T_TRACK t
+  		set
+  			t.LAST_HEARTBEAT_SENT = #timestamps.lastHeartbeatSent#
+  		where t.TRACK_ID = #trackId#	  	
+  	</update>
+  	
+  	<delete id="removeTrack" parameterClass="string">
+  		delete t FROM T_TRACK t where t.TRACK_ID = #?#
+  	</delete>  	
+  	<delete id="removePosition" parameterClass="string">
+  		delete t FROM T_POSITION t where t.TRACK_ID = #?#
+  	</delete>
+  	<delete id="removeMessage" parameterClass="string">
+  		delete t FROM T_MESSAGE t where t.TRACK_ID = #?#
+  	</delete>
+  	<delete id="removeMobNwCell" parameterClass="string">
+  		delete t FROM T_MOB_NW_CELL t where t.TRACK_ID = #?#
+  	</delete>
+  	<delete id="removeSenderState" parameterClass="string">
+  		delete t FROM T_SENDER_STATE t where t.TRACK_ID = #?#
+  	</delete>
+  	<delete id="removeCardiacFunction" parameterClass="string">
+  		delete t FROM T_CARDIAC_FUNCTION t where t.TRACK_ID = #?#
+  	</delete>
+  	<delete id="removeEmergencySignal" parameterClass="string">
+  		delete t FROM T_EMERGENCY_SIGNAL t where t.TRACK_ID = #?#
+  	</delete>         
+</sqlMap>

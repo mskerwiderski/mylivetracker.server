@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util 
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/aop 
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/context 
+        				   http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+                           >		
+	
+	<bean id="demoTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+  		<property name="corePoolSize" value="10" />
+  		<property name="maxPoolSize" value="20" />
+  		<property name="queueCapacity" value="50" />
+	</bean>
+			
+	<bean id="demoDao"
+        class="de.msk.mylivetracker.dao.DemoDao">
+        <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
+    </bean>             
+   	
+   	<util:list id="demoCases">
+   		<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
+   			<constructor-arg index="0" value="Running in the south of Munich"/>
+    	 	<constructor-arg index="1" value="demo"/>
+    	 	<constructor-arg index="2" value="sid01"/>
+    	 	<constructor-arg index="3" value="d911ad10-7c3d-4c73-95f4-03ac6657592d"/>
+    	 	<constructor-arg index="4" value="15"/>
+   	 	</bean>
+      	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
+   			<constructor-arg index="0" value="Cycling in the south of Munich"/>
+    	 	<constructor-arg index="1" value="demo"/>
+    	 	<constructor-arg index="2" value="sid02"/>
+    	 	<constructor-arg index="3" value="eb17ebe6-5124-424d-a509-bdd0b62ca905"/>
+    	 	<constructor-arg index="4" value="30"/>
+   	 	</bean>     	 	
+   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
+   			<constructor-arg index="0" value="By car from Munich to Eresing"/>
+    	 	<constructor-arg index="1" value="demo"/>
+    	 	<constructor-arg index="2" value="sid03"/>
+    	 	<constructor-arg index="3" value="cdd86c73-77f7-4057-bbf6-995efd71a409"/>
+    	 	<constructor-arg index="4" value="45"/>
+   	 	</bean>
+   	 	<!-- bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
+   			<constructor-arg index="0" value="By car from Munich to Eresing"/>
+    	 	<constructor-arg index="1" value="demo"/>
+    	 	<constructor-arg index="2" value="sid04"/>
+    	 	<constructor-arg index="3" value="cdd86c73-77f7-4057-bbf6-995efd71a409"/>
+    	 	<constructor-arg index="4" value="60"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
+   			<constructor-arg index="0" value="Cycling from Munich to Holzhausen"/>
+    	 	<constructor-arg index="1" value="demo"/>
+    	 	<constructor-arg index="2" value="sid05"/>
+    	 	<constructor-arg index="3" value="99158b9c-f5cc-4fff-9331-3e858c977cdd"/>
+    	 	<constructor-arg index="4" value="75"/>
+   	 	</bean -->   	 	
+   	</util:list> 	       
+   	
+    <bean id="demoService"
+        class="de.msk.mylivetracker.service.demo.DemoService">        
+        <property name="demoCases" ref="demoCases" />
+        <property name="demoDao" ref="demoDao" />
+        <property name="userService" ref="userService" />
+        <property name="senderService" ref="senderService" />        
+        <property name="trackService" ref="trackService" />
+        <property name="demoTaskExecutor" ref="demoTaskExecutor" />        
+    </bean>
+   
+	<bean name="demoCtrl" class="de.msk.mylivetracker.web.frontend.demo.DemoCtrl">
+		<property name="demoService" ref="demoService" />			
+	</bean>
+</beans>
