@@ -180,7 +180,7 @@ public final class FmtUtils {
 		boolean htmlEscaped, boolean abbr) {
 		if (user == null) return noValue;
 		return getPositionAsStr(
-			user.getOptions().getHomeLocAddress(), 
+			user.getOptions().getHomeLocAddressPretty(), 
 			user.getOptions().getHomeLocLatitude(), 
 			user.getOptions().getHomeLocLongitude(), 
 			locale, false, htmlEscaped, abbr);

@@ -12,7 +12,7 @@
 <script>
 var $dlgRemoveSender;
 
-//$(document).ready(function() {		
+$(document).ready(function(e) {		
 	$dlgRemoveSender = $('#dlgRemoveSender').dialog({
 		modal: true,				
 		autoOpen: false,
@@ -29,8 +29,9 @@ var $dlgRemoveSender;
 		open: function(event, ui) {			
 			$(this).html("<spring:message code="sendermaintenance.remove.confirm.text" arguments="${optionsCmd.selectedSenderId}" />");			 
 		}					
-	});				
-//});
+	});
+	setSenderSymbolImage(null);
+});
 
 function setSenderFields() { 
 	actionExecute('SetSenderFields');
@@ -282,6 +283,46 @@ function removeSender() {
 		</td>
 	</tr>
 	<tr>
+		<td>&nbsp;<spring:message code="sendermaintenance.sender.details.symbol" />&nbsp;</td>
+		<td>
+			<table><tr>
+			<td style="border:none;width:50%;">
+			<script>
+				function setSenderSymbolImage(symbol) {
+					if (symbol == null) {
+						symbol = document.forms['optionsForm'].elements['senderDetails.symbol'].value;
+					}
+					var imgUrl = "<c:url value='img/map_symbols/'/>" + symbol + ".png";
+					document.forms['optionsForm'].elements['senderSymbolImg'].src=imgUrl;
+				}
+			</script>
+			<c:set var="selSymbol">${optionsCmd.senderDetails.symbol}</c:set>
+			<select id="senderDetails.symbol" name="senderDetails.symbol"
+			 	onchange="javascript:setSenderSymbolImage(this.value);"
+				class="text ui-widget-content ui-corner-all" > 
+					<c:forEach var="symbolEntry" items="${optionsCmd.symbolEntries}">
+  						<c:choose>
+    						<c:when test="${symbolEntry.symbol eq selSymbol}">
+						    	<option value="${symbolEntry.symbol.id}" selected>
+						        	<c:out value="${symbolEntry.label}" />
+						      	</option>
+						    </c:when> 
+					    	<c:otherwise>
+						      	<option value="${symbolEntry.symbol.id}">
+						        	<c:out value="${symbolEntry.label}" />
+						      	</option>
+						    </c:otherwise>
+						</c:choose>
+					</c:forEach>
+			</select></td>
+			<td style="border:none;width:50%;"><img id="senderSymbolImg"/></td>
+			</tr></table>
+		</td>
+		<td>
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
 		<td>
 			<c:choose>
 				<c:when test="${!empty selSenderId}">
@@ -322,4 +363,3 @@ function removeSender() {
 		</c:choose>										
 	</tr>			
 </table>
-	

@@ -17,12 +17,12 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.sender.SenderVo;
-import de.msk.mylivetracker.domain.track.TrackFilterVo;
+import de.msk.mylivetracker.domain.user.MapsUsedVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.IApplicationService.Parameter;
 import de.msk.mylivetracker.service.ISenderService;
 import de.msk.mylivetracker.service.ITrackService;
-import de.msk.mylivetracker.service.ITrackService.TrackListResult;
 import de.msk.mylivetracker.service.IUserService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 import de.msk.mylivetracker.web.frontend.util.CustomDateTimeEditor;
@@ -44,6 +44,7 @@ import de.msk.mylivetracker.web.util.WebUtils;
 @SuppressWarnings("deprecation")
 public class TracksOverviewCtrl extends SimpleFormController {
 		
+	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(TracksOverviewCtrl.class);
 	
 	private List<BoolOptionDsc> liveTrackingOpts;
@@ -60,55 +61,16 @@ public class TracksOverviewCtrl extends SimpleFormController {
 	private IApplicationService applicationService;
 	private ITrackService trackService;
 	private ISenderService senderService;
-		
-	/**
-	 * create track filter.
-	 * @param user
-	 * @param cmd
-	 * @return
-	 */
-	private TrackFilterVo createTrackFilter(UserWithRoleVo user, TracksOverviewCmd cmd) {
-		TrackFilterVo trackFilter = new TrackFilterVo();
-		
-		trackFilter.setMaxCountOfRecords(TracksOverviewCmd.MAX_SIZE_RESULT_SET);
-		trackFilter.setUserId(user.getUsername());
-		trackFilter.setUserRole(user.getRole());
-		trackFilter.setGuestAccClosedTrEnabled(user.getOptions().getGuestAccClosedTrEnabled());
-		trackFilter.setGuestAccPrivTrEnabled(user.getOptions().getGuestAccPrivTrEnabled());
-				
-		if (!cmd.getSelectedSenderFilter().equals(
-			TracksOverviewCmd.STR_OPTION_VALUE_ALL.getValue())) {
-			trackFilter.setBySenderId(cmd.getSelectedSenderFilter());
-		}
-		
-		trackFilter.setByDateFrom(cmd.getSelectedDateFromFilter());
-		trackFilter.setByDateTo(cmd.getSelectedDateToFilter());
-		
-		String searchStr = cmd.getSelectedSearchStrFilter();
-		if (!StringUtils.isEmpty(searchStr)) {
-			searchStr = "%" + searchStr + "%";
-			trackFilter.setBySearchStr(searchStr);
-			log.debug(searchStr);
-		}		
-		return trackFilter;
-	}
 	
 	private void updateCommandObject(HttpServletRequest request, TracksOverviewCmd cmd) {
-		
 		UserWithRoleVo user = WebUtils.getCurrentUserWithRole();
-		
+		MapsUsedVo mapsUsed = user.getOptions().getMapsUsed();
+		cmd.setMapsUsedStr(mapsUsed.getMapsUsedStr());
+		cmd.setDefMapId(mapsUsed.getDefMapId());
 		cmd.buildUpTrackFilters(user, this.userService, this.senderService);
-		
-		TrackListResult trackListResult = 
-			this.trackService.getTracksAsRecent(
-				createTrackFilter(user, cmd));
 		List<SenderVo> senders =
 			this.senderService.getSenders(user.getUsername());
-		
 		cmd.buildUpSenderEntries(senders);
-		cmd.buildUpTrackEntries(request,
-			applicationService, senderService,
-			user, trackListResult);							
 	}
 
 	/* (non-Javadoc)
@@ -128,6 +90,12 @@ public class TracksOverviewCtrl extends SimpleFormController {
 			cmd.setTracksOverviewOptsRefresh(this.getTracksOverviewOptsRefresh());
 			cmd.setTrackOptsReleaseStatus(this.trackOptsReleaseStatus);
 			cmd.setTrackOptsActivityStatus(this.trackOptsActivityStatus);
+			cmd.setCloudmadeApiKey(
+				this.getApplicationService().getParameterValueAsString(
+					Parameter.CloudmadeApiKey));
+			MapsUsedVo mapsUsed = WebUtils.getCurrentUserWithRole().getOptions().getMapsUsed();
+			cmd.setMapsUsedStr(mapsUsed.getMapsUsedStr());
+			cmd.setDefMapId(mapsUsed.getDefMapId());
 			request.getSession().setAttribute(this.getCommandName(), cmd);
 		}
 		return cmd;
@@ -140,7 +108,6 @@ public class TracksOverviewCtrl extends SimpleFormController {
 	@Override
 	protected Map referenceData(HttpServletRequest request, Object command,
 		Errors errors) throws Exception {
-
 		TracksOverviewCmd cmd = (TracksOverviewCmd)command;
 		updateCommandObject(request, cmd);
 		return super.referenceData(request, command, errors);
@@ -154,26 +121,25 @@ public class TracksOverviewCtrl extends SimpleFormController {
 		HttpServletResponse response, Object command, BindException errors)
 		throws Exception {
 		TracksOverviewCmd cmd = (TracksOverviewCmd)command;
-		
 		String redirectUrl = null;
 		try {
 			UserWithRoleVo user = WebUtils.getCurrentUserWithRole();
 			redirectUrl = cmd.getActionExecutor().execute(
 				request, user, 
-				this.applicationService, this.trackService, 
+				this.applicationService, 
+				this.trackService,
+				this.senderService,
 				cmd);		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		ModelAndView mv = null;
 		if (StringUtils.isEmpty(redirectUrl)) {
 			updateCommandObject(request, cmd);
-			mv = super.onSubmit(request, response, command, errors); 
+			mv = super.onSubmit(request, response, command, errors);
 		} else {
 			mv = new ModelAndView("redirect:" + redirectUrl);
 		}
-				
 		return mv; 
 	}
 

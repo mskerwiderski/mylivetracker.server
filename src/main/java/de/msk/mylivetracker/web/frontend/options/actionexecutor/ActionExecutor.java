@@ -30,6 +30,8 @@ import de.msk.mylivetracker.web.frontend.options.OptionsCmd;
 public enum ActionExecutor {
 	ResetAllMasterData(new ResetAllMasterData()),
 	SaveAllMasterData(new SaveAllMasterData()),
+	RenewAutoLoginTicketForUser(new RenewAutoLoginTicketForUser()),
+	RenewAutoLoginTicketForGuest(new RenewAutoLoginTicketForGuest()),
 	ResetAllOptions(new ResetAllOptions()),
 	SaveAllOptions(new SaveAllOptions()),
 	ResetAllStatusPage(new ResetAllStatusPage()),
@@ -42,6 +44,8 @@ public enum ActionExecutor {
 	UpdateSender(new StoreSender()),
 	AddSender(new StoreSender()),
 	RemoveSender(new RemoveSender()),
+	ResetAllMaps(new ResetAllMaps()),
+	SaveAllMaps(new SaveAllMaps()),
 	ResetAllEmergency(new ResetAllEmergency()),
 	SaveAllEmergency(new SaveAllEmergency()),
 	SaveAndSendTestSms(new SaveAndSendTestSms());

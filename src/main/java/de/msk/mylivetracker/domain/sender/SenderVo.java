@@ -12,6 +12,7 @@ import de.msk.mylivetracker.commons.util.datetime.DateTime;
  * @version 000
  * 
  * history
+ * 002 01.09.2012 carrier added.
  * 001 18.11.2011 senderType added.
  * 000 initial 2011-08-11
  * 
@@ -20,6 +21,8 @@ public class SenderVo implements Serializable {
 
 	private static final long serialVersionUID = 7097707478860598895L;
 		
+	public static final SenderSymbolVo DEFAULT_SYMBOL = SenderSymbolVo.Phone;
+	
 	private String senderId;
 	private String senderType;
 	private String userId;
@@ -32,6 +35,7 @@ public class SenderVo implements Serializable {
 	private boolean authRequired;
 	private boolean active;
 	private String redirectTo;		
+	private SenderSymbolVo symbol = DEFAULT_SYMBOL;
 	
 	/**
 	 * constructor.
@@ -183,6 +187,14 @@ public class SenderVo implements Serializable {
 		this.redirectTo = redirectTo;
 	}
 
+	public SenderSymbolVo getSymbol() {
+		return symbol;
+	}
+
+	public void setSymbol(SenderSymbolVo symbol) {
+		this.symbol = symbol;
+	}
+
 	@Override
 	public String toString() {
 		return "SenderVo [senderId=" + senderId + ", senderType=" + senderType
@@ -191,6 +203,6 @@ public class SenderVo implements Serializable {
 			+ senderSwitches + ", authUsername=" + authUsername
 			+ ", authPlainPassword=" + authPlainPassword
 			+ ", authRequired=" + authRequired + ", active=" + active
-			+ ", redirectTo=" + redirectTo + "]";
+			+ ", redirectTo=" + redirectTo + ", symbol=" + symbol + "]";
 	}
 }

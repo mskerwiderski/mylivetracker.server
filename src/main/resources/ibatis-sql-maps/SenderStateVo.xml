@@ -14,7 +14,6 @@
     </resultMap>
     
 	<resultMap id="detailedSenderStateResult" class="senderState" extends="minSenderStateResult">
-		<result property="track" resultMap="TrackVo.minTrackResult" />   
 		<result property="position" resultMap="PositionVo.detailedPositionResult" />                       
     </resultMap>
     
@@ -25,7 +24,33 @@
         <result property="timeReceived"  column="RS_TIME_RECEIVED" />
         <result property="state"  column="RS_STATE" />                  
     </resultMap>
-            
+    
+    <select id="getSenderStatesOfTrack" parameterClass="java.util.Map" resultMap="detailedSenderStateResult">
+  		select 
+  			lp.POSITION_ID as P_POSITION_ID,
+	    	lp.SEQUENCE_ID as P_SEQUENCE_ID,
+	       	lp.TRACK_ID as P_TRACK_ID,     
+	       	lp.TIME_RECORDED as P_TIME_RECORDED,
+	       	lp.TIME_RECEIVED as P_TIME_RECEIVED,
+	       	lp.LATITUDE_IN_DECIMAL as P_LATITUDE_IN_DECIMAL,
+	       	lp.LONGITUDE_IN_DECIMAL as P_LONGITUDE_IN_DECIMAL,
+	       	lp.ACCURACY_IN_MTR as P_ACCURACY_IN_MTR,
+	       	lp.ALTITUDE_IN_MTR as P_ALTITUDE_IN_MTR,
+	       	lp.SPEED_IN_KM_PER_HOUR as P_SPEED_IN_KM_PER_HOUR,    
+	       	lp.ADDRESS as P_ADDRESS,
+	       	ls.SENDER_STATE_ID as S_SENDER_STATE_ID,		
+        	ls.TRACK_ID as S_TRACK_ID,
+        	ls.POSITION_ID as S_POSITION_ID,
+        	ls.TIME_RECEIVED as S_TIME_RECEIVED,
+        	ls.STATE as S_STATE
+  		from T_SENDER_STATE ls 
+			right outer join T_POSITION lp
+				on ls.POSITION_ID = lp.POSITION_ID   
+        where ls.TRACK_ID = #trackId#
+        and lp.SEQUENCE_ID >= #minSequenceId#
+        order by lp.SEQUENCE_ID asc		       
+  	</select>
+  	        
     <insert id="storeSenderState" parameterClass="senderState" >
     	insert into T_SENDER_STATE (
     		SENDER_STATE_ID,

@@ -17,7 +17,7 @@
      
     <jetm:monitoring>  
     	<jetm:bean-pattern>
-    		*Service    		  		
+    		*Service,*Dao    		  		
     	</jetm:bean-pattern>  		
 	</jetm:monitoring> 	
   	
@@ -43,16 +43,19 @@
    				<value>de.msk.mylivetracker.messages.layout</value>
    				<value>de.msk.mylivetracker.messages.login</value>
    				<value>de.msk.mylivetracker.messages.tracks-overview</value>
-   				<value>de.msk.mylivetracker.messages.track-as-google-maps</value>
+   				<value>de.msk.mylivetracker.messages.track-as-map</value>
     			<value>de.msk.mylivetracker.messages.track-as-status-info</value>
     			<value>de.msk.mylivetracker.messages.options</value>
-    			<value>de.msk.mylivetracker.messages.master-data</value>    			    			
+    			<value>de.msk.mylivetracker.messages.master-data</value>
+    			<value>de.msk.mylivetracker.messages.auto-login</value>    			    			
     			<value>de.msk.mylivetracker.messages.sender-maintenance</value>
+    			<value>de.msk.mylivetracker.messages.sender-symbols</value>
     			<value>de.msk.mylivetracker.messages.status-page</value>
     			<value>de.msk.mylivetracker.messages.emergency</value>
     			<value>de.msk.mylivetracker.messages.google-kml</value>    			
     			<value>de.msk.mylivetracker.messages.sms-templates</value>
     			<value>de.msk.mylivetracker.messages.format-utils</value>
+    			<value>de.msk.mylivetracker.messages.map</value>
    			</list>
   		</property>
  	</bean>
@@ -106,7 +109,7 @@
 	<bean id="dataSourceMyLiveTracker" 
 		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
-			<value>java:/comp/env/jdbc/MyLiveTrackerDb</value>
+			<value>java:/comp/env/jdbc/MyLiveTrackerDb2</value>
 		</property>
 	</bean>	
     
@@ -210,8 +213,8 @@
     </bean>
     
     <bean id="geocodingService"
-        class="de.msk.mylivetracker.service.geocoding.yahoo.GeocodingService">
-        <property name="name" value="Yahoo PlaceFinder" />
+        class="de.msk.mylivetracker.service.geocoding.cloudmade.CloudmadeGeocodingService">
+        <property name="name" value="Cloudmade Geocoder" />
         <property name="requestLimit" value="50000" />        
         <property name="applicationService" ref="applicationService" />
         <property name="statisticsService" ref="statisticsService" />        

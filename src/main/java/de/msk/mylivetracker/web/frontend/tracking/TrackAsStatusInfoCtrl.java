@@ -68,7 +68,7 @@ public class TrackAsStatusInfoCtrl extends AbstractTrackingCtrl {
 			
 			String googleMapsUrl = ReqUrlStr.create(
 				WebUtils.getApplicationBaseUrl(request),	
-				UrlUtils.URL_TRACK_AS_GOOGLE_MAPS_CTRL)
+				UrlUtils.URL_TRACK_AS_MAP_CTRL)
 				.addParamValues(reqParamValues).toString();
 			
 			model.put("valueStatusAsGoogleMaps", googleMapsUrl);

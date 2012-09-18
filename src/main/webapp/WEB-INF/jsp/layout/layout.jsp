@@ -81,7 +81,6 @@
 		WebUtils.getUserOptsLanguage(request);
 	request.setAttribute("userOptsLanguage", userOptsLanguage);	
 %>
-	  	
 <div id="layout-header" style="position: relative;z-index: 0;" class="mlt-header" >
 	<tiles:insertAttribute name="header" />
 </div>
@@ -93,6 +92,5 @@
 <div id="layout-footer" style="position: relative;z-index: 0;" class="mlt-footer">
 	<tiles:insertAttribute name="footer" />
 </div>
-
 </body>
 </html>

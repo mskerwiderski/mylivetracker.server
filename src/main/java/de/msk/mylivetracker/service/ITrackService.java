@@ -69,7 +69,9 @@ public interface ITrackService {
 	 * if cntCutPositions is zero or null, all position are loaded.
 	 * @return the track or <code>null</code> if the track was not found.
 	 */
-	public TrackVo getTrackAsDetailed(String trackId, Integer cntCutPositions);
+	public TrackVo getTrackAsDetailed(String trackId, Integer cntCutPositions,
+		boolean messagesIncl, boolean emergencySignalsIncl,
+		boolean cardiacFunctionsIncl, boolean mobNwCellsIncl, boolean senderStatesIncl);
 		
 	/**
 	 * get recent track.

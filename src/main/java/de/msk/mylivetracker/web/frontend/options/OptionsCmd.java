@@ -9,18 +9,22 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 
+import de.msk.mylivetracker.domain.sender.SenderSymbolVo;
 import de.msk.mylivetracker.domain.sender.SenderSwitchesVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
+import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
 import de.msk.mylivetracker.domain.user.UserEmergencyVo;
 import de.msk.mylivetracker.domain.user.UserMasterDataVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserStatusPageVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
+import de.msk.mylivetracker.security.UsernamePasswordAuthenticationFilter;
 import de.msk.mylivetracker.web.frontend.options.actionexecutor.ActionExecutor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
 import de.msk.mylivetracker.web.options.IntOptionDsc;
 import de.msk.mylivetracker.web.options.StrOptionDsc;
 import de.msk.mylivetracker.web.util.WebUtils;
+import de.msk.mylivetracker.web.util.request.ReqUrlStr;
 
 /**
  * OptionsCmd.
@@ -53,14 +57,21 @@ public class OptionsCmd {
 	private List<IntOptionDsc> stPgTrOptsFlyToMode;
 	private List<IntOptionDsc> stPgTrOptsKeepRecentPos;
 	private List<IntOptionDsc> stPgTrOptsUpdateInterval;
-		
+	
+	private List<IntOptionDsc> supportedMaps;
+	
 	private UserMasterDataVo userMasterData;	
+	private UserAutoLoginVo userAutoLogin;
 	private UserOptionsVo userOptions;
+	private String homeLocLatitudeStr;
+	private String homeLocLongitudeStr;
+	
 	private UserStatusPageVo userStatusPage;
 	private UserEmergencyVo userEmergency;
 	private int senderLimit;
 	private List<SenderEntry> senderEntries;
 	private List<SenderEntry> redirectEntries;
+	private List<SymbolEntry> symbolEntries;
 	private Map<String, SenderVo> senderMap;
 	private String selectedSenderId;
 	private SenderVo senderDetails;
@@ -69,8 +80,11 @@ public class OptionsCmd {
 
 	private String supportedSenderSwitches = SenderSwitchesVo.supported();
 	
+	private String autoLoginUrlForUser;
+	private String autoLoginUrlForGuest;
+	
 	private String iframeTrackAsStatusInfo;
-	private String iframeTrackAsGoogleMaps;
+	private String iframeTrackAsMap;
 	
 	private static final String IFRAME_TEMPLATE =
 		"<iframe style=\"width:$WIDTH$;height:$HEIGHT$\" " +
@@ -80,6 +94,16 @@ public class OptionsCmd {
 	
 	public void buildUpLinks(HttpServletRequest request,
 		String applicationBaseUrl, UserWithoutRoleVo user) {
+		
+		autoLoginUrlForUser = ReqUrlStr.
+			create(applicationBaseUrl, "login").
+			addParamValue(UsernamePasswordAuthenticationFilter.PARAM_USER_ID, 
+				userAutoLogin.getAutoLoginTicketForUser()).toString();
+		
+		autoLoginUrlForGuest = ReqUrlStr.
+			create(applicationBaseUrl, "login").
+			addParamValue(UsernamePasswordAuthenticationFilter.PARAM_USER_ID, 
+				userAutoLogin.getAutoLoginTicketForGuest()).toString();
 		
 		if (StringUtils.isEmpty(user.getStatusPage().getLinkTrackAsStatusInfo())) {
 			this.iframeTrackAsStatusInfo = null;
@@ -104,8 +128,8 @@ public class OptionsCmd {
 				WebUtils.getMessage(request, "statuspage.iframe.not.supported"));
 		}
 		
-		if (StringUtils.isEmpty(user.getStatusPage().getLinkTrackAsGoogleMaps())) {
-			this.iframeTrackAsGoogleMaps = null;
+		if (StringUtils.isEmpty(user.getStatusPage().getLinkTrackAsMap())) {
+			this.iframeTrackAsMap = null;
 		} else {
 			String width = (user.getStatusPage().getWindowWidth() == null ? 
 				"null" : user.getStatusPage().getWindowWidth().toString() + "px");
@@ -115,15 +139,15 @@ public class OptionsCmd {
 				width = "100%";
 				height = "100%";
 			}
-			this.iframeTrackAsGoogleMaps = StringUtils.replace(
+			this.iframeTrackAsMap = StringUtils.replace(
 				IFRAME_TEMPLATE, "$WIDTH$", width);
-			this.iframeTrackAsGoogleMaps = StringUtils.replace(
-				this.iframeTrackAsGoogleMaps, "$HEIGHT$", height);
-			this.iframeTrackAsGoogleMaps = StringUtils.replace(
-				this.iframeTrackAsGoogleMaps, "$SRC$", 
-				user.getStatusPage().getLinkTrackAsGoogleMaps());
-			this.iframeTrackAsGoogleMaps = StringUtils.replace(
-				this.iframeTrackAsGoogleMaps, "$NOTSUPPORTED$", 
+			this.iframeTrackAsMap = StringUtils.replace(
+				this.iframeTrackAsMap, "$HEIGHT$", height);
+			this.iframeTrackAsMap = StringUtils.replace(
+				this.iframeTrackAsMap, "$SRC$", 
+				user.getStatusPage().getLinkTrackAsMap());
+			this.iframeTrackAsMap = StringUtils.replace(
+				this.iframeTrackAsMap, "$NOTSUPPORTED$", 
 				WebUtils.getMessage(request, "statuspage.iframe.not.supported"));
 		}
 	}
@@ -146,6 +170,14 @@ public class OptionsCmd {
 				this.redirectEntries.add(new SenderEntry(sender, null));
 			}
 			this.senderMap.put(sender.getSenderId(), sender);
+		}
+	}
+	
+	public void buildUpSymbolEntries(HttpServletRequest request, 
+		List<SenderVo> senders) {
+		this.symbolEntries = new ArrayList<SymbolEntry>();
+		for (SenderSymbolVo carrier : SenderSymbolVo.values()) {
+			this.symbolEntries.add(new SymbolEntry(request, carrier));
 		}
 	}
 	
@@ -267,6 +299,20 @@ public class OptionsCmd {
 	}	
 
 	/**
+	 * @return the supportedMaps
+	 */
+	public List<IntOptionDsc> getSupportedMaps() {
+		return supportedMaps;
+	}
+
+	/**
+	 * @param supportedMaps the supportedMaps to set
+	 */
+	public void setSupportedMaps(List<IntOptionDsc> supportedMaps) {
+		this.supportedMaps = supportedMaps;
+	}
+
+	/**
 	 * @return the commonsOptsYesNo
 	 */
 	public List<BoolOptionDsc> getCommonsOptsYesNo() {
@@ -345,6 +391,15 @@ public class OptionsCmd {
 	public void setUserMasterData(UserMasterDataVo userMasterData) {
 		this.userMasterData = userMasterData;
 	}
+	
+	public UserAutoLoginVo getUserAutoLogin() {
+		return userAutoLogin;
+	}
+
+	public void setUserAutoLogin(UserAutoLoginVo userAutoLogin) {
+		this.userAutoLogin = userAutoLogin;
+	}
+
 	/**
 	 * @return the userOptions
 	 */
@@ -357,6 +412,20 @@ public class OptionsCmd {
 	public void setUserOptions(UserOptionsVo userOptions) {
 		this.userOptions = userOptions;
 	}				
+	public String getHomeLocLatitudeStr() {
+		return homeLocLatitudeStr;
+	}
+	public void setHomeLocLatitudeStr(String homeLocLatitudeStr) {
+		this.homeLocLatitudeStr = homeLocLatitudeStr;
+	}
+	public String getHomeLocLongitudeStr() {
+		return homeLocLongitudeStr;
+	}
+
+	public void setHomeLocLongitudeStr(String homeLocLongitudeStr) {
+		this.homeLocLongitudeStr = homeLocLongitudeStr;
+	}
+
 	/**
 	 * @return the userStatusPage
 	 */
@@ -409,6 +478,14 @@ public class OptionsCmd {
 	 */
 	public void setRedirectEntries(List<SenderEntry> redirectEntries) {
 		this.redirectEntries = redirectEntries;
+	}
+
+	public List<SymbolEntry> getSymbolEntries() {
+		return symbolEntries;
+	}
+
+	public void setSymbolEntries(List<SymbolEntry> symbolEntries) {
+		this.symbolEntries = symbolEntries;
 	}
 
 	/**
@@ -489,18 +566,28 @@ public class OptionsCmd {
 		this.iframeTrackAsStatusInfo = iframeTrackAsStatusInfo;
 	}
 
-	/**
-	 * @return the iframeTrackAsGoogleMaps
-	 */
-	public String getIframeTrackAsGoogleMaps() {
-		return iframeTrackAsGoogleMaps;
+	public String getIframeTrackAsMap() {
+		return iframeTrackAsMap;
 	}
 
-	/**
-	 * @param iframeTrackAsGoogleMaps the iframeTrackAsGoogleMaps to set
-	 */
-	public void setIframeTrackAsGoogleMaps(String iframeTrackAsGoogleMaps) {
-		this.iframeTrackAsGoogleMaps = iframeTrackAsGoogleMaps;
+	public void setIframeTrackAsMap(String iframeTrackAsMap) {
+		this.iframeTrackAsMap = iframeTrackAsMap;
+	}
+
+	public String getAutoLoginUrlForUser() {
+		return autoLoginUrlForUser;
+	}
+
+	public void setAutoLoginUrlForUser(String autoLoginUrlForUser) {
+		this.autoLoginUrlForUser = autoLoginUrlForUser;
+	}
+
+	public String getAutoLoginUrlForGuest() {
+		return autoLoginUrlForGuest;
+	}
+
+	public void setAutoLoginUrlForGuest(String autoLoginUrlForGuest) {
+		this.autoLoginUrlForGuest = autoLoginUrlForGuest;
 	}
 
 	/**

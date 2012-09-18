@@ -17,7 +17,7 @@ import de.msk.mylivetracker.domain.sender.SenderVo;
  * 
  */
 public interface ISenderDao {
-
+	
 	/**
 	 * get sender.
 	 * @param senderId - the sender id.

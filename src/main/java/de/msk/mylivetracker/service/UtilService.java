@@ -45,17 +45,30 @@ public class UtilService implements IUtilService {
 		if (runDemo) {
 			this.demoService.runDemo();
 			log.debug("demo started.");
+		} else {
+			log.debug("demo NOT started.");
 		}
-		utilTaskExecutor.execute(
-			new TrackCleaner(
-				this.applicationService.getParameterValueAsLong(
-					Parameter.TrackLifeTimeInMSecs), 
-				this.trackService));
-		utilTaskExecutor.execute(
-			new StatisticsCleaner(
-				this.applicationService.getParameterValueAsLong(
-					Parameter.LogLifeTimeInMSecs), 
-				this.statisticsService));			
+		
+		boolean runCleanTasks =
+			this.applicationService.
+			getParameterValueAsBoolean(
+				Parameter.RunCleanTasksAfterStartup);
+		if (runCleanTasks) {
+			utilTaskExecutor.execute(
+				new TrackCleaner(
+					this.applicationService.getParameterValueAsLong(
+						Parameter.TrackLifeTimeInMSecs), 
+					this.trackService));
+			utilTaskExecutor.execute(
+				new StatisticsCleaner(
+					this.applicationService.getParameterValueAsLong(
+						Parameter.LogLifeTimeInMSecs), 
+					this.statisticsService));
+			log.debug("clean tasks started.");
+		} else {
+			log.debug("clean tasks NOT started.");
+		}
+		
 		this.statisticsService.logApplicationStartUp();
 	}
 

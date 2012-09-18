@@ -45,8 +45,8 @@
             	<prop key="/admin.do">adminCtrl</prop>
             	<prop key="/login.sec">loginCtrl</prop>
             	<prop key="/tracks_overview.do">tracksOverviewCtrl</prop>
-            	<prop key="/track_as_google_maps.sec">trackAsGoogleMapsCtrl</prop>
-            	<prop key="/track_as_cloudmade_maps.sec">trackAsCloudmadeMapsCtrl</prop>
+            	<prop key="/tracks_list.do">tracksListCtrl</prop>
+            	<prop key="/track_as_map.sec">trackAsMapCtrl</prop>
             	<prop key="/track_as_status_info.sec">trackAsStatusInfoCtrl</prop>
             	<prop key="/track_as_google_earth.sec">trackAsGoogleEarthCtrl</prop>
             	<prop key="/track_as_kml_export.sec">trackAsKmlExportCtrl</prop>
@@ -119,6 +119,12 @@
         <property name="trackService" ref="trackService" />
         <property name="senderService" ref="senderService" />                                        
     </bean>
+    
+    <bean name="tracksListCtrl"
+        class="de.msk.mylivetracker.web.frontend.tracksoverview.TracksListCtrl">
+        <property name="senderService" ref="senderService" />
+        <property name="trackService" ref="trackService" />
+    </bean>
            
     <bean name="trackAsStatusInfoCtrl"
         class="de.msk.mylivetracker.web.frontend.tracking.TrackAsStatusInfoCtrl">    
@@ -134,24 +140,10 @@
         <property name="statusParamsService" ref="statusParamsService" />                                                                     
     </bean>        
     
-    <bean name="trackAsGoogleMapsCtrl"
-        class="de.msk.mylivetracker.web.frontend.tracking.TrackAsGoogleMapsCtrl">     
-        <property name="view" value="track_as_google_maps"/>
-        <property name="viewLayoutSimple" value="track_as_google_maps_layout_simple"/>
-        <property name="trackAsDetailed" value="true"/>
-        <property name="useJsonReqId" value="true"/>        
-        <property name="applicationService" ref="applicationService" />
-        <property name="ticketService" ref="ticketService" />
-        <property name="senderService" ref="senderService" />
-        <property name="userService" ref="userService" />        
-        <property name="trackService" ref="trackService" />   
-        <property name="statusParamsService" ref="statusParamsService" />
-    </bean>         
-    
-    <bean name="trackAsCloudmadeMapsCtrl"
-        class="de.msk.mylivetracker.web.frontend.tracking.TrackAsCloudmadeMapsCtrl">     
-        <property name="view" value="track_as_cloudmade_maps"/>
-        <property name="viewLayoutSimple" value="track_as_cloudmade_maps_layout_simple"/>
+    <bean name="trackAsMapCtrl"
+        class="de.msk.mylivetracker.web.frontend.tracking.TrackAsMapCtrl">     
+        <property name="view" value="track_as_map"/>
+        <property name="viewLayoutSimple" value="track_as_map_layout_simple"/>
         <property name="trackAsDetailed" value="true"/>
         <property name="useJsonReqId" value="true"/>        
         <property name="applicationService" ref="applicationService" />
@@ -251,6 +243,7 @@
         <property name="stPgTrOptsFlyToMode" ref="liveTrackingOptsFlyToMode" />
         <property name="stPgTrOptsKeepRecentPos" ref="liveTrackingOptsKeepRecentPos" />
 		<property name="stPgTrOptsUpdateInterval" ref="liveTrackingOptsUpdateInterval" />
+		<property name="supportedMaps" ref="supportedMaps" />
 		<property name="commandClass" 
         	value="de.msk.mylivetracker.web.frontend.options.OptionsCmd"/>
         <property name="commandName" value="optionsCmd" />

@@ -54,7 +54,7 @@ public class OptionsVdtor implements Validator {
 		if (StringUtils.isEmpty(emailAddress)) return false;
 		String  expression="^([\\-\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";  
 		CharSequence inputStr = emailAddress;  
-		Pattern pattern = Pattern.compile(expression,Pattern.CASE_INSENSITIVE);  
+		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);  
 		Matcher matcher = pattern.matcher(inputStr);  
 		return matcher.matches();  
 	} 
@@ -62,6 +62,24 @@ public class OptionsVdtor implements Validator {
 	private static boolean isValidPhoneNumber(String phoneNumber) {
 		if (StringUtils.isEmpty(phoneNumber)) return false;
 		return StringUtils.containsOnly(phoneNumber, "0123456789.-()/");
+	}
+	
+	private static boolean isValidHomeAddressDetail(String detail) {
+		if (StringUtils.isEmpty(detail)) return true;
+		String  expression="^[ a-z0-9ŠšŸ§-]*$";
+		CharSequence inputStr = detail;  
+		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);  
+		Matcher matcher = pattern.matcher(inputStr);  
+		return matcher.matches();  
+	}
+	
+	private static boolean isValidHomePositionDetail(String detail) {
+		if (StringUtils.isEmpty(detail)) return true;
+		String  expression="^[+-]?\\d*\\.?\\d*$";
+		CharSequence inputStr = detail;  
+		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);  
+		Matcher matcher = pattern.matcher(inputStr);  
+		return matcher.matches();  
 	}
 	
 	/* (non-Javadoc)
@@ -96,6 +114,38 @@ public class OptionsVdtor implements Validator {
 						new Object[] { PASSWORD_MIN_LEN, PASSWORD_MAX_LEN },
 						"INVALID PASSWORD");
 				}
+			}
+		} else if (cmd.getActionExecutor().equals(ActionExecutor.SaveAllOptions)) {
+			if (!isValidHomeAddressDetail(cmd.getUserOptions().getHomeLocCountry()) ||
+				!isValidHomeAddressDetail(cmd.getUserOptions().getHomeLocCity()) ||
+				!isValidHomeAddressDetail(cmd.getUserOptions().getHomeLocStreet()) ||
+				!isValidHomeAddressDetail(cmd.getUserOptions().getHomeLocHousenumber())) {
+				errors.rejectValue("userOptions.homeLocAddress", 
+					"options.home.location.address.error.invalid");			
+			}
+			if (!isValidHomePositionDetail(cmd.getHomeLocLatitudeStr()) ||
+				!isValidHomePositionDetail(cmd.getHomeLocLongitudeStr())) {
+				errors.rejectValue("userOptions.homeLocLatitude", 
+					"options.home.location.position.error.invalid");
+			} else {
+				if (StringUtils.isEmpty(cmd.getHomeLocLatitudeStr())) {
+					cmd.getUserOptions().setHomeLocLatitude(null);
+				} else {
+					cmd.getUserOptions().setHomeLocLatitude(Double.valueOf(cmd.getHomeLocLatitudeStr()));
+				}
+				if (StringUtils.isEmpty(cmd.getHomeLocLatitudeStr())) {
+					cmd.getUserOptions().setHomeLocLongitude(null);
+				} else {
+					cmd.getUserOptions().setHomeLocLongitude(Double.valueOf(cmd.getHomeLocLongitudeStr()));
+				}
+			}
+		} else if (cmd.getActionExecutor().equals(ActionExecutor.CheckHomeLocation)) {
+			if (!isValidHomeAddressDetail(cmd.getUserOptions().getHomeLocCountry()) ||
+				!isValidHomeAddressDetail(cmd.getUserOptions().getHomeLocCity()) ||
+				!isValidHomeAddressDetail(cmd.getUserOptions().getHomeLocStreet()) ||
+				!isValidHomeAddressDetail(cmd.getUserOptions().getHomeLocHousenumber())) {
+				errors.rejectValue("userOptions.homeLocAddress", 
+					"options.home.location.address.error.invalid");			
 			}
 		} else if (cmd.getActionExecutor().equals(ActionExecutor.UpdateSender) ||
 			cmd.getActionExecutor().equals(ActionExecutor.AddSender)) {
@@ -149,6 +199,11 @@ public class OptionsVdtor implements Validator {
 						"INVALID HEIGHT");
 				}
 			}			
+		} else if (cmd.getActionExecutor().equals(ActionExecutor.SaveAllMaps)) {
+			if (!cmd.getUserOptions().getMapsUsed().isDefMapIdValid()) {
+				errors.rejectValue("userOptions.mapsUsed.defMapId", 
+					"maps.error.defaultMap.invalid");
+			}
 		} else if (cmd.getActionExecutor().equals(ActionExecutor.SaveAllEmergency)) {
 			if (cmd.getUserEmergency().getSmsEnabled() &&
 				!isValidPhoneNumber(cmd.getUserEmergency().getSmsSender())) {

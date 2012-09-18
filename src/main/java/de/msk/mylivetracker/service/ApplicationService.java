@@ -80,14 +80,6 @@ public class ApplicationService implements IApplicationService {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IApplicationService#getGoogleApiKey()
-	 */
-	@Override
-	public String getGoogleApiKey() {
-		return this.getParameterValueAsString(Parameter.GoogleApiKey);		
-	}	
-
-	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.IApplicationService#getParameterValueAsString(de.msk.mylivetracker.service.IApplicationService.Parameter)
 	 */
 	@Override

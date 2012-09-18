@@ -38,7 +38,8 @@ public class ResetAllMasterData implements IAction {
 		ITrackService trackService, UserWithoutRoleVo user, OptionsCmd cmd,
 		MessageSource messageSource, Locale locale)
 		throws ActionExecutionException {
-		cmd.setUserMasterData(user.getMasterData().copyWoPwd());	
+		cmd.setUserMasterData(user.getMasterData().copyWoPwd());
+		cmd.setUserAutoLogin(user.getAutoLogin().copy());
 		cmd.setInfoMessage(messageSource.getMessage(
 			"masterdata.success.resetted", null, locale));
 	}

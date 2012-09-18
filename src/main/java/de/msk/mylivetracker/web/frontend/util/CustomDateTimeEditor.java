@@ -4,6 +4,8 @@ import java.beans.PropertyEditorSupport;
 import java.text.ParseException;
 import java.util.TimeZone;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
@@ -21,6 +23,8 @@ import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
  * 
  */
 public class CustomDateTimeEditor extends PropertyEditorSupport {
+	private static final Log log = LogFactory.getLog(CustomDateTimeEditor.class);
+	
 	private final String dateFormat;
 	private final boolean allowEmpty;
 	private final UserWithoutRoleVo user;
@@ -36,6 +40,8 @@ public class CustomDateTimeEditor extends PropertyEditorSupport {
 	 */
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
+		log.debug("setAsText");
+		log.debug("dateStr=" + text);
 		if (this.allowEmpty && !StringUtils.hasText(text)) {
 			// Treat empty String as null value.
 			setValue(null);
@@ -48,6 +54,7 @@ public class CustomDateTimeEditor extends PropertyEditorSupport {
 				throw new IllegalArgumentException("Could not parse date: " + e.getMessage(), e);
 			}
 		}
+		log.debug("dateObj=" + this.getValue());
 	}
 
 	/**
@@ -55,8 +62,12 @@ public class CustomDateTimeEditor extends PropertyEditorSupport {
 	 */
 	@Override
 	public String getAsText() {
+		log.debug("getAsText");
 		DateTime value = (DateTime)getValue();
-		return (value != null ? value.getAsStr(
+		log.debug("dateObj=" + value);
+		String res = (value != null ? value.getAsStr(
 			TimeZone.getTimeZone(user.getOptions().getTimeZone()), this.dateFormat) : "");
+		log.debug("dateStr=" + res);
+		return res;
 	}
 }

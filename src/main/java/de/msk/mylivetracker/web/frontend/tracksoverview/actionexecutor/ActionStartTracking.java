@@ -6,11 +6,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.msk.mylivetracker.domain.StatusParamsVo;
+import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.ISenderService;
 import de.msk.mylivetracker.service.ITrackService;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
-import de.msk.mylivetracker.web.frontend.tracksoverview.command.TrackEntry;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 import de.msk.mylivetracker.web.util.request.ReqParamValues;
 import de.msk.mylivetracker.web.util.request.ReqUrlStr;
@@ -43,26 +44,27 @@ public class ActionStartTracking implements IAction {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.IAction#execute(javax.servlet.http.HttpServletRequest, de.msk.mylivetracker.domain.user.UserWithRoleVo, de.msk.mylivetracker.service.IApplicationService, de.msk.mylivetracker.service.ITrackService, de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd)
+	 * @see de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.IAction#execute(javax.servlet.http.HttpServletRequest, de.msk.mylivetracker.domain.user.UserWithRoleVo, de.msk.mylivetracker.service.IApplicationService, de.msk.mylivetracker.service.ITrackService, de.msk.mylivetracker.service.ISenderService, de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd)
 	 */
 	@Override
 	public String execute(HttpServletRequest request, UserWithRoleVo user,
 		IApplicationService applicationService, ITrackService trackService,
-		TracksOverviewCmd cmd) throws ActionExecutionException {
-		TrackEntry selectedTrackEntry =
-			cmd.getTrackEntries().get(cmd.getSelectedTrackEntryIdx());
+		ISenderService senderService, TracksOverviewCmd cmd)
+		throws ActionExecutionException {
+
+		TrackVo track = trackService.getTrackAsMin(cmd.getSelectedTrackId());
 		
 		ReqParamValues reqParamValues = ReqParamValues.create()
 			.add(AbstractTrackingCtrl.PARAM_REQ_TYPE, 
 				this.requestType.toString())
 			.add(AbstractTrackingCtrl.PARAM_TRACK_ID,
-				selectedTrackEntry.getTrack().getTrackId())
+				cmd.getSelectedTrackId())
 			.add(AbstractTrackingCtrl.PARAM_SHOW_TRACK_INFO,
 				true)
 			.add(AbstractTrackingCtrl.PARAM_WINDOW_FULLSCREEN,
 				true);
 		
-		if (selectedTrackEntry.getTrack().isActive()) {
+		if (track.isActive()) {
 			reqParamValues
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_LIVE,
 					cmd.getSelectedLiveTrackingOpt())	

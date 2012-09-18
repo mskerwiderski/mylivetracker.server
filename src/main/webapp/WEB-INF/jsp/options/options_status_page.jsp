@@ -332,14 +332,14 @@
 	</tr>	
 	<tr>
 		<td>
-			<textarea rows="4" 
-				style="font-family:Courier;margin-left: 4px;width:98%"
+			<textarea rows="4" readonly="readonly"
+				style="background: #ebebeb;font-family:Courier;margin-left: 4px;width:98%"
 			><c:out value="${optionsCmd.iframeTrackAsStatusInfo}" /></textarea>			
 		</td>
 		<td>
-			<textarea rows="4" 
-				style="font-family:Courier;margin-left: 4px;width:98%"
-			><c:out value="${optionsCmd.iframeTrackAsGoogleMaps}" /></textarea>
+			<textarea rows="4" readonly="readonly"
+				style="background: #ebebeb;font-family:Courier;margin-left: 4px;width:98%"
+			><c:out value="${optionsCmd.iframeTrackAsMap}" /></textarea>
 		</td>
 		<td>
 			&nbsp;
@@ -362,14 +362,14 @@
 	</tr>	
 	<tr>
 		<td>
-			<textarea rows="2" 
-				style="font-family:Courier;margin-left: 4px;width:98%"
+			<textarea rows="2" readonly="readonly"
+				style="background: #ebebeb;font-family:Courier;margin-left: 4px;width:98%"
 			><c:out value="${optionsCmd.userStatusPage.linkTrackAsStatusInfo}" /></textarea>			
 		</td>
 		<td>
-			<textarea rows="2" 
-				style="font-family:Courier;margin-left: 4px;width:98%"
-			><c:out value="${optionsCmd.userStatusPage.linkTrackAsGoogleMaps}" /></textarea>
+			<textarea rows="2" readonly="readonly"
+				style="background: #ebebeb;font-family:Courier;margin-left: 4px;width:98%"
+			><c:out value="${optionsCmd.userStatusPage.linkTrackAsMap}" /></textarea>
 		</td>
 		<td>
 			&nbsp;
@@ -384,7 +384,7 @@
 		</td>
 		<td> 
 			<div style="height:33px;margin-left:4px;margin-top:4px;" class="mlt-button">
-				<a href="<c:out value="${optionsCmd.userStatusPage.linkTrackAsGoogleMaps}" />"
+				<a href="<c:out value="${optionsCmd.userStatusPage.linkTrackAsMap}" />"
 					target="_blank"><spring:message code='statuspage.preview.google.maps' /></a>
 			</div>		
 		</td>

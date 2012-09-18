@@ -493,7 +493,7 @@ public class StorePositionProcessor extends Thread {
 						new LatLonPos(
 							dataReceived.getPosition().getLatitudeInDecimal(), 
 							dataReceived.getPosition().getLongitudeInDecimal()),
-					storePositionDsc.user.getOptions().getGoogleLanguage()));
+					storePositionDsc.user.getOptions().getGeocoderLanguage()));
 			}
 			SenderVo sender = storePositionDsc.getDataReceived().
 				getSenderFromRequest().getSender();

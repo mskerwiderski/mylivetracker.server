@@ -95,6 +95,26 @@ public class SenderService implements ISenderService {
 	}
 
 	/* (non-Javadoc)
+	 * @see de.msk.mylivetracker.service.ISenderService#senderExists(java.lang.String)
+	 */
+	@Override
+	public boolean senderExists(String senderId) {
+		boolean res = false;
+		if (StringUtils.isEmpty(senderId)) return res;
+		
+		res = senderCache.isKeyInCache(senderId);
+		
+		if (!res) {
+			SenderVo sender = senderDao.getSender(senderId);
+			if (sender != null) {
+				senderCache.put(new Element(senderId, sender));
+				res = true;
+			}
+		}
+		return res;
+	}
+
+	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.ISenderService#getSender(java.lang.String)
 	 */
 	public SenderVo getSender(String senderId) {

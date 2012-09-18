@@ -25,6 +25,52 @@
 	</tr>
 	<tr>
 		<td colspan="2">
+			&nbsp;<b><i>Release v1.4.0 (01.10.2012)</i></b>&nbsp;						
+		</td>
+	</tr>
+	<tr>
+		<td style="width:30px;text-align: center">&nbsp;00&nbsp;</td>
+		<td>
+			&nbsp;New features:&nbsp;<br>
+			&nbsp;* Overview page as table or as map with recent positions of all active tracks.&nbsp;<br>
+			&nbsp;* Auto refresh of overview page is done via AJAX without a need of reloading the whole page.&nbsp;<br>
+			&nbsp;* Auto login URLs for Users and Guests.&nbsp;<br>
+			&nbsp;* Sender specific symbols for recent position on map.&nbsp;<br>			
+		</td>
+	</tr>
+	<tr>
+		<td style="width:30px;text-align: center">&nbsp;00&nbsp;</td>
+		<td>
+			&nbsp;Changes:&nbsp;<br>
+			&nbsp;* Performance improvements when displaying big tracks the first time on the map.&nbsp;<br>
+			&nbsp;* New style integrated: Smoothness.&nbsp;<br>
+			&nbsp;* Maps are displayed via Leaflet API by Cloudmade (Google Maps API is not used anymore):&nbsp;<br>
+			&nbsp;&nbsp;&nbsp;o Many improvements of icon popups for start position, recent position, home location, messages and emergency signals.&nbsp;<br>
+			&nbsp;&nbsp;&nbsp;o only OSM map is displayed (Google Maps view, satellite view and terrain view are not available anymore).&nbsp;<br>
+			&nbsp;&nbsp;&nbsp;o show/hide track feature has been removed for now (maybe comes back in future).&nbsp;<br>
+			&nbsp;&nbsp;&nbsp;o timestamp popups feature has been removed for now (maybe comes back in future).&nbsp;<br>
+			&nbsp;* Geocoding and Reverse Geocoding is done by Cloudmade Geocoder (Google Geocoder and Yahoo Place Finder are not used anymore):&nbsp;<br>
+			&nbsp;&nbsp;&nbsp;o Options for home location address improved.&nbsp;<br>
+			&nbsp;* Following libraries updated:&nbsp;<br>		
+			&nbsp;&nbsp;&nbsp;o JQuery v1.8.0&nbsp;<br>	
+			&nbsp;&nbsp;&nbsp;o JQuery-UI v1.8.23&nbsp;<br>
+			&nbsp;&nbsp;&nbsp;o JQuery DataTables v1.9.3&nbsp;<br>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:30px;text-align: center">&nbsp;01&nbsp;</td>
+		<td>
+			&nbsp;Bugfixes:&nbsp;<br>
+			&nbsp;* fixed: Status page: When displaying the track the first time, the 'recent positions'-parameter is ignored.&nbsp;<br>			
+		</td>
+	</tr>		
+	<tr>
+		<td colspan="2">
+			&nbsp;						
+		</td>		
+	</tr>
+	<tr>
+		<td colspan="2">
 			&nbsp;<b><i>Release v1.3.0 (18.11.2011)</i></b>&nbsp;						
 		</td>
 	</tr>

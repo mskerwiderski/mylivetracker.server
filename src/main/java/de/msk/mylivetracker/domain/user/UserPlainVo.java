@@ -25,12 +25,13 @@ public class UserPlainVo implements Serializable {
 	private String emailAddress;
 	private String password;
 	private UserRole role;
-	protected Integer senderLimit;	
-	protected boolean enabled;
-
+	private Integer senderLimit;	
+	private boolean enabled;
+	private String language;
+	
 	public UserPlainVo(String userId, String lastName, String firstName,
-		String emailAddress, String password, UserRole role,
-		Integer senderLimit, boolean enabled) {
+			String emailAddress, String password, UserRole role,
+			Integer senderLimit, boolean enabled, String language) {
 		this.userId = userId;
 		this.lastName = lastName;
 		this.firstName = firstName;
@@ -39,17 +40,16 @@ public class UserPlainVo implements Serializable {
 		this.role = role;
 		this.senderLimit = senderLimit;
 		this.enabled = enabled;
+		this.language = language;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "UserPlainVo [userId=" + userId + ", lastName=" + lastName
 			+ ", firstName=" + firstName + ", emailAddress=" + emailAddress
 			+ ", password=" + password + ", role=" + role
-			+ ", senderLimit=" + senderLimit + ", enabled=" + enabled + "]";
+			+ ", senderLimit=" + senderLimit + ", enabled=" + enabled
+			+ ", language=" + language + "]";
 	}
 
 	/**
@@ -106,5 +106,9 @@ public class UserPlainVo implements Serializable {
 	 */
 	public boolean isEnabled() {
 		return enabled;
-	}	
+	}
+
+	public String getLanguage() {
+		return language;
+	}
 }

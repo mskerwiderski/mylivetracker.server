@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.ISenderService;
 import de.msk.mylivetracker.service.ITrackService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 
@@ -29,19 +30,17 @@ public abstract class AbstractActionWithoutRedirect implements IAction {
 		// noop.
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.IAction#execute(javax.servlet.http.HttpServletRequest, de.msk.mylivetracker.domain.user.UserWithRoleVo, de.msk.mylivetracker.service.IApplicationService, de.msk.mylivetracker.service.ITrackService, de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd)
-	 */
 	@Override
 	public String execute(HttpServletRequest request, UserWithRoleVo user,
 		IApplicationService applicationService, ITrackService trackService,
-		TracksOverviewCmd cmd) throws ActionExecutionException {
-		executeAux(user, trackService, cmd);
+		ISenderService senderService, TracksOverviewCmd cmd) throws ActionExecutionException {
+		executeAux(user, trackService, senderService, cmd);
 		return null;
 	}	
 	
 	public abstract void executeAux(
 		UserWithRoleVo user,
 		ITrackService trackService,
+		ISenderService senderService,
 		TracksOverviewCmd cmd) throws ActionExecutionException;
 }

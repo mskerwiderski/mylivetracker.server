@@ -30,6 +30,11 @@ public class GpsUtils {
 	}
 	
 	public static Double distanceInMtr(PositionVo pos1, PositionVo pos2) {
+		if ((pos1 == null) || (pos2 == null) || 
+			(pos1.getLatitudeInDecimal() == null) || (pos1.getLongitudeInDecimal() == null) ||
+			(pos2.getLatitudeInDecimal() == null) || (pos2.getLongitudeInDecimal() == null)) {
+			return null;
+		}
 		Double earthRadiusInMtr = 6371000d;
 		Double deltaLatitude = (pos2.getLatitudeInDecimal() - pos1.getLatitudeInDecimal()) * Math.PI / 180;
 		Double deltaLongitude = (pos2.getLongitudeInDecimal() - pos1.getLongitudeInDecimal()) * Math.PI / 180;

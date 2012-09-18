@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
+import de.msk.mylivetracker.domain.sender.SenderSymbolVo;
+import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.IApplicationService;
@@ -21,6 +24,7 @@ import de.msk.mylivetracker.service.IStatusParamsService;
 import de.msk.mylivetracker.service.ITrackService;
 import de.msk.mylivetracker.service.IUserService;
 import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService;
+import de.msk.mylivetracker.web.frontend.util.CustomSenderSymbolEditor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
 import de.msk.mylivetracker.web.options.IntOptionDsc;
 import de.msk.mylivetracker.web.options.StrOptionDsc;
@@ -52,6 +56,7 @@ public class OptionsCtrl extends SimpleFormController {
 	private List<IntOptionDsc> stPgTrOptsFlyToMode;
 	private List<IntOptionDsc> stPgTrOptsKeepRecentPos;
 	private List<IntOptionDsc> stPgTrOptsUpdateInterval;
+	private List<IntOptionDsc> supportedMaps;
 	
 	private IApplicationService applicationService;
 	private IUserService userService;
@@ -64,7 +69,9 @@ public class OptionsCtrl extends SimpleFormController {
 	private void updateCommandObject(HttpServletRequest request, OptionsCmd cmd) {	
 		UserWithoutRoleVo user = this.userService.getUserWithoutRole(
 			WebUtils.getCurrentUserWithRole().getUserId());
-		cmd.buildUpSenderEntries(request, senderService.getSenders(user.getUserId()));
+		List<SenderVo> senderList = senderService.getSenders(user.getUserId());
+		cmd.buildUpSenderEntries(request, senderList);
+		cmd.buildUpSymbolEntries(request, senderList);
 		cmd.buildUpLinks(request, applicationService.getApplicationBaseUrl(), user);
 	}
 
@@ -86,7 +93,14 @@ public class OptionsCtrl extends SimpleFormController {
 				WebUtils.getCurrentUserWithRole().getUserId());
 			cmd.setSenderLimit(user.getSenderLimit());
 			cmd.setUserMasterData(user.getMasterData().copyWoPwd());
+			cmd.setUserAutoLogin(user.getAutoLogin().copy());
 			cmd.setUserOptions(user.getOptions().copy());
+			cmd.setHomeLocLatitudeStr(
+				(user.getOptions().getHomeLocLatitude() == null) ? 
+				"" : user.getOptions().getHomeLocLatitude().toString());
+			cmd.setHomeLocLongitudeStr(
+				(user.getOptions().getHomeLocLongitude() == null) ? 
+				"" : user.getOptions().getHomeLocLongitude().toString());
 			cmd.setUserStatusPage(user.getStatusPage().copy());
 			cmd.setUserEmergency(user.getEmergency().copy());
 			cmd.setCommonsOptsYesNo(commonsOptsYesNo);
@@ -97,7 +111,7 @@ public class OptionsCtrl extends SimpleFormController {
 			cmd.setStPgTrOptsFlyToMode(stPgTrOptsFlyToMode);
 			cmd.setStPgTrOptsKeepRecentPos(stPgTrOptsKeepRecentPos);
 			cmd.setStPgTrOptsUpdateInterval(stPgTrOptsUpdateInterval);
-			
+			cmd.setSupportedMaps(supportedMaps);
 			request.getSession().setAttribute(this.getCommandName(), cmd);
 		}
 		cmd.setInfoMessage(null);
@@ -130,6 +144,7 @@ public class OptionsCtrl extends SimpleFormController {
 				cmd.getUserOptions().setDefTrackName(
 					WebUtils.getMessage(request, UserOptionsVo.CODE_DEF_TRACK_NAME));
 			}
+			
 			cmd.getActionExecutor().execute(
 				this.applicationService,
 				this.statusParamsService,
@@ -148,6 +163,17 @@ public class OptionsCtrl extends SimpleFormController {
 		updateCommandObject(request, cmd);
 		
 		return super.onSubmit(request, response, command, errors);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.springframework.web.servlet.mvc.BaseCommandController#initBinder(javax.servlet.http.HttpServletRequest, org.springframework.web.bind.ServletRequestDataBinder)
+	 */
+	@Override
+	protected void initBinder(HttpServletRequest request,
+		ServletRequestDataBinder binder) throws Exception {
+		CustomSenderSymbolEditor editor = new CustomSenderSymbolEditor();
+		binder.registerCustomEditor(SenderSymbolVo.class, "senderDetails.symbol", editor);
+		super.initBinder(request, binder);
 	}
 
 	/**
@@ -319,6 +345,20 @@ public class OptionsCtrl extends SimpleFormController {
 			List<IntOptionDsc> stPgTrOptsUpdateInterval) {
 		this.stPgTrOptsUpdateInterval = stPgTrOptsUpdateInterval;
 	}	
+
+	/**
+	 * @return the supportedMaps
+	 */
+	public List<IntOptionDsc> getSupportedMaps() {
+		return supportedMaps;
+	}
+
+	/**
+	 * @param supportedMaps the supportedMaps to set
+	 */
+	public void setSupportedMaps(List<IntOptionDsc> supportedMaps) {
+		this.supportedMaps = supportedMaps;
+	}
 
 	/**
 	 * @return the applicationService

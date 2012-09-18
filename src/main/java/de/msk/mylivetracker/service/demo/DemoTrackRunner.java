@@ -90,7 +90,7 @@ public class DemoTrackRunner extends Thread {
 					dataReceived.getSenderState().addState(pos.getSenderState());					
 					dataReceived.getMessage().setContent(pos.getMessage());
 					dataReceived.getMobNwCell().setMobileCountryCode(pos.getMobileCountryCode());
-					dataReceived.getMobNwCell().setMobileNetworkCode(pos.getMobileNetworkName());
+					dataReceived.getMobNwCell().setMobileNetworkCode(pos.getMobileNetworkCode());
 					dataReceived.getMobNwCell().setNetworkName(pos.getMobileNetworkName());
 					dataReceived.getMobNwCell().setCellId(pos.getMobileCellId());
 					dataReceived.getMobNwCell().setLocalAreaCode(pos.getMobileLocalAreaCode());

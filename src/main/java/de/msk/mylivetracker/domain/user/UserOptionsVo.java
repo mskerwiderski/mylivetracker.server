@@ -1,8 +1,10 @@
 package de.msk.mylivetracker.domain.user;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.MessageSource;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
@@ -27,7 +29,7 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	private Boolean optionsSaved;
 	private String timeZone;
 	private String language;	
-	private String googleLanguage;
+	private String geocoderLanguage;
 	private String scaleUnit;
 	private String defTrackName;
 	private Boolean defTrackReleaseStatus;
@@ -42,21 +44,117 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	private String trackRouteColor;
 	private Integer trackRouteWidth;
 	private Boolean geocodingEnabled;
+	private MapsUsedVo mapsUsed;
+	
+	private static final String DELIMITER = "#";
+	
+	
+	private void updateHomeLocAddress() {
+		StringBuffer buf = new StringBuffer(80);
+		buf.append(this.homeLocCountry).append(DELIMITER)
+			.append(this.homeLocCity).append(DELIMITER)
+			.append(this.homeLocStreet).append(DELIMITER)
+			.append(this.homeLocHousenumber).append(DELIMITER);
+		this.homeLocAddress = buf.toString();
+	}
+	private void updateHomeLocDetails() {
+		if (!StringUtils.isEmpty(this.homeLocAddress)) {
+			String[] addrArr = 
+				StringUtils.splitPreserveAllTokens(this.homeLocAddress, DELIMITER);
+			if (addrArr.length > 4) {
+				int i = 0;
+				this.homeLocCountry = addrArr[i++];
+				this.homeLocCity = addrArr[i++];
+				this.homeLocStreet = addrArr[i++];
+				this.homeLocHousenumber = addrArr[i++];
+				
+			}
+		}
+	}
+	
+	private String homeLocCountry;
+	private String homeLocCity;
+	private String homeLocStreet;
+	private String homeLocHousenumber;
 	private String homeLocAddress;
 	private Double homeLocLatitude;
 	private Double homeLocLongitude;
 	
+	public String getHomeLocCountry() {
+		return homeLocCountry;
+	}
+	public void setHomeLocCountry(String homeLocCountry) {
+		this.homeLocCountry = homeLocCountry;
+		this.updateHomeLocAddress();
+	}
+	public String getHomeLocCity() {
+		return homeLocCity;
+	}
+	public void setHomeLocCity(String homeLocCity) {
+		this.homeLocCity = homeLocCity;
+		this.updateHomeLocAddress();
+	}
+	public String getHomeLocStreet() {
+		return homeLocStreet;
+	}
+	public void setHomeLocStreet(String homeLocStreet) {
+		this.homeLocStreet = homeLocStreet;
+		this.updateHomeLocAddress();
+	}
+	public String getHomeLocHousenumber() {
+		return homeLocHousenumber;
+	}
+	public void setHomeLocHousenumber(String homeLocHousenumber) {
+		this.homeLocHousenumber = homeLocHousenumber;
+		this.updateHomeLocAddress();
+	}
+	public String getHomeLocAddress() {
+		return homeLocAddress;
+	}
+	public void setHomeLocAddress(String homeLocAddress) {
+		this.homeLocAddress = homeLocAddress;
+		this.updateHomeLocDetails();
+	}
+
+	public String getHomeLocAddressPretty() {
+		String addr = "";
+		if (!StringUtils.isEmpty(this.getHomeLocHousenumber()) && 
+			!StringUtils.isEmpty(this.getHomeLocStreet())) {
+			addr += this.getHomeLocStreet() + " " + this.getHomeLocHousenumber();
+		} else if (!StringUtils.isEmpty(this.getHomeLocStreet())) {
+			addr += this.getHomeLocStreet();
+		}
+		
+		if (!StringUtils.isEmpty(this.getHomeLocCity())) {
+			if (!StringUtils.isEmpty(addr)) {
+				addr += ", ";
+			}
+			addr += this.getHomeLocCity();
+		}
+		if (!StringUtils.isEmpty(this.getHomeLocCountry())) {
+			if (!StringUtils.isEmpty(addr)) {
+				addr += ", ";
+			}
+			addr += this.getHomeLocCountry();
+		}
+		return addr;
+	}
+
 	public static final String CODE_DEF_TRACK_NAME = 
 		"options.track.defname.default";
 	
-	public void setDefaultValues(MessageSource messageSource) {	
+	public void setDefaultValues(MessageSource messageSource) {
+		Locale userLocale = UsersLocaleResolver.DEFAULT_LOCALE;
+		if (!StringUtils.isEmpty(this.language)) {
+			userLocale = UsersLocaleResolver.getLocale(this.language);
+		}
 		optionsSaved = true;
 		timeZone = DateTime.TIME_ZONE_UTC;
-		language = UsersLocaleResolver.DEFAULT_LOCALE.getLanguage();
-		googleLanguage = UsersLocaleResolver.DEFAULT_LOCALE.getLanguage();
-		scaleUnit = UsersLocaleResolver.DEFAULT_LOCALE.getLanguage();
+		language = userLocale.getLanguage();
+		geocoderLanguage = userLocale.getLanguage();
+		scaleUnit = userLocale.getLanguage();
 		defTrackName = messageSource.getMessage(
-			CODE_DEF_TRACK_NAME, null, UsersLocaleResolver.DEFAULT_LOCALE);
+			CODE_DEF_TRACK_NAME, null, userLocale);
 		defTrackReleaseStatus = false;
 		trackAutoClose = 0;
 		
@@ -73,6 +171,8 @@ public class UserOptionsVo implements Cloneable, Serializable {
 		trackRouteWidth = 3;	
 		
 		geocodingEnabled = false;
+		
+		mapsUsed = new MapsUsedVo();
 		
 		homeLocAddress = "Munich, Germany";
 		homeLocLatitude = 48.1391265d;
@@ -131,21 +231,12 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	public void setLanguage(String language) {
 		this.language = language;
 	}
-
-	/**
-	 * @return the googleLanguage
-	 */
-	public String getGoogleLanguage() {
-		return googleLanguage;
+	public String getGeocoderLanguage() {
+		return geocoderLanguage;
 	}
-
-	/**
-	 * @param googleLanguage the googleLanguage to set
-	 */
-	public void setGoogleLanguage(String googleLanguage) {
-		this.googleLanguage = googleLanguage;
+	public void setGeocoderLanguage(String geocoderLanguage) {
+		this.geocoderLanguage = geocoderLanguage;
 	}
-
 	/**
 	 * @return the scaleUnit
 	 */
@@ -343,20 +434,6 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	}
 
 	/**
-	 * @return the homeLocAddress
-	 */
-	public String getHomeLocAddress() {
-		return homeLocAddress;
-	}
-
-	/**
-	 * @param homeLocAddress the homeLocAddress to set
-	 */
-	public void setHomeLocAddress(String homeLocAddress) {
-		this.homeLocAddress = homeLocAddress;
-	}
-
-	/**
 	 * @return the homeLocLatitude
 	 */
 	public Double getHomeLocLatitude() {
@@ -382,5 +459,17 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	 */
 	public void setHomeLocLongitude(Double homeLocLongitude) {
 		this.homeLocLongitude = homeLocLongitude;
+	}
+	/**
+	 * @return the mapsUsed
+	 */
+	public MapsUsedVo getMapsUsed() {
+		return mapsUsed;
+	}
+	/**
+	 * @param mapsUsed the mapsUsed to set
+	 */
+	public void setMapsUsed(MapsUsedVo mapsUsed) {
+		this.mapsUsed = mapsUsed;
 	}
 }

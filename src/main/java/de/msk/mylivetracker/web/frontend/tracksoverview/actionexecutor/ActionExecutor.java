@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.ISenderService;
 import de.msk.mylivetracker.service.ITrackService;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
@@ -31,9 +32,9 @@ public enum ActionExecutor {
 	RenameTrack(new ActionRenameTrack()),
 	ResetTrack(new ActionResetTrack()),
 	RemoveTrack(new ActionRemoveTrack()),
-	RedirectToTrackAsGoogleMapsCtrl(
-		new ActionStartTracking(UrlUtils.URL_TRACK_AS_GOOGLE_MAPS_CTRL,
-			AbstractTrackingCtrl.RequestType.viewGet)),
+	RedirectToTrackAsMapCtrl(
+		new ActionStartTracking(UrlUtils.URL_TRACK_AS_MAP_CTRL,
+			AbstractTrackingCtrl.RequestType.viewGet)),		
 	RedirectToTrackAsStatusInfoCtrl(
 		new ActionStartTracking(UrlUtils.URL_TRACK_AS_STATUS_INFO_CTRL,
 			AbstractTrackingCtrl.RequestType.viewGet)),
@@ -63,11 +64,12 @@ public enum ActionExecutor {
 	public String execute(
 		HttpServletRequest request, UserWithRoleVo user,	
 		IApplicationService applicationService,
-		ITrackService trackService, TracksOverviewCmd cmd) 
+		ITrackService trackService, ISenderService senderService,
+		TracksOverviewCmd cmd) 
 		throws ActionExecutionException {
 		this.action.preExecuteCheck(cmd);
 		return this.action.execute(request, user, 
-			applicationService, trackService, cmd);
+			applicationService, trackService, senderService, cmd);
 	}
 	
 	public static boolean isValidActionExecutor(String actionExecutor) {

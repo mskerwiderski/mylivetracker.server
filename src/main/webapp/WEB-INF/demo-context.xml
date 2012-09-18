@@ -34,37 +34,9 @@
    			<constructor-arg index="0" value="Running in the south of Munich"/>
     	 	<constructor-arg index="1" value="demo"/>
     	 	<constructor-arg index="2" value="sid01"/>
-    	 	<constructor-arg index="3" value="d911ad10-7c3d-4c73-95f4-03ac6657592d"/>
+    	 	<constructor-arg index="3" value="361fefa5-55df-4aaa-a5cd-f3418b825ecf"/>
     	 	<constructor-arg index="4" value="15"/>
    	 	</bean>
-      	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="Cycling in the south of Munich"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid02"/>
-    	 	<constructor-arg index="3" value="eb17ebe6-5124-424d-a509-bdd0b62ca905"/>
-    	 	<constructor-arg index="4" value="30"/>
-   	 	</bean>     	 	
-   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="By car from Munich to Eresing"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid03"/>
-    	 	<constructor-arg index="3" value="cdd86c73-77f7-4057-bbf6-995efd71a409"/>
-    	 	<constructor-arg index="4" value="45"/>
-   	 	</bean>
-   	 	<!-- bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="By car from Munich to Eresing"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid04"/>
-    	 	<constructor-arg index="3" value="cdd86c73-77f7-4057-bbf6-995efd71a409"/>
-    	 	<constructor-arg index="4" value="60"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="Cycling from Munich to Holzhausen"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid05"/>
-    	 	<constructor-arg index="3" value="99158b9c-f5cc-4fff-9331-3e858c977cdd"/>
-    	 	<constructor-arg index="4" value="75"/>
-   	 	</bean -->   	 	
    	</util:list> 	       
    	
     <bean id="demoService"

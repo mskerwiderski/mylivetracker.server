@@ -82,7 +82,7 @@ public class DemoService implements IDemoService {
 	@Override
 	public int insertTrackAsDemoTrack(String trackId) {
 		return this.demoDao.insertTrackAsDemoTrack(
-			this.trackService.getTrackAsDetailed(trackId, null));
+			this.trackService.getTrackAsDetailed(trackId, null, true, true, true, true, true));
 	}
 
 	/**

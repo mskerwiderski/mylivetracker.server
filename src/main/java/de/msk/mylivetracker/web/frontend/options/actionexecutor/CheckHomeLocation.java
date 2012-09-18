@@ -49,20 +49,38 @@ public class CheckHomeLocation implements IAction {
 		AbstractGeocodingService geocodingService, UserWithoutRoleVo user, 
 		OptionsCmd cmd) {
 		LatLonPos pos = null;
-		String address = cmd.getUserOptions().getHomeLocAddress();
-		if (!StringUtils.isEmpty(address)) {
-			pos = geocodingService.getPositionOfAddress(
-				address, user.getOptions().getGoogleLanguage());			
+		String query = "";
+		if (!StringUtils.isEmpty(cmd.getUserOptions().getHomeLocHousenumber()) && 
+			!StringUtils.isEmpty(cmd.getUserOptions().getHomeLocStreet())) {
+			query += "+" + cmd.getUserOptions().getHomeLocHousenumber();
 		}
+		if (!StringUtils.isEmpty(cmd.getUserOptions().getHomeLocStreet())) {
+			query += "+" + cmd.getUserOptions().getHomeLocStreet();
+		}
+		if (!StringUtils.isEmpty(cmd.getUserOptions().getHomeLocCity())) {
+			if (!StringUtils.isEmpty(query)) {
+				query += ",";
+			}
+			query += "+" + cmd.getUserOptions().getHomeLocCity();
+		}
+		if (!StringUtils.isEmpty(cmd.getUserOptions().getHomeLocCountry())) {
+			if (!StringUtils.isEmpty(query)) {
+				query += ",";
+			}
+			query += "+" + cmd.getUserOptions().getHomeLocCountry();
+		}
+		pos = geocodingService.getPositionOfAddress(
+			query, user.getOptions().getGeocoderLanguage());			
 		if (pos != null) {
-			address = geocodingService.getAddressOfPosition(pos,
-				user.getOptions().getGoogleLanguage());
-			cmd.getUserOptions().setHomeLocAddress(address);
 			cmd.getUserOptions().setHomeLocLatitude(pos.getLatitude());
 			cmd.getUserOptions().setHomeLocLongitude(pos.getLongitude());
+			cmd.setHomeLocLatitudeStr(pos.getLatitude().toString());
+			cmd.setHomeLocLongitudeStr(pos.getLongitude().toString());
 		} else {
 			cmd.getUserOptions().setHomeLocLatitude(null);
 			cmd.getUserOptions().setHomeLocLongitude(null);
+			cmd.setHomeLocLatitudeStr("");
+			cmd.setHomeLocLongitudeStr("");
 		}
 	}
 }

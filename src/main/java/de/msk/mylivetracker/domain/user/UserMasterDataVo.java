@@ -21,7 +21,7 @@ public class UserMasterDataVo implements Cloneable, Serializable {
 	private String firstName;	
 	private String emailAddress;
 	private String password;
-		
+			
 	public UserMasterDataVo copyWoPwd() {
 		UserMasterDataVo masterData = this.copy();
 		masterData.setPassword("");

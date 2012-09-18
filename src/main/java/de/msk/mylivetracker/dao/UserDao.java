@@ -12,6 +12,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 
+import de.msk.mylivetracker.domain.user.MapsUsedVo;
+import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
 import de.msk.mylivetracker.domain.user.UserPlainVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
@@ -23,10 +25,11 @@ import de.msk.mylivetracker.service.IStatusParamsService;
  * 
  * @author michael skerwiderski, (c)2011
  * 
- * @version 000
+ * @version 001
  * 
  * history
- * 000 initial 2011-08-11
+ * 001 2012-09-16 updateUserOptionsMapsUsed() added.
+ * 000 2011-08-11 initial.
  * 
  */
 public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
@@ -47,7 +50,12 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 			"UserVo.selectUserWithoutRoleByUserId") != null);
 		if (!userAlreadyExists) {
 			this.getSqlMapClientTemplate().insert("UserVo.registerUser", user);
-			log.debug("userPlainVo inserted: " + user.toString());
+			UserWithRoleVo userWithRole = this.getUserWithRole(user.getUserId());
+			if (userWithRole != null) {
+				log.debug("userPlainVo inserted: " + user.toString());
+			} else {
+				log.debug("insert userPlainVo FAILED");
+			}
 		}
 		return !userAlreadyExists;
 	}
@@ -79,14 +87,38 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 		return (UserWithRoleVo)getUserAux(userId, "UserVo.selectUserWithRoleByUserId");
 	}
 
-	private UserWithoutRoleVo getUserAux(String userId, String selectStrId) {
+	@Override
+	public UserWithRoleVo getUserWithRoleByAutoLoginTicketForUser(
+		String autoLoginTicket) {
+		return (UserWithRoleVo)getUserAux(autoLoginTicket, 
+			"UserVo.selectUserWithRoleByAutoLoginTicketForUser");
+	}
+
+	@Override
+	public UserWithRoleVo getUserWithRoleByAutoLoginTicketForGuest(
+		String autoLoginTicket) {
+		return (UserWithRoleVo)getUserAux(autoLoginTicket, 
+			"UserVo.selectUserWithRoleByAutoLoginTicketForGuest");
+	}
+
+	private UserWithoutRoleVo getUserAux(String searchCriteria, String selectStrId) {
 		UserWithoutRoleVo user = (UserWithoutRoleVo)this.getSqlMapClientTemplate().
-			queryForObject(selectStrId, userId);		
+			queryForObject(selectStrId, searchCriteria);		
 		if (user != null) {
+			if (user.getAutoLogin() == null) {
+				user.setAutoLogin(new UserAutoLoginVo());
+				user.getAutoLogin().setDefaultValues();
+				this.updateUserAutoLogin(user);	
+			}
 			if (BooleanUtils.isNotTrue(user.getOptions().getOptionsSaved())) {
 				user.getOptions().setDefaultValues(messageSource);
 				user.getEmergency().setDefaultValues();
 				this.updateUserOptions(user);
+				this.updateUserEmergency(user);
+			}
+			if (user.getOptions().getMapsUsed() == null) {
+				user.getOptions().setMapsUsed(new MapsUsedVo());
+				this.updateUserOptionsMapsUsed(user);
 			}
 			if (BooleanUtils.isNotTrue(user.getStatusPage().getStatusPageSaved())) {
 				user.getStatusPage().setDefaultValues(
@@ -108,6 +140,11 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 				this.passwordEncoder.encodePassword(passwordPlain, user));
 		}
 		this.getSqlMapClientTemplate().update("UserVo.updateUserMasterDataByUserId", user);		
+	}
+
+	@Override
+	public void updateUserAutoLogin(UserWithoutRoleVo user) {
+		this.getSqlMapClientTemplate().update("UserVo.updateUserAutoLoginByUserId", user);
 	}
 
 	/* (non-Javadoc)
@@ -152,6 +189,14 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	@Override
 	public void updateUserOptions(UserWithoutRoleVo user) {
 		this.getSqlMapClientTemplate().update("UserVo.updateUserOptionsByUserId", user);		
+	}
+
+	/* (non-Javadoc)
+	 * @see de.msk.mylivetracker.dao.IUserDao#updateUserOptionsMapsUsed(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
+	 */
+	@Override
+	public void updateUserOptionsMapsUsed(UserWithoutRoleVo user) {
+		this.getSqlMapClientTemplate().update("UserVo.updateUserOptionsMapsUsedByUserId", user);
 	}
 
 	/* (non-Javadoc)

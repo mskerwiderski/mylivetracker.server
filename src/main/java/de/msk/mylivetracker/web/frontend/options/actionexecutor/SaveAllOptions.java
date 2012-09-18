@@ -38,7 +38,6 @@ public class SaveAllOptions implements IAction {
 		ITrackService trackService, UserWithoutRoleVo user, OptionsCmd cmd,
 		MessageSource messageSource, Locale locale)
 		throws ActionExecutionException {		
-		CheckHomeLocation.checkAndSetHomeLocation(geocodingService, user, cmd);
 		user.setOptions(cmd.getUserOptions().copy());		
 		userService.updateUserOptions(user);
 		cmd.setInfoMessage(messageSource.getMessage(

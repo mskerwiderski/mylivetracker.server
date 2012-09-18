@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import de.msk.mylivetracker.dao.IUserDao;
+import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
 import de.msk.mylivetracker.domain.user.UserPlainVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
@@ -22,10 +23,11 @@ import de.msk.mylivetracker.service.IApplicationService.Parameter;
  * 
  * @author michael skerwiderski, (c)2011
  * 
- * @version 000
+ * @version 001
  * 
  * history
- * 000 initial 2011-08-11
+ * 001 2012-09-16 updateUserOptionsMapsUsed() added.
+ * 000 2011-08-11 initial.
  * 
  */
 public class UserService implements
@@ -81,6 +83,12 @@ public class UserService implements
 		userDao.updateUserMasterData(user);
 	}
 	
+	@Override
+	public void updateUserAutoLogin(UserWithoutRoleVo user) {
+		userWithoutRoleCache.remove(user.getUserId());
+		userDao.updateUserAutoLogin(user);
+	}
+
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.IUserService#updateEmergency(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
 	 */
@@ -97,6 +105,15 @@ public class UserService implements
 	public void updateUserOptions(UserWithoutRoleVo user) {
 		userWithoutRoleCache.remove(user.getUserId());
 		userDao.updateUserOptions(user);
+	}
+
+	/* (non-Javadoc)
+	 * @see de.msk.mylivetracker.service.IUserService#updateUserOptionsMapsUsed(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
+	 */
+	@Override
+	public void updateUserOptionsMapsUsed(UserWithoutRoleVo user) {
+		userWithoutRoleCache.remove(user.getUserId());
+		userDao.updateUserOptionsMapsUsed(user);		
 	}
 
 	/* (non-Javadoc)
@@ -144,23 +161,38 @@ public class UserService implements
 			}
 			
 			// check if this is an admin@user - login.
-			UserWithRoleVo adminUser = null;
 			if (StringUtils.contains(username, '@')) {
 				String[] usernameParts = StringUtils.split(username, '@');
 				if (usernameParts.length == 2) {
-					adminUser = this.userDao.getUserWithRole(usernameParts[0]);
-					if (adminUser.getRole().equals(UserRole.Admin)) {
+					UserWithRoleVo adminUser = this.userDao.getUserWithRole(usernameParts[0]);
+					if ((adminUser != null) && adminUser.getRole().equals(UserRole.Admin)) {
 						username = usernameParts[1];
-					} else {
-						adminUser = null;
-					}
+						user = this.userDao.getUserWithRole(username);
+						if ((user != null) && (adminUser != null)) {
+							user.setAdminUsername(adminUser.getUserId());
+							user.setAdminPassword(adminUser.getPassword());
+						}
+					} 
+				}
+			} 
+			
+			// check if this is an auto-login for user.
+			if (user == null) {
+				if (UserAutoLoginVo.isAutoLoginTicket(username)) {
+					user = this.userDao.getUserWithRoleByAutoLoginTicketForUser(username);
 				}
 			}
-			user = this.userDao.getUserWithRole(username);		
 			
-			if ((user != null) && (adminUser != null)) {
-				user.setAdminUsername(adminUser.getUserId());
-				user.setAdminPassword(adminUser.getPassword());
+			// check if this is an auto-login for guest.
+			if (user == null) {
+				if (UserAutoLoginVo.isAutoLoginTicket(username)) {
+					user = this.userDao.getUserWithRoleByAutoLoginTicketForGuest(username);
+				}
+			}
+			
+			// check if this is an normal login.
+			if (user == null) {
+				user = this.userDao.getUserWithRole(username);		
 			}
 			
 			if (user == null) {

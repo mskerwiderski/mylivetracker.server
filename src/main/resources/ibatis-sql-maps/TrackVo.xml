@@ -18,6 +18,7 @@
         <result property="released" column="IS_RELEASED" />        
         <result property="senderId" column="SENDER_ID" />  
         <result property="senderName" column="SENDER_NAME" />
+        <result property="senderSymbolId" column="SENDER_SYMBOL_ID" />
         <result property="phoneNumber" column="PHONE_NUMBER" />
         <result property="userId" column="USER_ID" />        
         <result property="timestamps.trackCreated"  column="TRACK_CREATED" />
@@ -49,22 +50,6 @@
 		<result property="recentEmergencySignal" resultMap="EmergencySignalVo.recentDetailedEmergencySignalResult" />
     </resultMap>       
     
-    <resultMap id="detailedTrackResult" class="track" extends="recentTrackResult" groupBy="trackId">
-		<result property="positions" resultMap="PositionVo.detailedPositionResult" />
-		<result property="mobNwCells" resultMap="MobNwCellVo.detailedMobNwCellResult" />
-		<result property="messages" resultMap="MessageVo.detailedMessageResult" />
-		<result property="senderStates" resultMap="SenderStateVo.detailedSenderStateResult" />
-		<result property="cardiacFunctions" resultMap="CardiacFunctionVo.detailedCardiacFunctionResult" />
-		<result property="emergencySignals" resultMap="EmergencySignalVo.detailedEmergencySignalResult" />				
-    </resultMap>  
-    
-    <update id="lockTable" parameterClass="java.util.Map">
-  		update T_LOCK_TABLE t
-  		set 
-  			t.UPDATED = #updated#		   
-  		where t.TABLE_NAME = #tableName#   		
-  	</update>  
-  	
     <sql id="columnsForRecentDetails">
     	sp.POSITION_ID as SP_POSITION_ID,
     	sp.SEQUENCE_ID as SP_SEQUENCE_ID,
@@ -206,70 +191,6 @@
         left outer join T_POSITION pre
            on re.POSITION_ID = pre.POSITION_ID   
     </sql>
-    
-    <sql id="joinsForListDetails">
-    	left outer join T_POSITION lp
-			on t.TRACK_ID = lp.TRACK_ID
-        left outer join T_MOB_NW_CELL lc
-			on lp.POSITION_ID = lc.POSITION_ID
-		left outer join T_MESSAGE lm
-			on lp.POSITION_ID = lm.POSITION_ID  
-		left outer join T_SENDER_STATE ls
-			on lp.POSITION_ID = ls.POSITION_ID
-		left outer join T_CARDIAC_FUNCTION lh
-			on lp.POSITION_ID = lh.POSITION_ID	
-		left outer join T_EMERGENCY_SIGNAL le
-			on lp.POSITION_ID = le.POSITION_ID	
-    </sql>
-    
-    <sql id="columnsForListDetails">
-    	lp.POSITION_ID as P_POSITION_ID,
-    	lp.SEQUENCE_ID as P_SEQUENCE_ID,
-       	lp.TRACK_ID as P_TRACK_ID,     
-       	lp.TIME_RECORDED as P_TIME_RECORDED,
-       	lp.TIME_RECEIVED as P_TIME_RECEIVED,
-       	lp.LATITUDE_IN_DECIMAL as P_LATITUDE_IN_DECIMAL,
-       	lp.LONGITUDE_IN_DECIMAL as P_LONGITUDE_IN_DECIMAL,
-       	lp.ACCURACY_IN_MTR as P_ACCURACY_IN_MTR,
-       	lp.ALTITUDE_IN_MTR as P_ALTITUDE_IN_MTR,
-       	lp.SPEED_IN_KM_PER_HOUR as P_SPEED_IN_KM_PER_HOUR,    
-       	lp.ADDRESS as P_ADDRESS, 
-       	lm.MESSAGE_ID as M_MESSAGE_ID,
-		lm.TRACK_ID as M_TRACK_ID,
-		lm.POSITION_ID as M_POSITION_ID,
-		lm.CONTENT as M_CONTENT,
-		lm.TIME_RECEIVED as M_TIME_RECEIVED,
-		lc.MOB_NW_CELL_ID as C_MOB_NW_CELL_ID,
-		lc.TRACK_ID as C_TRACK_ID,        
-		lc.POSITION_ID as C_POSITION_ID,      		          
-		lc.CELL_ID as C_CELL_ID,          
-		lc.LOCAL_AREA_CODE as C_LOCAL_AREA_CODE,          
-		lc.NETWORK_NAME as C_NETWORK_NAME,      
-		lc.MOBILE_COUNTRY_CODE as C_MOBILE_COUNTRY_CODE,      
-		lc.MOBILE_NETWORK_CODE as C_MOBILE_NETWORK_CODE,   
-		lc.MOBILE_MODE as C_MOBILE_MODE,
-		lc.TIME_RECEIVED as C_TIME_RECEIVED,
-		ls.SENDER_STATE_ID as S_SENDER_STATE_ID,
-        ls.TRACK_ID as S_TRACK_ID,
-        ls.POSITION_ID as S_POSITION_ID,
-        ls.TIME_RECEIVED as S_TIME_RECEIVED,
-        ls.STATE as S_STATE,
-        lh.CARDIAC_FUNCTION_ID as H_CARDIAC_FUNCTION_ID,
-        lh.TRACK_ID as H_TRACK_ID,
-        lh.POSITION_ID as H_POSITION_ID,
-        lh.TIME_RECEIVED as H_TIME_RECEIVED,
-        lh.HEARTRATE_IN_BPM as H_HEARTRATE_IN_BPM,
-        lh.HEARTRATE_MIN_IN_BPM as H_HEARTRATE_MIN_IN_BPM,
-        lh.HEARTRATE_MAX_IN_BPM as H_HEARTRATE_MAX_IN_BPM,
-        lh.HEARTRATE_AVG_IN_BPM as H_HEARTRATE_AVG_IN_BPM,
-       	le.EMERGENCY_SIGNAL_ID as E_EMERGENCY_SIGNAL_ID,
-        le.TRACK_ID as E_TRACK_ID,
-        le.POSITION_ID as E_POSITION_ID,
-        le.TIME_RECEIVED as E_TIME_RECEIVED,
-        le.ACTIVE as E_ACTIVE,
-        le.MESSAGE as E_MESSAGE,
-        le.SMS_SUCCESSFULLY_SENT as E_SMS_SUCCESSFULLY_SENT              
-    </sql>
            
     <select id="getTrackByIdAsRecentTrack" parameterClass="java.util.Map" resultMap="recentTrackResult">
   		select t.*, 
@@ -278,28 +199,7 @@
 			<include refid="joinsForRecentDetails"/>								   								 			
         where t.TRACK_ID = #trackId#          	  		  		  			
   	</select>
-  	    
-  	<select id="getTrackByIdAsDetailedTrack" parameterClass="java.util.Map" resultMap="detailedTrackResult">
-	  		select t.*, 
-	  			<include refid="columnsForRecentDetails"/>,
-	  			<include refid="columnsForListDetails"/>
-	  		from T_TRACK t   
-				<include refid="joinsForRecentDetails"/>
-				<include refid="joinsForListDetails"/>  						   								 			
-	        where t.TRACK_ID = #trackId#	         
-	        <isGreaterThan property="cntCutPositions" compareValue="0">
-	        	order by lp.SEQUENCE_ID desc
-	  			limit 0, #absCntCutPositions#
-	  		</isGreaterThan>
-	  		<isLessThan property="cntCutPositions" compareValue="0">
-	        	order by lp.SEQUENCE_ID asc
-	  			limit #absCntCutPositions#, #maxPositions#	  			       
-	  		</isLessThan>
-	  		<isEqual property="cntCutPositions" compareValue="0">
-	  			order by P_SEQUENCE_ID desc
-	  		</isEqual>
-  	</select>
-  	
+  
   	<select id="getRecentTrackAsRecentTrack" parameterClass="java.util.Map" resultMap="recentTrackResult">
   		select t.*, 
   			<include refid="columnsForRecentDetails"/>  			  			
@@ -352,10 +252,8 @@
   	</select>
   	   	     
   	<select id="getTracksCountForGuestAsRecentTrack" parameterClass="trackFilter" resultClass="integer">
-  		select count(*), 
-  			<include refid="columnsForRecentDetails"/>
+  		select count(*)
         from T_TRACK t
-  		 	<include refid="joinsForRecentDetails"/>
   		where t.USER_ID = #userId#  		
   		<isEqual prepend="and" property="guestAccPrivTrEnabled" compareValue="false">
   			t.IS_RELEASED = true
@@ -412,10 +310,8 @@
   	</select>   
   	
   	<select id="getTracksCountForUserAsRecentTrack" parameterClass="trackFilter" resultClass="integer">
-  		select count(*), 
-  			<include refid="columnsForRecentDetails"/> 
+  		select count(*) 
   		from T_TRACK t
-  			<include refid="joinsForRecentDetails"/>
   		where t.USER_ID = #userId# 	  		 		
   		<isNotNull prepend="and" property="bySenderId">
   			t.SENDER_ID = #bySenderId#
@@ -460,10 +356,8 @@
   	</select>     	
   	
   	<select id="getTracksCountOverallAsRecentTrack" parameterClass="trackFilter" resultClass="integer">
-  		select count(*), 
-  			<include refid="columnsForRecentDetails"/> 
+  		select count(*) 
   		from T_TRACK t
-  			<include refid="joinsForRecentDetails"/>
   		where t.LAST_HEARTBEAT_SENT &gt;= #byDateFrom#
   		and t.LAST_HEARTBEAT_SENT &lt;= #byDateTo#
   		and t.IS_ACTIVE = #byActive#  		
@@ -507,6 +401,7 @@
   			IS_RELEASED,  			
   			SENDER_ID,
   			SENDER_NAME,
+  			SENDER_SYMBOL_ID,
   			PHONE_NUMBER,
   			USER_ID,
   			TRACK_CREATED,
@@ -540,6 +435,7 @@
   			#released#,  			
   			#senderId#,
   			#senderName#,
+  			#senderSymbolId#,
   			#phoneNumber#,
   			#userId#,  			
   			#timestamps.trackCreated#,

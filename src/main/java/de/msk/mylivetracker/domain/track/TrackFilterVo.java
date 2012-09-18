@@ -168,5 +168,15 @@ public class TrackFilterVo implements Serializable {
 	 */
 	public void setByActive(Integer byActive) {
 		this.byActive = byActive;
+	}
+	@Override
+	public String toString() {
+		return "TrackFilterVo [maxCountOfRecords=" + maxCountOfRecords
+			+ ", userId=" + userId + ", userRole=" + userRole
+			+ ", guestAccClosedTrEnabled=" + guestAccClosedTrEnabled
+			+ ", guestAccPrivTrEnabled=" + guestAccPrivTrEnabled
+			+ ", bySenderId=" + bySenderId + ", byDateFrom=" + byDateFrom
+			+ ", byDateTo=" + byDateTo + ", bySearchStr=" + bySearchStr
+			+ ", byActive=" + byActive + "]";
 	}		
 }

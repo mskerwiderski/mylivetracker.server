@@ -43,9 +43,6 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 
 	private static final Log log = LogFactory.getLog(TrackDao.class);	
 	
-	@SuppressWarnings("unused")
-	private static final String SQL_LOCK_TABLE = "TrackVo.lockTable";
-	
 	// selects
 	private static final String SQL_GET_ACTIVE_TRACK_OF_SENDER_AS_MIN_TRACK = "TrackVo.getActiveTrackOfSenderAsMinTrack";
 	private static final String SQL_GET_ACTIVE_TRACK_OF_SENDER_AS_RECENT_TRACK = "TrackVo.getActiveTrackOfSenderAsRecentTrack";
@@ -56,7 +53,12 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	private static final String SQL_GET_TRACKS_COUNT_FOR_USER_AS_RECENT_TRACK = "TrackVo.getTracksCountForUserAsRecentTrack";
 	private static final String SQL_GET_TRACKS_COUNT_OVERALL_AS_RECENT_TRACK = "TrackVo.getTracksCountOverallAsRecentTrack";
 	private static final String SQL_GET_TRACK_BY_ID_AS_MIN_TRACK = "TrackVo.getTrackByIdAsMinTrack";
-	private static final String SQL_GET_TRACK_BY_ID_AS_DETAILED_TRACK = "TrackVo.getTrackByIdAsDetailedTrack";
+	private static final String SQL_GET_POSITIONS_OF_TRACK = "PositionVo.getPositionsOfTrack";
+	private static final String SQL_GET_MESSAGES_OF_TRACK = "MessageVo.getMessagesOfTrack";
+	private static final String SQL_GET_EMERGENCY_SIGNALS_OF_TRACK = "EmergencySignalVo.getEmergencySignalsOfTrack";
+	private static final String SQL_GET_MOB_NW_CELLS_OF_TRACK = "MobNwCellVo.getMobNwCellsOfTrack";
+	private static final String SQL_GET_CARDIAC_FUNCTIONS_OF_TRACK = "CardiacFunctionVo.getCardiacFunctionsOfTrack";
+	private static final String SQL_GET_SENDER_STATES_OF_TRACK = "SenderStateVo.getSenderStatesOfTrack";
 	private static final String SQL_GET_TRACK_BY_ID_AS_RECENT_TRACK = "TrackVo.getTrackByIdAsRecentTrack";
 	private static final String SQL_GET_RECENT_TRACK_AS_MIN_TRACK = "TrackVo.getRecentTrackAsMinTrack";
 	private static final String SQL_GET_RECENT_TRACK_AS_RECENT_TRACK = "TrackVo.getRecentTrackAsRecentTrack";
@@ -119,30 +121,108 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 		return new TrackListResult(rawTracksCount, rawTracks, 
 			rawTracksCount > trackFilter.getMaxCountOfRecords());
 	}
-			
+	
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.ITrackDao#getTrackAsDetailed(java.lang.String, java.lang.Integer)
+	 * @see de.msk.mylivetracker.dao.ITrackDao#getTrackAsDetailed(java.lang.String, java.lang.Integer, boolean, boolean, boolean, boolean, boolean)
 	 */
 	@Override
-	public TrackVo getTrackAsDetailed(String trackId, Integer cntCutPositions) {
+	public TrackVo getTrackAsDetailed(String trackId, Integer cntCutPositions,
+		boolean messagesIncl, boolean emergencySignalsIncl,
+		boolean cardiacFunctionsIncl, boolean mobNwCellsIncl,
+		boolean senderStatesIncl) {
 		if (trackId == null) {
 			throw new IllegalArgumentException("trackId must not be null.");
 		}		
 		if (cntCutPositions == null) {
 			cntCutPositions = 0;
 		}
-		// get track by trackId.
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("trackId", trackId);
-		params.put("cntCutPositions", cntCutPositions);
-		params.put("absCntCutPositions", Math.abs(cntCutPositions));
-		params.put("maxPositions", TrackVo.MAX_COUNT_OF_POSITIONS_PER_TRACK);
-		TrackVo track = (TrackVo)this.getSqlMapClientTemplate().
-			queryForObject(SQL_GET_TRACK_BY_ID_AS_DETAILED_TRACK, params);	
+		TrackVo track = this.getTrackAsRecent(trackId);
 		if (track == null) {
-			// maybe no positions found --> get recent track.
-			track = this.getTrackAsRecent(trackId);
+			throw new IllegalArgumentException("track must not be null.");
 		}
+		
+		if (track.getCountPositions() > 0) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("trackId", trackId);
+			Integer startAt = 0;
+			if (cntCutPositions > 0) {
+				startAt = track.getCountPositions() - cntCutPositions;
+			} else if (cntCutPositions < 0) {
+				startAt = -1 * cntCutPositions;
+			}
+			Integer fetchCount = track.getCountPositions() - startAt;
+			
+			params.put("startAt", startAt);
+			params.put("fetchCount", fetchCount);
+			
+			log.debug("countPos=" + track.getCountPositions());
+			log.debug("cntCutPositions=" + cntCutPositions);
+			log.debug("startAt=" + startAt);
+			log.debug("fetchCount=" + fetchCount);
+			
+			@SuppressWarnings("unchecked")
+			List<PositionVo> positions = (List<PositionVo>)this.getSqlMapClientTemplate().
+				queryForList(SQL_GET_POSITIONS_OF_TRACK, params);	
+			if ((positions != null) && !positions.isEmpty()) {
+				track.setPositions(positions);
+			}
+			
+			if ((positions != null) && !positions.isEmpty()) {
+				params = new HashMap<String, Object>();
+				params.put("trackId", trackId);
+				params.put("minSequenceId", positions.get(0).getSequenceId());
+			
+				if (messagesIncl && track.getCountMessages() > 0) {
+					@SuppressWarnings("unchecked")
+					List<MessageVo> messages = (List<MessageVo>)this.getSqlMapClientTemplate().
+						queryForList(SQL_GET_MESSAGES_OF_TRACK, params);	
+					if (messages != null) {
+						track.setMessages(messages);
+					}
+				}
+				
+				if (emergencySignalsIncl && track.getCountEmergencySignals() > 0) {
+					@SuppressWarnings("unchecked")
+					List<EmergencySignalVo> emergencySignals = (List<EmergencySignalVo>)this.getSqlMapClientTemplate().
+						queryForList(SQL_GET_EMERGENCY_SIGNALS_OF_TRACK, params);	
+					if (emergencySignals != null) {
+						track.setEmergencySignals(emergencySignals);
+					}
+				}
+				
+				if (mobNwCellsIncl && track.getCountMobNwCells() > 0) {
+					@SuppressWarnings("unchecked")
+					List<MobNwCellVo> mobNwCells = (List<MobNwCellVo>)this.getSqlMapClientTemplate().
+						queryForList(SQL_GET_MOB_NW_CELLS_OF_TRACK, params);	
+					if (mobNwCells != null) {
+						track.setMobNwCells(mobNwCells);
+					}
+				}
+				
+				if (cardiacFunctionsIncl && track.getCountCardiacFunctions() > 0) {
+					@SuppressWarnings("unchecked")
+					List<CardiacFunctionVo> cardiacFunctions = (List<CardiacFunctionVo>)this.getSqlMapClientTemplate().
+						queryForList(SQL_GET_CARDIAC_FUNCTIONS_OF_TRACK, params);	
+					if (cardiacFunctions != null) {
+						track.setCardiacFunctions(cardiacFunctions);
+					}
+				}
+				
+				if (senderStatesIncl && track.getCountSenderStates() > 0) {
+					@SuppressWarnings("unchecked")
+					List<SenderStateVo> senderStates = (List<SenderStateVo>)this.getSqlMapClientTemplate().
+						queryForList(SQL_GET_SENDER_STATES_OF_TRACK, params);	
+					if (senderStates != null) {
+						track.setSenderStates(senderStates);
+					}
+				}
+			}
+		}
+		
+		log.debug("positions loaded=" + ((track.getPositions() != null) ? track.getPositions().size() : "0"));
+		log.debug("messages loaded=" + ((track.getMessages() != null) ? track.getMessages().size() : "0"));
+		log.debug("emergencySignals loaded=" + ((track.getEmergencySignals() != null) ? track.getEmergencySignals().size() : "0"));
+		
 		return track;
 	}
 	
@@ -364,17 +444,21 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 						track.getClientMileageInMtr() - 
 						track.getClientStartMileageInMtr());
 				} else {
-					track.addDistanceInMtr(distanceBetweenLast2PositionsInMtr);
+					if (distanceBetweenLast2PositionsInMtr != null) {
+						track.addDistanceInMtr(distanceBetweenLast2PositionsInMtr);
+					}
 				}
-				
-				Double timeBetweenLast2Positions =
-					new Double(
-						position.getTimeReceived().getAsMSecs() - 
-						lastPosition.getTimeReceived().getAsMSecs());
-				
-				Double speedInMtrPerHour = distanceBetweenLast2PositionsInMtr / 
-					(((double)timeBetweenLast2Positions) / 1000d / 3600d);
-				track.setSpeedInMtrPerHour(speedInMtrPerHour);
+				if (distanceBetweenLast2PositionsInMtr != null) {
+					Double timeBetweenLast2Positions =
+						new Double(
+							position.getTimeReceived().getAsMSecs() - 
+							lastPosition.getTimeReceived().getAsMSecs());
+					Double speedInMtrPerHour = distanceBetweenLast2PositionsInMtr / 
+						(((double)timeBetweenLast2Positions) / 1000d / 3600d);
+					track.setSpeedInMtrPerHour(speedInMtrPerHour);
+				} else {
+					track.setSpeedInMtrPerHour(0.0d);
+				}
 			}
 					
 			position.setTrack(track);					

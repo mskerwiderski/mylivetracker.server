@@ -16,7 +16,6 @@
     </resultMap>
     
 	<resultMap id="detailedEmergencySignalResult" class="emergencySignal" extends="minEmergencySignalResult">
-		<result property="track" resultMap="TrackVo.minTrackResult" />   
 		<result property="position" resultMap="PositionVo.detailedPositionResult" />                       
     </resultMap>
     
@@ -29,7 +28,35 @@
         <result property="message"  column="RE_MESSAGE" />    
         <result property="smsSuccessfullySent"  column="RE_SMS_SUCCESSFULLY_SENT" />                     
     </resultMap>
-            
+    
+    <select id="getEmergencySignalsOfTrack" parameterClass="java.util.Map" resultMap="detailedEmergencySignalResult">
+  		select 
+  			lp.POSITION_ID as P_POSITION_ID,
+	    	lp.SEQUENCE_ID as P_SEQUENCE_ID,
+	       	lp.TRACK_ID as P_TRACK_ID,     
+	       	lp.TIME_RECORDED as P_TIME_RECORDED,
+	       	lp.TIME_RECEIVED as P_TIME_RECEIVED,
+	       	lp.LATITUDE_IN_DECIMAL as P_LATITUDE_IN_DECIMAL,
+	       	lp.LONGITUDE_IN_DECIMAL as P_LONGITUDE_IN_DECIMAL,
+	       	lp.ACCURACY_IN_MTR as P_ACCURACY_IN_MTR,
+	       	lp.ALTITUDE_IN_MTR as P_ALTITUDE_IN_MTR,
+	       	lp.SPEED_IN_KM_PER_HOUR as P_SPEED_IN_KM_PER_HOUR,    
+	       	lp.ADDRESS as P_ADDRESS,
+	       	le.EMERGENCY_SIGNAL_ID as E_EMERGENCY_SIGNAL_ID,
+	        le.TRACK_ID as E_TRACK_ID,
+	        le.POSITION_ID as E_POSITION_ID,
+	        le.TIME_RECEIVED as E_TIME_RECEIVED,
+	        le.ACTIVE as E_ACTIVE,
+	        le.MESSAGE as E_MESSAGE,
+	        le.SMS_SUCCESSFULLY_SENT as E_SMS_SUCCESSFULLY_SENT  
+  		from T_EMERGENCY_SIGNAL le 
+			right outer join T_POSITION lp
+				on le.POSITION_ID = lp.POSITION_ID   
+        where le.TRACK_ID = #trackId#
+        and lp.SEQUENCE_ID >= #minSequenceId#	  
+        order by lp.SEQUENCE_ID asc	     
+  	</select>
+  	        
     <insert id="storeEmergencySignal" parameterClass="emergencySignal" >
     	insert into T_EMERGENCY_SIGNAL (
     		EMERGENCY_SIGNAL_ID,

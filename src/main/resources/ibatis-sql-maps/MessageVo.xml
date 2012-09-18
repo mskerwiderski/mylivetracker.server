@@ -14,7 +14,6 @@
     </resultMap>
     
 	<resultMap id="detailedMessageResult" class="message" extends="minMessageResult">
-		<result property="track" resultMap="TrackVo.minTrackResult" />   
 		<result property="position" resultMap="PositionVo.detailedPositionResult" />                                                    
     </resultMap>
 	
@@ -25,6 +24,32 @@
         <result property="content" column="RM_CONTENT" />
         <result property="timeReceived" column="RM_TIME_RECEIVED" />                                    
     </resultMap>
+    
+    <select id="getMessagesOfTrack" parameterClass="java.util.Map" resultMap="detailedMessageResult">
+  		select 
+  			lp.POSITION_ID as P_POSITION_ID,
+	    	lp.SEQUENCE_ID as P_SEQUENCE_ID,
+	       	lp.TRACK_ID as P_TRACK_ID,     
+	       	lp.TIME_RECORDED as P_TIME_RECORDED,
+	       	lp.TIME_RECEIVED as P_TIME_RECEIVED,
+	       	lp.LATITUDE_IN_DECIMAL as P_LATITUDE_IN_DECIMAL,
+	       	lp.LONGITUDE_IN_DECIMAL as P_LONGITUDE_IN_DECIMAL,
+	       	lp.ACCURACY_IN_MTR as P_ACCURACY_IN_MTR,
+	       	lp.ALTITUDE_IN_MTR as P_ALTITUDE_IN_MTR,
+	       	lp.SPEED_IN_KM_PER_HOUR as P_SPEED_IN_KM_PER_HOUR,    
+	       	lp.ADDRESS as P_ADDRESS,
+	       	lm.MESSAGE_ID as M_MESSAGE_ID,
+			lm.TRACK_ID as M_TRACK_ID,
+			lm.POSITION_ID as M_POSITION_ID,
+			lm.CONTENT as M_CONTENT,
+			lm.TIME_RECEIVED as M_TIME_RECEIVED
+  		from T_MESSAGE lm 
+			right outer join T_POSITION lp
+				on lm.POSITION_ID = lp.POSITION_ID   
+        where lm.TRACK_ID = #trackId#
+        and lp.SEQUENCE_ID >= #minSequenceId#
+        order by lp.SEQUENCE_ID asc		       
+  	</select>
     
   	<insert id="storeMessage" parameterClass="message" >
   		insert into T_MESSAGE (

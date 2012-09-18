@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.CardiacFunctionVo;
 import de.msk.mylivetracker.domain.EmergencySignalVo;
@@ -13,6 +15,9 @@ import de.msk.mylivetracker.domain.MobNwCellVo;
 import de.msk.mylivetracker.domain.PositionVo;
 import de.msk.mylivetracker.domain.SenderStateVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
+import de.msk.mylivetracker.domain.user.UserWithRoleVo;
+import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
+import de.msk.mylivetracker.service.ISenderService;
 
 /**
  * TrackVo.
@@ -39,6 +44,7 @@ public class TrackVo implements Serializable {
 	private boolean released;
 	private String senderId;
 	private String senderName;
+	private String senderSymbolId;
 	private String phoneNumber;
 	private String userId;
 	
@@ -70,19 +76,23 @@ public class TrackVo implements Serializable {
 	private Long clientRuntimeWithoutPausesInMSecs;
 	private Long clientRuntimeWithPausesInMSecs;
 
-	public static TrackVo createInstance(String trackClientId, String name, SenderVo sender, boolean released) {		
+	public static TrackVo createInstance(String trackClientId, String name, SenderVo sender, 
+		boolean released) {		
+		String senderSymbolId = (sender.getSymbol() == null) ? 
+			SenderVo.DEFAULT_SYMBOL.getId() : sender.getSymbol().getId();
 		return createInstance(
 			UUID.randomUUID().toString(), 
 			trackClientId,
 			name, sender.getUserId(), 
 			sender.getSenderId(),
 			sender.getName(),
+			senderSymbolId,
 			0, released, new DateTime());
 	}
 	
 	public static TrackVo createInstance(String trackId, String trackClientId, String name,
-		String userId, String senderId, String senderName, Integer versionMajor,
-		boolean released, DateTime trackCreated) {
+		String userId, String senderId, String senderName, String senderSymbolId,
+		Integer versionMajor, boolean released, DateTime trackCreated) {
 		TrackVo track = new TrackVo();									
 		track.setTrackId(trackId);
 		track.setTrackClientId(trackClientId);
@@ -93,6 +103,7 @@ public class TrackVo implements Serializable {
 		track.setReleased(released);
 		track.setSenderId(senderId);
 		track.setSenderName(senderName);
+		track.setSenderSymbolId(senderSymbolId);
 		track.setUserId(userId);
 		track.setCountPositions(0);
 		track.setCountMobNwCells(0);
@@ -113,12 +124,32 @@ public class TrackVo implements Serializable {
 			track.getUserId(), 
 			track.getSenderId(),
 			track.getSenderName(),
+			track.getSenderSymbolId(),
 			track.getVersionMajor() + 1, track.isReleased(), 
 			track.getTimestamps().getTrackCreated());				
 	}	
 	
 	public boolean maxCountOfPositionsReached() {
 		return this.getCountPositions() >= MAX_COUNT_OF_POSITIONS_PER_TRACK;
+	}
+	
+	public static boolean isEditable(UserRole userRole) {
+		if (userRole == null) {
+			return false;
+		}
+		boolean isEditable = 
+			userRole.equals(UserWithRoleVo.UserRole.Admin) ||
+			userRole.equals(UserWithRoleVo.UserRole.User);
+		return isEditable;
+	}
+	
+	public static boolean canBeActivated(UserRole userRole, TrackVo track, ISenderService senderService) {
+		if ((userRole == null) || (track == null) || (senderService == null)) {
+			return false;
+		}
+		boolean canBeActivated = isEditable(userRole) && 
+			senderService.senderExists(track.getSenderId());
+		return canBeActivated;
 	}
 	
 	/**
@@ -211,6 +242,17 @@ public class TrackVo implements Serializable {
 	 */
 	public void setSenderName(String senderName) {
 		this.senderName = senderName;
+	}
+
+	public String getSenderSymbolId() {
+		if (StringUtils.isEmpty(senderSymbolId)) {
+			this.senderSymbolId = SenderVo.DEFAULT_SYMBOL.getId();
+		}
+		return senderSymbolId;
+	}
+
+	public void setSenderSymbolId(String senderSymbolId) {
+		this.senderSymbolId = senderSymbolId;
 	}
 
 	/**

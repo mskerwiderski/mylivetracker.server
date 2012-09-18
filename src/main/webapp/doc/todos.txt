@@ -1,0 +1,25 @@
+* [DONE-beta4] Tracks Overview: Tabelle - Updated Timestamp fehlt, wenn kein Track gefunden wurde.
+* [DONE-beta4] Tracks Overview: Bei Änderung des Aktualisierungsintervalls --> Reload der Seite durchführen, damit die Intervalleinstellung erhalten bleibt.
+* [DONE-beta4] Tracks Overview: Updated Timestamp für die Map.
+* [DONE-beta4] Fullscreen support für die Kartenanzeige.
+* [DONE-beta4] Karten-Provider support für die Kartenanzeige incl. der Einstellungen.
+* [DONE-beta4] Tracks Overview: Trackname verlinken, d.h. bei Klick auf diesen Link wird der detailed Track angezeigt.
+* [DONE-beta4] Demo TrackRunner: Anstatt des MNC wird der Network-Name eingefügt.
+* [DONE-beta4] Info-Texte für die Auto-Login-Optionen klarer formulieren.
+
+* [DONE-beta5] Detailed Track: Red led indicator when loading data.
+* [DONE-beta5] Tracks Overview: Anzeige von SOS-Signal-Infos.
+* [DONE-beta5] CircleMarker für die bessere Sichtbarkeit der Positionen.
+* [DONE-beta5] Auf Sender Maps Übersicht: Sichtbarkeit, ob ein Sender Nachrichten oder SOS Signal gesendet hat.
+
+* Tracks Overview: Für die Map: Zoom/Bound on/off.
+* Tk5000: Ungültige Positionen rausfiltern.
+* Performance beim Laden von Tracks verbessern.
+* Geocoder nur noch für Nachrichten und SOS Signale.
+* Geocoder von OpenStreetMap anbinden.
+* Timeout-Kriterien für die TCP Sockets anpassen.
+* Image Ordner aufräumen.
+* Umstellung auf Spring 3.1.
+* Google Maps Api Key entfernen.
+* Löschen/Resetten von Tracks: Den Track nur zur Löschung freigeben und das eigentliche Löschen über einen Util-Thread durchführen.
+  

@@ -31,8 +31,8 @@ import de.msk.mylivetracker.service.ITrackService;
 import de.msk.mylivetracker.service.IUserService;
 import de.msk.mylivetracker.web.exception.MyLiveTrackerException;
 import de.msk.mylivetracker.web.frontend.tracking.json.JsonCommonsDscJsonSerializer;
-import de.msk.mylivetracker.web.frontend.tracking.json.TrackVoJsonSerializer;
-import de.msk.mylivetracker.web.frontend.tracking.json.UserVoJsonSerializer;
+import de.msk.mylivetracker.web.frontend.util.json.TrackVoJsonSerializer;
+import de.msk.mylivetracker.web.frontend.util.json.UserVoJsonSerializer;
 import de.msk.mylivetracker.web.util.FmtUtils;
 import de.msk.mylivetracker.web.util.WebUtils;
 import de.msk.mylivetracker.web.util.request.ReqParam;
@@ -114,6 +114,9 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 			this.role = role;
 			this.statusParams = statusParams;
 		}		
+		public boolean hasStatusParams() {
+			return statusParams != null;
+		}
 	}
 	
 	public static class JsonCommonsDsc {
@@ -170,12 +173,12 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 						FmtUtils.noValue));
 				this.addToJsonModel(request, 
 					userAndRoleDsc, track, model);
-				String modelAsJson = modelToJson(
-					request, model, userAndRoleDsc.user);
-				log.debug("json-response: " + 
-					modelAsJson);
-				log.debug("json-response: " + 
-					modelAsJson.length() + " bytes");
+				String modelAsJson = modelToJson(request, model, 
+					userAndRoleDsc.user, userAndRoleDsc.role);
+				//log.debug("json-response: " + 
+				//	modelAsJson);
+				//log.debug("json-response: " + 
+				//	modelAsJson.length() + " bytes");
 				response.getOutputStream().print(modelAsJson);
 			} else if (requestType.equals(RequestType.binary)) {
 				TrackVo track = this.getTrack(request, userAndRoleDsc);
@@ -192,17 +195,17 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 
 	private static String modelToJson(
 		HttpServletRequest request, Map<String, Object> model,
-		UserWithoutRoleVo user) {
+		UserWithoutRoleVo user, UserRole userRole) {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.serializeNulls();		
 		gsonBuilder.registerTypeAdapter(JsonCommonsDsc.class, 
-			new JsonCommonsDscJsonSerializer(request, user));
+			new JsonCommonsDscJsonSerializer(request, user, userRole));
 		gsonBuilder.registerTypeAdapter(UserWithRoleVo.class, 
-			new UserVoJsonSerializer<UserWithRoleVo>(request, user));
+			new UserVoJsonSerializer<UserWithRoleVo>(request, user, userRole));
 		gsonBuilder.registerTypeAdapter(UserWithoutRoleVo.class, 
-			new UserVoJsonSerializer<UserWithoutRoleVo>(request, user));
+			new UserVoJsonSerializer<UserWithoutRoleVo>(request, user, userRole));
 		gsonBuilder.registerTypeAdapter(TrackVo.class, 
-			new TrackVoJsonSerializer(request, user));
+			new TrackVoJsonSerializer(request, user, userRole, null));
 		Gson gson = gsonBuilder.create();
 		return gson.toJson(model);
 	}
@@ -385,8 +388,7 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 		TrackVo track = null;
 		String senderId = PARAM_SENDER_ID.getValueFromReq(request);
 		String trackId = PARAM_TRACK_ID.getValueFromReq(request);			
-		Integer keepRecentPositions = 
-			PARAM_TRACKING_KEEP_RECENT_POSITIONS.getValueFromReq(request, 0);
+		Integer keepRecentPositions = PARAM_TRACKING_KEEP_RECENT_POSITIONS.getValueFromReq(request, 0);
 		String recTrackId = PARAM_TRACKING_RECENT_TRACK_ID.getValueFromReq(request);
 		Integer countPositionsDrawed = PARAM_TRACKING_COUNT_POSITIONS_DRAWED.getValueFromReq(request, 0);
 		
@@ -405,7 +407,8 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 		
 		if (!StringUtils.isEmpty(trackId)) {
 			track = (this.trackAsDetailed ? 
-				this.trackService.getTrackAsDetailed(trackId, cntCutPositions) :
+				this.trackService.getTrackAsDetailed(trackId, 
+					cntCutPositions, true, true, false, false, false) :
 				this.trackService.getTrackAsRecent(trackId));									
 		} else {
 			track = null;
@@ -413,10 +416,11 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 				track = this.trackService.getRecentTrackAsMin(userAndRoleDsc.user, senderId);
 				if (track != null) {					
 					if (!StringUtils.equals(track.getTrackId(), recTrackId)) {
-						cntCutPositions = 0;
-						log.debug("track has changed --> cntCutPositions is set to 0.");
+						cntCutPositions = keepRecentPositions;
+						log.debug("track has changed --> cntCutPositions is set to keepRecentPositions.");
 					}
-					track = this.trackService.getTrackAsDetailed(track.getTrackId(), cntCutPositions);
+					track = this.trackService.getTrackAsDetailed(
+						track.getTrackId(), cntCutPositions, true, true, false, false, false);
 				}
 			} else {
 				track = this.trackService.getRecentTrackAsRecent(

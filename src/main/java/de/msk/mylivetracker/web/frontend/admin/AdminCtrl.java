@@ -40,6 +40,7 @@ import de.msk.mylivetracker.service.track.UserStorePositionQueues;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
 import de.msk.mylivetracker.web.uploader.processor.UploadProcessor;
 import de.msk.mylivetracker.web.util.UrlUtils;
+import de.msk.mylivetracker.web.util.UsersLocaleResolver;
 import de.msk.mylivetracker.web.util.WebUtils;
 import de.msk.mylivetracker.web.util.request.ReqParamValues;
 import de.msk.mylivetracker.web.util.request.ReqUrlStr;
@@ -132,9 +133,12 @@ public class AdminCtrl extends ParameterizableViewController {
 			String firstName = request.getParameter("firstName");				
 			String plainPassword = request.getParameter("plainPassword");
 			String emailAddress = request.getParameter("emailAddress");
+			String language = request.getParameter("language");
 			if (StringUtils.isEmpty(plainPassword) ||
 				StringUtils.isEmpty(emailAddress)) {
 				result = "Register user failed: Plain password or Email address must not be empty.";
+			} else if (UsersLocaleResolver.getLocale(language) == null) {
+				result = "Register user failed: Only the languages 'en' and 'de' are supported.";
 			} else {
 				String hashedPassword = PasswordEncoder.encode(
 					userId, 
@@ -143,7 +147,7 @@ public class AdminCtrl extends ParameterizableViewController {
 				UserPlainVo user = new UserPlainVo(
 					userId, lastName, firstName, 
 					emailAddress, hashedPassword, 
-					UserRole.User, 3, true);
+					UserRole.User, 3, true, language);
 				boolean success = this.userService.registerNewUser(user);
 				if (success) {
 					result = "New user successfully registered.";
@@ -211,7 +215,7 @@ public class AdminCtrl extends ParameterizableViewController {
 		
 		ReqUrlStr trackUrlPrefix = 
 			ReqUrlStr.create(this.applicationService.getApplicationBaseUrl())
-			.addUrlPath(UrlUtils.URL_TRACK_AS_GOOGLE_MAPS_CTRL)
+			.addUrlPath(UrlUtils.URL_TRACK_AS_MAP_CTRL)
 			.addParamValues(
 				ReqParamValues.create()
 				.add(AbstractTrackingCtrl.PARAM_REQ_TYPE, 

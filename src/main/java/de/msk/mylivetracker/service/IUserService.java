@@ -8,10 +8,11 @@ import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
  * 
  * @author michael skerwiderski, (c)2011
  * 
- * @version 000
+ * @version 001
  * 
  * history
- * 000 initial 2011-08-11
+ * 001 2012-09-16 updateUserOptionsMapsUsed() added.
+ * 000 2011-08-11 initial.
  * 
  */
 public interface IUserService {
@@ -19,7 +20,9 @@ public interface IUserService {
 	public UserWithoutRoleVo getUserWithoutRole(String userId);
 	public void updateLoginInfo(UserWithoutRoleVo user);
 	public void updateUserOptions(UserWithoutRoleVo user);
+	public void updateUserOptionsMapsUsed(UserWithoutRoleVo user);
 	public void updateUserMasterData(UserWithoutRoleVo user);
+	public void updateUserAutoLogin(UserWithoutRoleVo user);
 	public void updateUserStatusPage(UserWithoutRoleVo user);
 	public void updateUserEmergency(UserWithoutRoleVo user);
 	public Integer getUserCount(boolean adminsIncluded);

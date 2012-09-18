@@ -39,6 +39,12 @@ public class ResetAllOptions implements IAction {
 		MessageSource messageSource, Locale locale)
 		throws ActionExecutionException {
 		cmd.setUserOptions(user.getOptions().copy());	
+		cmd.setHomeLocLatitudeStr(
+			(user.getOptions().getHomeLocLatitude() == null) ? 
+			"" : user.getOptions().getHomeLocLatitude().toString());
+		cmd.setHomeLocLongitudeStr(
+			(user.getOptions().getHomeLocLongitude() == null) ? 
+			"" : user.getOptions().getHomeLocLongitude().toString());
 		cmd.setInfoMessage(messageSource.getMessage(
 			"options.success.resetted", null, locale));
 	}

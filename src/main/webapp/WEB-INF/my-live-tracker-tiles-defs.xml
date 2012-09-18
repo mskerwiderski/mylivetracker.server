@@ -35,9 +35,15 @@
 		<put-attribute name="content" value="/WEB-INF/jsp/login.jsp" />
 	</definition>
 				
+	<!-- options -->			
 	<definition name="tracks_overview" extends="layout">
-	  	<put-attribute name="content" value="/WEB-INF/jsp/tracks_overview.jsp" />
+	  	<put-attribute name="content" type="definition" value="tracks_overview_table_and_map" />
 	</definition>	
+	
+	<definition name="tracks_overview_table_and_map" template="/WEB-INF/jsp/overview/tracks_overview.jsp" >
+		<put-attribute name="tracks-as-table" value="/WEB-INF/jsp/overview/tracks_as_table.jsp" />
+		<put-attribute name="tracks-as-map" value="/WEB-INF/jsp/overview/tracks_as_map.jsp" />
+	</definition>
 	
 	<definition name="track_as_status_info" extends="layout">
 	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_status_info.jsp" />
@@ -47,32 +53,25 @@
 	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_status_info.jsp" />
 	</definition>
 	
-	<definition name="track_as_google_maps" extends="layout">
-	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_google_maps.jsp" />
+	<definition name="track_as_map" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_map.jsp" />
 	</definition>
 		
-	<definition name="track_as_google_maps_layout_simple" extends="layout_simple" >
-	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_google_maps.jsp" />
-	</definition>
-	
-	<definition name="track_as_cloudmade_maps" extends="layout">
-	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_cloudmade_maps.jsp" />
-	</definition>
-		
-	<definition name="track_as_cloudmade_maps_layout_simple" extends="layout_simple" >
-	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_cloudmade_maps.jsp" />
+	<definition name="track_as_map_layout_simple" extends="layout_simple" >
+	  	<put-attribute name="content" value="/WEB-INF/jsp/tracking/track_as_map.jsp" />
 	</definition>
 	
 	<!-- options -->
 	<definition name="options" extends="layout">
-	  	<put-attribute name="content" type="definition" value="options-tabs" />	  	
+	  	<put-attribute name="content" type="definition" value="options_tabs" />	  	
 	</definition>
 		
-	<definition name="options-tabs" template="/WEB-INF/jsp/options/options.jsp" >
+	<definition name="options_tabs" template="/WEB-INF/jsp/options/options.jsp" >
 		<put-attribute name="user-master-data" value="/WEB-INF/jsp/options/options_user_master_data.jsp" />
 		<put-attribute name="user-options" value="/WEB-INF/jsp/options/options_user_options.jsp" />
 	  	<put-attribute name="sender-maintenance" value="/WEB-INF/jsp/options/options_sender_maintenance.jsp" />
 	  	<put-attribute name="status-page" value="/WEB-INF/jsp/options/options_status_page.jsp" />
+	  	<put-attribute name="maps" value="/WEB-INF/jsp/options/options_maps.jsp" />
 	  	<put-attribute name="emergency" value="/WEB-INF/jsp/options/options_emergency.jsp" />
 	</definition>		
 		

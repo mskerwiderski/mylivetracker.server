@@ -21,7 +21,7 @@
     </resultMap>           
     
 	<resultMap id="detailedPositionResult" class="position" extends="minPositionResult">
-		<result property="track" resultMap="TrackVo.minTrackResult" />                      
+<!-- 		<result property="track" resultMap="TrackVo.minTrackResult" />                       -->
     </resultMap>           
     
     <resultMap id="startDetailedPositionResult" class="position">
@@ -117,6 +117,27 @@
         <result property="address"  column="PRE_ADDRESS" />          
     </resultMap>
         
+    <select id="getPositionsOfTrack" parameterClass="java.util.Map" resultMap="detailedPositionResult">
+  		select 
+  			lp.POSITION_ID as P_POSITION_ID,
+	    	lp.SEQUENCE_ID as P_SEQUENCE_ID,
+	       	lp.TRACK_ID as P_TRACK_ID,     
+	       	lp.TIME_RECORDED as P_TIME_RECORDED,
+	       	lp.TIME_RECEIVED as P_TIME_RECEIVED,
+	       	lp.LATITUDE_IN_DECIMAL as P_LATITUDE_IN_DECIMAL,
+	       	lp.LONGITUDE_IN_DECIMAL as P_LONGITUDE_IN_DECIMAL,
+	       	lp.ACCURACY_IN_MTR as P_ACCURACY_IN_MTR,
+	       	lp.ALTITUDE_IN_MTR as P_ALTITUDE_IN_MTR,
+	       	lp.SPEED_IN_KM_PER_HOUR as P_SPEED_IN_KM_PER_HOUR,    
+	       	lp.ADDRESS as P_ADDRESS
+  		from T_POSITION lp 
+        where lp.TRACK_ID = #trackId#
+        order by lp.SEQUENCE_ID asc	       
+        <isNotEqual property="startAt" compareValue="0">
+  			limit #startAt#, #fetchCount#
+  		</isNotEqual>
+  	</select>
+  	    
     <insert id="storePosition" parameterClass="position" >
     	insert into T_POSITION (
     		POSITION_ID,

@@ -116,11 +116,16 @@ public class TrackService implements ITrackService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.ITrackService#getTrackAsDetailed(java.lang.String, java.lang.Integer)
+	 * @see de.msk.mylivetracker.service.ITrackService#getTrackAsDetailed(java.lang.String, java.lang.Integer, boolean, boolean, boolean, boolean, boolean)
 	 */
 	@Override
-	public TrackVo getTrackAsDetailed(String trackId, Integer cntCutPositions) {
-		TrackVo track = trackDao.getTrackAsDetailed(trackId, cntCutPositions);
+	public TrackVo getTrackAsDetailed(String trackId, Integer cntCutPositions,
+		boolean messagesIncl, boolean emergencySignalsIncl,
+		boolean cardiacFunctionsIncl, boolean mobNwCellsIncl,
+		boolean senderStatesIncl) {
+		TrackVo track = trackDao.getTrackAsDetailed(trackId, cntCutPositions, 
+			messagesIncl, emergencySignalsIncl,
+			cardiacFunctionsIncl, mobNwCellsIncl, senderStatesIncl);
 		return track;
 	}
 

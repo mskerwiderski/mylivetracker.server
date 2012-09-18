@@ -20,6 +20,7 @@ public class UserWithoutRoleVo implements Serializable {
 	private static final long serialVersionUID = -1630623388578148419L;
 	
 	protected UserMasterDataVo masterData;
+	protected UserAutoLoginVo autoLogin;
 	protected UserOptionsVo options;
 	protected UserStatusPageVo statusPage;
 	protected UserEmergencyVo emergency;
@@ -179,6 +180,14 @@ public class UserWithoutRoleVo implements Serializable {
 	 */
 	public void setMasterData(UserMasterDataVo masterData) {
 		this.masterData = masterData;
+	}
+
+	public UserAutoLoginVo getAutoLogin() {
+		return autoLogin;
+	}
+
+	public void setAutoLogin(UserAutoLoginVo autoLogin) {
+		this.autoLogin = autoLogin;
 	}
 
 	/**

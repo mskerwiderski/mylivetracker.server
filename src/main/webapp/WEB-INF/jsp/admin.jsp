@@ -738,7 +738,7 @@
 			&nbsp;Plain password&nbsp;
 		</td>
 		<td style="width:200px;text-align:left;white-space: nowrap;">
-			&nbsp;<input id='plainPassword' name='plainPassword' value='' size="30">&nbsp;
+			&nbsp;<input id='plainPassword' name='plainPassword' value='test2012' size="30">&nbsp;
 		</td>
 		<th style="width:100%;">
 			&nbsp;&nbsp;							
@@ -772,6 +772,17 @@
 		</td>
 		<td style="width:200px;text-align:left;white-space: nowrap;">
 			&nbsp;<input id='emailAddress' name='emailAddress' value='' size="30">&nbsp;
+		</td>
+		<th style="width:100%;">
+			&nbsp;&nbsp;							
+		</th>
+	</tr>
+	<tr>
+		<td style="width:200px;text-align:left;white-space: nowrap;">
+			&nbsp;Language ('en' or 'de')&nbsp;
+		</td>
+		<td style="width:200px;text-align:left;white-space: nowrap;">
+			&nbsp;<input id='language' name='language' value='en' size="10">&nbsp;
 		</td>
 		<th style="width:100%;">
 			&nbsp;&nbsp;							

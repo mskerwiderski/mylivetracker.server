@@ -13,12 +13,20 @@ import de.msk.mylivetracker.web.uploader.processor.SenderFromRequestVo;
  * @version 000
  * 
  * history
+ * 002 08.09.2012 senderExists added.
  * 001 18.11.2011 updateSenderType added.
  * 000 initial 2011-08-11
  * 
  */
 public interface ISenderService {
 
+	/**
+	 * check whether sender exists or not.
+	 * @param senderId - the sender id.
+	 * @return Returns <code>true</code> if sender exists, otherwise <code>false</code>.
+	 */
+	public boolean senderExists(String senderId);
+	
 	/**
 	 * get sender.
 	 * @param senderId - the sender id.

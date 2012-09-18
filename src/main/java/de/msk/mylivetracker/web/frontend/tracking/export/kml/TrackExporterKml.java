@@ -149,11 +149,11 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 			.withOpen(true);
 			
 		this.createAndSetIconStyle(applicationBaseUrl, 
-			document, STYLE_MARKER_MESSAGE, "markerM.png");
+			document, STYLE_MARKER_MESSAGE, "message.png");
 		this.createAndSetIconStyle(applicationBaseUrl, 
-			document, STYLE_MARKER_STARTPOS, "dd-start.png");
+			document, STYLE_MARKER_STARTPOS, "start.png");
 		this.createAndSetIconStyle(applicationBaseUrl, 
-			document, STYLE_MARKER_RECPOS, "arrow.png");
+			document, STYLE_MARKER_RECPOS, track.getSenderSymbolId() + ".png");
 						
 		if (live) {
 			final NetworkLink networklink = document.createAndAddNetworkLink()
@@ -255,7 +255,7 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 		String applicationBaseUrl, Document document, 
 		String styleId, String iconName) {
 		String iconUrl = ReqUrlStr.create(
-			applicationBaseUrl, "img", iconName).toString();
+			applicationBaseUrl, "img", "map_symbols", iconName).toString();
 		Style style = document.createAndAddStyle().withId(styleId);		
 		style.createAndSetIconStyle()
 			.withColorMode(ColorMode.NORMAL)			

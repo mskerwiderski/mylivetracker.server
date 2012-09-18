@@ -19,7 +19,6 @@
     </resultMap>
     
 	<resultMap id="detailedMobNwCellResult" class="mobNwCell" extends="minMobNwCellResult">
-		<result property="track" resultMap="TrackVo.minTrackResult" />   
 		<result property="position" resultMap="PositionVo.detailedPositionResult" />      		          		                      
     </resultMap>
               
@@ -35,7 +34,38 @@
 		<result property="mobileMode" column="RC_MOBILE_MODE" /> 		   
 		<result property="timeReceived" column="RC_TIME_RECEIVED" />                       
     </resultMap>
-              
+        
+    <select id="getMobNwCellsOfTrack" parameterClass="java.util.Map" resultMap="detailedMobNwCellResult">
+  		select 
+  			lp.POSITION_ID as P_POSITION_ID,
+	    	lp.SEQUENCE_ID as P_SEQUENCE_ID,
+	       	lp.TRACK_ID as P_TRACK_ID,     
+	       	lp.TIME_RECORDED as P_TIME_RECORDED,
+	       	lp.TIME_RECEIVED as P_TIME_RECEIVED,
+	       	lp.LATITUDE_IN_DECIMAL as P_LATITUDE_IN_DECIMAL,
+	       	lp.LONGITUDE_IN_DECIMAL as P_LONGITUDE_IN_DECIMAL,
+	       	lp.ACCURACY_IN_MTR as P_ACCURACY_IN_MTR,
+	       	lp.ALTITUDE_IN_MTR as P_ALTITUDE_IN_MTR,
+	       	lp.SPEED_IN_KM_PER_HOUR as P_SPEED_IN_KM_PER_HOUR,    
+	       	lp.ADDRESS as P_ADDRESS,
+	       	lc.MOB_NW_CELL_ID as C_MOB_NW_CELL_ID,
+			lc.TRACK_ID as C_TRACK_ID,        
+			lc.POSITION_ID as C_POSITION_ID,  
+			lc.CELL_ID as C_CELL_ID,          
+			lc.LOCAL_AREA_CODE as C_LOCAL_AREA_CODE,          
+			lc.NETWORK_NAME as C_NETWORK_NAME,      
+			lc.MOBILE_COUNTRY_CODE as C_MOBILE_COUNTRY_CODE,      
+			lc.MOBILE_NETWORK_CODE as C_MOBILE_NETWORK_CODE,   
+			lc.MOBILE_MODE as C_MOBILE_MODE,
+			lc.TIME_RECEIVED as C_TIME_RECEIVED
+  		from T_MOB_NW_CELL lc 
+			right outer join T_POSITION lp
+				on lc.POSITION_ID = lp.POSITION_ID   
+        where lc.TRACK_ID = #trackId#
+        and lp.SEQUENCE_ID >= #minSequenceId#
+        order by lp.SEQUENCE_ID asc		       
+  	</select>
+  	          
     <insert id="storeMobNwCell" parameterClass="mobNwCell" >
     	insert into T_MOB_NW_CELL (
     		MOB_NW_CELL_ID,           

@@ -37,7 +37,7 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 	private Boolean showTrackInfo;
 	private String cssStyle;
 	private String linkTrackAsStatusInfo;
-	private String linkTrackAsGoogleMaps;
+	private String linkTrackAsMap;
 			
 	public void setDefaultValues(IStatusParamsService urlService, 
 		IApplicationService applicationService, UserWithoutRoleVo user) {		
@@ -79,8 +79,8 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 				.addParamValue(AbstractTrackingCtrl.PARAM_PARAMS_ID, 
 					statusParams.getStatusParamsId())
 				.toString());
-		this.setLinkTrackAsGoogleMaps(
-			ReqUrlStr.create(appBaseUrl, UrlUtils.URL_TRACK_AS_GOOGLE_MAPS_CTRL)
+		this.setLinkTrackAsMap(
+			ReqUrlStr.create(appBaseUrl, UrlUtils.URL_TRACK_AS_MAP_CTRL)
 				.addParamValue(AbstractTrackingCtrl.PARAM_PARAMS_ID, 
 					statusParams.getStatusParamsId())
 				.toString());				
@@ -98,16 +98,6 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 			".track-status-footer { color: white; font-size: 10px; font-variant: normal; }";
 	}
 	
-	public static UserStatusPageVo createDefInstance(
-		IStatusParamsService urlService, 
-		IApplicationService applicationService, 
-		UserWithoutRoleVo user) {
-		UserStatusPageVo statusPage = new UserStatusPageVo();
-		statusPage.setDefaultValues(urlService,
-			applicationService, user);
-		return statusPage;
-	}
-
 	public UserStatusPageVo copy() {
 		UserStatusPageVo statusPage = null;
 		try {
@@ -287,17 +277,11 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 		this.linkTrackAsStatusInfo = linkTrackAsStatusInfo;
 	}
 
-	/**
-	 * @return the linkTrackAsGoogleMaps
-	 */
-	public String getLinkTrackAsGoogleMaps() {
-		return linkTrackAsGoogleMaps;
+	public String getLinkTrackAsMap() {
+		return linkTrackAsMap;
 	}
 
-	/**
-	 * @param linkTrackAsGoogleMaps the linkTrackAsGoogleMaps to set
-	 */
-	public void setLinkTrackAsGoogleMaps(String linkTrackAsGoogleMaps) {
-		this.linkTrackAsGoogleMaps = linkTrackAsGoogleMaps;
-	}	
+	public void setLinkTrackAsMap(String linkTrackAsMap) {
+		this.linkTrackAsMap = linkTrackAsMap;
+	}
 }

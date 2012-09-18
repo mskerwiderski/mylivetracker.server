@@ -40,6 +40,8 @@ public class SaveAllMasterData implements IAction {
 		throws ActionExecutionException {
 		user.setMasterData(cmd.getUserMasterData().copy());	
 		userService.updateUserMasterData(user);
+		user.setAutoLogin(cmd.getUserAutoLogin().copy());	
+		userService.updateUserAutoLogin(user);
 		cmd.setInfoMessage(messageSource.getMessage(
 			"masterdata.success.saved", null, locale));
 	}

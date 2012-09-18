@@ -15,12 +15,8 @@ import org.apache.commons.logging.LogFactory;
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.StatusParamsVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
-import de.msk.mylivetracker.domain.track.TrackVo;
-import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.IApplicationService;
 import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.ITrackService.TrackListResult;
 import de.msk.mylivetracker.service.IUserService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.ActionExecutor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
@@ -45,25 +41,23 @@ public class TracksOverviewCmd {
 	public static final String REQUEST_PARAM_ACTION_EXECUTOR = "actionExecutor";
 	public static final StrOptionDsc STR_OPTION_VALUE_ALL = new StrOptionDsc("all", "common.opts.all");
 	
-	public static final int MAX_SIZE_RESULT_SET = 30;
-	
+	public String selectedTrackId = null;	
+	public String selectedTrackName = null;
+	public Boolean selectedTrackActivityStatus = null;
+	public Boolean selectedTrackReleaseStatus = null;
+
 	private ActionExecutor actionExecutor = null;
 	
-	private String selectedTrackId = null;
-	private Integer selectedTrackEntryIdx = null;
+	public enum TracksView {
+		Table, Map
+	}
+	private TracksView tracksView = TracksView.Table;
+	private String cloudmadeApiKey = null;
+	private String mapsUsedStr = null;
+	private int defMapId = 0;
+	
 	private Integer selectedSenderEntryIdx = null;
-	private String selectedTrackName = null;
-	private Boolean selectedTrackActivityStatus = null;
-	private Boolean selectedTrackReleaseStatus = null;
 	
-	private int countFoundTracks = 0;
-	private int countDisplayedTracks = 0;
-	private boolean maxCountOfRecordsExceeded = false;
-	
-	private List<TrackEntry> trackEntries = new ArrayList<TrackEntry>();
-	private List<String> trackNames = new ArrayList<String>();	
-	private List<Boolean> trackReleaseStati = new ArrayList<Boolean>();
-	private List<Boolean> trackActivityStati = new ArrayList<Boolean>();
 	private List<SenderEntry> senderEntries = new ArrayList<SenderEntry>();
 	
 	private List<StrOptionDsc> senderFilterOptions = new ArrayList<StrOptionDsc>();
@@ -87,51 +81,6 @@ public class TracksOverviewCmd {
 	
 	private List<BoolOptionDsc> trackOptsReleaseStatus;
 	private List<BoolOptionDsc> trackOptsActivityStatus;
-	
-	public void buildUpTrackEntries(
-		HttpServletRequest request,
-		IApplicationService applicationService,		
-		ISenderService senderService,
-		UserWithRoleVo user, 
-		TrackListResult trackListResult) {
-		Set<StrOptionDsc> userFilterOptionsSet = new HashSet<StrOptionDsc>();
-		Set<StrOptionDsc> senderFilterOptionsSet = new HashSet<StrOptionDsc>();
-		trackEntries.clear();
-		trackNames.clear();
-		trackReleaseStati.clear();
-		trackActivityStati.clear();
-		selectedTrackEntryIdx = null;
-		
-		List<TrackVo> tracks = trackListResult.getTracks();
-		countFoundTracks = trackListResult.getCountFoundTracks();
-		countDisplayedTracks = tracks.size();
-		maxCountOfRecordsExceeded = trackListResult.isMaxCountOfRecordsExceeded();
-		
-		for (int idx=0; idx < tracks.size(); idx++) {
-			TrackVo track = tracks.get(idx);
-			if (track.getTrackId().equals(this.selectedTrackId)) {
-				selectedTrackEntryIdx = idx;
-			}
-			trackEntries.add(
-				new TrackEntry(request,
-					applicationService,					
-					user,
-					senderService.getSender(track.getSenderId()),
-					track));
-			trackNames.add(track.getName());
-			trackReleaseStati.add(track.isReleased());
-			trackActivityStati.add(track.isActive());
-			userFilterOptionsSet.add(
-				new StrOptionDsc(track.getUserId(), track.getUserId()));
-			senderFilterOptionsSet.add(
-				new StrOptionDsc(track.getSenderId(), track.getSenderId()));
-		}
-		
-		if ((selectedTrackEntryIdx == null) && !tracks.isEmpty()) {
-			selectedTrackEntryIdx = 0;
-			selectedTrackId = tracks.get(0).getTrackId();			
-		}
-	}
 	
 	public void buildUpSenderEntries(List<SenderVo> senders) {
 		senderEntries.clear();
@@ -189,6 +138,62 @@ public class TracksOverviewCmd {
 	}	
 	
 	/**
+	 * @return the selectedTrackId
+	 */
+	public String getSelectedTrackId() {
+		return selectedTrackId;
+	}
+
+	/**
+	 * @param selectedTrackId the selectedTrackId to set
+	 */
+	public void setSelectedTrackId(String selectedTrackId) {
+		this.selectedTrackId = selectedTrackId;
+	}
+
+	/**
+	 * @return the selectedTrackName
+	 */
+	public String getSelectedTrackName() {
+		return selectedTrackName;
+	}
+
+	/**
+	 * @param selectedTrackName the selectedTrackName to set
+	 */
+	public void setSelectedTrackName(String selectedTrackName) {
+		this.selectedTrackName = selectedTrackName;
+	}
+
+	/**
+	 * @return the selectedTrackActivityStatus
+	 */
+	public Boolean getSelectedTrackActivityStatus() {
+		return selectedTrackActivityStatus;
+	}
+
+	/**
+	 * @param selectedTrackActivityStatus the selectedTrackActivityStatus to set
+	 */
+	public void setSelectedTrackActivityStatus(Boolean selectedTrackActivityStatus) {
+		this.selectedTrackActivityStatus = selectedTrackActivityStatus;
+	}
+
+	/**
+	 * @return the selectedTrackReleaseStatus
+	 */
+	public Boolean getSelectedTrackReleaseStatus() {
+		return selectedTrackReleaseStatus;
+	}
+
+	/**
+	 * @param selectedTrackReleaseStatus the selectedTrackReleaseStatus to set
+	 */
+	public void setSelectedTrackReleaseStatus(Boolean selectedTrackReleaseStatus) {
+		this.selectedTrackReleaseStatus = selectedTrackReleaseStatus;
+	}
+
+	/**
 	 * @return the actionExecutor
 	 */
 	public ActionExecutor getActionExecutor() {
@@ -202,32 +207,48 @@ public class TracksOverviewCmd {
 		this.actionExecutor = actionExecutor;
 	}
 
-	/**
-	 * @return the selectedTrackId
-	 */
-	public String getSelectedTrackId() {
-		return selectedTrackId;
+	public TracksView getTracksView() {
+		return tracksView;
+	}
+
+	public void setTracksView(TracksView tracksView) {
+		this.tracksView = tracksView;
+	}
+
+	public String getCloudmadeApiKey() {
+		return cloudmadeApiKey;
+	}
+
+	public void setCloudmadeApiKey(String cloudmadeApiKey) {
+		this.cloudmadeApiKey = cloudmadeApiKey;
 	}
 
 	/**
-	 * @param selectedTrackId the selectedTrackId to set
+	 * @return the mapsUsedStr
 	 */
-	public void setSelectedTrackId(String selectedTrackId) {
-		this.selectedTrackId = selectedTrackId;
-	}
-	
-	/**
-	 * @return the selectedTrackEntryIdx
-	 */
-	public Integer getSelectedTrackEntryIdx() {
-		return selectedTrackEntryIdx;
+	public String getMapsUsedStr() {
+		return mapsUsedStr;
 	}
 
 	/**
-	 * @param selectedTrackEntryIdx the selectedTrackEntryIdx to set
+	 * @param mapsUsedStr the mapsUsedStr to set
 	 */
-	public void setSelectedTrackEntryIdx(Integer selectedTrackEntryIdx) {
-		this.selectedTrackEntryIdx = selectedTrackEntryIdx;
+	public void setMapsUsedStr(String mapsUsedStr) {
+		this.mapsUsedStr = mapsUsedStr;
+	}
+
+	/**
+	 * @return the defMapId
+	 */
+	public int getDefMapId() {
+		return defMapId;
+	}
+
+	/**
+	 * @param defMapId the defMapId to set
+	 */
+	public void setDefMapId(int defMapId) {
+		this.defMapId = defMapId;
 	}
 
 	/**
@@ -245,58 +266,11 @@ public class TracksOverviewCmd {
 	}
 
 	/**
-	 * @return the selectedTrackName
-	 */
-	public String getSelectedTrackName() {
-		return selectedTrackName;
-	}
-
-	/**
-	 * @param selectedTrackName the selectedTrackName to set
-	 */
-	public void setSelectedTrackName(String selectedTrackName) {
-		this.selectedTrackName = selectedTrackName;
-	}
-
-	public int getCountFoundTracks() {
-		return countFoundTracks;
-	}
-
-	public int getCountDisplayedTracks() {
-		return countDisplayedTracks;
-	}
-
-	public boolean isMaxCountOfRecordsExceeded() {
-		return maxCountOfRecordsExceeded;
-	}
-
-	/**
-	 * @return the trackEntries
-	 */
-	public List<TrackEntry> getTrackEntries() {
-		return trackEntries;
-	}
-
-	/**
 	 * @return the senderEntries
 	 */
 	public List<SenderEntry> getSenderEntries() {
 		return senderEntries;
 	}
-
-	/**
-	 * @return the trackNames
-	 */
-	public List<String> getTrackNames() {
-		return trackNames;
-	}
-
-	/**
-	 * @param trackNames the trackNames to set
-	 */
-	public void setTrackNames(List<String> trackNames) {
-		this.trackNames = trackNames;
-	}	
 
 	/**
 	 * @return the liveTrackingOpts
@@ -465,48 +439,6 @@ public class TracksOverviewCmd {
 	public void setTrackOptsActivityStatus(
 			List<BoolOptionDsc> trackOptsActivityStatus) {
 		this.trackOptsActivityStatus = trackOptsActivityStatus;
-	}
-
-	/**
-	 * @return the trackReleaseStati
-	 */
-	public List<Boolean> getTrackReleaseStati() {
-		return trackReleaseStati;
-	}
-
-	/**
-	 * @return the trackActivityStati
-	 */
-	public List<Boolean> getTrackActivityStati() {
-		return trackActivityStati;
-	}
-
-	/**
-	 * @return the selectedTrackActivityStatus
-	 */
-	public Boolean getSelectedTrackActivityStatus() {
-		return selectedTrackActivityStatus;
-	}
-
-	/**
-	 * @param selectedTrackActivityStatus the selectedTrackActivityStatus to set
-	 */
-	public void setSelectedTrackActivityStatus(Boolean selectedTrackActivityStatus) {
-		this.selectedTrackActivityStatus = selectedTrackActivityStatus;
-	}
-
-	/**
-	 * @return the selectedTrackReleaseStatus
-	 */
-	public Boolean getSelectedTrackReleaseStatus() {
-		return selectedTrackReleaseStatus;
-	}
-
-	/**
-	 * @param selectedTrackReleaseStatus the selectedTrackReleaseStatus to set
-	 */
-	public void setSelectedTrackReleaseStatus(Boolean selectedTrackReleaseStatus) {
-		this.selectedTrackReleaseStatus = selectedTrackReleaseStatus;
 	}
 
 	/**

@@ -21,14 +21,14 @@ public interface IApplicationService {
 		ApplicationRealm, // application realm (used for user password encryption).
 		EvaluationModeEnabled, // if yes: only one registered user is allowed.
 		GeocodingEnabled, // if no: geocoding is system wide disabled.
-		GoogleApiKey, // google api key (needed for v2 google maps api).	
 		LogLifeTimeInMSecs, // lifetime of log records in milliseconds.
 		RunDemoAfterStartup, // if yes: demo tracks are started after application startup.
 		SmsCreatorDePassword, // password of sms service smscreator.de.
 		SmsCreatorDeUsername, // username of sms service smscreator.de.
 		TrackLifeTimeInMSecs, // lifetime of track records in milliseconds.
 		YahooApiKey, // yahoo api key (needed for geocoder).		
-		CloudmadeApiKey, // cloudmade api key (needed for cloudmade api).		
+		CloudmadeApiKey, // cloudmade api key (needed for cloudmade api).
+		RunCleanTasksAfterStartup, // if yes: clean tasks are started after application startup.
 	};
 				
 	public void reloadParameters();
@@ -36,7 +36,6 @@ public interface IApplicationService {
 	public String getServerAddress();
 	public String getApplicationBaseUrl();
 	public Integer getApplicationPort();
-	public String getGoogleApiKey();	
 	
 	/**
 	 * get parameter value as string.

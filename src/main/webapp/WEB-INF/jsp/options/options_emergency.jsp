@@ -120,7 +120,7 @@
 			</div>				
 		</td>
 		<c:choose>
-			<c:when test="${!empty optionsCmd.infoMessage && optionsCmd.currentTabId eq 4}">
+			<c:when test="${!empty optionsCmd.infoMessage && optionsCmd.currentTabId eq 5}">
 				<td class="ui-state-highlight">
 					&nbsp;<c:out escapeXml="false" value="${optionsCmd.infoMessage}" />&nbsp;						
 				</td>		

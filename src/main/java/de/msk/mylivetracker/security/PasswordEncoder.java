@@ -3,9 +3,11 @@ package de.msk.mylivetracker.security;
 import java.io.Serializable;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.dao.DataAccessException;
 
+import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 
@@ -48,7 +50,7 @@ public class PasswordEncoder
 	 * @see org.springframework.security.authentication.encoding.PasswordEncoder#isPasswordValid(java.lang.String, java.lang.String, java.lang.Object)
 	 */
 	public boolean isPasswordValid(String password, String plainPassword, Object salt)
-			throws DataAccessException {
+		throws DataAccessException {
 		boolean res = false;
 		UserWithRoleVo user = (UserWithRoleVo)salt;
 		UserOptionsVo userOptions = user.getOptions();
@@ -61,6 +63,15 @@ public class PasswordEncoder
 			if (res) {
 				user.setLoggedInAsAdmin(true);
 			}
+		} else if (BooleanUtils.isTrue(user.getAutoLogin().getAutoLoginEnabledForUser()) &&
+			UserAutoLoginVo.isAutoLoginTicket(plainPassword) && 
+			StringUtils.equals(user.getAutoLogin().getAutoLoginTicketForUser(), plainPassword)) {
+			res = true;
+		} else if (BooleanUtils.isTrue(user.getAutoLogin().getAutoLoginEnabledForGuest()) &&
+				UserAutoLoginVo.isAutoLoginTicket(plainPassword) && 
+				StringUtils.equals(user.getAutoLogin().getAutoLoginTicketForGuest(), plainPassword)) {
+			res = true;
+			user.setRole(UserWithRoleVo.UserRole.Guest);
 		} else {
 			// check if this is a normal user login.
 			if (!res) {

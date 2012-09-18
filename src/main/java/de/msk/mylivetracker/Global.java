@@ -20,7 +20,7 @@ public class Global {
 	}
 
 	public static String getVersion() {
-		return "v1.3.0";
+		return "v1.4.0 beta 4";
 	}
 	
 	public static String getAppId() {

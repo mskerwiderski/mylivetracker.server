@@ -8,9 +8,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
+import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.util.datetime.DateTimeUtils;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl.JsonCommonsDsc;
+import de.msk.mylivetracker.web.frontend.util.json.AbstractVoJsonSerializer;
 
 /**
  * JsonCommonsDscJsonSerializer.
@@ -27,8 +29,8 @@ public class JsonCommonsDscJsonSerializer extends AbstractVoJsonSerializer<JsonC
 
 	
 	public JsonCommonsDscJsonSerializer(HttpServletRequest request,
-		UserWithoutRoleVo user) {
-		super(request, user);
+		UserWithoutRoleVo userWithoutRole, UserRole userRole) {
+		super(request, userWithoutRole, userRole);
 	}
 
 	/* (non-Javadoc)
@@ -41,7 +43,7 @@ public class JsonCommonsDscJsonSerializer extends AbstractVoJsonSerializer<JsonC
 		jsonJsonCommonsDsc.addProperty("reqId", jsonCommonsDsc.reqId);
 		jsonJsonCommonsDsc.addProperty("reqRejected", jsonCommonsDsc.reqRejected);
 		jsonJsonCommonsDsc.addProperty("statusUpdated", 
-			DateTimeUtils.getDateTimeStr4UserRep(this.getUser(), jsonCommonsDsc.statusUpdated));
+			DateTimeUtils.getDateTimeStr4UserRep(this.getUserWithoutRole(), jsonCommonsDsc.statusUpdated));
 		jsonJsonCommonsDsc.addProperty("notFound", 
 			jsonCommonsDsc.notFound);
 		return jsonJsonCommonsDsc;

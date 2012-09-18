@@ -24,7 +24,9 @@ import de.msk.mylivetracker.web.util.request.ReqParam;
  */
 public class UsersLocaleResolver implements LocaleResolver {
 	
-	public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;	
+	public static final Locale SUPPORTED_LOCALE_ENGLISH = Locale.ENGLISH;	
+	public static final Locale SUPPORTED_LOCALE_GERMAN = Locale.GERMAN;
+	public static final Locale DEFAULT_LOCALE = SUPPORTED_LOCALE_ENGLISH;
 	
 	private static final ReqParam<String> PARAM_LOCALE = 
 		new ReqParam<String>("locale", String.class);
@@ -39,8 +41,8 @@ public class UsersLocaleResolver implements LocaleResolver {
 	}
 	
 	public static final LocaleDsc[] SUPPORTED_LOCALES = {
-		new LocaleDsc("en", Locale.ENGLISH),
-		new LocaleDsc("de", Locale.GERMAN)
+		new LocaleDsc("en", SUPPORTED_LOCALE_ENGLISH),
+		new LocaleDsc("de", SUPPORTED_LOCALE_GERMAN)
 	};
 	
 	public static Locale getScaleUnit(UserWithoutRoleVo user) {

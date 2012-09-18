@@ -91,12 +91,12 @@
 				</td></tr>
 				<tr><td style="border:none;">		
 					&nbsp;<b><spring:message code="options.geocoding.language" /></b>&nbsp;
-					<c:set var="selGoogleLanguage">${optionsCmd.userOptions.googleLanguage}</c:set>
-					<select id="userOptions.googleLanguage" name="userOptions.googleLanguage" 
+					<c:set var="selGeocoderLanguage">${optionsCmd.userOptions.geocoderLanguage}</c:set>
+					<select id="userOptions.geocoderLanguage" name="userOptions.geocoderLanguage" 
 						class="text ui-widget-content ui-corner-all"> 
 						<c:forEach var="language" items="${optionsCmd.userOptsLanguage}">
 		 						<c:choose>
-		   						<c:when test="${language.value == selGoogleLanguage}">
+		   						<c:when test="${language.value == selGeocoderLanguage}">
 							    	<option value="${language.value}" selected>
 							        	<spring:message code="${language.label}" />
 							      	</option>
@@ -247,7 +247,7 @@
 								<td style="border:none;vertical-align: middle;">
 									<form:input path="userOptions.recTrAccCode"
 										readonly="true" cssClass="text ui-widget-content ui-corner-all"
-										size="40"							 
+										size="40" style="background: #ebebeb"							 
 									/>
 								</td>
 								<td style="border:none;vertical-align: middle;">		
@@ -306,7 +306,7 @@
 								<td style="border:none;vertical-align: middle;">
 									<form:input path="userOptions.guestAccPassword"
 										readonly="true" 	cssClass="text ui-widget-content ui-corner-all" 
-										size="40"/>
+										size="40" style="background: #ebebeb" />
 								</td>
 								<td style="border:none;vertical-align: middle;">		
 									<div class="mlt-button" style="vertical-align: middle;">								
@@ -358,18 +358,64 @@
 		</td>
 	</tr>		
 	<tr>
-		<td>
+		<td rowspan="2">
 			&nbsp;<spring:message code="options.home.location" />&nbsp;
 		</td>
 		<td>
 			<table> 
 				<tr>
-					<td style="border:none;">
-						<form:input path="userOptions.homeLocAddress"
-							size="40" cssClass="text ui-widget-content ui-corner-all"								 
+					<td style="border:none;">	
+						&nbsp;<spring:message code="options.home.location.country" />&nbsp;									
+					</td>
+					<td colspan="2" style="border:none;">
+						<form:input path="userOptions.homeLocCountry"
+							size="35" cssClass="text ui-widget-content ui-corner-all"								 
 						/>
 					</td>
+				</tr>
+				<tr>
 					<td style="border:none;">	
+						&nbsp;<spring:message code="options.home.location.city" />&nbsp;									
+					</td>
+					<td colspan="2" style="border:none;">
+						<form:input path="userOptions.homeLocCity"
+							size="35" cssClass="text ui-widget-content ui-corner-all"								 
+						/>
+					</td>
+				</tr>
+				<tr>
+					<td style="border:none;">	
+						&nbsp;<spring:message code="options.home.location.streetAndNumber" />&nbsp;									
+					</td>
+					<td colspan="2" style="border:none;white-space: nowrap;">
+						<form:input path="userOptions.homeLocStreet"
+							size="25" cssClass="text ui-widget-content ui-corner-all"								 
+						/>
+						<form:input path="userOptions.homeLocHousenumber"
+							size="5" cssClass="text ui-widget-content ui-corner-all"								 
+						/>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			&nbsp;<form:errors cssClass="ui-state-error"  
+				path="userOptions.homeLocAddress" />&nbsp;
+		</td>			
+	</tr>
+	<tr>
+		<td>
+			<table> 
+				<tr>
+					<td style="border:none;white-space: nowrap;width:25%">
+						&nbsp;<spring:message code="options.home.location.position.latitude" />
+					</td>
+					<td style="border:none;white-space: nowrap;width:25%">
+						&nbsp;<form:input path="homeLocLatitudeStr"
+							size="15" cssClass="text ui-widget-content ui-corner-all"								 
+						/>
+					</td>
+					<td rowspan="2" style="border:none;text-align:center;width:50%">	
 						<div class="mlt-button">	
 							<a href="#" onclick="javscript:actionExecute('CheckHomeLocation');">
 								<spring:message code="options.home.location.check" />
@@ -377,27 +423,21 @@
 						</div>									
 					</td>
 				</tr>
-				<tr>
-					<td colspan="2" style="border:none;font-size:small;">
-						<c:choose>
-							<c:when 
-								test="${empty optionsCmd.userOptions.homeLocLatitude || empty optionsCmd.userOptions.homeLocLongitude}">
-								<div style="font-weight: bold;color: red;">
-									&nbsp;<spring:message code='options.home.location.notassigned' />&nbsp;
-								</div>
-							</c:when>
-							<c:otherwise>								
-								<div style="font-weight: bold;color:green;">
-									&nbsp;<spring:message code='options.home.location.valid' />&nbsp;<mlt:position latitude="${optionsCmd.userOptions.homeLocLatitude}" longitude="${optionsCmd.userOptions.homeLocLongitude}" />&nbsp;
-								</div>								
-							</c:otherwise>
-						</c:choose>														
-					</td>						
+				<tr>	
+					<td style="border:none;white-space: nowrap;">
+						&nbsp;<spring:message code="options.home.location.position.longitude" />	
+					</td>
+					<td style="border:none;white-space: nowrap;">
+						&nbsp;<form:input path="homeLocLongitudeStr"
+							size="15" cssClass="text ui-widget-content ui-corner-all"								 
+						/>
+					</td>
 				</tr>
 			</table>
 		</td>
 		<td>
-			&nbsp;
+			&nbsp;<form:errors cssClass="ui-state-error"  
+				path="userOptions.homeLocLatitude" />&nbsp;		
 		</td>			
 	</tr>			
 	<tr>

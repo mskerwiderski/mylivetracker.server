@@ -1,6 +1,8 @@
 package de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor;
 
+import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
+import de.msk.mylivetracker.service.ISenderService;
 import de.msk.mylivetracker.service.ITrackService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 
@@ -18,14 +20,22 @@ import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCm
 public class ActionUpdateTrackActivityStatus extends AbstractActionEditTrack {
 	
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.AbstractActionWithoutRedirect#executeAux(de.msk.mylivetracker.domain.user.UserVo, de.msk.mylivetracker.service.ITrackService, de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd)
+	 * @see de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.AbstractActionWithoutRedirect#executeAux(de.msk.mylivetracker.domain.user.UserWithRoleVo, de.msk.mylivetracker.service.ITrackService, de.msk.mylivetracker.service.ISenderService, de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd)
 	 */
 	@Override
 	public void executeAux(UserWithRoleVo user, ITrackService trackService,
-		TracksOverviewCmd cmd) throws ActionExecutionException {
+		ISenderService senderService, TracksOverviewCmd cmd)
+		throws ActionExecutionException {
 		String trackId = cmd.getSelectedTrackId();
+		TrackVo track = trackService.getTrackAsMin(trackId);
 		if (cmd.getSelectedTrackActivityStatus() == Boolean.TRUE) {
-			trackService.openTrack(trackId);
+			if (!TrackVo.canBeActivated(user.getRole(), track, senderService)) {
+				throw new ActionExecutionException(
+					"track with trackid '" + trackId + 
+					"' cannot be activated because sender doesn't exist.");
+			} else {
+				trackService.openTrack(trackId);
+			}
 		} else {
 			trackService.closeTrack(trackId);
 		}

@@ -139,17 +139,18 @@
 	</tr>
 	<tr>
 		<td>
-			&nbsp;Auf MyLiveTracker werden folgende Bilder und Icons verwendet:&nbsp;<br>
-			&nbsp;&nbsp;&bull;&nbsp;<a href="http://led24.de/iconset/">Led Icon Set</a> von <a href="http://led24.de/">Led24.de</a>&nbsp;(Free License)<br>
+			&nbsp;Auf MyLiveTracker werden folgende Bilder und Icons verwendet:&nbsp;<br><br>
+			&nbsp;&nbsp;&bull;&nbsp;Led Icon Set von <a href="http://led24.de/">Led24.de</a>&nbsp;(Free License)<br>
 			&nbsp;&nbsp;&bull;&nbsp;Farm-fresh Icon Set von <a href="http://www.fatcow.com/">FatCow Web Hosting</a>&nbsp;(Creative Commons Attribution 3.0 USA)<br>
 			&nbsp;&nbsp;&bull;&nbsp;Crystal Clear Icon Set von <a href="http://www.everaldo.com/">Everaldo Coelho</a>&nbsp;(LGPL)<br>
+			&nbsp;&nbsp;&bull;&nbsp;Crystal Project Icon Set von <a href="http://www.everaldo.com/">Everaldo Coelho</a>&nbsp;(LGPL)<br>
+			&nbsp;&nbsp;&bull;&nbsp;Gloss Basic Icon Set von <a href="http://momentumdesignlab.com/">Momenticons</a>&nbsp;(Creative Commons Attribution 3.0 Unported)<br>
 			&nbsp;&nbsp;&bull;&nbsp;Gnome Icon Set von <a href="http://art.gnome.org/themes/icon/">Gnome Project</a>&nbsp;(GPL)<br>
-			&nbsp;&nbsp;&bull;&nbsp;Oxygen Icon Set von <a href="http://www.oxygen-icons.org/">Oxygen Team</a>&nbsp;(GPL)<br>
+			&nbsp;&nbsp;&bull;&nbsp;Map Icons Collection <img style="vertical-align: middle;" alt="" src="<c:url value='img/miclogo-88x31.gif'/>"></img> von <a href="http://mapicons.nicolasmollet.com/">Nicolas Mollet</a>&nbsp;(Creative Commons Attribution-Share Alike 3.0 Unported)<br>
 			&nbsp;&nbsp;&bull;&nbsp;Nuvola Icon Set von <a href="http://www.icon-king.com/">David Vignoni</a>&nbsp;(LGPL)<br>
-			&nbsp;Alle Bilder und Icons wurden von <a href="http://iconfinder.com">ICON FINDER</a> via Download bezogen
-			
-			 
-			und werden nach bestem Wissen lizenzgerecht verwendet.									
+			&nbsp;&nbsp;&bull;&nbsp;Oxygen Icon Set von <a href="http://www.oxygen-icons.org/">Oxygen Team</a>&nbsp;(GPL)<br><br>
+			&nbsp;Alle Bilder und Icons wurden von <a href="http://iconfinder.com">ICON FINDER</a> via Download bezogen und werden nach bestem Wissen lizenzgerecht verwendet.<br>
+			&nbsp;An dieser Stelle vielen Dank an die Bereitsteller der Icon Sets.									
 		</td>		
 	</tr>
 	<tr>

@@ -21,8 +21,6 @@
 				document.forms["optionsForm"].elements["currentTabId"].value = ui.index; 
 			}
 		});
-
-		$('#timezone').timezoneComboBox( {refreshTime: 100000} );
 	});
 	
 </script>
@@ -39,6 +37,7 @@
 		<li><a href="#tabUserOptions"><spring:message code="options.tab" /></a></li>
 		<li><a href="#tabSenderMaintenance"><spring:message code="sendermaintenance.tab" /></a></li>
 		<li><a href="#tabStatusPage"><spring:message code="statuspage.tab" /></a></li>
+		<li><a href="#tabMaps"><spring:message code="maps.tab" /></a></li>
 		<li><a href="#tabEmergency"><spring:message code="emergency.tab" /></a></li>
 	</ul>
 
@@ -53,6 +52,9 @@
 	</div>
 	<div id="tabStatusPage">
 		<tiles:insertAttribute name="status-page" />
+	</div>
+	<div id="tabMaps">
+		<tiles:insertAttribute name="maps" />
 	</div>
 	<div id="tabEmergency">
 		<tiles:insertAttribute name="emergency" />

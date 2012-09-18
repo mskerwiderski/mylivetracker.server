@@ -19,6 +19,7 @@
         <result property="authPlainPassword"  column="AUTH_PLAIN_PASSWORD" /> 
         <result property="active" column="ACTIVE" />      
 		<result property="redirectTo" column="REDIRECT_TO" />
+		<result property="symbol" column="SYMBOL" />
     </resultMap>
 
 	<select id="getSenderCount" parameterClass="String" resultClass="integer">
@@ -41,7 +42,8 @@
     		AUTH_USERNAME,
     		AUTH_PLAIN_PASSWORD,
     		ACTIVE,
-    		REDIRECT_TO
+    		REDIRECT_TO,
+    		SYMBOL
     	)
     	values (    	
     		#senderId#,	
@@ -53,7 +55,8 @@
     		#authUsername#,
     		#authPlainPassword#,
     		#active#,
-    		#redirectTo#
+    		#redirectTo#,
+    		#symbol#
     	)
   	</insert>
   	

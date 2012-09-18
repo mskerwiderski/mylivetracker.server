@@ -1,7 +1,5 @@
 package de.msk.mylivetracker.service.geocoding.cloudmade.response;
 
-import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService.LatLonPos;
-
 /**
  * GeocodingResponse.
  * 
@@ -15,27 +13,30 @@ import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService.LatLonPos
  */
 public class GeocodingResponse {
 	
-	private ResultSet ResultSet;
+	private int found;
+	private Feature[] features;
 
-	public String toAddressStr() {
-		String res = "";
-		if (ResultSet.getError() == 0) {
-			res = ResultSet.getResults()[0].getAddressStr();			 
-		} else {
-			res = ResultSet.getErrorMessage();
-		}
-		return res;
+	public int getFound() {
+		return found;
+	}
+
+	public void setFound(int found) {
+		this.found = found;
 	}
 	
-	public LatLonPos toLatLonPos() {
-		LatLonPos res = null;
-		if (ResultSet.getError() == 0) {
-			res = new LatLonPos(
-				Double.valueOf(ResultSet.getResults()[0].getLatitude()),
-				Double.valueOf(ResultSet.getResults()[0].getLongitude()));			 
-		} else {
-			res = null;
-		}
-		return res;
+	public Feature[] getFeatures() {
+		return features;
+	}
+
+	public void setFeatures(Feature[] features) {
+		this.features = features;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "GeocodingResponse [found=" + found + "]";
 	}
 }

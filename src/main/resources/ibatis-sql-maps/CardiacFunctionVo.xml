@@ -17,7 +17,6 @@
     </resultMap>
 
 	<resultMap id="detailedCardiacFunctionResult" class="cardiacFunction" extends="minCardiacFunctionResult">
-		<result property="track" resultMap="TrackVo.minTrackResult" />   
 		<result property="position" resultMap="PositionVo.detailedPositionResult" />                       
     </resultMap>
     
@@ -31,7 +30,36 @@
         <result property="heartrateMaxInBpm"  column="RH_HEARTRATE_MAX_IN_BPM" />
         <result property="heartrateAvgInBpm"  column="RH_HEARTRATE_AVG_IN_BPM" />               
     </resultMap>
-            
+
+	<select id="getCardiacFunctionsOfTrack" parameterClass="java.util.Map" resultMap="detailedCardiacFunctionResult">
+  		select 
+  			lp.POSITION_ID as P_POSITION_ID,
+	    	lp.SEQUENCE_ID as P_SEQUENCE_ID,
+	       	lp.TRACK_ID as P_TRACK_ID,     
+	       	lp.TIME_RECORDED as P_TIME_RECORDED,
+	       	lp.TIME_RECEIVED as P_TIME_RECEIVED,
+	       	lp.LATITUDE_IN_DECIMAL as P_LATITUDE_IN_DECIMAL,
+	       	lp.LONGITUDE_IN_DECIMAL as P_LONGITUDE_IN_DECIMAL,
+	       	lp.ACCURACY_IN_MTR as P_ACCURACY_IN_MTR,
+	       	lp.ALTITUDE_IN_MTR as P_ALTITUDE_IN_MTR,
+	       	lp.SPEED_IN_KM_PER_HOUR as P_SPEED_IN_KM_PER_HOUR,    
+	       	lp.ADDRESS as P_ADDRESS,
+	     	lh.CARDIAC_FUNCTION_ID as H_CARDIAC_FUNCTION_ID,
+	       	lh.TRACK_ID as H_TRACK_ID,
+	       	lh.POSITION_ID as H_POSITION_ID,
+	       	lh.TIME_RECEIVED as H_TIME_RECEIVED,
+	       	lh.HEARTRATE_IN_BPM as H_HEARTRATE_IN_BPM,
+	       	lh.HEARTRATE_MIN_IN_BPM as H_HEARTRATE_MIN_IN_BPM,
+	       	lh.HEARTRATE_MAX_IN_BPM as H_HEARTRATE_MAX_IN_BPM,
+	       	lh.HEARTRATE_AVG_IN_BPM as H_HEARTRATE_AVG_IN_BPM
+  		from T_CARDIAC_FUNCTION lh 
+			right outer join T_POSITION lp
+				on lh.POSITION_ID = lp.POSITION_ID   
+        where lh.TRACK_ID = #trackId#
+        and lp.SEQUENCE_ID >= #minSequenceId#
+        order by lp.SEQUENCE_ID asc		       
+  	</select>
+  	            
     <insert id="storeCardiacFunction" parameterClass="cardiacFunction" >
     	insert into T_CARDIAC_FUNCTION (
     		CARDIAC_FUNCTION_ID,

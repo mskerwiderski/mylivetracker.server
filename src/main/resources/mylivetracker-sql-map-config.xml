@@ -7,6 +7,12 @@
     <typeHandler
 		javaType="de.msk.mylivetracker.commons.util.datetime.DateTime"
 		callback="de.msk.mylivetracker.dao.typehandler.DateTimeTypeHandlerCallback" />
+	<typeHandler
+		javaType="de.msk.mylivetracker.domain.sender.SenderSymbolVo"
+		callback="de.msk.mylivetracker.dao.typehandler.SenderSymbolTypeHandlerCallback" />	
+	<typeHandler
+		javaType="de.msk.mylivetracker.domain.user.MapsUsedVo"
+		callback="de.msk.mylivetracker.dao.typehandler.MapsUsedTypeHandlerCallback" />	
     <sqlMap resource="ibatis-sql-maps/Statistics.xml"/>
     <sqlMap resource="ibatis-sql-maps/Application.xml"/>
     <sqlMap resource="ibatis-sql-maps/StatusParams.xml"/>
