@@ -12,14 +12,19 @@
 * [DONE-beta5] CircleMarker für die bessere Sichtbarkeit der Positionen.
 * [DONE-beta5] Auf Sender Maps Übersicht: Sichtbarkeit, ob ein Sender Nachrichten oder SOS Signal gesendet hat.
 
-* Tracks Overview: Für die Map: Zoom/Bound on/off.
-* Tk5000: Ungültige Positionen rausfiltern.
-* Performance beim Laden von Tracks verbessern.
-* Geocoder nur noch für Nachrichten und SOS Signale.
-* Geocoder von OpenStreetMap anbinden.
-* Timeout-Kriterien für die TCP Sockets anpassen.
-* Image Ordner aufräumen.
-* Umstellung auf Spring 3.1.
-* Google Maps Api Key entfernen.
-* Löschen/Resetten von Tracks: Den Track nur zur Löschung freigeben und das eigentliche Löschen über einen Util-Thread durchführen.
-  
+* [DONE-beta6] Bugfix: SetView auf Karte (Zoom um 1 inkrementieren --> überall!).
+* [DONE-beta6] Bugfix: CircleMarker beim Detailed Track bleiben stehen.
+* [OFFEN] Auto Zoom bei Home Position konfigurierbar machen.
+* [OFFEN] Tracks Overview: Für die Map: Zoom/Bound on/off.
+* [OFFEN] Tk5000: Ungültige Positionen rausfiltern.
+* [OFFEN] Performance beim Laden von Tracks verbessern.
+* [OFFEN] Geocoder nur noch für Nachrichten und SOS Signale.
+* [OFFEN] Geocoder von OpenStreetMap anbinden.
+* [OFFEN] Timeout-Kriterien für die TCP Sockets anpassen.
+* [OFFEN] Image Ordner aufräumen.
+* [OFFEN] Umstellung auf Spring 3.1.
+* [OFFEN] Google Maps Api Key entfernen.
+* [OFFEN] Löschen/Resetten von Tracks: Den Track nur zur Löschung freigeben und das eigentliche Löschen über einen Util-Thread durchführen.
+* [OFFEN] Prüfen ob überall der Text 'Google' ersetzt wurde.
+* [OFFEN] Startseite mit neuen Texten und Layout, Link auf Forum, etc.
+ 

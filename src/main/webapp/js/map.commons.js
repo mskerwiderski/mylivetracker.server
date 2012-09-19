@@ -23,11 +23,13 @@ function mlt_createCircleMarker(lat, lon) {
 }
 
 function mlt_addCircleMarkerToMap(map, lat, lon) {
-	map.addLayer(mlt_createCircleMarker(lat, lon));
+	var circleMarker = mlt_createCircleMarker(lat, lon);
+	map.addLayer(circleMarker);
+	return circleMarker;
 }
 
 function mlt_addCircleMarkerToMarkersAndMap(markers, map, lat, lon) {
-	var circleMarker = mlt_createCircleMarker(lat, lon);
+	var circleMarker = mlt_addCircleMarkerToMap(map, lat, lon);
 	markers.push(circleMarker);
-	map.addLayer(circleMarker);
+	return circleMarker;
 }

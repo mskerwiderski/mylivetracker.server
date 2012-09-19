@@ -99,9 +99,13 @@
 	var mlt_bounds = null;
 	var mlt_bounds_empty = true;
 	var mlt_markers = null;	
+	
 	var mlt_startMarker = null;
 	var mlt_recentMarker = null;
 	var mlt_homeMarker = null;
+	var mlt_startCircleMarker = null;
+	var mlt_recentCircleMarker = null;
+	var mlt_homeCircleMarker = null;
 	
 	// the polyline.
 	var mlt_polyline = null;
@@ -130,11 +134,20 @@
 		if (mlt_startMarker != null) {
 			mlt_map.removeLayer(mlt_startMarker);
 		}
+		if (mlt_startCircleMarker != null) {
+			mlt_map.removeLayer(mlt_startCircleMarker);
+		}
 		if (mlt_recentMarker != null) {
 			mlt_map.removeLayer(mlt_recentMarker);
 		}
+		if (mlt_recentCircleMarker != null) {
+			mlt_map.removeLayer(mlt_recentCircleMarker);
+		}
 		if (mlt_homeMarker != null) {
 			mlt_map.removeLayer(mlt_homeMarker);
+		}
+		if (mlt_homeCircleMarker != null) {
+			mlt_map.removeLayer(mlt_homeCircleMarker);
 		}
 		if (mlt_markers != null) {
 			for (var i=0; i < mlt_markers.length; i++) {
@@ -168,8 +181,8 @@
 	    	   				"<spring:message code='track.map.info.window.title.startPosition' />",
 	    	   				mlt_infoTableHdrColor4StartPosition));
 		   		mlt_map.addLayer(mlt_startMarker);
-		   		mlt_addCircleMarkerToMarkersAndMap(
-		   			mlt_markers, mlt_map,
+		   		mlt_startCircleMarker = mlt_addCircleMarkerToMap(
+		   			mlt_map,
 	   				mlt_positions[0].lat, 
 	   				mlt_positions[0].lng);
 		   	}
@@ -184,8 +197,8 @@
 	    	   				"<spring:message code='track.map.info.window.title.currentPosition' />",
 	    	   				mlt_infoTableHdrColor4RecentPosition));
 		   		mlt_map.addLayer(mlt_recentMarker);
-		   		mlt_addCircleMarkerToMarkersAndMap(
-		   			mlt_markers, mlt_map,
+		   		mlt_recentCircleMarker = mlt_addCircleMarkerToMap(
+		   			mlt_map,
 	   				mlt_positions[cntPos-1].lat, 
 	   				mlt_positions[cntPos-1].lng);
 		   	}
@@ -201,8 +214,8 @@
 	    	   			"<spring:message code='track.map.info.window.title.homePosition' />",
 	    	   			mlt_infoTableHdrColor4HomePosition));
 		   	mlt_map.addLayer(mlt_homeMarker);
-		   	mlt_addCircleMarkerToMarkersAndMap(
-		   		mlt_markers, mlt_map,
+		   	mlt_homeCircleMarker = mlt_addCircleMarkerToMap(
+		   		mlt_map,
    				mlt_positions[0].lat, 
    				mlt_positions[0].lng);
 	   	}
@@ -218,6 +231,7 @@
 		if (!mlt_bounds_empty) {
 			center = mlt_bounds.getCenter();
 	 		zoom = mlt_map.getBoundsZoom(mlt_bounds, false);
+	 		if (zoom > 0) { zoom--; }
 		}
 	 	mlt_map.setView(center, zoom);
 	}
@@ -232,6 +246,7 @@
 			zoom = mlt_DEFAULT_ZOOM;
 			if (!mlt_bounds_empty) {
 				zoom = mlt_map.getBoundsZoom(mlt_bounds);
+				if (zoom > 0) { zoom--; }
 			}
 		}
 		mlt_map.setView(center, zoom);

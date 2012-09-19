@@ -326,7 +326,7 @@
 			&nbsp;<spring:message code='statuspage.iframe.code.status.info' />&nbsp;		
 		</td>
 		<td>
-			&nbsp;<spring:message code='statuspage.iframe.code.google.maps' />&nbsp;
+			&nbsp;<spring:message code='statuspage.iframe.code.maps' />&nbsp;
 		</td>
 		<td>&nbsp;</td>
 	</tr>	
@@ -350,7 +350,7 @@
 			&nbsp;<spring:message code='statuspage.url.status.info' />&nbsp;		
 		</td>
 		<td>
-			&nbsp;<spring:message code='statuspage.url.google.maps' />&nbsp;
+			&nbsp;<spring:message code='statuspage.url.maps' />&nbsp;
 		</td>
 		<td>&nbsp;</td>
 	</tr>
@@ -385,7 +385,7 @@
 		<td> 
 			<div style="height:33px;margin-left:4px;margin-top:4px;" class="mlt-button">
 				<a href="<c:out value="${optionsCmd.userStatusPage.linkTrackAsMap}" />"
-					target="_blank"><spring:message code='statuspage.preview.google.maps' /></a>
+					target="_blank"><spring:message code='statuspage.preview.maps' /></a>
 			</div>		
 		</td>
 		<td>

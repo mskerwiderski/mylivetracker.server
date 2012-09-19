@@ -42,7 +42,7 @@ public class OptionsCmd {
 	private static final String MESSAGE_CODE_NO_SENDER_SELECTED = "sendermaintenance.no.sender.selected";
 	
 	private int currentTabId = 0;
-	private String[] infoMessage = new String[] {"", "", "", "", ""};
+	private String[] infoMessage = new String[] {"", "", "", "", "", ""};
 	
 	private List<StrOptionDsc> userOptsLanguage;
 	private List<BoolOptionDsc> trackOptsReleaseStatus;

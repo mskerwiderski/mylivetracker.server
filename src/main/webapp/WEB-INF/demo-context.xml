@@ -31,11 +31,25 @@
    	
    	<util:list id="demoCases">
    		<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="Running in the south of Munich"/>
+   			<constructor-arg index="0" value="Going by bus to Munich Ramersdorf"/>
     	 	<constructor-arg index="1" value="demo"/>
     	 	<constructor-arg index="2" value="sid01"/>
-    	 	<constructor-arg index="3" value="361fefa5-55df-4aaa-a5cd-f3418b825ecf"/>
-    	 	<constructor-arg index="4" value="15"/>
+    	 	<constructor-arg index="3" value="2f5f795e-32a3-498f-8842-15fc751ef250"/>
+    	 	<constructor-arg index="4" value="30"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
+   			<constructor-arg index="0" value="Running in the south of Munich"/>
+    	 	<constructor-arg index="1" value="demo"/>
+    	 	<constructor-arg index="2" value="sid02"/>
+    	 	<constructor-arg index="3" value="78b214f4-d5d5-4bb5-a0b1-093cd90030fb"/>
+    	 	<constructor-arg index="4" value="90"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
+   			<constructor-arg index="0" value="Going by bus to Munich Schwabing"/>
+    	 	<constructor-arg index="1" value="demo"/>
+    	 	<constructor-arg index="2" value="sid03"/>
+    	 	<constructor-arg index="3" value="ef87bd87-4a92-4068-aa81-3211ce580a0d"/>
+    	 	<constructor-arg index="4" value="150"/>
    	 	</bean>
    	</util:list> 	       
    	
