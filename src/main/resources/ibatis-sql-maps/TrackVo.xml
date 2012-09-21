@@ -11,6 +11,7 @@
 	
 	<resultMap id="minTrackResult" class="track">
 		<result property="trackId" column="TRACK_ID" />
+		<result property="remove" column="REMOVE" />
 		<result property="trackClientId" column="TRACK_CLIENT_ID" />
 		<result property="versionMajor" column="VERSION_MAJOR" />
         <result property="name" column="NAME" />
@@ -197,7 +198,7 @@
   			<include refid="columnsForRecentDetails"/>  			
   		from T_TRACK t   
 			<include refid="joinsForRecentDetails"/>								   								 			
-        where t.TRACK_ID = #trackId#          	  		  		  			
+        where t.TRACK_ID = #trackId# and t.REMOVE = false         	  		  		  			
   	</select>
   
   	<select id="getRecentTrackAsRecentTrack" parameterClass="java.util.Map" resultMap="recentTrackResult">
@@ -216,8 +217,9 @@
 	  		  	and t.IS_RELEASED = true	
 	  		</isEqual>
 	  		and t.IS_ACTIVE = true
+	  		and t.REMOVE = false
 	  		order by t.RECENT_POSITION_UPDATED desc
-	  		limit 1)  		  		  
+	  		limit 1)   		  		  
   	</select>
   	  
     <select id="getRecentTrackAsMinTrack" parameterClass="java.util.Map" resultMap="minTrackResult">
@@ -231,6 +233,7 @@
   		  	and t.IS_RELEASED = true	
   		</isEqual>
   		and t.IS_ACTIVE = true
+  		and t.REMOVE = false
   		order by t.RECENT_POSITION_UPDATED desc
   		limit 1 			  		  			  
   	</select>
@@ -238,7 +241,8 @@
   	<select id="getActiveTrackOfSenderAsMinTrack" parameterClass="string" resultMap="minTrackResult">
   		select * from T_TRACK t where
   		t.SENDER_ID = #?# and
-  		t.IS_ACTIVE = true  		  		
+  		t.IS_ACTIVE = true and 
+  		t.REMOVE = false  		  		
   	</select>
   	
   	<select id="getActiveTrackOfSenderAsRecentTrack" parameterClass="string" resultMap="recentTrackResult">
@@ -248,13 +252,14 @@
   			<include refid="joinsForRecentDetails"/>
   		where
   			t.SENDER_ID = #?# and
-  			t.IS_ACTIVE = true  		  	  				
+  			t.IS_ACTIVE = true and
+  			t.REMOVE = false  		  	  				
   	</select>
   	   	     
   	<select id="getTracksCountForGuestAsRecentTrack" parameterClass="trackFilter" resultClass="integer">
   		select count(*)
         from T_TRACK t
-  		where t.USER_ID = #userId#  		
+  		where t.USER_ID = #userId#
   		<isEqual prepend="and" property="guestAccPrivTrEnabled" compareValue="false">
   			t.IS_RELEASED = true
   		</isEqual>
@@ -276,6 +281,7 @@
   		<isNotNull prepend="and" property="byActive">
   			t.IS_ACTIVE = #byActive#
   		</isNotNull>
+  		and t.REMOVE = false
   	</select>
   	   	      
   	<select id="getTracksForGuestAsRecentTrack" parameterClass="trackFilter" resultMap="recentTrackResult">
@@ -305,6 +311,7 @@
   		<isNotNull prepend="and" property="byActive">
   			t.IS_ACTIVE = #byActive#
   		</isNotNull>
+  		and t.REMOVE = false
   		order by t.IS_ACTIVE desc, t.COUNT_EMERGENCY_SIGNALS desc, t.LAST_HEARTBEAT_SENT desc
   		limit #maxCountOfRecords#
   	</select>   
@@ -328,6 +335,7 @@
   		<isNotNull prepend="and" property="byActive">
   			t.IS_ACTIVE = #byActive#
   		</isNotNull>
+  		and t.REMOVE = false
   	</select>
   	
   	<select id="getTracksForUserAsRecentTrack" parameterClass="trackFilter" resultMap="recentTrackResult">
@@ -351,6 +359,7 @@
   		<isNotNull prepend="and" property="byActive">
   			t.IS_ACTIVE = #byActive#
   		</isNotNull>
+  		and t.REMOVE = false
   		order by t.IS_ACTIVE desc, t.COUNT_EMERGENCY_SIGNALS desc, t.LAST_HEARTBEAT_SENT desc
   		limit #maxCountOfRecords#
   	</select>     	
@@ -360,7 +369,8 @@
   		from T_TRACK t
   		where t.LAST_HEARTBEAT_SENT &gt;= #byDateFrom#
   		and t.LAST_HEARTBEAT_SENT &lt;= #byDateTo#
-  		and t.IS_ACTIVE = #byActive#  		
+  		and t.IS_ACTIVE = #byActive#
+  		and t.REMOVE = false  		
   	</select>
   	
   	<select id="getTracksOverallAsRecentTrack" parameterClass="trackFilter" resultMap="recentTrackResult">
@@ -370,20 +380,22 @@
   			<include refid="joinsForRecentDetails"/>
   		where t.LAST_HEARTBEAT_SENT &gt;= #byDateFrom#
   		and t.LAST_HEARTBEAT_SENT &lt;= #byDateTo#
-  		and t.IS_ACTIVE = #byActive# 
+  		and t.IS_ACTIVE = #byActive#
+  		and t.REMOVE = false 
   		order by t.COUNT_EMERGENCY_SIGNALS desc, t.LAST_HEARTBEAT_SENT desc
   		limit #maxCountOfRecords#
   	</select>
   	  	  
   	<select id="getTrackByIdAsMinTrack" parameterClass="string" resultMap="minTrackResult">
-  		select * from T_TRACK t where t.TRACK_ID = #?#  			
+  		select * from T_TRACK t where t.TRACK_ID = #?# and t.REMOVE = false  			
   	</select>  	
   	
   	<select id="getClosedTrackIdsByUserId" 
   		parameterClass="string" resultClass="string">
   		select t.TRACK_ID from T_TRACK t where 
   		t.USER_ID = #?# and
-  		t.IS_ACTIVE = FALSE 			
+  		t.IS_ACTIVE = FALSE and			
+  		t.REMOVE = false
   	</select>
   	
   	<select id="getOldTrackIdsByTimestamp" 
@@ -392,9 +404,15 @@
   		t.TRACK_UPDATED &lt;= #?#		
   	</select>
   	
+  	<select id="getOldTrackIdsByRemoveFlag" resultClass="string">
+  		select t.TRACK_ID from T_TRACK t where 
+  		t.REMOVE = true		
+  	</select>
+  	
   	<sql id="stmntInsertTrack">
   		insert into T_TRACK (
   			TRACK_ID,
+  			REMOVE,
   			VERSION_MAJOR,
   			NAME,
   			IS_ACTIVE,
@@ -429,6 +447,7 @@
   		   	RECENT_EMERGENCY_SIGNAL_ID
   		) values (
   			#trackId#,
+  			#remove#,
   			#versionMajor#,
   			#name#,
   			#active#,
@@ -473,7 +492,8 @@
   		set 
   			t.IS_ACTIVE = TRUE,  
   			t.TRACK_UPDATED = #trackUpdated#		   
-  		where t.TRACK_ID = #trackId#   		
+  		where t.TRACK_ID = #trackId#
+  		and t.REMOVE = false   		
   	</update>  
   	
   	<update id="closeTrack" parameterClass="java.util.Map">
@@ -481,7 +501,8 @@
   		set 
   			t.IS_ACTIVE = FALSE, 
   			t.TRACK_UPDATED = #trackUpdated# 		   
-  		where t.TRACK_ID = #trackId#   		
+  		where t.TRACK_ID = #trackId#
+  		and t.REMOVE = false   		
   	</update>  
   	
   	<update id="closeActiveTrack" parameterClass="java.util.Map">
@@ -490,7 +511,8 @@
   			t.IS_ACTIVE = FALSE, 
   			t.TRACK_UPDATED = #trackUpdated# 		   
   		where t.SENDER_ID = #senderId#
-  		and t.IS_ACTIVE = TRUE   		
+  		and t.IS_ACTIVE = TRUE
+  		and t.REMOVE = false   		
   	</update>  
   	
   	<update id="publishTrack" parameterClass="java.util.Map">
@@ -498,7 +520,8 @@
   		set 
   			t.IS_RELEASED = TRUE,
   			t.TRACK_UPDATED = #trackUpdated#  		   
-  		where t.TRACK_ID = #trackId#   		
+  		where t.TRACK_ID = #trackId#
+  		and t.REMOVE = false   		
   	</update>
   	
   	<update id="privatizeTrack" parameterClass="java.util.Map">
@@ -506,7 +529,8 @@
   		set 
   			t.IS_RELEASED = FALSE,  
   			t.TRACK_UPDATED = #trackUpdated#		   
-  		where t.TRACK_ID = #trackId#   		
+  		where t.TRACK_ID = #trackId#
+  		and t.REMOVE = false   		
   	</update>
   	
   	<update id="renameTrack" parameterClass="java.util.Map">
@@ -514,8 +538,16 @@
   		set 
   			t.NAME = #trackName#,
   			t.TRACK_UPDATED = #trackUpdated#  		   	
-  		where t.TRACK_ID = #trackId#   		
+  		where t.TRACK_ID = #trackId#
+  		and t.REMOVE = false   		
   	</update>
+  	
+  	<update id="markTrackForRemoving" parameterClass="String">
+  		update T_TRACK t
+  		set 
+  			t.REMOVE = true		   
+  		where t.TRACK_ID = #?#
+  	</update>  
   	  	
   	<update id="updateTrack" parameterClass="track">
   		update T_TRACK t
@@ -545,7 +577,7 @@
   		   	t.RECENT_SENDER_STATE_ID = #recentSenderState.senderStateId#,
   		   	t.RECENT_CARDIAC_FUNCTION_ID = #recentCardiacFunction.cardiacFunctionId#,
   		   	t.RECENT_EMERGENCY_SIGNAL_ID = #recentEmergencySignal.emergencySignalId#
-  		where t.TRACK_ID = #trackId#   		
+  		where t.TRACK_ID = #trackId# and t.REMOVE = false   		
   	</update>
   	
   	<update id="updateTrackHeartbeat" parameterClass="track">
@@ -553,6 +585,7 @@
   		set
   			t.LAST_HEARTBEAT_SENT = #timestamps.lastHeartbeatSent#
   		where t.TRACK_ID = #trackId#	  	
+  		and t.REMOVE = false
   	</update>
   	
   	<delete id="removeTrack" parameterClass="string">

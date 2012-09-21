@@ -114,36 +114,11 @@
 	</bean>	
     
     <!-- transactions -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSourceMyLiveTracker" />
 	</bean>
-	
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="clean*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="close*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="create*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="log*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="open*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="privatize*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="publish*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="remove*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="rename*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="reset*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="save*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="service*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="send*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="store*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="update*" propagation="REQUIRED" isolation="SERIALIZABLE" />
-			<tx:method name="get*" propagation="SUPPORTS" read-only="true" />					
-		</tx:attributes>
-	</tx:advice>
-
-	<aop:config>
-		<aop:pointcut id="daoExecution" expression="execution(* de.msk.mylivetracker.dao.*.*(..))" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="daoExecution" />
-	</aop:config>	
 	
     <bean id="sqlMapMyLiveTracker"
     	class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">

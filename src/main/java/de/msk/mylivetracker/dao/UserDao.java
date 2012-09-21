@@ -11,6 +11,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.msk.mylivetracker.domain.user.MapsUsedVo;
 import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
@@ -45,12 +47,14 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#registerNewUser(de.msk.mylivetracker.domain.user.UserPlainVo)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public boolean registerNewUser(UserPlainVo user) {
 		boolean userAlreadyExists = (getUserAux(user.getUserId(), 
 			"UserVo.selectUserWithoutRoleByUserId") != null);
 		if (!userAlreadyExists) {
 			this.getSqlMapClientTemplate().insert("UserVo.registerUser", user);
-			UserWithRoleVo userWithRole = this.getUserWithRole(user.getUserId());
+			UserWithRoleVo userWithRole = (UserWithRoleVo)this.getUserAux(
+				user.getUserId(), "UserVo.selectUserWithRoleByUserId");
 			if (userWithRole != null) {
 				log.debug("userPlainVo inserted: " + user.toString());
 			} else {
@@ -64,6 +68,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#getUserWithoutRole(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public UserWithoutRoleVo getUserWithoutRole(String userId) {
 		return getUserAux(userId, 
 			"UserVo.selectUserWithoutRoleByUserId");		
@@ -73,6 +78,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#getUserWithoutRoleByEmailAddress(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public UserWithoutRoleVo getUserWithoutRoleByEmailAddress(
 			String emailAddress) {
 		return getUserAux(emailAddress, 
@@ -83,11 +89,13 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#getUserWithRole(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public UserWithRoleVo getUserWithRole(String userId) {
 		return (UserWithRoleVo)getUserAux(userId, "UserVo.selectUserWithRoleByUserId");
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public UserWithRoleVo getUserWithRoleByAutoLoginTicketForUser(
 		String autoLoginTicket) {
 		return (UserWithRoleVo)getUserAux(autoLoginTicket, 
@@ -95,12 +103,16 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public UserWithRoleVo getUserWithRoleByAutoLoginTicketForGuest(
 		String autoLoginTicket) {
 		return (UserWithRoleVo)getUserAux(autoLoginTicket, 
 			"UserVo.selectUserWithRoleByAutoLoginTicketForGuest");
 	}
 
+	/*
+	 * not transactional. 
+	 */
 	private UserWithoutRoleVo getUserAux(String searchCriteria, String selectStrId) {
 		UserWithoutRoleVo user = (UserWithoutRoleVo)this.getSqlMapClientTemplate().
 			queryForObject(selectStrId, searchCriteria);		
@@ -133,6 +145,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#updateUserMasterData(de.msk.mylivetracker.domain.UserWithoutRoleVo)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void updateUserMasterData(UserWithoutRoleVo user) {
 		String passwordPlain = user.getMasterData().getPassword();
 		if (!StringUtils.isEmpty(passwordPlain)) {
@@ -143,6 +156,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void updateUserAutoLogin(UserWithoutRoleVo user) {
 		this.getSqlMapClientTemplate().update("UserVo.updateUserAutoLoginByUserId", user);
 	}
@@ -151,6 +165,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#updateEmergency(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void updateUserEmergency(UserWithoutRoleVo user) {
 		this.getSqlMapClientTemplate().update("UserVo.updateUserEmergencyByUserId", user);
 	}
@@ -159,6 +174,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#updateUserStatusPage(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void updateUserStatusPage(UserWithoutRoleVo user) {
 		this.getSqlMapClientTemplate().update("UserVo.updateUserStatusPageByUserId", user);
 	}
@@ -167,6 +183,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#getUserCount(boolean)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public Integer getUserCount(boolean adminsIncluded) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("excludeRole", !adminsIncluded);
@@ -179,6 +196,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#updateLoginInfo(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void updateLoginInfo(UserWithoutRoleVo user) {
 		this.getSqlMapClientTemplate().update("UserVo.updateLoginInfoByUserId", user);		
 	}
@@ -187,6 +205,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#updateUserOptions(de.msk.mylivetracker.domain.UserWithoutRoleVo)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void updateUserOptions(UserWithoutRoleVo user) {
 		this.getSqlMapClientTemplate().update("UserVo.updateUserOptionsByUserId", user);		
 	}
@@ -195,6 +214,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#updateUserOptionsMapsUsed(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void updateUserOptionsMapsUsed(UserWithoutRoleVo user) {
 		this.getSqlMapClientTemplate().update("UserVo.updateUserOptionsMapsUsedByUserId", user);
 	}
@@ -203,6 +223,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	 * @see de.msk.mylivetracker.dao.IUserDao#getEmailAddressesOfAllUsers()
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public String getEmailAddressesOfAllUsers() {
 		String res = "";
 		@SuppressWarnings("unchecked")

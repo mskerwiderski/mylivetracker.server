@@ -3,6 +3,8 @@ package de.msk.mylivetracker.dao;
 import java.util.List;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.msk.mylivetracker.domain.ParameterVo;
 
@@ -24,6 +26,7 @@ public class ApplicationDao extends SqlMapClientDaoSupport implements IApplicati
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public List<ParameterVo> getAllParameters() {
 		return this.getSqlMapClientTemplate().
 			queryForList("Application.getAllParameters");

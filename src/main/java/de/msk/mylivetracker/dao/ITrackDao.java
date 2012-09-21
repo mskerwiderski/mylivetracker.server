@@ -164,6 +164,11 @@ public interface ITrackDao {
 	public void removeOldTracks(long olderThanInMSecs);
 	
 	/**
+	 * remove tracks with remove flag.
+	 */
+	public void removeTracksWithRemoveFlag();
+	
+	/**
 	 * open track.
 	 * @param trackId - id of track.
 	 */

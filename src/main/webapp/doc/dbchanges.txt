@@ -1,6 +1,7 @@
 
 * T_TRACK:
 	* added SENDER_SYMBOL_ID
+	* added REMOVE
 	
 * T_USER:
 	* added AUTO_LOGIN_ENABLED_FOR_USER

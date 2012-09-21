@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.msk.mylivetracker.domain.CardiacFunctionVo;
 import de.msk.mylivetracker.domain.MessageVo;
@@ -34,6 +36,7 @@ public class DemoDao extends SqlMapClientDaoSupport implements IDemoDao {
 	 * @see de.msk.mylivetracker.dao.IDemoDao#getDemoTrack(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public DemoTrackVo getDemoTrack(String trackId) {
 		DemoTrackVo demoTrack = (DemoTrackVo)
 			this.getSqlMapClientTemplate().queryForObject(
@@ -45,6 +48,7 @@ public class DemoDao extends SqlMapClientDaoSupport implements IDemoDao {
 	 * @see de.msk.mylivetracker.dao.IDemoDao#insertTrackAsDemoTrack(de.msk.mylivetracker.domain.track.TrackVo)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public int insertTrackAsDemoTrack(TrackVo track) {
 		int count = 0;
 		if (track == null) return count;

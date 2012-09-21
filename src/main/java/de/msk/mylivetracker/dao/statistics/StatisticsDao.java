@@ -6,6 +6,9 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.statistics.AbstractStatisticVo;
@@ -60,6 +63,7 @@ public class StatisticsDao extends SqlMapClientDaoSupport implements IStatistics
 	private static final String SQL_CLEAN_SMS_TRANSPORT_TABLE = 
 		"Statistics.cleanSmsTransportTable";
 	
+	@Transactional(propagation=Propagation.NEVER, isolation=Isolation.READ_UNCOMMITTED)
 	private void insertAux(String statement, AbstractStatisticVo valueObj) {
 		try {
 			this.getSqlMapClientTemplate().insert(statement, valueObj);
@@ -69,6 +73,7 @@ public class StatisticsDao extends SqlMapClientDaoSupport implements IStatistics
 		}
 	}
 	
+	@Transactional(propagation=Propagation.NEVER, isolation=Isolation.READ_UNCOMMITTED)
 	private void cleanAux(String statement, long olderThanInMSecs) {
 		try {
 			DateTime timestamp = 
@@ -144,6 +149,7 @@ public class StatisticsDao extends SqlMapClientDaoSupport implements IStatistics
 	 * @see de.msk.mylivetracker.dao.statistics.IStatisticsDao#logServiceCallCount(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW, isolation=Isolation.SERIALIZABLE)
 	public void logServiceCallCount(String service) {
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
@@ -173,6 +179,7 @@ public class StatisticsDao extends SqlMapClientDaoSupport implements IStatistics
 	 * @see de.msk.mylivetracker.dao.statistics.IStatisticsDao#getServiceCallCount(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true, isolation=Isolation.SERIALIZABLE)
 	public ServiceCallCountVo getServiceCallCount(String service) {
 		ServiceCallCountVo serviceCallCount = null;
 		try {
@@ -199,6 +206,7 @@ public class StatisticsDao extends SqlMapClientDaoSupport implements IStatistics
 	 * @see de.msk.mylivetracker.dao.statistics.IStatisticsDao#cleanServiceCallCountTable(long)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW, isolation=Isolation.SERIALIZABLE)
 	public void cleanServiceCallCountTable(long olderThanInMSecs) {
 		cleanAux(
 			SQL_CLEAN_SERVICE_CALL_COUNT_TABLE, 

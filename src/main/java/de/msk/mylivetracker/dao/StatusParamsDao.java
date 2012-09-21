@@ -1,6 +1,8 @@
 package de.msk.mylivetracker.dao;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.msk.mylivetracker.domain.StatusParamsVo;
 
@@ -21,6 +23,7 @@ public class StatusParamsDao extends SqlMapClientDaoSupport implements IStatusPa
 	 * @see de.msk.mylivetracker.dao.IStatusParamsDao#getStatusParams(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public StatusParamsVo getStatusParams(String statusParamsId) {
 		return (StatusParamsVo)this.getSqlMapClientTemplate().queryForObject(
 			"StatusParams.getStatusParamsByStatusParamsId",
@@ -31,6 +34,7 @@ public class StatusParamsDao extends SqlMapClientDaoSupport implements IStatusPa
 	 * @see de.msk.mylivetracker.dao.IStatusParamsDao#removeAllStatusParamsOfUser(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void removeAllStatusParamsOfUser(String userId) {
 		this.getSqlMapClientTemplate().delete(
 			"StatusParams.removeStatusParamsByUserId", userId);
@@ -40,6 +44,7 @@ public class StatusParamsDao extends SqlMapClientDaoSupport implements IStatusPa
 	 * @see de.msk.mylivetracker.dao.IStatusParamsDao#saveStatusParams(de.msk.mylivetracker.domain.StatusParamsVo)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void saveStatusParams(StatusParamsVo statusParams) {
 		this.getSqlMapClientTemplate().insert(
 			"StatusParams.saveStatusParams", statusParams);

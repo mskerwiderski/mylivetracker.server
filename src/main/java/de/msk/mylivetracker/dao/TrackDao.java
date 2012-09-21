@@ -10,6 +10,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.CardiacFunctionVo;
@@ -64,6 +66,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	private static final String SQL_GET_RECENT_TRACK_AS_RECENT_TRACK = "TrackVo.getRecentTrackAsRecentTrack";
 	private static final String SQL_GET_CLOSED_TRACK_IDS_BY_USER_ID = "TrackVo.getClosedTrackIdsByUserId";
 	private static final String SQL_GET_OLD_TRACK_IDS_BY_TIMESTAMP = "TrackVo.getOldTrackIdsByTimestamp";
+	private static final String SQL_GET_OLD_TRACK_IDS_BY_REMOVE_FLAG = "TrackVo.getOldTrackIdsByRemoveFlag";
 		
 	// update
 	private static final String SQL_RENAME_TRACK = "TrackVo.renameTrack";
@@ -85,6 +88,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	private static final String SQL_STORE_POSITION = "PositionVo.storePosition";
 	
 	// remove
+	private static final String SQL_MARK_TRACK_FOR_REMOVING = "TrackVo.markTrackForRemoving";
 	private static final String SQL_REMOVE_TRACK = "TrackVo.removeTrack";	
 	private static final String SQL_REMOVE_POSITION = "TrackVo.removePosition";
 	private static final String SQL_REMOVE_MESSAGE = "TrackVo.removeMessage";
@@ -98,6 +102,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public TrackListResult getTracksAsRecent(TrackFilterVo trackFilter) {
 		Integer rawTracksCount = 0;
 		List<TrackVo> rawTracks = new ArrayList<TrackVo>();		
@@ -126,6 +131,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 * @see de.msk.mylivetracker.dao.ITrackDao#getTrackAsDetailed(java.lang.String, java.lang.Integer, boolean, boolean, boolean, boolean, boolean)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public TrackVo getTrackAsDetailed(String trackId, Integer cntCutPositions,
 		boolean messagesIncl, boolean emergencySignalsIncl,
 		boolean cardiacFunctionsIncl, boolean mobNwCellsIncl,
@@ -230,6 +236,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 * @see de.msk.mylivetracker.dao.ITrackDao#getTrackAsRecent(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public TrackVo getTrackAsRecent(String trackId) {
 		if (trackId == null) {
 			throw new IllegalArgumentException("trackId must not be null.");
@@ -247,6 +254,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 * @see de.msk.mylivetracker.dao.ITrackDao#getTrackAsMin(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public TrackVo getTrackAsMin(String trackId) {
 		if (trackId == null) {
 			throw new IllegalArgumentException("trackId must not be null.");
@@ -261,6 +269,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 * @see de.msk.mylivetracker.dao.ITrackDao#getRecentTrackAsMin(de.msk.mylivetracker.domain.user.UserWithoutRoleVo, java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public TrackVo getRecentTrackAsMin(UserWithoutRoleVo user, String senderId) {
 		TrackVo track = null;
 		
@@ -280,6 +289,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public TrackVo getRecentTrackAsRecent(UserWithoutRoleVo user, String senderId) {
 		TrackVo track = null;
 		
@@ -298,59 +308,12 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 		return track;
 	}
 	
-	private boolean trackIsExpired(UserWithoutRoleVo user,
-		TrackVo track, Integer trackAutoClose) {
-
-		boolean res = false;
-		if (trackAutoClose != 0) {
-			if (trackAutoClose == -1) {
-				res = false;
-				String now = (new DateTime()).getAsStr(
-					TimeZone.getTimeZone(user.getOptions().getTimeZone()), 
-					DateTime.STD_DATE_FORMAT);
-				String updated = track.getTimestamps().getTrackUpdated().getAsStr(
-					TimeZone.getTimeZone(user.getOptions().getTimeZone()), 
-					DateTime.STD_DATE_FORMAT);	
-				res = !StringUtils.equals(now, updated);
-			} else {
-				DateTime now = new DateTime();
-				if (now.getAsMSecs() -
-					track.getTimestamps().getTrackUpdated().getAsMSecs() >= 
-					trackAutoClose * 60 * 60 * 1000) {
-					res = true;
-				}
-			}
-		}
-		return res;
-	}
-
-	private TrackVo auxCreateTrack(SenderVo sender, TrackVo currActiveTrack,
-		String trackClientId, String trackName, boolean newTrackReleased) {
-						
-		if (currActiveTrack != null) {
-			this.getSqlMapClientTemplate().update(SQL_CLOSE_TRACK, 
-				createTrackParams(currActiveTrack.getTrackId(), null));
-			log.debug("current active track with trackid '" + 
-				currActiveTrack.getTrackId() + "' closed.");
-		}
-	
-		TrackVo newTrack = TrackVo.createInstance(
-			trackClientId, trackName, sender, newTrackReleased);
-			
-		this.getSqlMapClientTemplate().insert(SQL_INSERT_TRACK, newTrack);
-		
-		log.debug("a new track has been started, " +
-			"track '" +	newTrack.getName() + "'" +
-			" with trackid '" + newTrack.getTrackId() + "'" +
-			" for sender '" + newTrack.getSenderId() + "'");
-		
-		return newTrack;
-	}
 	
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#storePositionAndMessage(de.msk.mylivetracker.domain.user.UserWithoutRoleVo, de.msk.mylivetracker.domain.SenderVo, de.msk.mylivetracker.domain.PositionVo, de.msk.mylivetracker.domain.MobNwCellVo, de.msk.mylivetracker.domain.MessageVo, de.msk.mylivetracker.domain.SenderStateVo, de.msk.mylivetracker.domain.CardiacFunctionVo, de.msk.mylivetracker.domain.EmergencySignalVo, de.msk.mylivetracker.domain.ClientInfoVo, de.msk.mylivetracker.domain.user.UserOptionsVo)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void storePositionAndMessage(UserWithoutRoleVo user,
 		SenderVo sender, PositionVo position, MobNwCellVo mobNwCell,
 		MessageVo message, SenderStateVo senderState,
@@ -525,18 +488,16 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 * @see de.msk.mylivetracker.dao.ITrackDao#getActiveTrackAsMin(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public TrackVo getActiveTrackAsMin(String senderId) {
-		TrackVo track = (TrackVo)this.getSqlMapClientTemplate()
-			.queryForObject(
-				SQL_GET_ACTIVE_TRACK_OF_SENDER_AS_MIN_TRACK, 
-				senderId);									
-		return track;
+		return this.getActiveTrackAsMinAux(senderId);
 	}
 
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#getActiveTrackAsRecent(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
 	public TrackVo getActiveTrackAsRecent(String senderId) {
 		TrackVo track = (TrackVo)this.getSqlMapClientTemplate()
 		.queryForObject(
@@ -548,6 +509,8 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#createTrack(de.msk.mylivetracker.domain.SenderVo, java.lang.String, boolean)
 	 */
+	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public TrackVo createTrack(SenderVo sender, 
 		String trackName, boolean trackReleased) {
 		TrackVo track = (TrackVo)this.getSqlMapClientTemplate()
@@ -561,6 +524,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 * @see de.msk.mylivetracker.dao.ITrackDao#updateTrackHeartbeat(java.util.Date, de.msk.mylivetracker.domain.SenderVo, java.lang.String, boolean)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void updateTrackHeartbeat(DateTime heartbeat, SenderVo sender,
 		String trackName, boolean trackReleased) {
 		TrackVo track = (TrackVo)this.getSqlMapClientTemplate()
@@ -577,6 +541,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#openTrack(java.lang.String)
 	 */
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void openTrack(String trackId) {
 		TrackVo trackToOpen = 
 			(TrackVo)this.getSqlMapClientTemplate().
@@ -598,6 +563,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#closeTrack(java.lang.String)
 	 */
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void closeTrack(String trackId) {	
 		this.getSqlMapClientTemplate().update(SQL_CLOSE_TRACK, 
 			createTrackParams(trackId, null));
@@ -608,6 +574,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 * @see de.msk.mylivetracker.dao.ITrackDao#closeActiveTrack(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void closeActiveTrack(String senderId) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("senderId", senderId);
@@ -621,53 +588,41 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 * @see de.msk.mylivetracker.dao.ITrackDao#resetTrack(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void resetTrack(String trackId) {
-		TrackVo track = 
-			(TrackVo)this.getSqlMapClientTemplate().
-			queryForObject(SQL_GET_TRACK_BY_ID_AS_MIN_TRACK, trackId);		
-		removeTrack(trackId); 
-		track = TrackVo.reset(track);
-		this.getSqlMapClientTemplate().insert(SQL_INSERT_TRACK, track);
-		log.debug("track with trackId '" + trackId + "' successfully resetted.");
+		this.resetTrackAux(trackId);
 	}
 
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#resetActiveTrack(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void resetActiveTrack(String senderId) {
-		TrackVo track = this.getActiveTrackAsMin(senderId);
+		TrackVo track = this.getActiveTrackAsMinAux(senderId);
 		this.resetTrack(track.getTrackId());	
 	}
 
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#removeTrack(java.lang.String)
 	 */
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void removeTrack(String trackId) {
-		int cnt = 0;
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_TRACK, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_POSITION, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_MESSAGE, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_MOB_NW_CELL, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_SENDER_STATE, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_CARDIAC_FUNCTION, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_EMERGENCY_SIGNAL, trackId);
-		
-		log.debug("track with trackId '" + trackId + 
-			"' successfully removed (" + cnt + " records deleted).");
+		this.markTrackForRemoving(trackId);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#removeClosedTracks(java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void removeClosedTracks(String userId) {
 		List<String> trackIds = (List<String>)
 			this.getSqlMapClientTemplate().queryForList(
 				SQL_GET_CLOSED_TRACK_IDS_BY_USER_ID, userId);	
 		for (String trackId : trackIds) {
-			this.removeTrack(trackId);
+			this.removeTrackAux(trackId);
 		}	
 		log.debug(trackIds.size() + " tracks removed of userId " + userId);
 	}
@@ -677,6 +632,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void removeOldTracks(long olderThanInMSecs) {
 		DateTime timestamp = 
 			new DateTime(new DateTime().getAsMSecs() - olderThanInMSecs);
@@ -686,14 +642,32 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 			SQL_GET_OLD_TRACK_IDS_BY_TIMESTAMP, timestamp);	
 		for (String trackId : trackIds) {
 			log.debug("remove track with trackId = '" + trackId + "'");
-			this.removeTrack(trackId);
+			this.removeTrackAux(trackId);
 		}	
 		log.debug(trackIds.size() + " tracks removed which are older than " + olderThanInMSecs + " msecs.");
 	}
 
 	/* (non-Javadoc)
+	 * @see de.msk.mylivetracker.dao.ITrackDao#removeTracksWithRemoveFlag()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public void removeTracksWithRemoveFlag() {
+		List<String> trackIds = (List<String>)
+		this.getSqlMapClientTemplate().queryForList(
+			SQL_GET_OLD_TRACK_IDS_BY_REMOVE_FLAG);	
+		for (String trackId : trackIds) {
+			log.debug("remove track with trackId = '" + trackId + "'");
+			this.removeTrackAux(trackId);
+		}	
+		log.debug(trackIds.size() + " tracks removed which are marked as REMOVE.");		
+	}
+
+	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#renameTrack(java.lang.String, java.lang.String)
 	 */
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void renameTrack(String trackId, String trackName) {
 		int cnt = this.getSqlMapClientTemplate().update(SQL_RENAME_TRACK,
 			createTrackParams(trackId, trackName));
@@ -708,6 +682,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#privatizeTrack(java.lang.String)
 	 */
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void privatizeTrack(String trackId) {
 		this.getSqlMapClientTemplate().update(
 			SQL_PRIVATIZE_TRACK, createTrackParams(trackId, null));
@@ -717,11 +692,77 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#publishTrack(java.lang.String)
 	 */
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void publishTrack(String trackId) {
 		this.getSqlMapClientTemplate().update(
 			SQL_PUBLISH_TRACK, createTrackParams(trackId, null));
 		log.debug("track with trackId " + trackId + " successfully published.");
 	}	
+	
+	/*
+	 * ************************************************************************
+	 * private methods which are not transactional.
+	 * ************************************************************************
+	 */
+	
+	private TrackVo auxCreateTrack(SenderVo sender, TrackVo currActiveTrack,
+		String trackClientId, String trackName, boolean newTrackReleased) {
+						
+		if (currActiveTrack != null) {
+			this.getSqlMapClientTemplate().update(SQL_CLOSE_TRACK, 
+				createTrackParams(currActiveTrack.getTrackId(), null));
+			log.debug("current active track with trackid '" + 
+				currActiveTrack.getTrackId() + "' closed.");
+		}
+	
+		TrackVo newTrack = TrackVo.createInstance(
+			trackClientId, trackName, sender, true, newTrackReleased);
+			
+		this.getSqlMapClientTemplate().insert(SQL_INSERT_TRACK, newTrack);
+		
+		log.debug("a new track has been started, " +
+			"track '" +	newTrack.getName() + "'" +
+			" with trackid '" + newTrack.getTrackId() + "'" +
+			" for sender '" + newTrack.getSenderId() + "'");
+		
+		return newTrack;
+	}
+
+	private TrackVo getActiveTrackAsMinAux(String senderId) {
+		TrackVo track = (TrackVo)this.getSqlMapClientTemplate()
+			.queryForObject(
+				SQL_GET_ACTIVE_TRACK_OF_SENDER_AS_MIN_TRACK, 
+				senderId);									
+		return track;
+	}
+	
+	private void resetTrackAux(String trackId) {
+		TrackVo track = 
+			(TrackVo)this.getSqlMapClientTemplate().
+			queryForObject(SQL_GET_TRACK_BY_ID_AS_MIN_TRACK, trackId);		
+		this.markTrackForRemoving(trackId); 
+		track = TrackVo.reset(track);
+		this.getSqlMapClientTemplate().insert(SQL_INSERT_TRACK, track);
+		log.debug("track with trackId '" + trackId + "' successfully resetted.");
+	}
+	
+	private void markTrackForRemoving(String trackId) {
+		this.getSqlMapClientTemplate().update(SQL_MARK_TRACK_FOR_REMOVING, trackId);
+	}
+	
+	private void removeTrackAux(String trackId) {
+		int cnt = 0;
+		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_TRACK, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_POSITION, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_MESSAGE, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_MOB_NW_CELL, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_SENDER_STATE, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_CARDIAC_FUNCTION, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_EMERGENCY_SIGNAL, trackId);
+		
+		log.debug("track with trackId '" + trackId + 
+			"' successfully removed (" + cnt + " records deleted).");
+	}
 	
 	private static Map<String, Object> createTrackParams(String trackId, String trackName) {
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -731,5 +772,31 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 		}
 		params.put("trackUpdated", new DateTime());
 		return params;
-	}			
+	}
+	
+	private boolean trackIsExpired(UserWithoutRoleVo user,
+		TrackVo track, Integer trackAutoClose) {
+
+		boolean res = false;
+		if (trackAutoClose != 0) {
+			if (trackAutoClose == -1) {
+				res = false;
+				String now = (new DateTime()).getAsStr(
+					TimeZone.getTimeZone(user.getOptions().getTimeZone()), 
+					DateTime.STD_DATE_FORMAT);
+				String updated = track.getTimestamps().getTrackUpdated().getAsStr(
+					TimeZone.getTimeZone(user.getOptions().getTimeZone()), 
+					DateTime.STD_DATE_FORMAT);	
+				res = !StringUtils.equals(now, updated);
+			} else {
+				DateTime now = new DateTime();
+				if (now.getAsMSecs() -
+					track.getTimestamps().getTrackUpdated().getAsMSecs() >= 
+					trackAutoClose * 60 * 60 * 1000) {
+					res = true;
+				}
+			}
+		}
+		return res;
+	}
 }

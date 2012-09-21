@@ -45,6 +45,8 @@ public class TrackCleaner implements Runnable {
 			try {
 				trackService.removeOldTracks(this.olderThanInMSecs);
 				log.debug("trackcleaner: old tracks removed.");
+				trackService.removeTracksWithRemoveFlag();
+				log.debug("trackcleaner: tracks with REMOVE flag removed.");
 				Thread.sleep(1000 * 60 * 60);
 			} catch (InterruptedException e) {
 				statusOk = false;

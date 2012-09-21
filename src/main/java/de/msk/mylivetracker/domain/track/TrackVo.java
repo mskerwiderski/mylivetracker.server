@@ -37,6 +37,7 @@ public class TrackVo implements Serializable {
 	public static final Integer MAX_COUNT_OF_POSITIONS_PER_TRACK = 5000;
 	
 	private String trackId;
+	private boolean remove = false;
 	private String trackClientId; // for sync
 	private Integer versionMajor;
 	private String name;
@@ -76,30 +77,30 @@ public class TrackVo implements Serializable {
 	private Long clientRuntimeWithoutPausesInMSecs;
 	private Long clientRuntimeWithPausesInMSecs;
 
-	public static TrackVo createInstance(String trackClientId, String name, SenderVo sender, 
-		boolean released) {		
+	public static TrackVo createInstance(String trackClientId, 
+		String name, SenderVo sender, 
+		boolean active, boolean released) {		
 		String senderSymbolId = (sender.getSymbol() == null) ? 
 			SenderVo.DEFAULT_SYMBOL.getId() : sender.getSymbol().getId();
 		return createInstance(
-			UUID.randomUUID().toString(), 
 			trackClientId,
 			name, sender.getUserId(), 
 			sender.getSenderId(),
 			sender.getName(),
 			senderSymbolId,
-			0, released, new DateTime());
+			0, active, released, new DateTime());
 	}
 	
-	public static TrackVo createInstance(String trackId, String trackClientId, String name,
+	private static TrackVo createInstance(String trackClientId, String name,
 		String userId, String senderId, String senderName, String senderSymbolId,
-		Integer versionMajor, boolean released, DateTime trackCreated) {
+		Integer versionMajor, boolean active, boolean released, DateTime trackCreated) {
 		TrackVo track = new TrackVo();									
-		track.setTrackId(trackId);
+		track.setTrackId(UUID.randomUUID().toString());
 		track.setTrackClientId(trackClientId);
 		track.setVersionMajor(versionMajor);
 		track.setName(name);			
 		track.setTimestamps(new TrackTimestampsVo(trackCreated));		
-		track.setActive(true);
+		track.setActive(active);
 		track.setReleased(released);
 		track.setSenderId(senderId);
 		track.setSenderName(senderName);
@@ -118,14 +119,15 @@ public class TrackVo implements Serializable {
 	
 	public static TrackVo reset(TrackVo track) {	
 		return createInstance(
-			track.getTrackId(),
 			track.getTrackClientId(),
 			track.getName(), 
 			track.getUserId(), 
 			track.getSenderId(),
 			track.getSenderName(),
 			track.getSenderSymbolId(),
-			track.getVersionMajor() + 1, track.isReleased(), 
+			track.getVersionMajor() + 1,
+			track.isActive(),
+			track.isReleased(), 
 			track.getTimestamps().getTrackCreated());				
 	}	
 	
@@ -186,6 +188,20 @@ public class TrackVo implements Serializable {
 	 */
 	public void setTrackId(String trackId) {
 		this.trackId = trackId;
+	}
+
+	/**
+	 * @return the remove
+	 */
+	public boolean isRemove() {
+		return remove;
+	}
+
+	/**
+	 * @param remove the remove to set
+	 */
+	public void setRemove(boolean remove) {
+		this.remove = remove;
 	}
 
 	/**

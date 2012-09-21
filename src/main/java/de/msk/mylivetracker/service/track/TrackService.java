@@ -161,6 +161,14 @@ public class TrackService implements ITrackService {
 	}
 
 	/* (non-Javadoc)
+	 * @see de.msk.mylivetracker.service.ITrackService#removeTracksWithRemoveFlag()
+	 */
+	@Override
+	public void removeTracksWithRemoveFlag() {
+		trackDao.removeTracksWithRemoveFlag();
+	}
+
+	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.ITrackService#renameTrack(java.lang.String, java.lang.String)
 	 */
 	public void renameTrack(String trackId, String trackName) {
