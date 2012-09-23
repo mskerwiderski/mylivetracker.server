@@ -27,6 +27,7 @@ import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
+import de.msk.mylivetracker.service.ITrackService.DeleteTrackResult;
 import de.msk.mylivetracker.service.ITrackService.TrackListResult;
 import de.msk.mylivetracker.util.GpsUtils;
 
@@ -66,7 +67,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	private static final String SQL_GET_RECENT_TRACK_AS_RECENT_TRACK = "TrackVo.getRecentTrackAsRecentTrack";
 	private static final String SQL_GET_CLOSED_TRACK_IDS_BY_USER_ID = "TrackVo.getClosedTrackIdsByUserId";
 	private static final String SQL_GET_OLD_TRACK_IDS_BY_TIMESTAMP = "TrackVo.getOldTrackIdsByTimestamp";
-	private static final String SQL_GET_OLD_TRACK_IDS_BY_REMOVE_FLAG = "TrackVo.getOldTrackIdsByRemoveFlag";
+	private static final String SQL_GET_ONE_TRACK_ID_WITH_REMOVE_FLAG = "TrackVo.getOneTrackIdWithRemoveFlag";
 		
 	// update
 	private static final String SQL_RENAME_TRACK = "TrackVo.renameTrack";
@@ -516,7 +517,8 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 		TrackVo track = (TrackVo)this.getSqlMapClientTemplate()
 			.queryForObject(SQL_GET_ACTIVE_TRACK_OF_SENDER_AS_MIN_TRACK, 
 			sender.getSenderId());
-		track = auxCreateTrack(sender, track, null, trackName, trackReleased);			
+		track = auxCreateTrack(sender, track, null, 
+			trackName, trackReleased);			
 		return track;
 	}
 
@@ -622,7 +624,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 			this.getSqlMapClientTemplate().queryForList(
 				SQL_GET_CLOSED_TRACK_IDS_BY_USER_ID, userId);	
 		for (String trackId : trackIds) {
-			this.removeTrackAux(trackId);
+			this.markTrackForRemoving(trackId);
 		}	
 		log.debug(trackIds.size() + " tracks removed of userId " + userId);
 	}
@@ -642,7 +644,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 			SQL_GET_OLD_TRACK_IDS_BY_TIMESTAMP, timestamp);	
 		for (String trackId : trackIds) {
 			log.debug("remove track with trackId = '" + trackId + "'");
-			this.removeTrackAux(trackId);
+			this.markTrackForRemoving(trackId);
 		}	
 		log.debug(trackIds.size() + " tracks removed which are older than " + olderThanInMSecs + " msecs.");
 	}
@@ -650,20 +652,21 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#removeTracksWithRemoveFlag()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void removeTracksWithRemoveFlag() {
-		List<String> trackIds = (List<String>)
-		this.getSqlMapClientTemplate().queryForList(
-			SQL_GET_OLD_TRACK_IDS_BY_REMOVE_FLAG);	
-		for (String trackId : trackIds) {
-			log.debug("remove track with trackId = '" + trackId + "'");
-			this.removeTrackAux(trackId);
-		}	
-		log.debug(trackIds.size() + " tracks removed which are marked as REMOVE.");		
+	public DeleteTrackResult deleteOneRemovedTrack() {
+		int cnt = 0;
+		String trackId = (String)
+			this.getSqlMapClientTemplate().queryForObject(
+				SQL_GET_ONE_TRACK_ID_WITH_REMOVE_FLAG);
+		if (!StringUtils.isEmpty(trackId)) {
+			cnt = this.deleteTrackAux(trackId);
+		}
+		DeleteTrackResult res = new DeleteTrackResult(trackId, cnt);
+		log.debug(res.toString());
+		return res;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#renameTrack(java.lang.String, java.lang.String)
 	 */
@@ -706,7 +709,8 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 */
 	
 	private TrackVo auxCreateTrack(SenderVo sender, TrackVo currActiveTrack,
-		String trackClientId, String trackName, boolean newTrackReleased) {
+		String trackClientId, String trackName, 
+		boolean newTrackReleased) {
 						
 		if (currActiveTrack != null) {
 			this.getSqlMapClientTemplate().update(SQL_CLOSE_TRACK, 
@@ -750,7 +754,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 		this.getSqlMapClientTemplate().update(SQL_MARK_TRACK_FOR_REMOVING, trackId);
 	}
 	
-	private void removeTrackAux(String trackId) {
+	private int deleteTrackAux(String trackId) {
 		int cnt = 0;
 		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_TRACK, trackId);
 		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_POSITION, trackId);
@@ -759,9 +763,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_SENDER_STATE, trackId);
 		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_CARDIAC_FUNCTION, trackId);
 		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_EMERGENCY_SIGNAL, trackId);
-		
-		log.debug("track with trackId '" + trackId + 
-			"' successfully removed (" + cnt + " records deleted).");
+		return cnt;
 	}
 	
 	private static Map<String, Object> createTrackParams(String trackId, String trackName) {

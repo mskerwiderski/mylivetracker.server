@@ -93,9 +93,5 @@ public class DemoRunner extends Thread {
 				log.info("demo track '" + demoCase.getName() + "' not found.");
 			}
 		}
-		for (String userId : userIds) {
-			this.demoTaskExecutor.execute(
-				new DemoTrackCleaner(userId, trackService));
-		}
 	}	
 }

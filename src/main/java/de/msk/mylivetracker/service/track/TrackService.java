@@ -34,6 +34,7 @@ public class TrackService implements ITrackService {
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.ITrackService#createTrack(de.msk.mylivetracker.domain.SenderVo, java.lang.String, boolean)
 	 */
+	@Override
 	public TrackVo createTrack(SenderVo sender, 
 		String trackName, boolean trackReleased) {
 			return trackDao.createTrack(sender, trackName, trackReleased);
@@ -161,11 +162,11 @@ public class TrackService implements ITrackService {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.ITrackService#removeTracksWithRemoveFlag()
+	 * @see de.msk.mylivetracker.service.ITrackService#deleteOneRemovedTrack()
 	 */
 	@Override
-	public void removeTracksWithRemoveFlag() {
-		trackDao.removeTracksWithRemoveFlag();
+	public DeleteTrackResult deleteOneRemovedTrack() {
+		return trackDao.deleteOneRemovedTrack();
 	}
 
 	/* (non-Javadoc)

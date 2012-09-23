@@ -404,9 +404,9 @@
   		t.TRACK_UPDATED &lt;= #?#		
   	</select>
   	
-  	<select id="getOldTrackIdsByRemoveFlag" resultClass="string">
+  	<select id="getOneTrackIdWithRemoveFlag" resultClass="string">
   		select t.TRACK_ID from T_TRACK t where 
-  		t.REMOVE = true		
+  		t.REMOVE = true	limit 1	
   	</select>
   	
   	<sql id="stmntInsertTrack">
@@ -499,6 +499,16 @@
   	<update id="closeTrack" parameterClass="java.util.Map">
   		update T_TRACK t
   		set 
+  			t.IS_ACTIVE = FALSE, 
+  			t.TRACK_UPDATED = #trackUpdated# 		   
+  		where t.TRACK_ID = #trackId#
+  		and t.REMOVE = false   		
+  	</update>  
+  	
+  	<update id="closeAndRemoveTrack" parameterClass="java.util.Map">
+  		update T_TRACK t
+  		set 
+  			t.REMOVE = true,
   			t.IS_ACTIVE = FALSE, 
   			t.TRACK_UPDATED = #trackUpdated# 		   
   		where t.TRACK_ID = #trackId#

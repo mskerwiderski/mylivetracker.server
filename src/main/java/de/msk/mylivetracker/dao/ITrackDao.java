@@ -13,6 +13,7 @@ import de.msk.mylivetracker.domain.track.TrackFilterVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
+import de.msk.mylivetracker.service.ITrackService.DeleteTrackResult;
 import de.msk.mylivetracker.service.ITrackService.TrackListResult;
 
 /**
@@ -164,10 +165,10 @@ public interface ITrackDao {
 	public void removeOldTracks(long olderThanInMSecs);
 	
 	/**
-	 * remove tracks with remove flag.
+	 * delete one removed track.
 	 */
-	public void removeTracksWithRemoveFlag();
-	
+	public DeleteTrackResult deleteOneRemovedTrack();
+
 	/**
 	 * open track.
 	 * @param trackId - id of track.

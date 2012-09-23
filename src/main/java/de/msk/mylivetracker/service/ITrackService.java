@@ -2,6 +2,8 @@ package de.msk.mylivetracker.service;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
@@ -154,10 +156,38 @@ public interface ITrackService {
 	 */
 	public void removeOldTracks(long olderThanInMSecs);
 	
+	public static class DeleteTrackResult {
+		private String trackId;
+		private int deletedRecords;
+		public DeleteTrackResult(String trackId, int deletedRecords) {
+			this.trackId = trackId;
+			this.deletedRecords = deletedRecords;
+		}
+		public String getTrackId() {
+			return trackId;
+		}
+		public int getDeletedRecords() {
+			return deletedRecords;
+		}
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			String res = "no track for deletion found.";
+			if (!StringUtils.isEmpty(trackId)) {
+				res = "track with trackId='" + trackId +
+					"' and " + deletedRecords + 
+					" records permanently deleted.";
+			}
+			return res;
+		}
+	}
+
 	/**
-	 * remove tracks with remove flag.
+	 * delete one removed track.
 	 */
-	public void removeTracksWithRemoveFlag();
+	public DeleteTrackResult deleteOneRemovedTrack();
 	
 	/**
 	 * open track.

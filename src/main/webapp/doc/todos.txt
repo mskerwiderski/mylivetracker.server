@@ -18,14 +18,14 @@
 * [OFFEN] Auto Zoom bei Home Position konfigurierbar machen.
 * [OFFEN] Tracks Overview: Für die Map: Zoom/Bound on/off.
 * [OFFEN] Tk5000: Ungültige Positionen rausfiltern.
-* [DONE-beta7] Performance beim Laden von Tracks verbessern.
+* [DONE-beta8] Performance beim Laden von Tracks verbessern.
 * [OFFEN] Geocoder nur noch für Nachrichten und SOS Signale.
 * [OFFEN] Geocoder von OpenStreetMap anbinden.
 * [OFFEN] Timeout-Kriterien für die TCP Sockets anpassen.
 * [OFFEN] Image Ordner aufräumen.
 * [OFFEN] Umstellung auf Spring 3.1.
 * [OFFEN] Google Maps Api Key entfernen.
-* [Done-beta7] Löschen/Resetten von Tracks: Den Track nur zur Löschung freigeben und das eigentliche Löschen über einen Util-Thread durchführen.
+* [Done-beta8] Löschen/Resetten von Tracks: Den Track nur zur Löschung freigeben und das eigentliche Löschen über einen Util-Thread durchführen.
 * [OFFEN] Prüfen ob überall der Text 'Google' ersetzt wurde.
 * [OFFEN] Startseite mit neuen Texten und Layout, Link auf Forum, etc.
  
