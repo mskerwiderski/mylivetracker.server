@@ -400,8 +400,9 @@
   	
   	<select id="getOldTrackIdsByTimestamp" 
   		parameterClass="dateTime" resultClass="string">
-  		select t.TRACK_ID from T_TRACK t where 
-  		t.TRACK_UPDATED &lt;= #?#		
+  		select t.TRACK_ID from T_TRACK t 
+  		where t.TRACK_UPDATED &lt;= #?#	
+  		and t.REMOVE = false	
   	</select>
   	
   	<select id="getOneTrackIdWithRemoveFlag" resultClass="string">
@@ -557,6 +558,7 @@
   		set 
   			t.REMOVE = true		   
   		where t.TRACK_ID = #?#
+  		and t.REMOVE = false
   	</update>  
   	  	
   	<update id="updateTrack" parameterClass="track">

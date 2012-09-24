@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import de.msk.mylivetracker.domain.sender.SenderSymbolVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
+import de.msk.mylivetracker.domain.user.GeocoderModeVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.IApplicationService;
@@ -24,6 +25,7 @@ import de.msk.mylivetracker.service.IStatusParamsService;
 import de.msk.mylivetracker.service.ITrackService;
 import de.msk.mylivetracker.service.IUserService;
 import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService;
+import de.msk.mylivetracker.web.frontend.util.CustomGeocoderModeEditor;
 import de.msk.mylivetracker.web.frontend.util.CustomSenderSymbolEditor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
 import de.msk.mylivetracker.web.options.IntOptionDsc;
@@ -45,6 +47,7 @@ import de.msk.mylivetracker.web.util.WebUtils;
 public class OptionsCtrl extends SimpleFormController {
 
 	private List<StrOptionDsc> userOptsLanguage;
+	private List<StrOptionDsc> userOptsGeocoder;
 	private List<BoolOptionDsc> trackOptsReleaseStatus;
 	private List<IntOptionDsc> trackOptsAutoClose;
 	private List<IntOptionDsc> trackRouteOptsWidth;
@@ -86,6 +89,7 @@ public class OptionsCtrl extends SimpleFormController {
 		if (cmd == null) {
 			cmd = new OptionsCmd();			
 			cmd.setUserOptsLanguage(userOptsLanguage);
+			cmd.setUserOptsGeocoder(userOptsGeocoder);
 			cmd.setTrackOptsReleaseStatus(trackOptsReleaseStatus);
 			cmd.setTrackOptsAutoClose(trackOptsAutoClose);
 			cmd.setTrackRouteOptsWidth(trackRouteOptsWidth);			
@@ -171,8 +175,10 @@ public class OptionsCtrl extends SimpleFormController {
 	@Override
 	protected void initBinder(HttpServletRequest request,
 		ServletRequestDataBinder binder) throws Exception {
-		CustomSenderSymbolEditor editor = new CustomSenderSymbolEditor();
-		binder.registerCustomEditor(SenderSymbolVo.class, "senderDetails.symbol", editor);
+		CustomSenderSymbolEditor editorSenderSymbol = new CustomSenderSymbolEditor();
+		binder.registerCustomEditor(SenderSymbolVo.class, "senderDetails.symbol", editorSenderSymbol);
+		CustomGeocoderModeEditor editorGeocoderMode = new CustomGeocoderModeEditor();
+		binder.registerCustomEditor(GeocoderModeVo.class, "userOptions.geocoderMode", editorGeocoderMode);
 		super.initBinder(request, binder);
 	}
 
@@ -188,6 +194,20 @@ public class OptionsCtrl extends SimpleFormController {
 	 */
 	public void setUserOptsLanguage(List<StrOptionDsc> userOptsLanguage) {
 		this.userOptsLanguage = userOptsLanguage;
+	}
+
+	/**
+	 * @return the userOptsGeocoder
+	 */
+	public List<StrOptionDsc> getUserOptsGeocoder() {
+		return userOptsGeocoder;
+	}
+
+	/**
+	 * @param userOptsGeocoder the userOptsGeocoder to set
+	 */
+	public void setUserOptsGeocoder(List<StrOptionDsc> userOptsGeocoder) {
+		this.userOptsGeocoder = userOptsGeocoder;
 	}
 
 	/**

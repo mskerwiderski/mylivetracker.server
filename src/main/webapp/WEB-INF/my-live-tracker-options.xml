@@ -2480,6 +2480,21 @@
    	 	</bean>
    	</util:list>
    	
+   	<util:list id="userOptsGeocoder">
+    	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="disabled"/>
+    	 	<constructor-arg index="1" value="user.opts.geocoder.off"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="emergencySignals"/>
+    	 	<constructor-arg index="1" value="user.opts.geocoder.emergencySignals"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="emergencySignalsAndMessages"/>
+    	 	<constructor-arg index="1" value="user.opts.geocoder.emergencySignalsAndMessages"/>
+   	 	</bean>
+   	</util:list>
+   	
 	<util:list id="trackOptsReleaseStatus">
     	<bean class="de.msk.mylivetracker.web.options.BoolOptionDsc">
     	 	<constructor-arg index="0" value="false"/>

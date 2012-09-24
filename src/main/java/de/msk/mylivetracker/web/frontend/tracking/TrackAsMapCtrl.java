@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.msk.mylivetracker.domain.track.TrackVo;
-import de.msk.mylivetracker.service.IApplicationService.Parameter;
 
 /**
  * TrackAsMapCtrl.
@@ -50,9 +49,6 @@ public class TrackAsMapCtrl extends AbstractTrackingCtrl {
 		UserAndRoleDsc userAndRoleDsc, Map<String, Object> model) {
 		model.put("mapsUsedStr", userAndRoleDsc.user.getOptions().getMapsUsed().getMapsUsedStr());
 		model.put("defMapId", userAndRoleDsc.user.getOptions().getMapsUsed().getDefMapId());
-		model.put("cloudmadeApiKey", 
-			this.getApplicationService().getParameterValueAsString(
-				Parameter.CloudmadeApiKey));
 		model.put("showTrackInfo", (Boolean)model.get(PARAM_SHOW_TRACK_INFO.getName()));		
 	}
 }

@@ -26,9 +26,8 @@ public interface IApplicationService {
 		SmsCreatorDePassword, // password of sms service smscreator.de.
 		SmsCreatorDeUsername, // username of sms service smscreator.de.
 		TrackLifeTimeInMSecs, // lifetime of track records in milliseconds.
-		YahooApiKey, // yahoo api key (needed for geocoder).		
-		CloudmadeApiKey, // cloudmade api key (needed for cloudmade api).
 		RunCleanTasksAfterStartup, // if yes: clean tasks are started after application startup.
+		SupportEmail, // email address for contact MyLiveTracker support.
 	};
 				
 	public void reloadParameters();

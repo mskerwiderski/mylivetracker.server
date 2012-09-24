@@ -20,7 +20,6 @@ import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.MapsUsedVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.IApplicationService.Parameter;
 import de.msk.mylivetracker.service.ISenderService;
 import de.msk.mylivetracker.service.ITrackService;
 import de.msk.mylivetracker.service.IUserService;
@@ -90,9 +89,6 @@ public class TracksOverviewCtrl extends SimpleFormController {
 			cmd.setTracksOverviewOptsRefresh(this.getTracksOverviewOptsRefresh());
 			cmd.setTrackOptsReleaseStatus(this.trackOptsReleaseStatus);
 			cmd.setTrackOptsActivityStatus(this.trackOptsActivityStatus);
-			cmd.setCloudmadeApiKey(
-				this.getApplicationService().getParameterValueAsString(
-					Parameter.CloudmadeApiKey));
 			MapsUsedVo mapsUsed = WebUtils.getCurrentUserWithRole().getOptions().getMapsUsed();
 			cmd.setMapsUsedStr(mapsUsed.getMapsUsedStr());
 			cmd.setDefMapId(mapsUsed.getDefMapId());

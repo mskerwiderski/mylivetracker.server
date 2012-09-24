@@ -1,6 +1,7 @@
 package de.msk.mylivetracker.service.geocoding;
 
 import de.msk.mylivetracker.domain.statistics.ServiceCallCountVo;
+import de.msk.mylivetracker.service.IApplicationService;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
 
 /**
@@ -15,10 +16,11 @@ import de.msk.mylivetracker.service.statistics.IStatisticsService;
  * 
  */
 public abstract class AbstractGeocodingService {
-	
+
+	private static final String FAILED_APP = " (failed)";
 	private String name;
-	private String nameFailed = this.name + " (failed)";
 	private int requestLimit;
+	private IApplicationService applicationService;
 	private IStatisticsService statisticsService;
 	
 	public static class LatLonPos {
@@ -27,6 +29,10 @@ public abstract class AbstractGeocodingService {
 		public LatLonPos(Double latitude, Double longitude) {
 			this.latitude = latitude;
 			this.longitude = longitude;
+		}
+		public LatLonPos(String latitude, String longitude) {
+			this.latitude = Double.valueOf(latitude);
+			this.longitude = Double.valueOf(longitude);
 		}
 		public Double getLatitude() {
 			return latitude;
@@ -40,7 +46,39 @@ public abstract class AbstractGeocodingService {
 				longitude.toString();
 		}				
 	}
-		
+	
+	public static class Address {
+		String country;
+		String city;
+		String street;
+		String housenumber;
+		public Address(String country, String city, 
+			String street, String housenumber) {
+			this.country = country;
+			this.city = city;
+			this.street = street;
+			this.housenumber = housenumber;
+		}
+		public String getCountry() {
+			return country;
+		}
+		public String getCity() {
+			return city;
+		}
+		public String getStreet() {
+			return street;
+		}
+		public String getHousenumber() {
+			return housenumber;
+		}
+		@Override
+		public String toString() {
+			return "Address [country=" + country + ", city=" + city
+				+ ", street=" + street + ", housenumber=" + housenumber
+				+ "]";
+		}	
+	}
+	
 	public String getAddressOfPosition(LatLonPos position, String languageCode) {
 		String res = "";
 		ServiceCallCountVo serviceCallCount = 
@@ -50,7 +88,7 @@ public abstract class AbstractGeocodingService {
 				res = this.getAddressOfPositionAux(position, languageCode);
 			} catch (Exception e) {
 				res = "";
-				this.statisticsService.logServiceCallCount(nameFailed);
+				this.statisticsService.logServiceCallCount(name + FAILED_APP);
 			} finally {
 				this.statisticsService.logServiceCallCount(name);
 			}
@@ -58,7 +96,7 @@ public abstract class AbstractGeocodingService {
 		return res;
 	}
 	
-	public LatLonPos getPositionOfAddress(String address, String languageCode) {
+	public LatLonPos getPositionOfAddress(Address address, String languageCode) {
 		LatLonPos res = null;
 		ServiceCallCountVo serviceCallCount = 
 			this.statisticsService.getServiceCallCount(name);
@@ -67,7 +105,7 @@ public abstract class AbstractGeocodingService {
 				res = this.getPositionOfAddressAux(address, languageCode);
 			} catch (Exception e) {
 				res = null;
-				this.statisticsService.logServiceCallCount(nameFailed);
+				this.statisticsService.logServiceCallCount(name + FAILED_APP);
 			} finally {
 				this.statisticsService.logServiceCallCount(name);
 			}
@@ -76,7 +114,7 @@ public abstract class AbstractGeocodingService {
 	}
 	
 	public abstract String getAddressOfPositionAux(LatLonPos position, String languageCode);
-	public abstract LatLonPos getPositionOfAddressAux(String address, String languageCode);
+	public abstract LatLonPos getPositionOfAddressAux(Address address, String languageCode);
 
 	/**
 	 * @return the name
@@ -104,6 +142,14 @@ public abstract class AbstractGeocodingService {
 	 */
 	public void setRequestLimit(int requestLimit) {
 		this.requestLimit = requestLimit;
+	}
+
+	public IApplicationService getApplicationService() {
+		return applicationService;
+	}
+
+	public void setApplicationService(IApplicationService applicationService) {
+		this.applicationService = applicationService;
 	}
 
 	/**

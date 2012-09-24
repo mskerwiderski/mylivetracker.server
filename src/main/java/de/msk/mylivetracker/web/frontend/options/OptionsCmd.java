@@ -45,6 +45,7 @@ public class OptionsCmd {
 	private String[] infoMessage = new String[] {"", "", "", "", "", ""};
 	
 	private List<StrOptionDsc> userOptsLanguage;
+	private List<StrOptionDsc> userOptsGeocoder;
 	private List<BoolOptionDsc> trackOptsReleaseStatus;
 	private List<IntOptionDsc> trackOptsAutoClose;
 	private List<IntOptionDsc> trackRouteOptsWidth;	
@@ -217,6 +218,20 @@ public class OptionsCmd {
 	public void setUserOptsLanguage(List<StrOptionDsc> userOptsLanguage) {
 		this.userOptsLanguage = userOptsLanguage;
 	}
+	/**
+	 * @return the userOptsGeocoder
+	 */
+	public List<StrOptionDsc> getUserOptsGeocoder() {
+		return userOptsGeocoder;
+	}
+
+	/**
+	 * @param userOptsGeocoder the userOptsGeocoder to set
+	 */
+	public void setUserOptsGeocoder(List<StrOptionDsc> userOptsGeocoder) {
+		this.userOptsGeocoder = userOptsGeocoder;
+	}
+
 	/**
 	 * @return the trackOptsReleaseStatus
 	 */

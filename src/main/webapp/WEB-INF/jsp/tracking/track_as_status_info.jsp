@@ -235,7 +235,7 @@
 			<td colspan="2">
 				<div style="margin-left: 4px;" class="track-status-labels">
 					<a id="valueStatusAsGoogleMaps" target="_blank" href="" class="track-status-labels">					
-						<spring:message code="track.status.labelStatusAsGoogleMaps" />					
+						<spring:message code="track.status.labelStatusAsMap" />					
 					</a>			
 				</div>
 			</td>

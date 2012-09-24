@@ -232,6 +232,7 @@
     <bean name="optionsCtrl"
         class="de.msk.mylivetracker.web.frontend.options.OptionsCtrl">
         <property name="userOptsLanguage" ref="userOptsLanguage" />
+        <property name="userOptsGeocoder" ref ="userOptsGeocoder" />
         <property name="trackOptsReleaseStatus" ref="trackOptsReleaseStatus" />
         <property name="trackOptsAutoClose" ref="trackOptsAutoClose" />
         <property name="trackRouteOptsWidth" ref="trackRouteOptsWidth" />

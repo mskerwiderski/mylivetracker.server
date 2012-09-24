@@ -107,8 +107,7 @@
 			der anwendbaren Datenschutzbestimmungen gespeichert und	&uuml;bertragen werden.	
 			Ihre pers&ouml;nlichen Daten werden absolut vertraulich behandelt und an 
 			Dritte nur weitergeleitet, sofern es f&uuml;r die Funktionalit&auml;t dieser Website 
-			notwendig ist (Dies betrifft z.B. die Nutzung von Google Services,
-			wie das Google Maps API und die Anwendung Google Earth). Der Nutzer ist damit
+			notwendig ist (Dies betrifft z.B. die Nutzung der Karten Services). Der Nutzer ist damit
 			einverstanden, dass die von ihm im Rahmen der Nutzung dieser Website
 			erhobenen Daten vom Anbieter gespeichert und unter Beachtung des Vorstehenden genutzt werden.&nbsp;					
 		</td>

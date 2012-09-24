@@ -419,7 +419,11 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 							lastPosition.getTimeReceived().getAsMSecs());
 					Double speedInMtrPerHour = distanceBetweenLast2PositionsInMtr / 
 						(((double)timeBetweenLast2Positions) / 1000d / 3600d);
-					track.setSpeedInMtrPerHour(speedInMtrPerHour);
+					if (speedInMtrPerHour.isInfinite() || speedInMtrPerHour.isNaN()) {
+						track.setSpeedInMtrPerHour(0.0d);
+					} else {
+						track.setSpeedInMtrPerHour(speedInMtrPerHour);
+					}
 				} else {
 					track.setSpeedInMtrPerHour(0.0d);
 				}

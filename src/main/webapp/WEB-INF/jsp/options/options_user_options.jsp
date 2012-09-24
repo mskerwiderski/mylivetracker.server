@@ -70,19 +70,19 @@
 			<table>
 				<tr><td style="border:none;">					
 					&nbsp;<b><spring:message code="options.geocoding.onoff" /></b>&nbsp;									
-					<c:set var="selGeocodingEnabled">${optionsCmd.userOptions.geocodingEnabled}</c:set>
-					<select id="userOptions.geocodingEnabled" name="userOptions.geocodingEnabled" 
+					<c:set var="selGeocoderMode">${optionsCmd.userOptions.geocoderMode}</c:set>
+					<select id="userOptions.geocoderMode" name="userOptions.geocoderMode" 
 						class="text ui-widget-content ui-corner-all"> 
-						<c:forEach var="geocodingEnabled" items="${optionsCmd.commonsOptsEnDisabled}"> 
+						<c:forEach var="geocoderMode" items="${optionsCmd.userOptsGeocoder}"> 
 		 						<c:choose>
-		   						<c:when test="${geocodingEnabled.value == selGeocodingEnabled}">
-							    	<option value="${geocodingEnabled.value}" selected>
-							        	<spring:message code="${geocodingEnabled.label}" />
+		   						<c:when test="${geocoderMode.value == selGeocoderMode}">
+							    	<option value="${geocoderMode.value}" selected>
+							        	<spring:message code="${geocoderMode.label}" />
 							      	</option>
 							    </c:when>
 						    	<c:otherwise>
-						      		<option value="${geocodingEnabled.value}" >
-							        	<spring:message code="${geocodingEnabled.label}" />
+						      		<option value="${geocoderMode.value}" >
+							        	<spring:message code="${geocoderMode.label}" />
 							      	</option>
 							    </c:otherwise>
 							</c:choose>

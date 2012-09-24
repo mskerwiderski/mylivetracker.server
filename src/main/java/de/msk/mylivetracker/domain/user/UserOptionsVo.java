@@ -43,7 +43,7 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	private Boolean recTrAccPrivTrEnabled;
 	private String trackRouteColor;
 	private Integer trackRouteWidth;
-	private Boolean geocodingEnabled;
+	private GeocoderModeVo geocoderMode;
 	private MapsUsedVo mapsUsed;
 	
 	private static final String DELIMITER = "#";
@@ -170,7 +170,7 @@ public class UserOptionsVo implements Cloneable, Serializable {
 		trackRouteColor = "FF3300";
 		trackRouteWidth = 3;	
 		
-		geocodingEnabled = false;
+		geocoderMode = GeocoderModeVo.disabled;
 		
 		mapsUsed = new MapsUsedVo();
 		
@@ -418,21 +418,18 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	public void setTrackRouteWidth(Integer trackRouteWidth) {
 		this.trackRouteWidth = trackRouteWidth;
 	}
-
 	/**
-	 * @return the geocodingEnabled
+	 * @return the geocoderMode
 	 */
-	public Boolean getGeocodingEnabled() {
-		return geocodingEnabled;
+	public GeocoderModeVo getGeocoderMode() {
+		return geocoderMode;
 	}
-
 	/**
-	 * @param geocodingEnabled the geocodingEnabled to set
+	 * @param geocoderMode the geocoderMode to set
 	 */
-	public void setGeocodingEnabled(Boolean geocodingEnabled) {
-		this.geocodingEnabled = geocodingEnabled;
+	public void setGeocoderMode(GeocoderModeVo geocoderMode) {
+		this.geocoderMode = geocoderMode;
 	}
-
 	/**
 	 * @return the homeLocLatitude
 	 */

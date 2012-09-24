@@ -13,6 +13,9 @@
 	<typeHandler
 		javaType="de.msk.mylivetracker.domain.user.MapsUsedVo"
 		callback="de.msk.mylivetracker.dao.typehandler.MapsUsedTypeHandlerCallback" />	
+	<typeHandler
+		javaType="de.msk.mylivetracker.domain.user.GeocoderModeVo"
+		callback="de.msk.mylivetracker.dao.typehandler.GeocoderModeTypeHandlerCallback" />	
     <sqlMap resource="ibatis-sql-maps/Statistics.xml"/>
     <sqlMap resource="ibatis-sql-maps/Application.xml"/>
     <sqlMap resource="ibatis-sql-maps/StatusParams.xml"/>

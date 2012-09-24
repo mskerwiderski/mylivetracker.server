@@ -69,7 +69,7 @@
 	    <result property="options.recTrAccPrivTrEnabled"  column="IS_REC_ACC_PRIV_TR_ENABLED" />	    
 	    <result property="options.trackRouteColor" column="TRACK_ROUTE_COLOR" />
 	    <result property="options.trackRouteWidth" column="TRACK_ROUTE_WIDTH" />
-	    <result property="options.geocodingEnabled" column="GEOCODING_ENABLED" />
+	    <result property="options.geocoderMode" column="GEOCODER_MODE" />
 	    <result property="options.mapsUsed" column="MAPS_USED" />
 	    <result property="options.homeLocAddress" column="HOME_LOC_ADDRESS" />
 	    <result property="options.homeLocLatitude" column="HOME_LOC_LATITUDE" />     
@@ -216,7 +216,7 @@
 			t.IS_REC_ACC_PRIV_TR_ENABLED = #options.recTrAccPrivTrEnabled#,   
 			t.TRACK_ROUTE_COLOR = #options.trackRouteColor#,         
 			t.TRACK_ROUTE_WIDTH = #options.trackRouteWidth#,    
-			t.GEOCODING_ENABLED = #options.geocodingEnabled#,     
+			t.GEOCODER_MODE = #options.geocoderMode#,     
 			t.HOME_LOC_ADDRESS = #options.homeLocAddress#,          
 			t.HOME_LOC_LATITUDE = #options.homeLocLatitude#,         
 			t.HOME_LOC_LONGITUDE = #options.homeLocLongitude#                                                                              			  						

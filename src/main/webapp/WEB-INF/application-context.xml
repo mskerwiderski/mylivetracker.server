@@ -188,8 +188,8 @@
     </bean>
     
     <bean id="geocodingService"
-        class="de.msk.mylivetracker.service.geocoding.cloudmade.CloudmadeGeocodingService">
-        <property name="name" value="Cloudmade Geocoder" />
+        class="de.msk.mylivetracker.service.geocoding.nominatim.NominatimGeocodingService">
+        <property name="name" value="Nominatim Geocoder" />
         <property name="requestLimit" value="50000" />        
         <property name="applicationService" ref="applicationService" />
         <property name="statisticsService" ref="statisticsService" />        
