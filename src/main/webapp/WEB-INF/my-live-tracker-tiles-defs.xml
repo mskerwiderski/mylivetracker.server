@@ -19,6 +19,10 @@
 	  	<put-attribute name="content" value="/WEB-INF/jsp/general_error.jsp" />
 	</definition>
 		
+	<definition name="credits" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/credits.jsp" />
+	</definition>
+		
 	<definition name="impressum" extends="layout">
 	  	<put-attribute name="content" value="/WEB-INF/jsp/impressum.jsp" />
 	</definition>

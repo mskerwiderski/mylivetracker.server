@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -314,7 +315,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 * @see de.msk.mylivetracker.dao.ITrackDao#storePositionAndMessage(de.msk.mylivetracker.domain.user.UserWithoutRoleVo, de.msk.mylivetracker.domain.SenderVo, de.msk.mylivetracker.domain.PositionVo, de.msk.mylivetracker.domain.MobNwCellVo, de.msk.mylivetracker.domain.MessageVo, de.msk.mylivetracker.domain.SenderStateVo, de.msk.mylivetracker.domain.CardiacFunctionVo, de.msk.mylivetracker.domain.EmergencySignalVo, de.msk.mylivetracker.domain.ClientInfoVo, de.msk.mylivetracker.domain.user.UserOptionsVo)
 	 */
 	@Override
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	@Transactional(propagation=Propagation.REQUIRES_NEW, isolation=Isolation.SERIALIZABLE)
 	public void storePositionAndMessage(UserWithoutRoleVo user,
 		SenderVo sender, PositionVo position, MobNwCellVo mobNwCell,
 		MessageVo message, SenderStateVo senderState,

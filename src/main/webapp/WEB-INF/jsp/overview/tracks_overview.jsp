@@ -147,7 +147,7 @@ table.display tr.even.emergency {
 			onlyActive:mlt_getOnlyActiveTracks},
 			mlt_renderTracksOverview
 		);
-		$("#loadDataMarker").hide();
+		$("#refreshIcon").attr("src", "img/led/arrow_refresh.png");
    	}
 	
 	$(document).ready(
@@ -171,7 +171,7 @@ function autoRefresh() {
 		setTimeout("autoRefresh()", 1000);
 	} else {
 		if (autoRefreshTimer == 2) {
-			$("#loadDataMarker").show();
+			$("#refreshIcon").attr("src", "img/glossbasic/bullet_red.png");
 		}
 		autoRefreshTimer--;
 		setTimeout("autoRefresh()", 1000);
@@ -363,7 +363,7 @@ window.onload=startAutoRefresh;
 				onkeypress="javascript:checkSearchEnterPressed();"
 				path="selectedSearchStrFilter"
 				title="${titleTrackNameSearch}" />
-			<img src="img/remove.png" onclick="javascript:resetSearchStr();" 
+			<img src="img/led/cross.png" onclick="javascript:resetSearchStr();" 
 				style="border: none;margin-bottom: -3px;"/>	
 			<script>
 				document.getElementById("selectedSearchStrFilter").focus();
@@ -386,13 +386,13 @@ window.onload=startAutoRefresh;
 			<div class="mlt-button">
 				<c:choose>
 					<c:when test="${tracksOverviewCmd.tracksView eq 'Table'}">
-						&nbsp;<a href="#" onclick="javascript:refreshTrackOverview('Map');">					
-							<img src="img/tracks_overview_symbols/map.png" style="border: none;"/>
+						&nbsp;<a href="#" style="width:30px;" onclick="javascript:refreshTrackOverview('Map');">					
+							<img src="img/led/map.png" style="border: none; margin-left: -7px;"/>
 						</a>&nbsp;
 					</c:when>
 					<c:otherwise>
-						&nbsp;<a href="#" onclick="javascript:refreshTrackOverview('Table');">					
-							<img src="img/tracks_overview_symbols/table.png" style="border: none;"/>
+						&nbsp;<a href="#" style="width:30px;" onclick="javascript:refreshTrackOverview('Table');">					
+							<img src="img/led/table.png" style="border: none; margin-left: -6.5px;"/>
 						</a>&nbsp;
 					</c:otherwise>
 				</c:choose>
@@ -420,13 +420,10 @@ window.onload=startAutoRefresh;
 				</c:forEach>
 			</select>&nbsp;
 		</td>
-		<td style="white-space: nowrap;border:none;text-align: center;">	
-			<img id="loadDataMarker" src="img/tracks_overview_symbols/bullet_red.png" style="margin-left:-10px;margin-right:-7px;border: none;vertical-align: middle;"/>
-		</td>
 		<td style="white-space: nowrap;border:none;text-align: right;">	
 			<div class="mlt-button">
-				&nbsp;<a href="#" onclick="javascript:mlt_refreshTracksOverview();">					
-					<img id="refreshIcon" src="img/tracks_overview_symbols/refresh.png" style="border: none;"/>
+				&nbsp;<a href="#" onclick="javascript:mlt_refreshTracksOverview();" style="width:30px;">					
+					<img id="refreshIcon" src="img/led/arrow_refresh.png" style="border: none; margin-left: -7px;"/>
 				</a>&nbsp;														
 			</div>						
 		</td>		

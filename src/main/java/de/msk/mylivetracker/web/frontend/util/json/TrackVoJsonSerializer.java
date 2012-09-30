@@ -134,6 +134,14 @@ public class TrackVoJsonSerializer extends AbstractVoJsonSerializer<TrackVo> {
 		}
 		jsonTrack.add("messages", jsonMessages);
 		
+		Boolean currPosHasMsg = (
+			(track.getRecentPosition() != null) && 
+			(track.getRecentMessage() != null) &&
+			(track.getRecentMessage().getPosition() != null) &&	
+			StringUtils.equals(track.getRecentPosition().getPositionId(),
+				track.getRecentMessage().getPosition().getPositionId())); 
+		jsonTrack.add("currPosHasMsg", new JsonPrimitive(currPosHasMsg));
+		
 		jsonTrack.addProperty("cntEmSi", track.getCountEmergencySignals());
 		jsonTrack.add("recEmSi", (track.getRecentEmergencySignal() == null) ?
 			new JsonNull() :
@@ -145,6 +153,14 @@ public class TrackVoJsonSerializer extends AbstractVoJsonSerializer<TrackVo> {
 			}
 		}
 		jsonTrack.add("emergencySignals", jsonEmergencySignals);
+		
+		Boolean currPosHasEmSi = (
+			(track.getRecentPosition() != null) && 
+			(track.getRecentEmergencySignal() != null) &&
+			(track.getRecentEmergencySignal().getPosition() != null) &&	
+			StringUtils.equals(track.getRecentPosition().getPositionId(),
+				track.getRecentEmergencySignal().getPosition().getPositionId())); 
+		jsonTrack.add("currPosHasEmSi", new JsonPrimitive(currPosHasEmSi));
 		
 		jsonTrack.addProperty("cntMobNwCells", track.getCountMobNwCells());
 		jsonTrack.add("recMobNwCell", (track.getRecentMobNwCell() == null) ?
@@ -183,6 +199,7 @@ public class TrackVoJsonSerializer extends AbstractVoJsonSerializer<TrackVo> {
 	
 	public JsonElement getJsonMessage(MessageVo message) {
 		JsonObject jsonMessage = new JsonObject();
+		jsonMessage.addProperty("id", message.getMessageId());
 		jsonMessage.addProperty("rcvd", 
 			DateTimeUtils.getDateTimeStr4UserRep(this.getUserWithoutRole(), message.getTimeReceived()));
 		if (!StringUtils.isEmpty(message.getContent())) {
@@ -205,6 +222,7 @@ public class TrackVoJsonSerializer extends AbstractVoJsonSerializer<TrackVo> {
 	
 	public JsonElement getJsonEmergencySignal(EmergencySignalVo emergencySignal) {
 		JsonObject jsonEmergencySignal = new JsonObject();
+		jsonEmergencySignal.addProperty("id", emergencySignal.getEmergencySignalId());
 		jsonEmergencySignal.addProperty("rcvd", 
 			DateTimeUtils.getDateTimeStr4UserRep(this.getUserWithoutRole(), emergencySignal.getTimeReceived()));	
 		jsonEmergencySignal.addProperty("active", emergencySignal.getActive());

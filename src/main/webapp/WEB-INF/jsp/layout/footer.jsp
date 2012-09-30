@@ -8,10 +8,10 @@
 
 <table class="mlt-footer">
 	<tr>
-		<td>
+		<td class="ui-widget-content">
 			&nbsp;
 			<img style="vertical-align: middle;width: 50px;" 
-				src="img/logo_150_73.png" />
+				src="img/logomaker/logo_150_73.png" />
 			&copy; 2009 by 			
 			<a href="mailto:support@mylivetracker.de">MyLiveTracker.de</a> 
 			&nbsp;&#8226;&nbsp;
@@ -19,11 +19,15 @@
 			&nbsp;&#8226;&nbsp;
 			<spring:message code="layout.timezone" text="Timezone"/>: <c:out value="${timezone}"/>
 			&nbsp;&#8226;&nbsp;
-			<a href="impressum.sec"><spring:message code="layout.icons"/></a>
+			<a href="http://forum.mylivetracker.info">MyLiveTracker Forum</a>
+			&nbsp;&#8226;&nbsp;
+			<a href="credits.sec"><spring:message code="layout.credits"/></a>
+			&nbsp;&#8226;&nbsp;
+			<a href="impressum.sec"><spring:message code="layout.impressum"/></a>
 			<security:authorize ifAnyGranted="Admin,User">
 			&nbsp;&#8226;&nbsp;
 			<a href="changes.do">Changes</a>
-			</security:authorize>	
+			</security:authorize>
 			&nbsp;				
 		</td>				
 	</tr>

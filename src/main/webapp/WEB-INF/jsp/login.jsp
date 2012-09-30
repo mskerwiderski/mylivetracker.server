@@ -40,11 +40,11 @@
 <div id="divLogin" style="height:100%;overflow:auto;">
 <table>   	
     <tr style="text-align:left">
-    	<td>&nbsp;<img style="vertical-align: middle;" 
-    		src="img/logo_150_73.png" height="50px" 
-    		/>&nbsp;</td>
-    	<td>
-    		&nbsp;<spring:message code="login.intro" />&nbsp;    		
+    	<td style="border:none;">&nbsp;<img style="vertical-align: middle;" 
+    		src="img/logomaker/logo_150_73.png" height="50px" 
+    		/>&nbsp;&nbsp;</td>
+    	<td style="border:none;" class="ui-widget-content">
+    		<spring:message code="login.intro" />    		
     	</td>
     </tr>
 </table>
@@ -57,31 +57,29 @@
 </div>
 <table> 
 	<tr>
-		<td style="height:30px;width:100px;font-weight: bold">
+		<td style="height:30px;width:100px;border:none;" 
+			class="ui-widget-header">
 			&nbsp;<spring:message code="login.please" />&nbsp;
 		</td>
 		<c:choose>
 			<c:when test="${!empty msg}">
-				<td class="ui-state-error" colspan="3">
+				<td class="ui-state-error ui-widget-header" colspan="3" style="border:none;">
 					&nbsp;<c:out value="${msg}" />&nbsp;						
 				</td>		
 			</c:when>
 			<c:otherwise>
-				<td colspan="3">&nbsp;</td>
+				<td colspan="3" class="ui-widget-header" style="border:none;">&nbsp;</td>
 			</c:otherwise>
 		</c:choose>
-		<td rowspan="3">    		
-    		&nbsp;
-    		<SCRIPT charset="utf-8" type="text/javascript" src="http://ws.amazon.de/widgets/q?rt=tf_sw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822/DE/alemicade-21/8002/1ac64fd1-f6a9-446a-9eb6-f74984731d3b"> </SCRIPT> <NOSCRIPT><A HREF="http://ws.amazon.de/widgets/q?rt=tf_sw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Falemicade-21%2F8002%2F1ac64fd1-f6a9-446a-9eb6-f74984731d3b&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
-    		&nbsp;
-    	</td>
 	</tr>	
     <tr>
-    	<td style="width:100px">&nbsp;<spring:message code="login.username" />&nbsp;</td>
-    	<td style="width:230px;text-align:center">
-    		&nbsp;<input tabindex="1" style="width: 220px;" type='text' id='inputPlainUserId' name='inputPlainUserId' value=''>&nbsp;
+    	<td style="height:30px;width:100px;border:none;" class="ui-widget-content">&nbsp;<spring:message code="login.username" />&nbsp;</td>
+    	<td style="width:230px;border:none;text-align:center">
+    		&nbsp;<input tabindex="1" style="width: 220px;" type='text'
+    			class="text ui-widget-content ui-corner-all" 
+    			id='inputPlainUserId' name='inputPlainUserId' value=''>&nbsp;
     	</td>
-    	<td style="width:140px;text-align:center">
+    	<td style="width:150px;text-align:center;border:none;">
     		<div class="mlt-button">
 				&nbsp;<a href="#" style="width:120px;" 
 					onclick="javascript:submitLoginData();" >
@@ -89,16 +87,18 @@
 				</a>&nbsp;														
 			</div>    			    				
     	</td>
-    	<td rowspan="2" style="width:140px;text-align:center;">    		
-    		&nbsp;<div style="height:30px; margin-top: -15px; margin-left: 2px;"><spring:message code="login.paypal.button" /></div>&nbsp;
-    	</td>      	  	
+    	<td rowspan="2" style="height:60px;border:none;" class="ui-widget-content">
+    		<spring:message code="login.paypal.button" />
+    	</td>   	  	
     </tr>
     <tr>
-    	<td style="width:100px">&nbsp;<spring:message code="login.password" />&nbsp;</td>
-    	<td style="width:230px;text-align:center">
-    		&nbsp;<input tabindex="2" style="width: 220px;" type='password' id='inputPlainPassword' name='inputPlainPassword'/>&nbsp;
+    	<td style="height:30px;width:100px;border:none;" class="ui-widget-content">&nbsp;<spring:message code="login.password" />&nbsp;</td>
+    	<td style="width:230px;border:none;text-align:center">
+    		&nbsp;<input tabindex="2" style="width: 220px;" type='password'
+    			class="text ui-widget-content ui-corner-all" 
+    			id='inputPlainPassword' name='inputPlainPassword'/>&nbsp;
     	</td>
-    	<td style="width:140px;text-align:center">
+    	<td style="width:140px;text-align:center;border:none;">
     		<div class="mlt-button">
 				&nbsp;<a href="#" style="width:120px;" 
 					onclick="javascript:resetLoginFields();" >
@@ -108,79 +108,82 @@
     	</td>        	    
    	</tr>
 </table>
-<hr/>
 <script>usernameFocus();</script>
-<div style="height:5px"></div>
-<div id="accordion">
-<h3><a href="#"><spring:message code="login.features" /></a></h3>
-<div>
-<table>   	
-    <tr style="text-align:left">
-    	<td>&nbsp;&bull;&nbsp;<spring:message code="login.feature1" />&nbsp;</td>
-    </tr>
-    <tr style="text-align:left">
-    	<td>&nbsp;&bull;&nbsp;<spring:message code="login.feature2" />&nbsp;</td>
-    </tr>
-    <tr style="text-align:left">
-    	<td>&nbsp;&bull;&nbsp;<spring:message code="login.feature3" />&nbsp;</td>
-    </tr>
-    <tr style="text-align:left">
-    	<td>&nbsp;&bull;&nbsp;<spring:message code="login.feature4" />&nbsp;</td>
-    </tr>    	
-</table>
-</div>
-<h3><a href="#"><spring:message code="login.supported.clients" /></a></h3>
-<div>
-<table>   	   
+<hr/>
+<table>
+	<tr>
+		<th colspan="3" class="ui-widget-header" style="height:30px;text-align:left;border:none;white-space: nowrap;">&nbsp;<spring:message code="login.supported.clients" />&nbsp;</th>
+	</tr>   	   
     <tr style="text-align:left;">
-    	<td nowrap="nowrap" style="width:400px;">&nbsp;&bull;&nbsp;Apple iPhone via <a href="http://itunes.apple.com/us/app/sendlocation/id377724446?mt=8">Send Location</a></td>
-    	<td nowrap="nowrap" style="width:400px;">&nbsp;&bull;&nbsp;Nokia S60 Mobiles via <a href="http://www.aspicore.com/en/tuotteet_tracker.asp?tab=2&sub=1">Aspicores GSM Tracker ab V3</a>&nbsp;</td>
-    	<td style="width:100%;">&nbsp;</td>    	    	
+    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;Apple iPhone via <a target="_blank" href="http://itunes.apple.com/app/sendlocation/id377724446">Send Location</a>
+    		&nbsp;&nbsp;
+    	</td>
+    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;Nokia S60 Mobiles via <a target="_blank" href="http://www.aspicore.com/en/tuotteet_tracker.asp?tab=2&sub=1">Aspicores GSM Tracker ab V3</a>
+    	</td>
+    	<td style="border:none;width:100%;">&nbsp;</td>    	    	
     </tr>
     <tr style="text-align:left">
-    	<td nowrap="nowrap" style="width:400px;">&nbsp;&bull;&nbsp;Apple iPhone via <a href="http://itunes.apple.com/gb/app/id413656652?mt=8&ls=1">YourTracks</a></td>
-    	<td nowrap="nowrap" style="width:400px;">&nbsp;&bull;&nbsp;Nokia S60 Mobiles via <a href="http://www.afischer-online.de/sos/AFTrack/aftrack_de.html">A. Fischers AFTrack</a>&nbsp;</td>
-    	<td style="width:100%;">&nbsp;</td>    	    	    	
+    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;Apple iPhone via <a target="_blank" href="http://itunes.apple.com/app/id413656652">YourTracks</a>
+    		&nbsp;&nbsp;
+    	</td>
+    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;Nokia S60 Mobiles via <a target="_blank" href="http://www.afischer-online.de/sos/AFTrack/aftrack_de.html">A. Fischers AFTrack</a>
+    	</td>
+    	<td style="border:none;width:100%;">&nbsp;</td>    	    	    	
     </tr>
     <tr style="text-align:left">
-    	<td nowrap="nowrap" style="width:400px;">&nbsp;&bull;&nbsp;GSM Tracker <a href="http://www.itakka.com">Tk102-2 (V3, V6 und V7)</a></td>
-    	<td nowrap="nowrap" style="width:400px;">&nbsp;&bull;&nbsp;GSM Tracker <a href="http://www.gpsvision.de">Tk5000</a>&nbsp;</td>
-    	<td style="width:100%;">&nbsp;</td>    	
+    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;GSM Tracker <a target="_blank" href="http://www.xexun.com/ProductDetail.aspx?id=102">Xexun TK102-2</a>
+    		&nbsp;&nbsp;
+    	</td>
+    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;GSM Tracker <a target="_blank" href="http://www.gpsvision.de/index.php/produkte/gps-tracker-tk5000">Incutex TK5000</a>
+    	</td>
+    	<td style="border:none;width:100%;">&nbsp;</td>    	
     </tr>
     <tr style="text-align:left">
-    	<td nowrap="nowrap" style="width:400px;">&nbsp;&bull;&nbsp;Meiligao GSM Tracker <a href="http://www.tracker-shop.eu">VT310, GT60, GT30X</a>&nbsp;</td>
-    	<td nowrap="nowrap" style="width:400px;">&nbsp;&bull;&nbsp;BlackBerry via <a href="http://begps.de">brandsemotion beGPS</a>&nbsp;</td>
-    	<td style="width:100%;">&nbsp;</td>    	
+    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;Meiligao GSM Tracker <a target="_blank" href="http://www.meitrack.net/products/gps-personal-tracker">VT310, GT60, GT30X</a>
+    		&nbsp;&nbsp;
+    	</td>
+    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;BlackBerry via <a target="_blank" href="http://www.brandsemotion.de/Produkte/beGPS/">brandsemotion beGPS</a>
+    	</td>
+    	<td style="border:none;width:100%;">&nbsp;</td>    	
     </tr>  
     <tr style="text-align:left">
-    	<td nowrap="nowrap" style="width:400px;">&nbsp;&bull;&nbsp;Android Smartphone <a href="https://market.android.com/details?id=com.wiebej.gps2opengts">GPS2OpenGTS Pro</a>&nbsp;</td>
-    	<td nowrap="nowrap" style="width:400px;">&nbsp;&bull;&nbsp;Android Smartphone <a href="https://market.android.com/details?id=de.msk.mylivetracker.client.android">MyLiveTracker</a>&nbsp;</td>
-    	<td style="width:100%;">&nbsp;</td>    	
+    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;Android Smartphone <a target="_blank" href="https://play.google.com/store/apps/details?id=com.wiebej.gps2opengts">GPS2OpenGTS Pro</a>
+    		&nbsp;&nbsp;
+    	</td>
+    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;Android Smartphone <a target="_blank" href="https://play.google.com/store/apps/details?id=de.msk.mylivetracker.client.android">MyLiveTracker</a>
+    	</td>
+    	<td style="border:none;width:100%;">&nbsp;</td>    	
     </tr>      
 </table>
-</div>
-<h3><a href="#"><spring:message code="login.twitter" /></a></h3>
-<div>
-<table>	
+<hr/>
+<table>
 	<tr>
-    	<td nowrap="nowrap" style="width:400px;">
-			&nbsp;<a href="http://www.twitter.com/MyLiveTrackerDe"
-				style="text-decoration: none;">
-				<img style="vertical-align: middle;" 
-					src="http://twitter-badges.s3.amazonaws.com/twitter-a.png" 
-					alt="MyLiveTrackerDe@twitter.com"/>
-			</a>&nbsp;					
-		</td>	
-    <tr>
-		<td nowrap="nowrap" style="width:100%;font-size: small;">		
-			<c:forEach items="${twitterMessages}" var="twitterMessage">				
-			&nbsp;&bull;&nbsp;<c:out value="${twitterMessage.timestamp}" />:&nbsp;<c:out value="${twitterMessage.message}" /><br>			
-			</c:forEach>
-			&nbsp;&bull;&nbsp;<a style="text-decoration: none;font-style:italic;color:blue;" 
-				href="http://twitter.com/MyLiveTrackerDe"><spring:message code="login.twitter.more" /></a>
-		</td>		
+		<th colspan="2" class="ui-widget-header" style="height:30px;text-align:left;border:none;white-space: nowrap;">&nbsp;<spring:message code="login.twitter" />&nbsp;</th>
+	</tr>  
+	<c:forEach items="${twitterMessages}" var="twitterMessage">
+		<tr>
+			<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+			&nbsp;&nbsp;&bull;&nbsp;<c:out value="${twitterMessage.timestamp}"/>:&nbsp;<c:out value="${twitterMessage.message}"/>
+			</td>
+			<td style="border:none;width:100%;">&nbsp;</td>
+		</tr>
+    </c:forEach>
+	<tr>
+		<td style="border:none;white-space: nowrap;" class="ui-widget-content">
+		&nbsp;&nbsp;&bull;&nbsp;<a style="text-decoration: none;font-style:italic;color:blue;" 
+		href="http://twitter.com/MyLiveTrackerDe"><spring:message code="login.twitter.more"/></a>
+		</td>
+		<td style="border:none;width:100%;">&nbsp;</td>
 	</tr>
-</table>	
-</div>
-</div>
+</table>
 </div>

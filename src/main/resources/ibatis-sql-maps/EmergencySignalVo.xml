@@ -22,7 +22,7 @@
     <resultMap id="recentDetailedEmergencySignalResult" class="emergencySignal">
 		<result property="emergencySignalId" column="RE_EMERGENCY_SIGNAL_ID" />
         <result property="track" resultMap="TrackVo.minTrackResult" />   
-		<result property="position" resultMap="PositionVo.minPositionOfRecentSenderStateResult" />     
+		<result property="position" resultMap="PositionVo.minPositionOfRecentEmergencySignalResult" />     
         <result property="timeReceived"  column="RE_TIME_RECEIVED" />
         <result property="active"  column="RE_ACTIVE" /> 
         <result property="message"  column="RE_MESSAGE" />    

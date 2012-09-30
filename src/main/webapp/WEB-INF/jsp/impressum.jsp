@@ -14,30 +14,32 @@
 <div id="divImpressum" style="height:100%;overflow:auto;">
 <table>
 	<tr>
-		<td>
-			&nbsp;<b>Impressum (Angaben gem&auml;&szlig; / Information according to &sect;5 TMG):</b>&nbsp;						
+		<td colspan="2" class="ui-widget-header">
+			&nbsp;Impressum (Angaben gem&auml;&szlig; / Information according to &sect;5 TMG):&nbsp;						
 		</td>		
 	</tr>
 	<tr>
-		<td>
-			&nbsp;Michael Skerwiderski<br>
-			&nbsp;Sandgrubenweg 33<br>
-			&nbsp;81737 M&uuml;nchen / Munich<br>
-			&nbsp;Deutschland / Germany<br>
-			&nbsp;Email: support@mylivetracker.de&nbsp;
+		<td style="width:5px;border:none;" class="ui-widget-content">&nbsp;</td>
+		<td style="border:none;" class="ui-widget-content">
+			Michael Skerwiderski<br>
+			Sandgrubenweg 33<br>
+			81737 M&uuml;nchen / Munich<br>
+			Deutschland / Germany<br>
+			Email: support@mylivetracker.de
 		</td>
 	</tr>
 	<tr>
-		<td style="height:5px; border:none" />				
+		<td colspan="2" style="height:5px; border:none" />				
 	</tr>
 	<tr>
-		<td>
-			&nbsp;<b>Haftungsbeschr&auml;nkung</b>&nbsp;						
+		<td colspan="2" style="border:none;" class="ui-widget-header">
+			&nbsp;Haftungsbeschr&auml;nkung&nbsp;						
 		</td>
 	</tr>
-	<tr>			
-		<td>
-			&nbsp;Die Inhalte und Funktionalit&auml;ten dieser Website werden mit 
+	<tr>		
+		<td style="width:5px;border:none;" class="ui-widget-content">&nbsp;</td>	
+		<td style="border:none;" class="ui-widget-content">
+			Die Inhalte und Funktionalit&auml;ten dieser Website werden mit 
 			gr&ouml;&beta;tm&ouml;glicher Sorgfalt erstellt und bereitgestellt. 
 			Der Anbieter übernimmt jedoch keine Gew&auml;hr für die Richtigkeit, 
 			Vollst&auml;ndigkeit und Aktualit&auml;t der bereitgestellten Inhalte
@@ -48,16 +50,17 @@
 		</td>
 	</tr>	
 	<tr>
-		<td style="height:5px; border:none" />				
+		<td colspan="2" style="height:5px; border:none" />				
 	</tr>
 	<tr>
-		<td>
-			&nbsp;<b>Externe Links</b>&nbsp;						
+		<td colspan="2" style="border:none;" class="ui-widget-header">
+			&nbsp;Externe Links&nbsp;						
 		</td>		
 	</tr>
 	<tr>
-		<td>
-			&nbsp;Diese Website enth&auml;lt Verkn&uuml;pfungen zu Websites Dritter (sog. externe Links). 
+		<td style="width:5px;border:none;" class="ui-widget-content">&nbsp;</td>
+		<td style="border:none;" class="ui-widget-content">
+			Diese Website enth&auml;lt Verkn&uuml;pfungen zu Websites Dritter (sog. externe Links). 
 			Diese Websites unterliegen der Haftung der jeweiligen Betreiber. Der Anbieter hat bei der 
 			erstmaligen Verkn&uuml;pfung der externen Links die fremden Inhalte daraufhin &uuml;berpr&uuml;ft, 
 			ob etwaige Rechtsverst&ouml;&beta;e bestehen. Zu dem Zeitpunkt waren keine Rechtsverst&ouml;&beta;e 
@@ -70,16 +73,17 @@
 		</td>		
 	</tr>	
 	<tr>
-		<td style="height:5px; border:none" />				
+		<td colspan="2" style="height:5px; border:none" />				
 	</tr>
 	<tr>
-		<td>
-			&nbsp;<b>Urheber- und Leistungsschutzrechte</b>&nbsp;						
+		<td colspan="2" style="border:none;" class="ui-widget-header">
+			&nbsp;Urheber- und Leistungsschutzrechte&nbsp;						
 		</td>		
 	</tr>	
 	<tr>
-		<td>
-			&nbsp;Die auf dieser Website ver&ouml;ffentlichten Inhalte unterliegen dem deutschen
+		<td style="width:5px;border:none;" class="ui-widget-content">&nbsp;</td>
+		<td style="border:none;" class="ui-widget-content">
+			Die auf dieser Website ver&ouml;ffentlichten Inhalte unterliegen dem deutschen
 			Urheber- und Leistungsschutzrecht. Jede vom deutschen Urheber- und Leistungsschutzrecht 
 			nicht zugelassene Verwertung bedarf der vorherigen schriftlichen Zustimmung des Anbieters 
 			oder jeweiligen Rechteinhabers. Dies gilt insbesondere für Vervielfältigung, Bearbeitung, 
@@ -93,35 +97,37 @@
 		</td>		
 	</tr>
 	<tr>
-		<td style="height:5px; border:none" />				
+		<td colspan="2" style="height:5px; border:none" />				
 	</tr>
 	<tr>
-		<td>
-			&nbsp;<b>Datenschutz</b>&nbsp;						
+		<td colspan="2" style="border:none;" class="ui-widget-header">
+			&nbsp;Datenschutz&nbsp;						
 		</td>		
 	</tr>	
 	<tr>
-		<td>			
-			&nbsp;Hinsichtlich der pers&ouml;nlichen Daten (= Zugangsdaten, Trackingdaten) des Nutzers
+		<td style="width:5px;border:none;" class="ui-widget-content">&nbsp;</td>
+		<td style="border:none;" class="ui-widget-content">			
+			Hinsichtlich der pers&ouml;nlichen Daten (= Zugangsdaten, Trackingdaten) des Nutzers
 			weist der Anbieter gem&auml;&beta; &sect; 33 BDSG darauf hin, dass diese nach Ma&beta;gabe 
 			der anwendbaren Datenschutzbestimmungen gespeichert und	&uuml;bertragen werden.	
 			Ihre pers&ouml;nlichen Daten werden absolut vertraulich behandelt und an 
 			Dritte nur weitergeleitet, sofern es f&uuml;r die Funktionalit&auml;t dieser Website 
-			notwendig ist (Dies betrifft z.B. die Nutzung der Karten Services). Der Nutzer ist damit
-			einverstanden, dass die von ihm im Rahmen der Nutzung dieser Website
+			notwendig ist. Der Nutzer ist damit einverstanden, dass die von ihm im Rahmen der Nutzung dieser Website
 			erhobenen Daten vom Anbieter gespeichert und unter Beachtung des Vorstehenden genutzt werden.&nbsp;					
 		</td>
 	</tr>
 	<tr>
-		<td>
-			&nbsp;Der Anbieter weist ausdr&uuml;cklich darauf hin, dass die Daten&uuml;bertragung
+		<td style="width:5px;border:none;" class="ui-widget-content">&nbsp;</td>
+		<td style="border:none;" class="ui-widget-content">
+			Der Anbieter weist ausdr&uuml;cklich darauf hin, dass die Daten&uuml;bertragung
 			im Internet (z.B. beim &Uuml;bertragen der Positionsdaten an MyLiveTracker) Sicherheitsl&uuml;cken 
 			aufweisen und nicht l&uuml;ckenlos vor dem Zugriff durch Dritte gesch&uuml;tzt werden kann.&nbsp;						
 		</td>		
 	</tr>
 	<tr>
-		<td>
-			&nbsp;Die Verwendung der Kontaktdaten des Impressums zur gewerblichen Werbung ist 
+		<td style="width:5px;border:none;" class="ui-widget-content">&nbsp;</td>
+		<td style="border:none;" class="ui-widget-content">
+			Die Verwendung der Kontaktdaten des Impressums zur gewerblichen Werbung ist 
 			ausdr&uuml;cklich nicht erw&uuml;nscht, es sei denn der Anbieter hatte zuvor seine 
 			schriftliche Einwilligung erteilt oder es besteht bereits eine Gesch&auml;ftsbeziehung. 
 			Der Anbieter und alle auf dieser Website genannten Personen widersprechen hiermit 
@@ -129,35 +135,11 @@
 		</td>		
 	</tr>
 	<tr>
-		<td style="height:5px; border:none;" />				
+		<td colspan="2" style="height:5px; border:none;" />				
 	</tr>
 	<tr>
-		<td>
-			&nbsp;<b>Bilder und Icons</b>&nbsp;						
-		</td>		
-	</tr>
-	<tr>
-		<td>
-			&nbsp;Auf MyLiveTracker werden folgende Bilder und Icons verwendet:&nbsp;<br><br>
-			&nbsp;&nbsp;&bull;&nbsp;Led Icon Set von <a href="http://led24.de/">Led24.de</a>&nbsp;(Free License)<br>
-			&nbsp;&nbsp;&bull;&nbsp;Farm-fresh Icon Set von <a href="http://www.fatcow.com/">FatCow Web Hosting</a>&nbsp;(Creative Commons Attribution 3.0 USA)<br>
-			&nbsp;&nbsp;&bull;&nbsp;Crystal Clear Icon Set von <a href="http://www.everaldo.com/">Everaldo Coelho</a>&nbsp;(LGPL)<br>
-			&nbsp;&nbsp;&bull;&nbsp;Crystal Project Icon Set von <a href="http://www.everaldo.com/">Everaldo Coelho</a>&nbsp;(LGPL)<br>
-			&nbsp;&nbsp;&bull;&nbsp;Gloss Basic Icon Set von <a href="http://momentumdesignlab.com/">Momenticons</a>&nbsp;(Creative Commons Attribution 3.0 Unported)<br>
-			&nbsp;&nbsp;&bull;&nbsp;Gnome Icon Set von <a href="http://art.gnome.org/themes/icon/">Gnome Project</a>&nbsp;(GPL)<br>
-			&nbsp;&nbsp;&bull;&nbsp;Map Icons Collection <img style="vertical-align: middle;" alt="" src="<c:url value='img/miclogo-88x31.gif'/>"></img> von <a href="http://mapicons.nicolasmollet.com/">Nicolas Mollet</a>&nbsp;(Creative Commons Attribution-Share Alike 3.0 Unported)<br>
-			&nbsp;&nbsp;&bull;&nbsp;Nuvola Icon Set von <a href="http://www.icon-king.com/">David Vignoni</a>&nbsp;(LGPL)<br>
-			&nbsp;&nbsp;&bull;&nbsp;Oxygen Icon Set von <a href="http://www.oxygen-icons.org/">Oxygen Team</a>&nbsp;(GPL)<br><br>
-			&nbsp;Alle Bilder und Icons wurden von <a href="http://iconfinder.com">ICON FINDER</a> via Download bezogen und werden nach bestem Wissen lizenzgerecht verwendet.<br>
-			&nbsp;An dieser Stelle vielen Dank an die Bereitsteller der Icon Sets.									
-		</td>		
-	</tr>
-	<tr>
-		<td style="height:5px; border:none;" />				
-	</tr>
-	<tr>
-		<td>
-			&nbsp;Quelle: Disclaimer nach einer 
+		<td colspan="2" style="border:none;" class="ui-widget-content">
+			Quelle: Disclaimer nach einer 
 			<a href="http://www.juraforum.de/disclaimer_muster/" target="_blank">Vorlage</a> 
 			u.a. von <a href="http://www.juraforum.de/" target="_blank">Juraforum.de</a> &amp; 
 			<a href="http://www.experten-branchenbuch.de/" target="_blank">Experten-Branchenbuch.de</a>&nbsp;						

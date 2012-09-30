@@ -48,6 +48,10 @@
 		mlt_resetBoundsAndMarkers();
 		for (var i=0; i < mlt_data.tracks.length; i++) {
 			if (mlt_data.tracks[i].cntPos > 0) {
+				var recEmSiIsActive = false;
+				if (mlt_data.tracks[i].cntEmSi > 0) {
+					recEmSiIsActive = mlt_data.tracks[i].recEmSi.active;
+				}
 				var marker = mlt_createAndSetSenderMarker(
 					mlt_data.tracks[i].senderName,
 					mlt_data.tracks[i].senderSymbolId,
@@ -58,13 +62,15 @@
 					mlt_data.tracks[i].trackId,
 					mlt_data.tracks[i].name,
 					mlt_data.tracks[i].cntMsg > 0,
-					mlt_data.tracks[i].cntEmSi > 0);
+					mlt_data.tracks[i].cntEmSi > 0,
+					recEmSiIsActive);
 				mlt_markers.push(marker);
 				mlt_map.addLayer(marker);
 				mlt_addCircleMarkerToMarkersAndMap(
 					mlt_markers, mlt_map,
 					mlt_data.tracks[i].recPos.lat, 
-					mlt_data.tracks[i].recPos.lon);
+					mlt_data.tracks[i].recPos.lon,
+					mlt_RECENT_POS, true);
 				var pos = new L.LatLng(
    					mlt_data.tracks[i].recPos.lat,
    					mlt_data.tracks[i].recPos.lon);
@@ -201,10 +207,11 @@
 		"<c:out value='${tracksOverviewCmd.defMapId}' />",
 		mlt_DEFAULT_CENTER, mlt_DEFAULT_ZOOM);
 	
-	function mlt_createAndSetSenderMarker(name, symbolId, lat, lon, posStr, rcvd, trackId, trackName, hasMsg, hasEmSi) {
+	function mlt_createAndSetSenderMarker(name, symbolId, lat, lon, posStr, rcvd, 
+		trackId, trackName, hasMsg, hasEmSi, recEmSiIsActive) {
 		var SenderIcon = L.Icon.Label.extend({
 			options: {
-		    	iconUrl: "<c:url value='img/map_symbols/'/>" + symbolId + ".png",
+		    	iconUrl: "<c:url value='img/map/'/>" + symbolId + ".png",
 		    	iconSize: new L.Point(32, 37),
 		    	iconAnchor: new L.Point(-16, -79),
 		    	labelAnchor: new L.Point(16, -76),
@@ -214,7 +221,11 @@
 		});
 		var senderNameColor = mlt_infoTableHdrColor4RecentPosition;
 		if (hasEmSi) {
-			senderNameColor = mlt_infoTableHdrColor4EmergencySignalActivated;
+			if (recEmSiIsActive) {
+				senderNameColor = mlt_infoTableHdrColor4EmergencySignalActivated;
+			} else {
+				senderNameColor = mlt_infoTableHdrColor4EmergencySignalDeactivated;
+			}
 		} else if (hasMsg) {
 			senderNameColor = mlt_infoTableHdrColor4Message;
 		}
@@ -224,18 +235,22 @@
 			{ icon: new SenderIcon({ labelText: name }), 
     		clickable:true, opacity: 0.8, });
 	   	
-	   	marker.bindPopup(mlt_infoTable(trackId, trackName, rcvd, posStr, hasMsg, hasEmSi));
+	   	marker.bindPopup(mlt_infoTable(trackId, trackName, rcvd, posStr, hasMsg, hasEmSi, recEmSiIsActive));
     	return marker; 
 	}
-	function mlt_infoTable(trackId, trackName, timestamp, location, hasMsg, hasEmSi) {
+	function mlt_infoTable(trackId, trackName, timestamp, location, hasMsg, hasEmSi, recEmSiIsActive) {
 		var titleColor = mlt_infoTableHdrColor4RecentPosition;
 		if (hasEmSi) {
-			titleColor = mlt_infoTableHdrColor4EmergencySignalActivated;
+			if (recEmSiIsActive) {
+				titleColor = mlt_infoTableHdrColor4EmergencySignalActivated;
+			} else {
+				titleColor = mlt_infoTableHdrColor4EmergencySignalDeactivated;
+			}
 		} else if (hasMsg) {
 			titleColor = mlt_infoTableHdrColor4Message;
 		}
 		var href = "javascript:startTracking('RedirectToTrackAsMapCtrl', '" + trackId + "');";
-		var anker = "<a href=\"#\" onclick=\"" + href + "\"><img src='img/tracks_overview_symbols/map.png' style='border: none;'/></a>";
+		var anker = "<a href=\"#\" onclick=\"" + href + "\"><img src='img/led/map.png' style='border: none;'/></a>";
 		var res = "<table><tr><td colspan='2'><table><tr>";
 		res += "<td style='border: none;width:16px;'>" + anker + "</td>";
 		res += "<td style='color:#FFFFFF;background-color:" + titleColor + ";white-space: nowrap;'>&nbsp;<b>" + trackName + "</b>&nbsp;</td>";

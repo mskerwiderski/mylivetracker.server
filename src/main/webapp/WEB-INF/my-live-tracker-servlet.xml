@@ -40,6 +40,7 @@
             		all urls with ending '.do' are catched by spring security.
             		all urls with ending '.sec' are not catched by spring security.  
             	-->
+            	<prop key="/credits.sec">creditsCtrl</prop>
             	<prop key="/impressum.sec">impressumCtrl</prop>
             	<prop key="/changes.do">changesCtrl</prop>
             	<prop key="/admin.do">adminCtrl</prop>
@@ -71,6 +72,11 @@
   		<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
 	</bean>
 	  
+	<bean name="creditsCtrl"
+		class="de.msk.mylivetracker.web.frontend.credits.CreditsCtrl"
+        p:viewName="credits" >                	
+    </bean>  
+      
 	<bean name="impressumCtrl"
 		class="de.msk.mylivetracker.web.frontend.impressum.ImpressumCtrl"
         p:viewName="impressum" >                	

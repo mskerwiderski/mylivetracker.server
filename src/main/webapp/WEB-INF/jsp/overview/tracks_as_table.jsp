@@ -81,8 +81,7 @@
 		if (!track.active) {
 			$("#trackIsActive", row).html("&nbsp;&nbsp;");
 		}
-		$("#trackNames", row).attr("title", track.nameNotAbbr); 
-		$("#trackNames", row).attr("value", track.name);
+		$("#trackNames", row).attr("value", track.nameNotAbbr);
 		if (!track.editable) {
 			$("#trackNames", row).attr("readonly", "readonly");
 		}
@@ -197,10 +196,10 @@
 						<tr>
 							<td style="text-align: center; border: none; white-space: nowrap;">
 								<div class="mlt-button">		
-									<a id="googleMapsButton" href="#" title="<spring:message code="overview.track.table.title.maps" />" 
+									<a id="googleMapsButton" href="#" title="<spring:message code="overview.track.table.title.map" />" 
 										onclick="alert('call startTracking()');"
 										style="width:30px">								
-										<img src="img/tracks_overview_symbols/map.png" style="border: none; margin-left: -5px;"/>
+										<img src="img/led/map.png" style="border: none; margin-left: -7px;"/>
 									</a>
 								</div> 
 							</td>
@@ -210,7 +209,7 @@
 									<a id="removeTrackButton" href="#" title="<spring:message code="overview.track.table.title.remove" />" 
 										onclick="alert('call removeTrack()');"
 										style="width:30px">
-										<img src="img/cross.png" style="border: none; margin-left: -5px;"/>												
+										<img src="img/led/cross.png" style="border: none; margin-left: -7px;"/>												
 									</a>
 								</div>
 								</security:authorize>	
@@ -222,7 +221,7 @@
 									<a id="googleEarthButton" href="#"  title="<spring:message code="overview.track.table.title.earth" />"
 										onclick="alert('call startTracking()');"
 										style="width:30px">
-										<img src="img/world.png" style="border: none; margin-left: -5px;"/>
+										<img src="img/led/world.png" style="border: none; margin-left: -7px;"/>
 									</a>															 
 								</div>
 							</td>
@@ -231,7 +230,7 @@
 									<a id="resetTrackButton" href="#" title="<spring:message code="overview.track.table.title.reset" />" 
 										onclick="alert('call resetTrack()');"
 										style="width:30px;">
-										<img src="img/arrow_undo.png" style="border: none; margin-left: -5px;"/>
+										<img src="img/led/arrow_undo.png" style="border: none; margin-left: -7px;"/>
 									</a>
 								</div>	
 							</td>
@@ -242,7 +241,7 @@
 									<a id="kmlExportButton" href="#"  title="<spring:message code="overview.track.table.title.export.kml" />"
 										onclick="alert('call startTracking()');"
 										style="width:30px">
-										<font style="color:rgb(115,154,58);font-size: xx-small;margin-left: -5px;font-weight: bold;">kml</font>
+										<font style="color:rgb(115,154,58);font-size: xx-small;margin-left: -7px;font-weight: bold;">kml</font>
 									</a>															 
 								</div>
 							</td>
@@ -251,7 +250,7 @@
 									<a id="gpxExportButton" href="#"  title="<spring:message code="overview.track.table.title.export.gpx" />"
 										onclick="alert('call startTracking()');"
 										style="width:30px">
-										<font style="color:rgb(115,154,58);font-size: xx-small;margin-left: -5px;font-weight: bold;">gpx</font>
+										<font style="color:rgb(115,154,58);font-size: xx-small;margin-left: -7px;font-weight: bold;">gpx</font>
 									</a>															 
 								</div>	
 							</td>
@@ -263,7 +262,7 @@
 						<tr>
 							<td style="width:20px;height:20px;white-space: nowrap; border: none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;" title="<spring:message code="overview.track.table.title.sender" />" 
-									src="img/mobile_phone.png" style="border: none;" />&nbsp;
+									src="img/led/mobile_phone.png" style="border: none;" />&nbsp;
 							</td>				
 							<td id="senderInfo" title="Sender Id: SenderId"
 								style="white-space: nowrap; border: none;">
@@ -276,14 +275,14 @@
 						<tr>
 							<td id="trackIsActive" style="width:20px;height:20px;white-space: nowrap; border: none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;" title="<spring:message code="overview.track.table.title.active" />" 
-									src="img/active_track.png" style="border: none;" />&nbsp;
+									src="img/glossbasic/bullet_red.png" style="border: none;" />&nbsp;
 							</td>
 							<td style="white-space: nowrap; border: none;">
 								<spring:message code="overview.track.table.title.track.name" var="titleTrackName" />
 								<input
 									id="trackNames"
 									name="trackNames"												
-									title="trackName"	
+									title="<spring:message code='overview.track.table.title.track.name' />"	
 									value="trackName"			
 									onkeypress="alert('call renameTrack()');"									
 									style="width:95%;border-style: groove; border-width: 2px;vertical-align: middle;"							 
@@ -293,7 +292,7 @@
 						<tr>								
 							<td id="recentEmergencySigalIsActive" style="width:20px;height:20px;white-space: nowrap; border: none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;" title="<spring:message code="overview.track.table.title.emergency" />" 
-									src="img/alert.png" style="border: none;" />&nbsp;
+									src="img/nuvola/messagebox_warning.png" style="border: none;" />&nbsp;
 							</td>
 							<td style="border: none; white-space: nowrap;">
 								<select id='trackActivityStati' 
@@ -330,7 +329,7 @@
 							<td style="width:20px;height:20px;white-space: nowrap; border-top: none; border-left: none; border-bottom: none;border-right:none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;"
 									title="<spring:message code="overview.track.table.title.timestamp.track.created" />" 
-									src="img/asterisk_orange.png" style="border: none;" />&nbsp;
+									src="img/led/asterisk_orange.png" style="border: none;" />&nbsp;
 							</td>																																										
 							<td id="timestampTrackCreated" style="text-align:center; white-space: nowrap; border-top: none; border-right: none; border-bottom: none;border-left-style: dotted;">
 								&nbsp;&nbsp;
@@ -340,7 +339,7 @@
 							<td style="height:20px;white-space: nowrap; border-left: none; border-bottom: none; border-top-style: dotted;border-right:none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;"
 								title="<spring:message code="overview.track.table.title.timestamp.track.connected" />" 
-								src="img/connect.png" style="border: none;" />&nbsp;
+								src="img/led/connect.png" style="border: none;" />&nbsp;
 							</td>																											
 							<td id="timestampLastHeartbeatSent" style="text-align:center; white-space: nowrap; border-bottom: none; border-right: none; border-top-style: dotted;border-left-style: dotted;">
 								&nbsp;&nbsp;
@@ -350,7 +349,7 @@
 							<td style="height:20px;white-space: nowrap; border-left: none; border-bottom: none; border-top-style: dotted;border-right:none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;"
 								title="<spring:message code="overview.track.table.title.timestamp.first.position.received" />" 
-								src="img/arrow_right.png" style="border: none;" />&nbsp;
+								src="img/led/arrow_right.png" style="border: none;" />&nbsp;
 							</td>																		
 							<td id="timestampFirstPositionReceived" style="text-align:center; white-space: nowrap; border-bottom: none; border-right: none; border-top-style: dotted;border-left-style: dotted;">
 								&nbsp;&nbsp;
@@ -360,7 +359,7 @@
 							<td style="height:20px;white-space: nowrap;  border-bottom: none; border-left: none; border-top-style: dotted;border-right:none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;" 
 								title="<spring:message code="overview.track.table.title.timestamp.track.updated" />"
-								src="img/tracks_overview_symbols/refresh.png" style="border: none;" />&nbsp;
+								src="img/led/arrow_refresh.png" style="border: none;" />&nbsp;
 							</td>																											
 							<td id="timestampTrackUpdated" style="text-align:center; white-space: nowrap; border-bottom: none; border-right: none; border-top-style: dotted;border-left-style: dotted;">
 								&nbsp;&nbsp;
@@ -374,7 +373,7 @@
 							<td style="width:20px;height:20px;white-space: nowrap; border-top: none; border-left: none; border-bottom: none;border-right:none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;"
 								title="<spring:message code="overview.track.table.title.timestamp.current.position" />" 
-								src="img/satellite.png" style="border: none;" />&nbsp;
+								src="img/farmfresh/satellite_dish.png" style="border: none;" />&nbsp;
 							</td>
 							<td id="cntPositions" style="width:40px;text-align: right;white-space: nowrap; border-top: none; border-bottom: none;border-right:none;border-left-style: dotted;">
 								&nbsp;&nbsp;
@@ -390,7 +389,7 @@
 							<td style="height:20px;white-space: nowrap; border-left: none; border-bottom: none; border-top-style: dotted;border-right:none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;"
 								title="<spring:message code="overview.track.table.title.timestamp.current.mobnwcell" />" 
-								src="img/wireless_signal.png" style="border: none;" />&nbsp;
+								src="img/crystalclear/signal_4.png" style="border: none;" />&nbsp;
 							</td>
 							<td id="cntMobNwCells" style="text-align: right; white-space: nowrap; border-bottom: none; border-top-style: dotted;border-right:none;border-left-style: dotted;">
 								&nbsp;&nbsp;
@@ -406,7 +405,7 @@
 							<td style="height:20px;white-space: nowrap; border-left: none; border-bottom: none; border-top-style: dotted;border-right:none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;"
 								title="<spring:message code="overview.track.table.title.timestamp.current.message" />" 
-								src="img/email.png" style="border: none;" />&nbsp;
+								src="img/led/email.png" style="border: none;" />&nbsp;
 							</td>									
 							<td id="cntMessages" style="text-align: right; white-space: nowrap; border-bottom: none; border-top-style: dotted;border-right:none;border-left-style: dotted;">
 								&nbsp;&nbsp;
@@ -422,7 +421,7 @@
 							<td style="height:20px;white-space: nowrap;  border-bottom: none; border-left: none; border-top-style: dotted;border-right:none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;"
 								title="<spring:message code="overview.track.table.title.timestamp.current.cardiacfunction" />" 
-								src="img/heart_empty.png" style="border: none;" />&nbsp;
+								src="img/led/heart_empty.png" style="border: none;" />&nbsp;
 							</td>
 							<td id="cntCardiacFunctions" style="text-align: right;white-space: nowrap; border-bottom: none; border-top-style: dotted;border-right:none;border-left-style: dotted;">
 								&nbsp;&nbsp;
@@ -438,7 +437,7 @@
 							<td style="height:20px;white-space: nowrap;  border-bottom: none; border-left: none; border-top-style: dotted;border-right:none;">
 								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;"
 								title="<spring:message code="overview.track.table.title.timestamp.current.emergencysignal" />" 
-								src="img/alert.png" style="border: none;" />&nbsp;
+								src="img/nuvola/messagebox_warning.png" style="border: none;" />&nbsp;
 							</td>									
 							<td id="cntEmergencySignals" style="text-align: right;white-space: nowrap; border-bottom: none; border-top-style: dotted;border-right:none;border-left-style: dotted;">
 								&nbsp;&nbsp;

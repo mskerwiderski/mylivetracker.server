@@ -23,7 +23,7 @@
 						name="radio"
 						onclick="javascript:window.location.href='tracks_overview.do';" 
 				/>
-				<label for="myLiveTrackerBtn" style="width: <c:out value="${applicationNameWidth}" />;">
+				<label for="myLiveTrackerBtn" style="width:130px;">
 					<c:out value="${applicationName}" />
 				</label>														
 			</div>	
@@ -82,7 +82,7 @@
 						name="radio"						
 						onclick="javascript:window.location.href='tracks_overview.do';" 
 						/>
-					<label for="tracksOverview" style="width: 120px;" >
+					<label for="tracksOverview" style="width: 125px;" >
 						<spring:message code="layout.overview" text="Overview" />
 					</label>
 				</security:authorize>
@@ -92,7 +92,7 @@
 						name="radio"						
 						onclick="javascript:window.location.href='options.do';" 
 						/>
-					<label for="options" style="width: 120px;">
+					<label for="options" style="width: 125px;">
 						<spring:message code="layout.options" text="Options" />
 					</label>
 				</security:authorize>
@@ -102,7 +102,7 @@
 						name="radio"
 						onclick="javascript:window.location.href='admin.do';" 
 						/>
-					<label for="admin" style="width: 120px;" >
+					<label for="admin" style="width: 125px;" >
 						<spring:message code="layout.admin" text="Admin" />
 					</label>
 				</security:authorize>
@@ -112,18 +112,10 @@
 						name="radio"
 						onclick="javascript:window.location.href='logout';" 
 						/>
-					<label for="logout" style="width: 120px;" >
+					<label for="logout" style="width: 125px;" >
 						<spring:message code="layout.logout" text="Logout" />
 					</label>
 				</security:authorize>							
-				<input type="radio" class="mlt-button-text" 
-					id="impressum" 
-					name="radio"
-					onclick="javascript:window.location.href='impressum.sec';" 
-					/>
-				<label for="impressum" style="width: 120px;">
-					<spring:message code="layout.impressum" text="Impressum" />
-				</label>					
 			</div>						
 		</td>								
 	</tr>	

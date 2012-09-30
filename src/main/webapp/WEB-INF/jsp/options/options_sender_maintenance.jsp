@@ -292,7 +292,7 @@ function removeSender() {
 					if (symbol == null) {
 						symbol = document.forms['optionsForm'].elements['senderDetails.symbol'].value;
 					}
-					var imgUrl = "<c:url value='img/map_symbols/'/>" + symbol + ".png";
+					var imgUrl = "<c:url value='img/map/'/>" + symbol + ".png";
 					document.forms['optionsForm'].elements['senderSymbolImg'].src=imgUrl;
 				}
 			</script>

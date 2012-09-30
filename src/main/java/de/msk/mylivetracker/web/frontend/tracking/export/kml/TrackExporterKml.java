@@ -255,7 +255,7 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 		String applicationBaseUrl, Document document, 
 		String styleId, String iconName) {
 		String iconUrl = ReqUrlStr.create(
-			applicationBaseUrl, "img", "map_symbols", iconName).toString();
+			applicationBaseUrl, "img", "map", iconName).toString();
 		Style style = document.createAndAddStyle().withId(styleId);		
 		style.createAndSetIconStyle()
 			.withColorMode(ColorMode.NORMAL)			

@@ -52,7 +52,7 @@ public class LoginCtrl extends ParameterizableViewController {
 		model.put(ATTR_MESSAGE, message);		
 		log.debug("msgcode = " + msgcode);
 		
-		model.put(ATTR_TWITTER_MESSAGES, TwitterUtils.getTwitterMessages());
+		model.put(ATTR_TWITTER_MESSAGES, TwitterUtils.getTwitterMessages(3, 120));
 		
 		response.setHeader("Cache-Control", "no-cache");
 		

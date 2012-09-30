@@ -6,11 +6,6 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <%@ page import="de.msk.mylivetracker.web.util.WebUtils" %>
 
-<%
-	//String timestampPattern = WebUtils.getMessage(request, "track.gmaps.timestamp.pattern");
-	//request.setAttribute("timestampPattern", timestampPattern);
-%>
-
 <link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet-0.4.4.css'/>" />
 <!--[if lte IE 8]>
      <link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet.ie-0.4.4.css'/>" />
@@ -72,6 +67,19 @@
 		return mlt_infoTable(title, titleColor, null, this.infoTitle, null); 
 	}
 	
+	function mlt_createMsgMarkerId(idStr) {
+		return "msg-icon-" + idStr;
+	}
+	function mlt_createMsgCircleMarkerId(idStr) {
+		return "msg-cmark-" + idStr;
+	}
+	function mlt_createEmSiMarkerId(idStr) {
+		return "emsi-icon-" + idStr;
+	}
+	function mlt_createEmSiCircleMarkerId(idStr) {
+		return "emsi-cmark-" + idStr;
+	}
+	
 	//current request id. 
 	var mlt_reqId = "<c:out value='${reqId}'/>";
 
@@ -106,6 +114,11 @@
 	var mlt_startCircleMarker = null;
 	var mlt_recentCircleMarker = null;
 	var mlt_homeCircleMarker = null;
+	
+	var mlt_lastMessageCircleMarkerId = null;
+	var mlt_lastMessageCircleMarker = null;
+	var mlt_lastEmergencySignalCircleMarkerId = null;
+	var mlt_lastEmergencySignalCircleMarker = null;
 	
 	// the polyline.
 	var mlt_polyline = null;
@@ -150,9 +163,9 @@
 			mlt_map.removeLayer(mlt_homeCircleMarker);
 		}
 		if (mlt_markers != null) {
-			for (var i=0; i < mlt_markers.length; i++) {
-			   	mlt_map.removeLayer(mlt_markers[i]);				   	
-		   	}
+			for (var i in mlt_markers) {
+				mlt_map.removeLayer(mlt_markers[i]);
+			}
 		}
 	}
 	
@@ -171,7 +184,9 @@
 		
 	   	if (mlt_data.track != null) {
 	   		var cntPos = mlt_positions.length;
-	   		if (cntPos > 0) {
+   			// add startMarker only if there is minimum 1 position.
+   			// exception: there is only one position and this position has a message or a emergency signal.	
+   			if (cntPos > 1) {
 	   			mlt_startMarker =
 	   				mlt_createMarkerWithInfoWindow(
 	    	   			mlt_startIcon, 
@@ -184,9 +199,19 @@
 		   		mlt_startCircleMarker = mlt_addCircleMarkerToMap(
 		   			mlt_map,
 	   				mlt_positions[0].lat, 
-	   				mlt_positions[0].lng);
-		   	}
-		   	if (cntPos > 1) {
+	   				mlt_positions[0].lng,
+	   				mlt_START_POS,
+	   				false);
+		   		mlt_log("put startMarker on map");
+	   		}
+   			mlt_log("cntPos=" + cntPos);
+   			mlt_log("currPosHasEmSi=" + mlt_data.track.currPosHasEmSi);
+   			mlt_log("currPosHasMsg=" + mlt_data.track.currPosHasMsg);
+		   	if ((cntPos > 0) && 
+		   		!mlt_data.track.currPosHasEmSi && 
+		   		!mlt_data.track.currPosHasMsg) {
+		   		// add recentMarker only if there are minimum 2 positions and
+	   			// the recent position has no message and no emergency signal.
 		   		mlt_createRecentIcon(mlt_data.track.senderSymbolId);
 		   		mlt_recentMarker =
 		   			mlt_createMarkerWithInfoWindow(
@@ -200,8 +225,10 @@
 		   		mlt_recentCircleMarker = mlt_addCircleMarkerToMap(
 		   			mlt_map,
 	   				mlt_positions[cntPos-1].lat, 
-	   				mlt_positions[cntPos-1].lng);
-		   	}
+	   				mlt_positions[cntPos-1].lng,
+	   				mlt_RECENT_POS, true);
+		   		mlt_log("put recentMarker on map");
+		   	} 
 	   	}
 	   	if ((mlt_data.track == null) && mlt_data.user.hasHome) {
 	   		mlt_clearAllLayers();
@@ -217,12 +244,16 @@
 		   	mlt_homeCircleMarker = mlt_addCircleMarkerToMap(
 		   		mlt_map,
    				mlt_positions[0].lat, 
-   				mlt_positions[0].lng);
+   				mlt_positions[0].lng,
+   				mlt_HOME_POS, false);
 	   	}
-	   			   	
-	   	for (var i=0; i < mlt_markers.length; i++) {
-	   		mlt_map.addLayer(mlt_markers[i]);
-	   	}		     		
+	   	
+	   	mlt_log("start putting all markes to map...");
+	   	for (var i in mlt_markers) {
+			mlt_map.addLayer(mlt_markers[i]);
+			mlt_log("* put '" + i + "' on map.");
+		}
+	   	mlt_log("start putting all markes to map...done");
    	}
 	
 	function mlt_flyToView() {
@@ -281,7 +312,7 @@
  		mlt_posAndInfo = [];
 		mlt_bounds = new L.LatLngBounds();
 		mlt_bounds_empty = true;
-		mlt_markers = [];
+		mlt_markers = new Array();
  	}
 
  	function mlt_UpdateStatus(fitMap, reset) {		
@@ -320,10 +351,38 @@
 		   			mlt_bounds_empty = false;
 	   	   		}		   	   	
 		   	}
+		   	if ((mlt_data.track.positions != null) &&
+		   		(mlt_data.track.positions.length > 0)) {	
+		   		// if there are new positions,
+		   		// existing lastMessageCircleMarker must be set to 'not recent'.
+		   		if (mlt_lastMessageCircleMarkerId != null) {
+		   			mlt_markers[mlt_lastMessageCircleMarkerId] =
+		   				mlt_lastMessageCircleMarker;
+		   			mlt_lastMessageCircleMarkerId = null;
+			   		mlt_lastMessageCircleMarker = null;
+		   		}
+		   		// if there are new positions,
+		   		// existing lastEmergencySignalCircleMarker must be set to 'not recent'.
+		   		if (mlt_lastEmergencySignalCircleMarkerId != null) {
+		   			mlt_markers[mlt_lastEmergencySignalCircleMarkerId] =
+		   				mlt_lastEmergencySignalCircleMarker;
+		   			mlt_lastEmergencySignalCircleMarkerId = null;
+		   			mlt_lastEmergencySignalCircleMarker = null;
+		   		}
+	   		}	   	
 		   	if (mlt_data.track.messages != null) {
   	   			for (var i=0; i < mlt_data.track.messages.length; i++) {
- 	   				if (mlt_data.track.messages[i].hasPos) {
-	  	   				mlt_markers.push( 
+  	   				var skipMsg = false;
+  	   				if ((i == (mlt_data.track.messages.length-1)) &&
+  	   					mlt_data.track.currPosHasEmSi && 
+  			   			mlt_data.track.currPosHasMsg) {
+  	   					skipMsg = true;
+  	   				}
+ 	   				if (!skipMsg && mlt_data.track.messages[i].hasPos) {
+ 	   					var isRecent = 
+ 	   						(i == (mlt_data.track.messages.length-1)) &&
+ 	     			   		mlt_data.track.currPosHasMsg;
+	  	   				mlt_markers[mlt_createMsgMarkerId(mlt_data.track.messages[i].id)] = 
 	  	  	   				mlt_createMarkerWithInfoWindow(
 	  	    	   				mlt_messageIcon, 
 	  	    	   				mlt_data.track.messages[i].lat, 
@@ -332,17 +391,30 @@
 	  	    	   					mlt_infoTableHdrColor4Message,	
   	    	   						mlt_data.track.messages[i].rcvd, 
   	    	   						mlt_data.track.messages[i].infoTitle,
-  	    	   						mlt_data.track.messages[i].msg)));
-	  	   				mlt_markers.push(mlt_createCircleMarker(
-	  	   					mlt_data.track.messages[i].lat, 
-	  	   					mlt_data.track.messages[i].lon));
+  	    	   						mlt_data.track.messages[i].msg));
+	  	   				mlt_markers[mlt_createMsgCircleMarkerId(mlt_data.track.messages[i].id)] =
+	  	   					mlt_createCircleMarker(
+		  	   					mlt_data.track.messages[i].lat, 
+		  	   					mlt_data.track.messages[i].lon,
+		  	   					mlt_MESSAGE_POS, isRecent);
+	  	   				if (isRecent) {
+	  	   					mlt_lastMessageCircleMarkerId = 
+	  	   						mlt_createMsgCircleMarkerId(mlt_data.track.messages[i].id); 
+	  	   					mlt_lastMessageCircleMarker = mlt_createCircleMarker(
+		  	   					mlt_data.track.messages[i].lat, 
+		  	   					mlt_data.track.messages[i].lon,
+		  	   					mlt_MESSAGE_POS, false);
+	  	   				}
  	   				}
   	   			}
 	   		} 
 		   	if (mlt_data.track.emergencySignals != null) {
   	   			for (var i=0; i < mlt_data.track.emergencySignals.length; i++) {
   	   				if (mlt_data.track.emergencySignals[i].hasPos) {
-  	  	   				mlt_markers.push( 
+  	   					var isRecent = 
+	   						(i == (mlt_data.track.emergencySignals.length-1)) &&
+	     			   		mlt_data.track.currPosHasEmSi;
+  	  	   				mlt_markers[mlt_createEmSiMarkerId(mlt_data.track.emergencySignals[i].id)] = 
   	  	   					mlt_createMarkerWithInfoWindow(
 	  	   						(mlt_data.track.emergencySignals[i].active ?
 	    	   						mlt_emergencyActivatedIcon :
@@ -358,10 +430,25 @@
   	    	   							mlt_infoTableHdrColor4EmergencySignalDeactivated),	
   	    	   						mlt_data.track.emergencySignals[i].rcvd, 
   	    	   						mlt_data.track.emergencySignals[i].infoTitle,
-  	    	   						mlt_data.track.emergencySignals[i].msg)));
-  	  	   				mlt_markers.push(mlt_createCircleMarker(
-	  	   					mlt_data.track.emergencySignals[i].lat, 
-	  	   					mlt_data.track.emergencySignals[i].lon));
+  	    	   						mlt_data.track.emergencySignals[i].msg));
+  	  	   				var posType = mlt_data.track.emergencySignals[i].active ?
+  	  	   					mlt_EMERGENCY_SIGNAL_ACTIVATED_POS : mlt_EMERGENCY_SIGNAL_DEACTIVATED_POS; 
+  	  	   				mlt_markers[mlt_createEmSiCircleMarkerId(mlt_data.track.emergencySignals[i].id)] =
+  	  	   					mlt_createCircleMarker(
+		  	   					mlt_data.track.emergencySignals[i].lat, 
+		  	   					mlt_data.track.emergencySignals[i].lon,
+		  	   					posType,
+		  	   					isRecent);
+	  	  	   			if (isRecent) {
+	  	   					mlt_lastEmergencySignalCircleMarkerId = 
+	  	   						mlt_createEmSiCircleMarkerId(mlt_data.track.emergencySignals[i].id);
+	  	   					var posType = mlt_data.track.emergencySignals[i].active ?
+	  	  	   					mlt_EMERGENCY_SIGNAL_ACTIVATED_POS : mlt_EMERGENCY_SIGNAL_DEACTIVATED_POS; 
+	  	   					mlt_lastEmergencySignalCircleMarker = mlt_createCircleMarker(
+		  	   					mlt_data.track.emergencySignals[i].lat, 
+		  	   					mlt_data.track.emergencySignals[i].lon,
+		  	   					posType, false);
+	  	   				}
   	   				}
   	   			}
 	   		}	   			   		
@@ -398,6 +485,7 @@
    	function mlt_processResponse(data) {   	   	   		
    	   	if (!data.jsonCommons.reqRejected) {
    	   	   	mlt_data = data;
+   	   	   	mlt_log(mlt_data);
    	   		mlt_updateView();
             mlt_reqId = mlt_data.jsonCommons.reqId;
         }        
@@ -559,7 +647,7 @@
 						<td id="labelSenderName"  
 							style="font-weight: bold;width: 10%;white-space: nowrap;">
 							&nbsp;<spring:message code='track.status.labelSenderName' />&nbsp;&nbsp;
-							<img id="loadDataMarker" src="img/track_as_map_symbols/bullet_red.png" style="margin-top:-16px;margin-bottom:-12px;border: none;vertical-align: middle;"/>
+							<img id="loadDataMarker" src="img/glossbasic/bullet_red.png" style="margin-top:-16px;margin-bottom:-12px;border: none;vertical-align: middle;"/>
 						</td>
 						<td id="valueSenderName"  colspan="2"
 							style="white-space: nowrap;width: 20%"></td>						
@@ -706,16 +794,16 @@
 	}
 	
 	function mlt_createRecentIcon(senderSymbolId) {
-		var senderSymbolImageUrl = "<c:url value='img/map_symbols/'/>" + senderSymbolId + ".png";
+		var senderSymbolImageUrl = "<c:url value='img/map/'/>" + senderSymbolId + ".png";
 		mlt_recentIcon = mlt_createIcon(senderSymbolImageUrl, new L.Point(32, 37));
 	}
 	
 	function mlt_createIcons() {
-		mlt_startIcon     = mlt_createIcon("<c:url value="img/map_symbols/start.png"/>", new L.Point(32, 37));
-		mlt_messageIcon   = mlt_createIcon("<c:url value="img/map_symbols/message.png" />", new L.Point(32, 37));
-		mlt_homeIcon      = mlt_createIcon("<c:url value="img/map_symbols/home.png" />", new L.Point(32, 37));
-		mlt_emergencyActivatedIcon = mlt_createIcon("<c:url value="img/map_symbols/emergencyactivated.png" />", new L.Point(32, 37));
-		mlt_emergencyDeactivatedIcon = mlt_createIcon("<c:url value="img/map_symbols/emergencydeactivated.png" />", new L.Point(32, 37));
+		mlt_startIcon     = mlt_createIcon("<c:url value="img/map/start.png"/>", new L.Point(32, 37));
+		mlt_messageIcon   = mlt_createIcon("<c:url value="img/map/message.png" />", new L.Point(32, 37));
+		mlt_homeIcon      = mlt_createIcon("<c:url value="img/map/home.png" />", new L.Point(32, 37));
+		mlt_emergencyActivatedIcon = mlt_createIcon("<c:url value="img/map/emergencyactivated.png" />", new L.Point(32, 37));
+		mlt_emergencyDeactivatedIcon = mlt_createIcon("<c:url value="img/map/emergencydeactivated.png" />", new L.Point(32, 37));
 	}
 	mlt_createIcons();
 

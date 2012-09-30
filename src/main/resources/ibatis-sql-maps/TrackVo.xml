@@ -414,6 +414,7 @@
   		insert into T_TRACK (
   			TRACK_ID,
   			REMOVE,
+  			TRACK_CLIENT_ID,
   			VERSION_MAJOR,
   			NAME,
   			IS_ACTIVE,
@@ -449,6 +450,7 @@
   		) values (
   			#trackId#,
   			#remove#,
+  			#trackClientId#,
   			#versionMajor#,
   			#name#,
   			#active#,

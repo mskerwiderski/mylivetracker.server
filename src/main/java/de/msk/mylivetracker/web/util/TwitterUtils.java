@@ -3,6 +3,7 @@ package de.msk.mylivetracker.web.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -44,7 +45,7 @@ public class TwitterUtils {
 		}
 	}
 	
-	public static List<TwitterMessage> getTwitterMessages() {
+	public static List<TwitterMessage> getTwitterMessages(int maxMessages, int maxMessageLength) {
 		List<TwitterMessage> twitterMessages = new ArrayList<TwitterMessage>();
 		try {
 			ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -57,12 +58,14 @@ public class TwitterUtils {
 			Twitter twitter = tf.getInstance();
 			List<Status> statusList = twitter.getHomeTimeline();
 			if (statusList != null) {
-				for (int i=0; (i < 3) && (i < statusList.size()); i++) {
+				for (int i=0; (i < maxMessages) && (i < statusList.size()); i++) {
+					String message = statusList.get(i).getText();
+					message = StringUtils.abbreviate(message, maxMessageLength);
 					DateTime dateTime = new DateTime(
 						statusList.get(i).getCreatedAt().getTime());
 					twitterMessages.add(new TwitterMessage(
 						DateTimeUtils.getDateTimeStrDe4UserRep(dateTime),
-						statusList.get(i).getText()));
+						message));
 				}
 			}
 		} catch (Exception e) {
