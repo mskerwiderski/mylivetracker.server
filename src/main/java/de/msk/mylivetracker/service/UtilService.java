@@ -7,7 +7,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import de.msk.mylivetracker.service.IApplicationService.Parameter;
 import de.msk.mylivetracker.service.demo.IDemoService;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
-import de.msk.mylivetracker.service.statistics.StatisticsCleaner;
 import de.msk.mylivetracker.service.track.TrackCleaner;
 
 /**
@@ -59,11 +58,12 @@ public class UtilService implements IUtilService {
 					this.applicationService.getParameterValueAsLong(
 						Parameter.TrackLifeTimeInMSecs), 
 					this.trackService));
-			utilTaskExecutor.execute(
-				new StatisticsCleaner(
-					this.applicationService.getParameterValueAsLong(
-						Parameter.LogLifeTimeInMSecs), 
-					this.statisticsService));
+			// TODO StatisticsCleaner
+//			utilTaskExecutor.execute(
+//				new StatisticsCleaner(
+//					this.applicationService.getParameterValueAsLong(
+//						Parameter.LogLifeTimeInMSecs), 
+//					this.statisticsService));
 			log.debug("clean tasks started.");
 		} else {
 			log.debug("clean tasks NOT started.");
