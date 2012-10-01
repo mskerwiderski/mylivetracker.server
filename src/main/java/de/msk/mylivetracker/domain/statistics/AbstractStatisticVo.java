@@ -1,7 +1,6 @@
 package de.msk.mylivetracker.domain.statistics;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 
@@ -20,34 +19,22 @@ public abstract class AbstractStatisticVo implements Serializable {
 
 	private static final long serialVersionUID = 599490757924550521L;
 	
-	private String logId = UUID.randomUUID().toString();
+	private Integer logId;
 	private DateTime logTimestamp = new DateTime();
 
 	protected static final String UNKNOWN = "<unknown>";
 	protected static final String EMPTY_STRING = "<empty string>";
 	protected static final String EMPTY = "<./.>";
 	
-	/**
-	 * @return the logId
-	 */
-	public String getLogId() {
+	public Integer getLogId() {
 		return logId;
 	}
-	/**
-	 * @param logId the logId to set
-	 */
-	public void setLogId(String logId) {
+	public void setLogId(Integer logId) {
 		this.logId = logId;
 	}
-	/**
-	 * @return the logTimestamp
-	 */
 	public DateTime getLogTimestamp() {
 		return logTimestamp;
 	}
-	/**
-	 * @param logTimestamp the logTimestamp to set
-	 */
 	public void setLogTimestamp(DateTime logTimestamp) {
 		this.logTimestamp = logTimestamp;
 	}	

@@ -1,6 +1,10 @@
 package de.msk.mylivetracker.service.geocoding;
 
-import de.msk.mylivetracker.domain.statistics.ServiceCallCountVo;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import de.msk.mylivetracker.domain.statistics.ServiceCallVo;
 import de.msk.mylivetracker.service.IApplicationService;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
 
@@ -17,7 +21,13 @@ import de.msk.mylivetracker.service.statistics.IStatisticsService;
  */
 public abstract class AbstractGeocodingService {
 
-	private static final String FAILED_APP = " (failed)";
+	private static final Log log = LogFactory.getLog(AbstractGeocodingService.class);
+	
+	private static final String SERVICE_CALL_GET_ADDRESS_OF_POSITION_FAILED = "service call 'getAddressOfPosition(#p1, #p2)' FAILED";
+	private static final String SERVICE_CALL_GET_POSITION_OF_ADDRESS_FAILED = "service call 'getPositionOfAddress(#p1, #p2)' FAILED";
+	private static final String ERROR_MSG_PARAM1 = "#p1";
+	private static final String ERROR_MSG_PARAM2 = "#p2";
+	
 	private String name;
 	private int requestLimit;
 	private IApplicationService applicationService;
@@ -81,40 +91,81 @@ public abstract class AbstractGeocodingService {
 	
 	public String getAddressOfPosition(LatLonPos position, String languageCode) {
 		String res = "";
-		ServiceCallCountVo serviceCallCount = 
-			this.statisticsService.getServiceCallCount(name);
-		if (this.requestLimit > serviceCallCount.getCallCount()) {
+		int serviceCallCount = 
+			this.statisticsService.getServiceCallCountOfToday(name);
+		if (this.requestLimit > serviceCallCount) {
 			try {
-				res = this.getAddressOfPositionAux(position, languageCode);
+				ServiceCallResult result = this.getAddressOfPositionAux(position, languageCode);
+				if (result == null) {
+					throw new RuntimeException("ServiceCallResult-object must not be null.");
+				}
+				res = result.getAddress();
+				this.statisticsService.logServiceCall(new ServiceCallVo(
+					this.name, result.getUrl(), res));
 			} catch (Exception e) {
+				log.fatal(e);
 				res = "";
-				this.statisticsService.logServiceCallCount(name + FAILED_APP);
-			} finally {
-				this.statisticsService.logServiceCallCount(name);
-			}
+				String errorMsg = SERVICE_CALL_GET_ADDRESS_OF_POSITION_FAILED;
+				errorMsg = StringUtils.replace(errorMsg, ERROR_MSG_PARAM1, position.toString());
+				errorMsg = StringUtils.replace(errorMsg, ERROR_MSG_PARAM2, languageCode);
+				this.statisticsService.logServiceCall(new ServiceCallVo(
+					this.name, errorMsg, e.toString()));
+			} 
 		}				
 		return res;
 	}
 	
 	public LatLonPos getPositionOfAddress(Address address, String languageCode) {
 		LatLonPos res = null;
-		ServiceCallCountVo serviceCallCount = 
-			this.statisticsService.getServiceCallCount(name);
-		if (this.requestLimit > serviceCallCount.getCallCount()) {
+		int serviceCallCount = 
+			this.statisticsService.getServiceCallCountOfToday(name);
+		if (this.requestLimit > serviceCallCount) {
 			try {
-				res = this.getPositionOfAddressAux(address, languageCode);
+				ServiceCallResult result = this.getPositionOfAddressAux(address, languageCode);
+				if (result == null) {
+					throw new RuntimeException("ServiceCallResult-object must not be null.");
+				}
+				res = result.getPosition();
+				this.statisticsService.logServiceCall(new ServiceCallVo(
+					this.name, result.getUrl(), res.toString()));
 			} catch (Exception e) {
+				log.fatal(e);
 				res = null;
-				this.statisticsService.logServiceCallCount(name + FAILED_APP);
-			} finally {
-				this.statisticsService.logServiceCallCount(name);
-			}
+				String errorMsg = SERVICE_CALL_GET_POSITION_OF_ADDRESS_FAILED;
+				errorMsg = StringUtils.replace(errorMsg, ERROR_MSG_PARAM1, address.toString());
+				errorMsg = StringUtils.replace(errorMsg, ERROR_MSG_PARAM2, languageCode);
+				this.statisticsService.logServiceCall(new ServiceCallVo(
+					this.name, errorMsg, e.toString()));
+			} 
 		}		
 		return res;
 	}
 	
-	public abstract String getAddressOfPositionAux(LatLonPos position, String languageCode);
-	public abstract LatLonPos getPositionOfAddressAux(Address address, String languageCode);
+	public static class ServiceCallResult {
+		private String address;
+		private LatLonPos position;
+		private String url;
+		public ServiceCallResult(String address, String url) {
+			this.address = address;
+			this.url = url;
+		}
+		public ServiceCallResult(LatLonPos position, String url) {
+			this.position = position;
+			this.url = url;
+		}
+		public String getAddress() {
+			return address;
+		}
+		public LatLonPos getPosition() {
+			return position;
+		}
+		public String getUrl() {
+			return url;
+		}
+	}
+
+	public abstract ServiceCallResult getAddressOfPositionAux(LatLonPos position, String languageCode);
+	public abstract ServiceCallResult getPositionOfAddressAux(Address address, String languageCode);
 
 	/**
 	 * @return the name

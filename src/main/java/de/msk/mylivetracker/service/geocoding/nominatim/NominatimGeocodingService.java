@@ -94,19 +94,18 @@ public class NominatimGeocodingService extends AbstractGeocodingService {
 	private static final String PARAM_LAT = "$lat";
 	private static final String PARAM_LON = "$lon";
 	private static final String PARAM_LANGUAGE = "$lang";
-		
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.geocoding.AbstractGeocodingService#getAddressOfPositionAux(de.msk.mylivetracker.service.geocoding.AbstractGeocodingService.LatLonPos, java.lang.String)
-	 */
+
 	@Override
-	public String getAddressOfPositionAux(LatLonPos position, String languageCode) {
+	public ServiceCallResult getAddressOfPositionAux(
+		LatLonPos position, String languageCode) {
 		if (position == null) {
 			throw new IllegalArgumentException("position must not be null.");
 		}
 		if (StringUtils.isEmpty(languageCode)) {
 			throw new IllegalArgumentException("languageCode must not be empty.");
 		}
-		ReverseGeocoderResponse response = this.callReverseGeocoder(position, languageCode);
+		ServiceCallResponse serviceCallResponse = this.callReverseGeocoder(position, languageCode);
+		ReverseGeocoderResponse response = serviceCallResponse.getReverseGeocoderResponse();
 		String address = null;
 		if ((response != null) && (response.getAddress() != null)) {
 			String country = response.getAddress().getCountry();
@@ -120,11 +119,12 @@ public class NominatimGeocodingService extends AbstractGeocodingService {
 				(StringUtils.isEmpty(city) ? "" : ", " + city) +
 				(StringUtils.isEmpty(country) ? "" : ", " + country);
 		}
-		return address;
+		return new ServiceCallResult(address, serviceCallResponse.getUrl());
 	}
 
 	@Override
-	public LatLonPos getPositionOfAddressAux(Address address, String languageCode) {
+	public ServiceCallResult getPositionOfAddressAux(
+		Address address, String languageCode) {
 		if (address == null) {
 			throw new IllegalArgumentException("address must not be null.");
 		}
@@ -156,12 +156,13 @@ public class NominatimGeocodingService extends AbstractGeocodingService {
 		catch (EncoderException e) {
 			throw new IllegalArgumentException("address cannot be encoded to UTF-8: " + address.toString());
 		}	
-		GeocoderResponse response = this.callGeocoder(query, languageCode);
+		ServiceCallResponse serviceCallResponse = this.callGeocoder(query, languageCode);
+		GeocoderResponse response = serviceCallResponse.getGeocoderResponse();
 		LatLonPos position = null;
 		if ((response != null) && (response.getLat() != null) && (response.getLon() != null)) {
 			position = new LatLonPos(response.getLat(), response.getLon());
 		}
-		return position;
+		return new ServiceCallResult(position, serviceCallResponse.getUrl());
 	}
 
 	private String getEncodedEmailAddress() {
@@ -174,11 +175,37 @@ public class NominatimGeocodingService extends AbstractGeocodingService {
 		}
 		return emailAddress;
 	}
+
+	private static class ServiceCallResponse {
+		private GeocoderResponse geocoderResponse = null;
+		private ReverseGeocoderResponse reverseGeocoderResponse = null;
+		private String url = null;
+		public ServiceCallResponse(GeocoderResponse geocoderResponse, String url) {
+			this.geocoderResponse = geocoderResponse;
+			this.url = url;
+		}
+		public ServiceCallResponse(ReverseGeocoderResponse reverseGeocoderResponse, String url) {
+			this.reverseGeocoderResponse = reverseGeocoderResponse;
+			this.url = url;
+		}
+		public GeocoderResponse getGeocoderResponse() {
+			return geocoderResponse;
+		}
+		public ReverseGeocoderResponse getReverseGeocoderResponse() {
+			return reverseGeocoderResponse;
+		}
+		public String getUrl() {
+			return url;
+		}
+	}
 	
-	private GeocoderResponse callGeocoder(String query, String languageCode) {
+	private ServiceCallResponse callGeocoder(String query, String languageCode) {
 		if (query == null) {
 			throw new IllegalArgumentException("query must not be null.");
 		} 
+		if (StringUtils.isEmpty(languageCode)) {
+			throw new IllegalArgumentException("languageCode must not be empty.");
+		}
 		log.debug("callGeocoder, query='" + query + "'");
 		GeocoderResponse geocoderResponse = null;
 		String urlStr = NOMINATIM_URL_TEMPLATE;
@@ -202,13 +229,16 @@ public class NominatimGeocodingService extends AbstractGeocodingService {
 			e.printStackTrace();
 			geocoderResponse = null;
 		} 
-		return geocoderResponse;			
+		return new ServiceCallResponse(geocoderResponse, urlStr);			
 	}
 	
-	private ReverseGeocoderResponse callReverseGeocoder(LatLonPos position, String languageCode) {
+	private ServiceCallResponse callReverseGeocoder(LatLonPos position, String languageCode) {
 		if (position == null) {
 			throw new IllegalArgumentException("position must not be null.");
-		} 
+		}
+		if (StringUtils.isEmpty(languageCode)) {
+			throw new IllegalArgumentException("languageCode must not be empty.");
+		}
 		log.debug("callReverseGeocoder, position='" + position + "'");
 		ReverseGeocoderResponse reverseGeocoderResponse = null;
 		String urlStr = NOMINATIM_URL_TEMPLATE_REVERSE;
@@ -228,7 +258,7 @@ public class NominatimGeocodingService extends AbstractGeocodingService {
 			e.printStackTrace();
 			reverseGeocoderResponse = null;
 		} 
-		return reverseGeocoderResponse;			
+		return new ServiceCallResponse(reverseGeocoderResponse, urlStr);			
 	}
 
 	/**

@@ -1,7 +1,7 @@
 package de.msk.mylivetracker.service.statistics;
 
 import de.msk.mylivetracker.dao.statistics.IStatisticsDao;
-import de.msk.mylivetracker.domain.statistics.ServiceCallCountVo;
+import de.msk.mylivetracker.domain.statistics.ServiceCallVo;
 import de.msk.mylivetracker.domain.statistics.SmsTransportVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorInfoVo;
 import de.msk.mylivetracker.domain.statistics.UploadedDataProcessVo;
@@ -21,21 +21,15 @@ import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
 public class StatisticsService implements IStatisticsService {
 
 	private IStatisticsDao statisticsDao;
+	private StatisticsLimits statisticsLimits;
 	
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#logApplicationStartUp()
 	 */
 	@Override
 	public void logApplicationStartUp() {
-		statisticsDao.logApplicationStartUp();
-	}
-
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#cleanApplicationStartUpTable(long)
-	 */
-	@Override
-	public void cleanApplicationStartUpTable(long olderThanInMSecs) {
-		statisticsDao.cleanApplicationStartUpTable(olderThanInMSecs);
+		statisticsDao.logApplicationStartUp(
+			statisticsLimits.getMaxStatAppStartUp());
 	}
 
 	/* (non-Javadoc)
@@ -44,15 +38,8 @@ public class StatisticsService implements IStatisticsService {
 	@Override
 	public void logUploaderServerStatus(
 		UploaderServerStatusVo uploaderServerStatusVo) {
-		statisticsDao.logUploaderServerStatus(uploaderServerStatusVo);		
-	}
-
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#cleanUploaderServerStatusTable(long)
-	 */
-	@Override
-	public void cleanUploaderServerStatusTable(long olderThanInMSecs) {
-		statisticsDao.cleanUploaderServerStatusTable(olderThanInMSecs);		
+		statisticsDao.logUploaderServerStatus(
+			statisticsLimits.getMaxStatUploaderServerStatus(), uploaderServerStatusVo);		
 	}
 
 	/* (non-Javadoc)
@@ -60,39 +47,20 @@ public class StatisticsService implements IStatisticsService {
 	 */
 	@Override
 	public void logUploadedDataProcess(UploadedDataProcessVo uploadedDataProcess) {
-		statisticsDao.logUploadedDataProcess(uploadedDataProcess);		
+		statisticsDao.logUploadedDataProcess(
+			statisticsLimits.getMaxStatUplDataProc(), uploadedDataProcess);		
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#cleanUploadedDataProcessTable(long)
-	 */
+	
 	@Override
-	public void cleanUploadedDataProcessTable(long olderThanInMSecs) {
-		statisticsDao.cleanUploadedDataProcessTable(olderThanInMSecs);		
+	public void logServiceCall(ServiceCallVo serviceCall) {
+		statisticsDao.logServiceCall(
+			statisticsLimits.getMaxStatServiceCall(), serviceCall);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#logServiceCallCount(java.lang.String)
-	 */
 	@Override
-	public void logServiceCallCount(String service) {
-		statisticsDao.logServiceCallCount(service);		
-	}
-
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#getServiceCallCount(java.lang.String)
-	 */
-	@Override
-	public ServiceCallCountVo getServiceCallCount(String service) {
-		return statisticsDao.getServiceCallCount(service);
-	}
-
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#cleanServiceCallCountTable(long)
-	 */
-	@Override
-	public void cleanServiceCallCountTable(long olderThanInMSecs) {
-		statisticsDao.cleanServiceCallCountTable(olderThanInMSecs);
+	public int getServiceCallCountOfToday(String service) {
+		return statisticsDao.getServiceCallCountOfToday(service);
 	}
 
 	/* (non-Javadoc)
@@ -101,44 +69,32 @@ public class StatisticsService implements IStatisticsService {
 	@Override
 	public void logStorePositionProcessorInfo(
 			StorePositionProcessorInfoVo storePositionProcessorInfo) {
-		statisticsDao.logStorePositionProcessorInfo(storePositionProcessorInfo);		
+		statisticsDao.logStorePositionProcessorInfo(
+			statisticsLimits.getMaxStatStorePosProcInfo(), storePositionProcessorInfo);		
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#cleanStorePositionProcessorInfoTable(long)
-	 */
-	@Override
-	public void cleanStorePositionProcessorInfoTable(long olderThanInMSecs) {
-		statisticsDao.cleanStorePositionProcessorInfoTable(olderThanInMSecs);
-	}
-
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#logSmsTransport(de.msk.mylivetracker.domain.statistics.SmsTransportVo)
 	 */
 	@Override
 	public void logSmsTransport(SmsTransportVo smsTransport) {
-		statisticsDao.logSmsTransport(smsTransport);
+		statisticsDao.logSmsTransport(
+			statisticsLimits.getMaxStatSmsTransport(), smsTransport);
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#cleanSmsTransportTable(long)
-	 */
-	@Override
-	public void cleanSmsTransportTable(long olderThanInMSecs) {
-		statisticsDao.cleanSmsTransportTable(olderThanInMSecs);
-	}
-	
-	/**
-	 * @return the statisticsDao
-	 */
 	public IStatisticsDao getStatisticsDao() {
 		return statisticsDao;
 	}
 
-	/**
-	 * @param statisticsDao the statisticsDao to set
-	 */
 	public void setStatisticsDao(IStatisticsDao statisticsDao) {
 		this.statisticsDao = statisticsDao;
+	}
+
+	public StatisticsLimits getStatisticsLimits() {
+		return statisticsLimits;
+	}
+
+	public void setStatisticsLimits(StatisticsLimits statisticsLimits) {
+		this.statisticsLimits = statisticsLimits;
 	}
 }

@@ -1,6 +1,6 @@
 package de.msk.mylivetracker.service.statistics;
 
-import de.msk.mylivetracker.domain.statistics.ServiceCallCountVo;
+import de.msk.mylivetracker.domain.statistics.ServiceCallVo;
 import de.msk.mylivetracker.domain.statistics.SmsTransportVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorInfoVo;
 import de.msk.mylivetracker.domain.statistics.UploadedDataProcessVo;
@@ -18,28 +18,11 @@ import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
  * 
  */
 public interface IStatisticsService {
-	// application start up.
 	public void logApplicationStartUp();	
-	public void cleanApplicationStartUpTable(long olderThanInMSecs);
-	
-	// uploader server status.
-	public void logUploaderServerStatus(UploaderServerStatusVo uploaderServerStatusVo);
-	public void cleanUploaderServerStatusTable(long olderThanInMSecs);
-		
-	// uploaded data process.
+	public void logUploaderServerStatus(UploaderServerStatusVo uploaderServerStatusVo);	
 	public void logUploadedDataProcess(UploadedDataProcessVo uploadedDataProcess);
-	public void cleanUploadedDataProcessTable(long olderThanInMSecs);
-	
-	// service call count.
-	public void logServiceCallCount(String service);
-	public ServiceCallCountVo getServiceCallCount(String service);
-	public void cleanServiceCallCountTable(long olderThanInMSecs);
-	
-	// uploaded data process.
+	public void logServiceCall(ServiceCallVo serviceCall);
+	public int getServiceCallCountOfToday(String service);
 	public void logStorePositionProcessorInfo(StorePositionProcessorInfoVo storePositionProcessorInfo);
-	public void cleanStorePositionProcessorInfoTable(long olderThanInMSecs);
-	
-	// sms transport.
 	public void logSmsTransport(SmsTransportVo smsTransport);
-	public void cleanSmsTransportTable(long olderThanInMSecs);
 }

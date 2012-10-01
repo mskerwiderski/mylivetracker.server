@@ -140,7 +140,8 @@
     		&nbsp;&nbsp;
     	</td>
     	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
-    		&nbsp;&bull;&nbsp;GSM Tracker <a target="_blank" href="http://www.gpsvision.de/index.php/produkte/gps-tracker-tk5000">Incutex TK5000</a>
+    		&nbsp;&bull;&nbsp;GSM Tracker 
+    		<a target="_blank" href="http://www.gpsvision.de/index.php/produkte/gps-tracker-tk5000">Incutex TK5000</a>&nbsp;/&nbsp;<a target="_blank" href="http://www.wondeproud.com/product_3_2_1.html">Wonde Proud SPT10</a>
     	</td>
     	<td style="border:none;width:100%;">&nbsp;</td>    	
     </tr>

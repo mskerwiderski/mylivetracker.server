@@ -330,13 +330,11 @@ public class StorePositionProcessor extends Thread {
 					reasonStopped = "expired";
 				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
-				log.info(e.toString());
+				log.fatal(e);
 				doLoop = false;
 				reasonStopped = e.getMessage();
 			} catch (Exception e) {
-				e.printStackTrace();
-				log.info(e.toString());
+				log.fatal(e);
 				this.info.exceptionOccurred(e);			
 				doLoop = true;
 				reasonStopped = e.getMessage();

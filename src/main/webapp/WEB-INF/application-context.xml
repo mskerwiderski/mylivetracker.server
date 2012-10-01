@@ -113,11 +113,23 @@
 		</property>
 	</bean>	
     
-    <!-- transactions -->
+    <bean id="dataSourceMyLiveTrackerStatistics" 
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:/comp/env/jdbc/MyLiveTrackerDb2</value>
+		</property>
+	</bean>
+	
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSourceMyLiveTracker" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManagerStatistics"/>
+    <bean id="transactionManagerStatistics"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceMyLiveTrackerStatistics" />
 	</bean>
 	
     <bean id="sqlMapMyLiveTracker"
@@ -128,9 +140,17 @@
         <property name="dataSource" ref="dataSourceMyLiveTracker" />
     </bean>               
    
+   	<bean id="sqlMapMyLiveTrackerStatistics"
+    	class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation">
+            <value>classpath:mylivetracker-statistics-sql-map-config.xml</value>
+        </property>
+        <property name="dataSource" ref="dataSourceMyLiveTrackerStatistics" />
+    </bean>
+    
     <bean id="statisticsDao"
         class="de.msk.mylivetracker.dao.statistics.StatisticsDao">
-        <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
+        <property name="sqlMapClient" ref="sqlMapMyLiveTrackerStatistics" />
     </bean>
          
     <bean id="applicationDao"
@@ -174,9 +194,20 @@
         <property name="ticketCache" ref="ticketCache" />        
     </bean>
             
+	<bean id="statisticsLimits"
+        class="de.msk.mylivetracker.service.statistics.StatisticsLimits">               
+        <property name="maxStatAppStartUp" value="100" />
+        <property name="maxStatServiceCall" value="500" />
+        <property name="maxStatSmsTransport" value="100" />
+        <property name="maxStatStorePosProcInfo" value="500" />
+        <property name="maxStatUplDataProc" value="100000" />
+        <property name="maxStatUploaderServerStatus" value="500" />
+    </bean>
+    
     <bean id="statisticsService"
         class="de.msk.mylivetracker.service.statistics.StatisticsService">               
         <property name="statisticsDao" ref="statisticsDao" />
+        <property name="statisticsLimits" ref="statisticsLimits" />
     </bean>    
       
     <bean id="userService"
