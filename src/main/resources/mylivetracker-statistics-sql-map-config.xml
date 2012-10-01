@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL MAP Config 2.0//EN" 
+	"/dtd/sql-map-config-2.dtd">
+	
+<sqlMapConfig> 
+    <settings useStatementNamespaces="true" />
+    <typeHandler
+		javaType="de.msk.mylivetracker.commons.util.datetime.DateTime"
+		callback="de.msk.mylivetracker.dao.typehandler.DateTimeAsInternalDateTimeFormatTypeHandlerCallback" />
+    <sqlMap resource="ibatis-sql-maps/Statistics.xml"/>     
+</sqlMapConfig>
