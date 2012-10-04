@@ -15,9 +15,16 @@
 	* added MAPS_USED
 	* removed GEOCODING_ENABLED
 	* added GEOCODER_MODE
+	* changed STATUS_PAGE_TRACKING_FLY_TO_MODE
 	
 * T_SENDER:
 	* added SYMBOL
+	
+* T_STATUS_PARAMS
+	* changed TRACKING_FLY_TO_MODE
+		
+* alle T_STAT-Tabellen:
+	* LOG_ID / LOG_TIMESTAMP	
 		
 * open: INDEX for T.TRACK.REMOVE
 	

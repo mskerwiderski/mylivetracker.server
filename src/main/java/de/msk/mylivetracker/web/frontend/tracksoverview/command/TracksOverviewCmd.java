@@ -1,28 +1,25 @@
 package de.msk.mylivetracker.web.frontend.tracksoverview.command;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import de.msk.mylivetracker.commons.util.datetime.DateTime;
-import de.msk.mylivetracker.domain.StatusParamsVo;
+import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
+import de.msk.mylivetracker.domain.TracksOverviewMapFlyToModeVo;
+import de.msk.mylivetracker.domain.TracksViewVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
-import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
+import de.msk.mylivetracker.domain.user.MapsUsedVo;
+import de.msk.mylivetracker.domain.user.UserSessionStatusVo;
+import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.IUserService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.ActionExecutor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
 import de.msk.mylivetracker.web.options.IntOptionDsc;
 import de.msk.mylivetracker.web.options.StrOptionDsc;
-import de.msk.mylivetracker.web.util.FmtUtils;
+import de.msk.mylivetracker.web.util.WebUtils;
 
 /**
  * TracksOverviewCmd.
@@ -36,10 +33,7 @@ import de.msk.mylivetracker.web.util.FmtUtils;
  * 
  */
 public class TracksOverviewCmd {	
-	private static final Log log = LogFactory.getLog(TracksOverviewCmd.class);
-	
 	public static final String REQUEST_PARAM_ACTION_EXECUTOR = "actionExecutor";
-	public static final StrOptionDsc STR_OPTION_VALUE_ALL = new StrOptionDsc("all", "common.opts.all");
 	
 	public String selectedTrackId = null;	
 	public String selectedTrackName = null;
@@ -48,89 +42,123 @@ public class TracksOverviewCmd {
 
 	private ActionExecutor actionExecutor = null;
 	
-	public enum TracksView {
-		Table, Map
-	}
-	private TracksView tracksView = TracksView.Table;
-	private String cloudmadeApiKey = null;
+	private TracksViewVo selectedTracksView = null;
 	private String mapsUsedStr = null;
 	private int defMapId = 0;
 	
-	private Integer selectedSenderEntryIdx = null;
-	
-	private List<SenderEntry> senderEntries = new ArrayList<SenderEntry>();
-	
-	private List<StrOptionDsc> senderFilterOptions = new ArrayList<StrOptionDsc>();
+	private List<SenderEntry> senderEntriesForCreateTrack = new ArrayList<SenderEntry>();
+	private String selectedSenderForCreateTrack = null;
+	private List<SenderEntry> senderEntriesForFilter = new ArrayList<SenderEntry>();
+	private List<IntOptionDsc> tracksOverviewOptsDatePeriod;
+	private Integer selectedDatePeriodFilter = null;
 	private String selectedSenderFilter = null;
-	private DateTime selectedDateFromFilter = null;
-	private DateTime selectedDateToFilter = null;
 	private String selectedSearchStrFilter = null;
 	
 	private List<BoolOptionDsc> liveTrackingOpts;
-	private Boolean selectedLiveTrackingOpt = true;	
+	private Boolean selectedLiveTrackingOpt = null;	
 	private List<IntOptionDsc> liveTrackingOptsKeepRecentPos;
-	private Integer selectedLiveTrackingOptKeepRecentPos;
+	private Integer selectedLiveTrackingOptKeepRecentPos = null;
 	private List<IntOptionDsc> liveTrackingOptsUpdateInterval;
-	private Integer selectedLiveTrackingOptUpdateInterval;
+	private Integer selectedLiveTrackingOptUpdateInterval = null;
+	private List<StrOptionDsc> liveTrackingOptsFlyToMode;
+	private String selectedLiveTrackingOptFlyToMode = null;
 	
-	private List<IntOptionDsc> liveTrackingOptsFlyToMode;
-	private Integer selectedLiveTrackingOptFlyToMode = StatusParamsVo.TrackingFlyToMode.None.ordinal();
+	private List<StrOptionDsc> tracksOverviewOptsFlyToMode;
+	private String selectedTracksOverviewOptFlyToMode = null;
 	
 	private List<IntOptionDsc> tracksOverviewOptsRefresh;
-	private Integer selectedTracksOverviewOptsRefresh;
+	private Integer selectedTracksOverviewOptRefresh = null;
 	
 	private List<BoolOptionDsc> trackOptsReleaseStatus;
 	private List<BoolOptionDsc> trackOptsActivityStatus;
 	
-	public void buildUpSenderEntries(List<SenderVo> senders) {
-		senderEntries.clear();
-		for (SenderVo sender : senders) {
-			if (sender.isActive()) {
-				senderEntries.add(new SenderEntry(sender));
-			}
-		}	
+	public UserSessionStatusVo getUserSessionStatus() {
+		UserSessionStatusVo userSessionStatus = new UserSessionStatusVo();
+		userSessionStatus.setUserId(WebUtils.getCurrentUserWithRole().getUserId());
+		userSessionStatus.setToSelSenderForCreateTrack(this.selectedSenderForCreateTrack);
+		userSessionStatus.setToSelLiveTrackingOpt(this.selectedLiveTrackingOpt);
+		userSessionStatus.setToSelLiveTrackingOptKeepRecentPos(this.selectedLiveTrackingOptKeepRecentPos);
+		userSessionStatus.setToSelLiveTrackingOptUpdateInterval(this.selectedLiveTrackingOptUpdateInterval);
+		userSessionStatus.setToSelLiveTrackingOptFlyToMode(TrackingFlyToModeVo.valueOf(this.selectedLiveTrackingOptFlyToMode));
+		userSessionStatus.setToSelSenderFilter(this.selectedSenderFilter);
+		userSessionStatus.setToSelDatePeriodFilter(this.selectedDatePeriodFilter);
+		userSessionStatus.setToSelSearchStrFilter(this.selectedSearchStrFilter);
+		userSessionStatus.setToSelTracksView(this.selectedTracksView);
+		userSessionStatus.setToSelTracksOverviewOptFlyToMode(TracksOverviewMapFlyToModeVo.valueOf(this.selectedTracksOverviewOptFlyToMode));
+		userSessionStatus.setToSelTracksOverviewOptRefresh(this.selectedTracksOverviewOptRefresh);
+		return userSessionStatus;
 	}
 	
-	public void buildUpTrackFilters(UserWithoutRoleVo user,
-		IUserService userService, ISenderService senderService) {		
-		List<SenderVo> senders = senderService.getSenders(user.getUserId());
-		senderFilterOptions.clear();
-		Set<String> senderIdsSet = new HashSet<String>();
-		
-		for (SenderVo sender : senders) {
-			String label = FmtUtils.getSenderLabel(sender, false, FmtUtils.noValue);			
-			senderFilterOptions.add(
-				new StrOptionDsc(sender.getSenderId(), label));
-			senderIdsSet.add(sender.getSenderId());
-		}		
-		senderFilterOptions.add(0, STR_OPTION_VALUE_ALL);
-		if ((selectedSenderFilter == null) || !senderIdsSet.contains(selectedSenderFilter)) {
-			selectedSenderFilter = senderFilterOptions.get(0).getValue(); 
+	public void init(HttpServletRequest request, ISenderService senderService, UserSessionStatusVo userSessionStatus) {
+		UserWithRoleVo user = WebUtils.getCurrentUserWithRole();
+		// maps.
+		MapsUsedVo mapsUsed = user.getOptions().getMapsUsed();
+		this.setMapsUsedStr(mapsUsed.getMapsUsedStr());
+		this.setDefMapId(mapsUsed.getDefMapId());
+		// sender entries (senders for create track, senders for filter).
+		List<SenderVo> senders = senderService.getSenders(user.getUsername());
+		this.senderEntriesForCreateTrack.clear();
+		this.senderEntriesForFilter.clear();
+		this.senderEntriesForFilter.add(new SenderEntry(request)); // 'all' entry.
+		if ((senders != null) && !senders.isEmpty()) {
+			for (int i=0; i < senders.size(); i++) {
+				SenderVo sender = senders.get(i);
+				if (sender.isActive()) {
+					this.senderEntriesForCreateTrack.add(new SenderEntry(sender));
+					this.senderEntriesForFilter.add(new SenderEntry(sender));
+					if ((this.selectedSenderForCreateTrack == null) && 
+						StringUtils.equals(
+							sender.getSenderId(), 
+							userSessionStatus.getToSelSenderForCreateTrack())) {
+						this.selectedSenderForCreateTrack = sender.getSenderId();
+					}
+					if ((this.selectedSenderFilter == null) && 
+						StringUtils.equals(
+							sender.getSenderId(), 
+							userSessionStatus.getToSelSenderFilter())) {
+						this.selectedSenderFilter = sender.getSenderId();
+					}
+				}
+			}	
 		}
-		
-		if (selectedDateFromFilter == null) {
-			long twoWeeksAgo = (new DateTime().getAsMSecs()) - (1000 * 60 * 60 * 24 * 14);
-			selectedDateFromFilter = new DateTime(twoWeeksAgo);
+		if (this.selectedSenderFilter == null) {
+			this.selectedSenderFilter = SenderEntry.VALUE_ALL;
 		}
-		
-		if (selectedDateToFilter == null) {			
-			selectedDateToFilter = new DateTime();
+		// live tracking options.
+		if (this.selectedLiveTrackingOpt == null) {
+			this.selectedLiveTrackingOpt = userSessionStatus.getToSelLiveTrackingOpt();
 		}
-		selectedDateFromFilter =
-			DateTime.getAsDayBased(selectedDateFromFilter, 
-				TimeZone.getTimeZone(user.getOptions().getTimeZone()), true);							
-		selectedDateToFilter =
-			DateTime.getAsDayBased(selectedDateToFilter, 
-				TimeZone.getTimeZone(user.getOptions().getTimeZone()), false);
-		
-		log.debug("selectedDateFromFilter = " + selectedDateFromFilter);
-		log.debug("selectedDateToFilter = " + selectedDateToFilter);
-		
-		if (selectedSearchStrFilter == null) {
-			selectedSearchStrFilter = "";
+		if (this.selectedLiveTrackingOptKeepRecentPos == null) {
+			this.selectedLiveTrackingOptKeepRecentPos = userSessionStatus.getToSelLiveTrackingOptKeepRecentPos();
+		}
+		if (this.selectedLiveTrackingOptUpdateInterval == null) {
+			this.selectedLiveTrackingOptUpdateInterval = userSessionStatus.getToSelLiveTrackingOptUpdateInterval();
+		}
+		if (this.selectedLiveTrackingOptFlyToMode == null) {
+			this.selectedLiveTrackingOptFlyToMode = userSessionStatus.getToSelLiveTrackingOptFlyToMode().name();
+		}
+		// date period filter
+		if (this.selectedDatePeriodFilter == null) {
+			this.selectedDatePeriodFilter = userSessionStatus.getToSelDatePeriodFilter();
+		}
+		// search string filter.
+		if (this.selectedSearchStrFilter == null) {
+			this.selectedSearchStrFilter = userSessionStatus.getToSelSearchStrFilter();
+		}
+		// tracks view
+		if (this.selectedTracksView == null) {
+			this.selectedTracksView = userSessionStatus.getToSelTracksView();
+		}
+		// zoom mode for senders on map.
+		if (this.selectedTracksOverviewOptFlyToMode == null) {
+			this.selectedTracksOverviewOptFlyToMode = userSessionStatus.getToSelTracksOverviewOptFlyToMode().name();
+		}
+		// refresh interval.
+		if (this.selectedTracksOverviewOptRefresh == null) {
+			this.selectedTracksOverviewOptRefresh = userSessionStatus.getToSelTracksOverviewOptRefresh();
 		}
 	}
-	
+		
 	public static boolean requestHasValidActionExecutor(HttpServletRequest request) {
 		String actionExecutor = request.getParameter(REQUEST_PARAM_ACTION_EXECUTOR);
 		return (!StringUtils.isEmpty(actionExecutor) &&
@@ -207,20 +235,12 @@ public class TracksOverviewCmd {
 		this.actionExecutor = actionExecutor;
 	}
 
-	public TracksView getTracksView() {
-		return tracksView;
+	public TracksViewVo getSelectedTracksView() {
+		return selectedTracksView;
 	}
 
-	public void setTracksView(TracksView tracksView) {
-		this.tracksView = tracksView;
-	}
-
-	public String getCloudmadeApiKey() {
-		return cloudmadeApiKey;
-	}
-
-	public void setCloudmadeApiKey(String cloudmadeApiKey) {
-		this.cloudmadeApiKey = cloudmadeApiKey;
+	public void setSelectedTracksView(TracksViewVo selectedTracksView) {
+		this.selectedTracksView = selectedTracksView;
 	}
 
 	/**
@@ -251,25 +271,20 @@ public class TracksOverviewCmd {
 		this.defMapId = defMapId;
 	}
 
-	/**
-	 * @return the selectedSenderEntryIdx
-	 */
-	public Integer getSelectedSenderEntryIdx() {
-		return selectedSenderEntryIdx;
+	public String getSelectedSenderForCreateTrack() {
+		return selectedSenderForCreateTrack;
 	}
 
-	/**
-	 * @param selectedSenderEntryIdx the selectedSenderEntryIdx to set
-	 */
-	public void setSelectedSenderEntryIdx(Integer selectedSenderEntryIdx) {
-		this.selectedSenderEntryIdx = selectedSenderEntryIdx;
+	public void setSelectedSenderForCreateTrack(String selectedSenderForCreateTrack) {
+		this.selectedSenderForCreateTrack = selectedSenderForCreateTrack;
 	}
 
-	/**
-	 * @return the senderEntries
-	 */
-	public List<SenderEntry> getSenderEntries() {
-		return senderEntries;
+	public List<SenderEntry> getSenderEntriesForCreateTrack() {
+		return senderEntriesForCreateTrack;
+	}
+
+	public List<SenderEntry> getSenderEntriesForFilter() {
+		return senderEntriesForFilter;
 	}
 
 	/**
@@ -355,7 +370,42 @@ public class TracksOverviewCmd {
 			Integer selectedLiveTrackingOptUpdateInterval) {
 		this.selectedLiveTrackingOptUpdateInterval = selectedLiveTrackingOptUpdateInterval;
 	}	
-	
+
+	public List<StrOptionDsc> getTracksOverviewOptsFlyToMode() {
+		return tracksOverviewOptsFlyToMode;
+	}
+
+	public void setTracksOverviewOptsFlyToMode(
+			List<StrOptionDsc> tracksOverviewOptsFlyToMode) {
+		this.tracksOverviewOptsFlyToMode = tracksOverviewOptsFlyToMode;
+	}
+
+	public String getSelectedTracksOverviewOptFlyToMode() {
+		return selectedTracksOverviewOptFlyToMode;
+	}
+
+	public void setSelectedTracksOverviewOptFlyToMode(
+			String selectedTracksOverviewOptFlyToMode) {
+		this.selectedTracksOverviewOptFlyToMode = selectedTracksOverviewOptFlyToMode;
+	}
+
+	public List<IntOptionDsc> getTracksOverviewOptsDatePeriod() {
+		return tracksOverviewOptsDatePeriod;
+	}
+
+	public void setTracksOverviewOptsDatePeriod(
+			List<IntOptionDsc> tracksOverviewOptsDatePeriod) {
+		this.tracksOverviewOptsDatePeriod = tracksOverviewOptsDatePeriod;
+	}
+
+	public Integer getSelectedDatePeriodFilter() {
+		return selectedDatePeriodFilter;
+	}
+
+	public void setSelectedDatePeriodFilter(Integer selectedDatePeriodFilter) {
+		this.selectedDatePeriodFilter = selectedDatePeriodFilter;
+	}
+
 	/**
 	 * @return the tracksOverviewOptsRefresh
 	 */
@@ -371,47 +421,33 @@ public class TracksOverviewCmd {
 		this.tracksOverviewOptsRefresh = tracksOverviewOptsRefresh;
 	}
 
-	/**
-	 * @return the selectedTracksOverviewOptsRefresh
-	 */
-	public Integer getSelectedTracksOverviewOptsRefresh() {
-		return selectedTracksOverviewOptsRefresh;
+	public Integer getSelectedTracksOverviewOptRefresh() {
+		return selectedTracksOverviewOptRefresh;
 	}
 
-	/**
-	 * @param selectedTracksOverviewOptsRefresh the selectedTracksOverviewOptsRefresh to set
-	 */
-	public void setSelectedTracksOverviewOptsRefresh(
-			Integer selectedTracksOverviewOptsRefresh) {
-		this.selectedTracksOverviewOptsRefresh = selectedTracksOverviewOptsRefresh;
+	public void setSelectedTracksOverviewOptRefresh(
+			Integer selectedTracksOverviewOptRefresh) {
+		this.selectedTracksOverviewOptRefresh = selectedTracksOverviewOptRefresh;
 	}
 
-	/**
-	 * @return the liveTrackingOptsFlyToMode
-	 */
-	public List<IntOptionDsc> getLiveTrackingOptsFlyToMode() {
+	public List<StrOptionDsc> getLiveTrackingOptsFlyToMode() {
 		return liveTrackingOptsFlyToMode;
 	}
-	/**
-	 * @param liveTrackingOptsFlyToMode the liveTrackingOptsFlyToMode to set
-	 */
+
 	public void setLiveTrackingOptsFlyToMode(
-			List<IntOptionDsc> liveTrackingOptsFlyToMode) {
+			List<StrOptionDsc> liveTrackingOptsFlyToMode) {
 		this.liveTrackingOptsFlyToMode = liveTrackingOptsFlyToMode;
 	}
-	/**
-	 * @return the selectedLiveTrackingOptFlyToMode
-	 */
-	public Integer getSelectedLiveTrackingOptFlyToMode() {
+
+	public String getSelectedLiveTrackingOptFlyToMode() {
 		return selectedLiveTrackingOptFlyToMode;
 	}
-	/**
-	 * @param selectedLiveTrackingOptFlyToMode the selectedLiveTrackingOptFlyToMode to set
-	 */
+
 	public void setSelectedLiveTrackingOptFlyToMode(
-			Integer selectedLiveTrackingOptFlyToMode) {
+			String selectedLiveTrackingOptFlyToMode) {
 		this.selectedLiveTrackingOptFlyToMode = selectedLiveTrackingOptFlyToMode;
 	}
+
 	/**
 	 * @return the trackOptsReleaseStatus
 	 */
@@ -441,53 +477,12 @@ public class TracksOverviewCmd {
 		this.trackOptsActivityStatus = trackOptsActivityStatus;
 	}
 
-	/**
-	 * @return the senderFilterOptions
-	 */
-	public List<StrOptionDsc> getSenderFilterOptions() {
-		return senderFilterOptions;
-	}
-
-	/**
-	 * @return the selectedSenderFilter
-	 */
 	public String getSelectedSenderFilter() {
 		return selectedSenderFilter;
 	}
 
-	/**
-	 * @param selectedSenderFilter the selectedSenderFilter to set
-	 */
 	public void setSelectedSenderFilter(String selectedSenderFilter) {
 		this.selectedSenderFilter = selectedSenderFilter;
-	}
-
-	/**
-	 * @return the selectedDateFromFilter
-	 */
-	public DateTime getSelectedDateFromFilter() {
-		return selectedDateFromFilter;
-	}
-
-	/**
-	 * @param selectedDateFromFilter the selectedDateFromFilter to set
-	 */
-	public void setSelectedDateFromFilter(DateTime selectedDateFromFilter) {
-		this.selectedDateFromFilter = selectedDateFromFilter;
-	}
-
-	/**
-	 * @return the selectedDateToFilter
-	 */
-	public DateTime getSelectedDateToFilter() {
-		return selectedDateToFilter;
-	}
-
-	/**
-	 * @param selectedDateToFilter the selectedDateToFilter to set
-	 */
-	public void setSelectedDateToFilter(DateTime selectedDateToFilter) {
-		this.selectedDateToFilter = selectedDateToFilter;
 	}
 
 	/**

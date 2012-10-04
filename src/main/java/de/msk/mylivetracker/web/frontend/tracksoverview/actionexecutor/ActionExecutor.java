@@ -67,7 +67,7 @@ public enum ActionExecutor {
 		ITrackService trackService, ISenderService senderService,
 		TracksOverviewCmd cmd) 
 		throws ActionExecutionException {
-		this.action.preExecuteCheck(cmd);
+		this.action.preExecuteCheck(cmd, senderService);
 		return this.action.execute(request, user, 
 			applicationService, trackService, senderService, cmd);
 	}

@@ -16,17 +16,20 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
-import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.MapsUsedVo;
+import de.msk.mylivetracker.domain.user.UserSessionStatusVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
+import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
 import de.msk.mylivetracker.service.IApplicationService;
 import de.msk.mylivetracker.service.ISenderService;
 import de.msk.mylivetracker.service.ITrackService;
 import de.msk.mylivetracker.service.IUserService;
+import de.msk.mylivetracker.service.IUserSessionStatusService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 import de.msk.mylivetracker.web.frontend.util.CustomDateTimeEditor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
 import de.msk.mylivetracker.web.options.IntOptionDsc;
+import de.msk.mylivetracker.web.options.StrOptionDsc;
 import de.msk.mylivetracker.web.util.WebUtils;
  
 /**
@@ -43,33 +46,55 @@ import de.msk.mylivetracker.web.util.WebUtils;
 @SuppressWarnings("deprecation")
 public class TracksOverviewCtrl extends SimpleFormController {
 		
-	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(TracksOverviewCtrl.class);
 	
 	private List<BoolOptionDsc> liveTrackingOpts;
 	private List<IntOptionDsc> liveTrackingOptsKeepRecentPos;
 	private List<IntOptionDsc> liveTrackingOptsUpdateInterval;
-	private List<IntOptionDsc> liveTrackingOptsFlyToMode;
+	private List<StrOptionDsc> liveTrackingOptsFlyToMode;
 	
 	private List<BoolOptionDsc> trackOptsReleaseStatus;
 	private List<BoolOptionDsc> trackOptsActivityStatus;
 	
+	private List<StrOptionDsc> tracksOverviewOptsFlyToMode;
+	private List<IntOptionDsc> tracksOverviewOptsDatePeriod;
 	private List<IntOptionDsc> tracksOverviewOptsRefresh;
 	
+	private IUserSessionStatusService userSessionStatusService;
 	private IUserService userService;
 	private IApplicationService applicationService;
 	private ITrackService trackService;
 	private ISenderService senderService;
 	
 	private void updateCommandObject(HttpServletRequest request, TracksOverviewCmd cmd) {
-		UserWithRoleVo user = WebUtils.getCurrentUserWithRole();
-		MapsUsedVo mapsUsed = user.getOptions().getMapsUsed();
-		cmd.setMapsUsedStr(mapsUsed.getMapsUsedStr());
-		cmd.setDefMapId(mapsUsed.getDefMapId());
-		cmd.buildUpTrackFilters(user, this.userService, this.senderService);
-		List<SenderVo> senders =
-			this.senderService.getSenders(user.getUsername());
-		cmd.buildUpSenderEntries(senders);
+		UserWithRoleVo user = WebUtils.getCurrentUserWithRole(); 
+		// isUser = user is not a 'guest' and not a 'admin logged in as a user'.
+		boolean isUser = 
+			!user.getRole().equals(UserRole.Guest) && 
+			StringUtils.isEmpty(user.getAdminUsername());
+		log.debug("isUser=" + isUser);
+		UserSessionStatusVo currentUserSessionStatus = isUser ?
+			this.userSessionStatusService.getUserSessionStatus(
+				WebUtils.getCurrentUserWithRole()) :
+			UserSessionStatusVo.createDefault(
+				WebUtils.getCurrentUserWithRole(), 
+				this.senderService, 
+				this.liveTrackingOptsKeepRecentPos, 
+				this.liveTrackingOptsUpdateInterval,
+				this.tracksOverviewOptsDatePeriod,
+				this.tracksOverviewOptsRefresh);
+		log.debug("currentUserSessionStatus=" + currentUserSessionStatus);
+		cmd.init(request, this.senderService, currentUserSessionStatus);
+		if (isUser) {
+			UserSessionStatusVo newUserSessionStatus = 
+					cmd.getUserSessionStatus();
+			log.debug("newUserSessionStatus=" + newUserSessionStatus);
+			if (!currentUserSessionStatus.equals(newUserSessionStatus)) {
+				this.userSessionStatusService.updateUserSessionStatus(
+					newUserSessionStatus);
+				log.debug("saved newUserSessionStatus to database");
+			}
+		}
 	}
 
 	/* (non-Javadoc)
@@ -86,6 +111,8 @@ public class TracksOverviewCtrl extends SimpleFormController {
 			cmd.setLiveTrackingOptsKeepRecentPos(this.getLiveTrackingOptsKeepRecentPos());
 			cmd.setLiveTrackingOptsUpdateInterval(this.getLiveTrackingOptsUpdateInterval());
 			cmd.setLiveTrackingOptsFlyToMode(this.getLiveTrackingOptsFlyToMode());
+			cmd.setTracksOverviewOptsFlyToMode(this.getTracksOverviewOptsFlyToMode());
+			cmd.setTracksOverviewOptsDatePeriod(this.getTracksOverviewOptsDatePeriod());
 			cmd.setTracksOverviewOptsRefresh(this.getTracksOverviewOptsRefresh());
 			cmd.setTrackOptsReleaseStatus(this.trackOptsReleaseStatus);
 			cmd.setTrackOptsActivityStatus(this.trackOptsActivityStatus);
@@ -229,20 +256,32 @@ public class TracksOverviewCtrl extends SimpleFormController {
 			List<IntOptionDsc> liveTrackingOptsUpdateInterval) {
 		this.liveTrackingOptsUpdateInterval = liveTrackingOptsUpdateInterval;
 	}
-		
-	/**
-	 * @return the liveTrackingOptsFlyToMode
-	 */
-	public List<IntOptionDsc> getLiveTrackingOptsFlyToMode() {
+
+	public List<StrOptionDsc> getLiveTrackingOptsFlyToMode() {
 		return liveTrackingOptsFlyToMode;
 	}
 
-	/**
-	 * @param liveTrackingOptsFlyToMode the liveTrackingOptsFlyToMode to set
-	 */
 	public void setLiveTrackingOptsFlyToMode(
-			List<IntOptionDsc> liveTrackingOptsFlyToMode) {
+			List<StrOptionDsc> liveTrackingOptsFlyToMode) {
 		this.liveTrackingOptsFlyToMode = liveTrackingOptsFlyToMode;
+	}
+
+	public List<StrOptionDsc> getTracksOverviewOptsFlyToMode() {
+		return tracksOverviewOptsFlyToMode;
+	}
+
+	public void setTracksOverviewOptsFlyToMode(
+			List<StrOptionDsc> tracksOverviewOptsFlyToMode) {
+		this.tracksOverviewOptsFlyToMode = tracksOverviewOptsFlyToMode;
+	}
+
+	public List<IntOptionDsc> getTracksOverviewOptsDatePeriod() {
+		return tracksOverviewOptsDatePeriod;
+	}
+
+	public void setTracksOverviewOptsDatePeriod(
+			List<IntOptionDsc> tracksOverviewOptsDatePeriod) {
+		this.tracksOverviewOptsDatePeriod = tracksOverviewOptsDatePeriod;
 	}
 
 	/**
@@ -258,6 +297,15 @@ public class TracksOverviewCtrl extends SimpleFormController {
 	public void setTracksOverviewOptsRefresh(
 			List<IntOptionDsc> tracksOverviewOptsRefresh) {
 		this.tracksOverviewOptsRefresh = tracksOverviewOptsRefresh;
+	}
+
+	public IUserSessionStatusService getUserSessionStatusService() {
+		return userSessionStatusService;
+	}
+
+	public void setUserSessionStatusService(
+			IUserSessionStatusService userSessionStatusService) {
+		this.userSessionStatusService = userSessionStatusService;
 	}
 
 	/**

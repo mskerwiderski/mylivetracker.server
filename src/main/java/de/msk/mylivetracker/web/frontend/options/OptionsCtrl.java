@@ -56,7 +56,7 @@ public class OptionsCtrl extends SimpleFormController {
 	private List<BoolOptionDsc> commonsOptsEnDisabled;
 	private List<StrOptionDsc> commonsOptsTimeZone;
 	private List<StrOptionDsc> senderOptsRunningMode;
-	private List<IntOptionDsc> stPgTrOptsFlyToMode;
+	private List<StrOptionDsc> stPgTrOptsFlyToMode;
 	private List<IntOptionDsc> stPgTrOptsKeepRecentPos;
 	private List<IntOptionDsc> stPgTrOptsUpdateInterval;
 	private List<IntOptionDsc> supportedMaps;
@@ -322,17 +322,11 @@ public class OptionsCtrl extends SimpleFormController {
 		this.senderOptsRunningMode = senderOptsRunningMode;
 	}		
 
-	/**
-	 * @return the stPgTrOptsFlyToMode
-	 */
-	public List<IntOptionDsc> getStPgTrOptsFlyToMode() {
+	public List<StrOptionDsc> getStPgTrOptsFlyToMode() {
 		return stPgTrOptsFlyToMode;
 	}
 
-	/**
-	 * @param stPgTrOptsFlyToMode the stPgTrOptsFlyToMode to set
-	 */
-	public void setStPgTrOptsFlyToMode(List<IntOptionDsc> stPgTrOptsFlyToMode) {
+	public void setStPgTrOptsFlyToMode(List<StrOptionDsc> stPgTrOptsFlyToMode) {
 		this.stPgTrOptsFlyToMode = stPgTrOptsFlyToMode;
 	}
 

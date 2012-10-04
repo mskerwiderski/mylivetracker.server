@@ -11,17 +11,38 @@
      <link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet.ie-0.4.4.css'/>" />
 <![endif]-->
 <script type="text/javascript" src="<c:url value='/js/leaflet/leaflet-0.4.4.js'/>"></script>
-<script src="<c:url value='/js/leaflet/leaflet.fullscreen.js'/>"></script>
+<script src="<c:url value='/js/leaflet/leaflet.zoomfs.js'/>"></script>
 <script src="<c:url value='/js/leaflet/leaflet.providers-0.0.1.js'/>"></script>
 <script src="<c:url value='/js/map.commons.js'/>"></script>
-<style type="text/css">
-	#map { width: 700px; height: 433px; }
-	.leaflet-control-zoom-fullscreen { background-image: url(<c:url value='/js/leaflet/images/icon-fullscreen.png'/>); }
-	.leaflet-control-zoom-fullscreen.last { margin-top: 5px }
-	/* on selector per rule as explained here : http://www.sitepoint.com/html5-full-screen-api/ */
-	#map:-webkit-full-screen { width: 100% !important; height: 100% !important; }
-	#map:-moz-full-screen { width: 100% !important; height: 100% !important; }
-	#map:full-screen { width: 100% !important; height: 100% !important; }
+<style>
+    #map_canvas {
+    	height: 100%;
+      	width: 100%;
+    }
+    #map_canvas.leaflet-fullscreen {
+    	position: fixed;
+      	width: 100%;
+      	height: 100%;
+      	top: 0;
+      	right: 0;
+      	bottom: 0;
+     	left: 0;
+      	margin: 0;
+      	padding: 0;
+      	border: 0;
+    }
+    .leaflet-control-fullscreen {
+    	background-image: url(<c:url value='img/others/fullscreen.png'/>);
+      	margin-bottom: 5px;
+    }
+    .leaflet-control-autozoom-on {
+    	background-image: url(<c:url value='img/musthave/zoom_out.png'/>);
+      	margin-bottom: 5px;
+    }
+    .leaflet-control-autozoom-off {
+    	background-image: url(<c:url value='img/musthave/zoom_in.png'/>);
+      	margin-bottom: 5px;
+    }
 </style>
 
 <div style="font-size: small;background-color: "></div>
@@ -285,23 +306,23 @@
 	
 	// fit map or not.
 	function mlt_fitMapOrNot(fitMap) {	
-		var flyToMode = <c:out value='${flyToMode}' />;
+		var flyToMode = "<c:out value='${flyToMode}' />";
 		if (fitMap) {
-			if (flyToMode != 2) {
+			if (flyToMode != "FlyToCurrentPosition") {
 				mlt_flyToView();
 			} else {
 				mlt_flyToCurrentPosition(true);
 			}
 			return;
 		}	
-		if (flyToMode == 0) {
+		if (flyToMode == "None") {
 			return;
 		}
-		if (flyToMode == 1) {
+		if (flyToMode == "FlyToView") {
 			mlt_flyToView();
 			return;
 		}		
-		if (flyToMode == 2) {
+		if (flyToMode == "FlyToCurrentPosition") {
 			mlt_flyToCurrentPosition(false);
 			return;
 		}
@@ -549,13 +570,24 @@
 		var map = new L.Map(anker, {
 			center: defCenter,
 			zoom: defZoom,
-			attributionControl: true
+			attributionControl: true,
+			zoomControl: false,
 		});
-		var fullscreen = new L.Control.FullScreen();
-		map.addControl(fullscreen);
 		var defaultLayer = supportedLayers[defMapId];
 		map.addLayer(defaultLayer);
-		map.addControl(new L.Control.Layers(baseLayers,'',{collapsed: true}));
+		map.addControl(new L.Control.Layers(baseLayers,'',{collapsed: true, position:'topleft'}));
+		var zoomFS = new L.Control.ZoomFS({position:'topright'});
+	    map.addControl(zoomFS);
+	    
+	    // you can bind to 2 events: enterFullscreen and exitFullscreen
+	    // note that these events are on the map object, not the zoomfs object... 
+	    map.on('autoZoomOn', function(){
+	      if(window.console) window.console.log('autoZoomOn');
+	    });
+	    map.on('autoZoomOff', function(){
+	      if(window.console) window.console.log('autoZoomOff');
+	    });
+	    
 		return map;
 	}
 	

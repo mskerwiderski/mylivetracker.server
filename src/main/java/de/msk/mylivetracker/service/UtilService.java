@@ -58,12 +58,6 @@ public class UtilService implements IUtilService {
 					this.applicationService.getParameterValueAsLong(
 						Parameter.TrackLifeTimeInMSecs), 
 					this.trackService));
-			// TODO StatisticsCleaner
-//			utilTaskExecutor.execute(
-//				new StatisticsCleaner(
-//					this.applicationService.getParameterValueAsLong(
-//						Parameter.LogLifeTimeInMSecs), 
-//					this.statisticsService));
 			log.debug("clean tasks started.");
 		} else {
 			log.debug("clean tasks NOT started.");

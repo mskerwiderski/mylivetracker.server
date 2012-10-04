@@ -112,6 +112,8 @@
         <property name="liveTrackingOptsKeepRecentPos" ref="liveTrackingOptsKeepRecentPos"/>
         <property name="liveTrackingOptsUpdateInterval" ref="liveTrackingOptsUpdateInterval"/>
         <property name="liveTrackingOptsFlyToMode" ref="liveTrackingOptsFlyToMode"/>
+        <property name="tracksOverviewOptsFlyToMode" ref="tracksOverviewOptsFlyToMode"/>
+        <property name="tracksOverviewOptsDatePeriod" ref="tracksOverviewOptsDatePeriod"/>
         <property name="tracksOverviewOptsRefresh" ref="tracksOverviewOptsRefresh"/>
         <property name="trackOptsReleaseStatus" ref="trackOptsReleaseStatus" />
         <property name="trackOptsActivityStatus" ref="trackOptsActivityStatus" />
@@ -120,6 +122,7 @@
         <property name="commandName" value="tracksOverviewCmd" />
         <property name="formView" value="tracks_overview"/>
         <property name="successView" value="tracks_overview"/>
+        <property name="userSessionStatusService" ref="userSessionStatusService" />
         <property name="userService" ref="userService" />
         <property name="applicationService" ref="applicationService" />
         <property name="trackService" ref="trackService" />

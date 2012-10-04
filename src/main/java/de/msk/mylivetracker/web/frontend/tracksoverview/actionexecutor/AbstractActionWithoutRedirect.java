@@ -21,12 +21,9 @@ import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCm
  */
 public abstract class AbstractActionWithoutRedirect implements IAction {
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.IAction#preExecuteCheck(de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd)
-	 */
 	@Override
-	public void preExecuteCheck(TracksOverviewCmd cmd)
-			throws ActionExecutionException {
+	public void preExecuteCheck(TracksOverviewCmd cmd,
+		ISenderService senderService) throws ActionExecutionException {
 		// noop.
 	}
 

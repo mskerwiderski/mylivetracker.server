@@ -55,7 +55,7 @@ public class OptionsCmd {
 	private List<StrOptionDsc> commonsOptsTimeZone;
 	private List<StrOptionDsc> senderOptsRunningMode;
 	
-	private List<IntOptionDsc> stPgTrOptsFlyToMode;
+	private List<StrOptionDsc> stPgTrOptsFlyToMode;
 	private List<IntOptionDsc> stPgTrOptsKeepRecentPos;
 	private List<IntOptionDsc> stPgTrOptsUpdateInterval;
 	
@@ -268,18 +268,12 @@ public class OptionsCmd {
 	public void setTrackRouteOptsWidth(List<IntOptionDsc> trackRouteOptsWidth) {
 		this.trackRouteOptsWidth = trackRouteOptsWidth;
 	}
-		
-	/**
-	 * @return the stPgTrOptsFlyToMode
-	 */
-	public List<IntOptionDsc> getStPgTrOptsFlyToMode() {
+
+	public List<StrOptionDsc> getStPgTrOptsFlyToMode() {
 		return stPgTrOptsFlyToMode;
 	}
 
-	/**
-	 * @param stPgTrOptsFlyToMode the stPgTrOptsFlyToMode to set
-	 */
-	public void setStPgTrOptsFlyToMode(List<IntOptionDsc> stPgTrOptsFlyToMode) {
+	public void setStPgTrOptsFlyToMode(List<StrOptionDsc> stPgTrOptsFlyToMode) {
 		this.stPgTrOptsFlyToMode = stPgTrOptsFlyToMode;
 	}
 

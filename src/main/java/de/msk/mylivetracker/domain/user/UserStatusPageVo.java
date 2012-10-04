@@ -3,6 +3,7 @@ package de.msk.mylivetracker.domain.user;
 import java.io.Serializable;
 
 import de.msk.mylivetracker.domain.StatusParamsVo;
+import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
 import de.msk.mylivetracker.service.IApplicationService;
 import de.msk.mylivetracker.service.IStatusParamsService;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
@@ -30,7 +31,7 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 	private Boolean trackingLive;
 	private Integer trackingKeepRecentPositions;
 	private Integer trackingUpdateIntervalInSecs;
-	private Integer trackingFlyToMode;
+	private TrackingFlyToModeVo trackingFlyToMode;
 	private Integer windowWidth;
 	private Boolean fullScreen;
 	private Integer windowHeight;	
@@ -46,7 +47,7 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 		this.trackingLive = true;
 		this.trackingKeepRecentPositions = -1;
 		this.trackingUpdateIntervalInSecs = 30;
-		this.trackingFlyToMode = StatusParamsVo.TrackingFlyToMode.None.ordinal();
+		this.trackingFlyToMode = TrackingFlyToModeVo.None;
 		this.fullScreen = false;
 		this.windowWidth = 260;
 		this.windowHeight = 260;		
@@ -179,17 +180,11 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 		this.trackingUpdateIntervalInSecs = trackingUpdateIntervalInSecs;
 	}
 	
-	/**
-	 * @return the trackingFlyToMode
-	 */
-	public Integer getTrackingFlyToMode() {
+	public TrackingFlyToModeVo getTrackingFlyToMode() {
 		return trackingFlyToMode;
 	}
 
-	/**
-	 * @param trackingFlyToMode the trackingFlyToMode to set
-	 */
-	public void setTrackingFlyToMode(Integer trackingFlyToMode) {
+	public void setTrackingFlyToMode(TrackingFlyToModeVo trackingFlyToMode) {
 		this.trackingFlyToMode = trackingFlyToMode;
 	}
 

@@ -74,8 +74,8 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 		new ReqParam<String>("recTrackId", String.class);
 	public static ReqParam<Integer> PARAM_TRACKING_UPDATE_INTERVAL_IN_SECS = 
 		new ReqParam<Integer>("intervalSecs", Integer.class);
-	public static ReqParam<Integer> PARAM_TRACKING_FLY_TO_MODE = 
-		new ReqParam<Integer>("flyToMode", Integer.class);
+	public static ReqParam<String> PARAM_TRACKING_FLY_TO_MODE = 
+		new ReqParam<String>("flyToMode", String.class);
 	public static ReqParam<Boolean> PARAM_WINDOW_FULLSCREEN = 
 		new ReqParam<Boolean>("fullscreen", Boolean.class);
 	public static ReqParam<Integer> PARAM_WINDOW_WIDTH = 

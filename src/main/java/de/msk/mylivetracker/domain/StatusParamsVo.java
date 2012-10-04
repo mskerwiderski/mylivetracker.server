@@ -18,10 +18,6 @@ public class StatusParamsVo implements Serializable {
 	
 	private static final long serialVersionUID = 3111256411117198388L;
 	
-	public enum TrackingFlyToMode {
-		None, FlyToView, FlyToCurrentPosition
-	};
-	
 	private String statusParamsId;
 	private String userId;
 	private String ticketId;
@@ -30,7 +26,7 @@ public class StatusParamsVo implements Serializable {
 	private Boolean trackingLive;
 	private Integer trackingKeepRecentPositions;
 	private Integer trackingUpdateIntervalInSecs;
-	private Integer trackingFlyToMode;
+	private TrackingFlyToModeVo trackingFlyToMode;
 	private Boolean windowFullscreen;
 	private Integer windowWidth;
 	private Integer windowHeight;
@@ -141,18 +137,12 @@ public class StatusParamsVo implements Serializable {
 	public void setTrackingUpdateIntervalInSecs(Integer trackingUpdateIntervalInSecs) {
 		this.trackingUpdateIntervalInSecs = trackingUpdateIntervalInSecs;
 	}
-	
-	/**
-	 * @return the trackingFlyToMode
-	 */
-	public Integer getTrackingFlyToMode() {
+
+	public TrackingFlyToModeVo getTrackingFlyToMode() {
 		return trackingFlyToMode;
 	}
 
-	/**
-	 * @param trackingFlyToMode the trackingFlyToMode to set
-	 */
-	public void setTrackingFlyToMode(Integer trackingFlyToMode) {
+	public void setTrackingFlyToMode(TrackingFlyToModeVo trackingFlyToMode) {
 		this.trackingFlyToMode = trackingFlyToMode;
 	}
 

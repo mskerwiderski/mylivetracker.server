@@ -29,10 +29,10 @@ table.display tr.even.emergency {
 </style>
 
 <script type="text/javascript">
-	function refreshTrackOverview(tracksView) {
+	function refreshTrackOverview(selectedTracksView) {
 		document.forms["tracksOverviewForm"].elements["actionExecutor"].value = "RefreshTrackOverview";
-		if (tracksView != null) {
-			document.forms["tracksOverviewForm"].elements["tracksView"].value = tracksView;
+		if (selectedTracksView != null) {
+			document.forms["tracksOverviewForm"].elements["selectedTracksView"].value = selectedTracksView;
 		}
 		document.forms["tracksOverviewForm"].method = "post";
 		document.forms["tracksOverviewForm"].submit();
@@ -136,13 +136,11 @@ table.display tr.even.emergency {
 	
 	function mlt_refreshTracksOverview() {
    		var senderId = document.forms["tracksOverviewForm"].elements["selectedSenderFilter"].value;
-   		var dateFrom = document.forms["tracksOverviewForm"].elements["selectedDateFromFilter"].value;
-   		var dateTo = document.forms["tracksOverviewForm"].elements["selectedDateToFilter"].value;
+   		var datePeriod = document.forms["tracksOverviewForm"].elements["selectedDatePeriodFilter"].value;
    		var searchStr = document.forms["tracksOverviewForm"].elements["selectedSearchStrFilter"].value;
 		$.getJSON('tracks_list.do', {
 			senderId:senderId,
-			dateFrom:dateFrom,
-			dateTo:dateTo,
+			datePeriod:datePeriod,
 			searchStr:searchStr,
 			onlyActive:mlt_getOnlyActiveTracks},
 			mlt_renderTracksOverview
@@ -160,7 +158,7 @@ table.display tr.even.emergency {
 <script>
 var autoRefreshTimer = null;
 function startAutoRefresh() {
-	autoRefreshTimer = document.forms["tracksOverviewForm"].elements["selectedTracksOverviewOptsRefresh"].value;
+	autoRefreshTimer = document.forms["tracksOverviewForm"].elements["selectedTracksOverviewOptRefresh"].value;
 	autoRefresh();
 }
 function autoRefresh() {			
@@ -190,33 +188,34 @@ window.onload=startAutoRefresh;
 	commandName="tracksOverviewCmd">
 
 	<form:hidden path="actionExecutor"/>
-	<form:hidden path="tracksView"/>
+	<form:hidden path="selectedTracksView"/>
 	<form:hidden path="selectedTrackId"/>	
 	<form:hidden path="selectedTrackName"/>
 	<form:hidden path="selectedTrackActivityStatus"/>
 	<form:hidden path="selectedTrackReleaseStatus"/>
 	
 <table> 
-	<tr>
+	<tr style="padding: 0px;border-spacing: 0px;">
 		<security:authorize ifAnyGranted="Admin,User">
-		<c:if test="${!empty tracksOverviewCmd.senderEntries}">
-		<td style="width:150px;white-space: nowrap;">
+		<c:if test="${!empty tracksOverviewCmd.senderEntriesForCreateTrack}">
+		<td style="padding: 0px;border-spacing: 0px;width:150px;white-space: nowrap;">
 			<table>
-			<tr><td style="white-space: nowrap;border:none;">
+			<tr><td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border:none;">
 			<form:select									 
-				path="selectedSenderEntryIdx" 				 
+				path="selectedSenderForCreateTrack" 				 
 				multiple="false"
 				cssStyle="border-style: groove; border-width: 2px;"
+				onchange="javascript:refreshTrackOverview(null);"
 				>
 				<c:forEach var="senderEntry" 
-					items="${tracksOverviewCmd.senderEntries}"
+					items="${tracksOverviewCmd.senderEntriesForCreateTrack}"
 					varStatus="status">
-    				<form:option value="${status.index}"  
+    				<form:option value="${senderEntry.value}"  
     					label="${senderEntry.label}"/>
   				</c:forEach>
 			</form:select>
 			</td>
-			<td style="white-space: nowrap;border:none;">			
+			<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border:none;">			
 			<div class="mlt-button">
 				&nbsp;<a href="#" onclick="javascript:createTrack();">
 					<spring:message code='overview.create.track.button' />
@@ -227,15 +226,15 @@ window.onload=startAutoRefresh;
 		</td>
 		</c:if>
 		</security:authorize>
-		<td>
+		<td style="padding: 0px;border-spacing: 0px;">
 		<table>
 		<tr>
-		<td style="white-space: nowrap;border:none;">
+		<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border:none;">
 			&nbsp;<spring:message code="overview.livetracking" />&nbsp;
 			<c:set var="selectedLiveTrackingOpt">${tracksOverviewCmd.selectedLiveTrackingOpt}</c:set>
 			<select id="selectedLiveTrackingOpt" name="selectedLiveTrackingOpt" 
 				style="border-style: groove; border-width: 2px;"
-				onchange="javascript:switchLiveTrackingOnOff();"> 
+				onchange="javascript:refreshTrackOverview(null);">
 				<c:forEach var="liveTrackingOpt" items="${tracksOverviewCmd.liveTrackingOpts}">
  						<c:choose>
    						<c:when test="${liveTrackingOpt.value == selectedLiveTrackingOpt}">
@@ -252,11 +251,11 @@ window.onload=startAutoRefresh;
 				</c:forEach>
 			</select>&nbsp;			
 		</td>
-		<td id="divLiveTrackingOpts" style="width:100%; white-space: nowrap;border:none;">
+		<td id="divLiveTrackingOpts" style="padding: 0px;border-spacing: 0px;width:100%; white-space: nowrap;border:none;">
 			&nbsp;<spring:message code="overview.livetracking.keep.positions" />&nbsp;		
 			<c:set var="selectedLiveTrackingOptKeepRecentPos">${tracksOverviewCmd.selectedLiveTrackingOptKeepRecentPos}</c:set>		
 			<select id="selectedLiveTrackingOptKeepRecentPos" name="selectedLiveTrackingOptKeepRecentPos"
-				style="border-style: groove; border-width: 2px;" > 
+				style="border-style: groove; border-width: 2px;" onchange="javascript:refreshTrackOverview(null);"> 
 				<c:forEach var="optKeepRecentPosition" items="${tracksOverviewCmd.liveTrackingOptsKeepRecentPos}">
  						<c:choose>
    						<c:when test="${optKeepRecentPosition.value == selectedLiveTrackingOptKeepRecentPos}">
@@ -275,7 +274,7 @@ window.onload=startAutoRefresh;
 			&nbsp;<spring:message code="overview.livetracking.updateinterval" />&nbsp;
 			<c:set var="selectedLiveTrackingOptUpdateInterval">${tracksOverviewCmd.selectedLiveTrackingOptUpdateInterval}</c:set>	
 			<select id="selectedLiveTrackingOptUpdateInterval" name="selectedLiveTrackingOptUpdateInterval"
-				style="border-style: groove; border-width: 2px;" > 
+				style="border-style: groove; border-width: 2px;" onchange="javascript:refreshTrackOverview(null);"> 
 				<c:forEach var="optUpdateInterval" items="${tracksOverviewCmd.liveTrackingOptsUpdateInterval}">
  						<c:choose>
    						<c:when test="${optUpdateInterval.value == selectedLiveTrackingOptUpdateInterval}">
@@ -294,7 +293,7 @@ window.onload=startAutoRefresh;
 			&nbsp;<spring:message code="overview.livetracking.flytomode" />&nbsp;
 			<c:set var="selectedLiveTrackingOptFlyToMode">${tracksOverviewCmd.selectedLiveTrackingOptFlyToMode}</c:set>
 			<select id="selectedLiveTrackingOptFlyToMode" name="selectedLiveTrackingOptFlyToMode" 
-				style="border-style: groove; border-width: 2px;" > 
+				style="border-style: groove; border-width: 2px;" onchange="javascript:refreshTrackOverview(null);"> 
 				<c:forEach var="optFlyToMode" items="${tracksOverviewCmd.liveTrackingOptsFlyToMode}">
  						<c:choose>
    						<c:when test="${optFlyToMode.value == selectedLiveTrackingOptFlyToMode}">
@@ -317,49 +316,43 @@ window.onload=startAutoRefresh;
 </table>
 <table>
 	<tr>	
-		<td style="height:35px;white-space: nowrap;width:100%;">
+		<td style="padding: 0px;border-spacing: 0px;height:35px;white-space: nowrap;width:100%;">
 			<table><tr><td style="border:none;">
-			<c:set var="selectedSenderFilter">${tracksOverviewCmd.selectedSenderFilter}</c:set>		
-			<select id="selectedSenderFilter" name="selectedSenderFilter" 
+			<c:set var="selectedDatePeriodFilter">${tracksOverviewCmd.selectedDatePeriodFilter}</c:set>
+			<select id="selectedDatePeriodFilter" name="selectedDatePeriodFilter"
+				style="border-style: groove; border-width: 2px;" 
+				onchange="javascript:refreshTrackOverview(null);" > 
+				<c:forEach var="optDatePeriod" items="${tracksOverviewCmd.tracksOverviewOptsDatePeriod}">
+ 						<c:choose>
+   						<c:when test="${optDatePeriod.value == selectedDatePeriodFilter}">
+					    	<option value="${optDatePeriod.value}" selected>
+					        	<spring:message code="${optDatePeriod.label}" />
+					      	</option>
+					    </c:when>
+				    	<c:otherwise>
+				      		<option value="${optDatePeriod.value}" >
+					        	<spring:message code="${optDatePeriod.label}" />
+					      	</option>
+					    </c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</select>
+			&nbsp;<form:select									 
+				path="selectedSenderFilter" 				 
+				multiple="false"
+				cssStyle="border-style: groove; border-width: 2px;"
 				onchange="javascript:refreshTrackOverview(null);"
-				style="border-style: groove; border-width: 2px;" > 
-					<c:forEach var="optSenderFilter" items="${tracksOverviewCmd.senderFilterOptions}">											
-					    	<c:choose>
-	   						<c:when test="${optSenderFilter.value eq selectedSenderFilter}">
-						    	<option value="${optSenderFilter.value}" selected>
-						        	<spring:message 
-						        		code="${optSenderFilter.label}" 
-						        		text="${optSenderFilter.label}" 
-						        	/>
-						      	</option>
-						    </c:when>
-					    	<c:otherwise>
-					      		<option value="${optSenderFilter.value}" >										      		
-						        	<spring:message 
-						        		code="${optSenderFilter.label}" 
-						        		text="${optSenderFilter.label}" 
-						        	/>
-						      	</option>
-						    </c:otherwise>
-						</c:choose>									
-					</c:forEach>
-				</select>	
-			&nbsp;<spring:message code="overview.label.period.from" />&nbsp;						
-			<form:input cssStyle="width:85px; text-align:center; border-style: groove; border-width: 2px;" 
-				onchange="javascript:refreshTrackOverview(null);"
-				path="selectedDateFromFilter"/>
-			&nbsp;<spring:message code="overview.label.period.to" />&nbsp;
-			<form:input cssStyle="width:85px; text-align:center; border-style: groove; border-width: 2px;"
-				onchange="javascript:refreshTrackOverview(null);"
-				path="selectedDateToFilter"/>								
-			<script>			 					
-				$.datepicker.setDefaults(<spring:message code="datepicker.i18n" />);									
-				$('#selectedDateFromFilter').datepicker({ dateFormat: 'dd.mm.yy' });
-				$('#selectedDateToFilter').datepicker({ dateFormat: 'dd.mm.yy' });				
-			</script>						
+				>
+				<c:forEach var="senderEntry" 
+					items="${tracksOverviewCmd.senderEntriesForFilter}"
+					varStatus="status">
+    				<form:option value="${senderEntry.value}"  
+    					label="${senderEntry.label}"/>
+  				</c:forEach>
+			</form:select>
 			&nbsp;<spring:message code="overview.label.track.name.search" />&nbsp;
 			<spring:message code="overview.track.table.title.track.name.search" var="titleTrackNameSearch" />
-			<form:input cssStyle="width:200px; text-align:left; border-style: groove; border-width: 2px;"
+			<form:input cssStyle="width:150px; text-align:left; border-style: groove; border-width: 2px;"
 				onkeypress="javascript:checkSearchEnterPressed();"
 				path="selectedSearchStrFilter"
 				title="${titleTrackNameSearch}" />
@@ -380,12 +373,12 @@ window.onload=startAutoRefresh;
 			</script>		
 			</td></tr></table>			
 		</td> 
-		<td style="text-align: right;">
+		<td style="padding: 0px;border-spacing: 0px;text-align: right;">
 		<table><tr style="text-align: right;">
-		<td style="white-space: nowrap;border:none;text-align: right;">	
+		<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border:none;text-align: right;">	
 			<div class="mlt-button">
 				<c:choose>
-					<c:when test="${tracksOverviewCmd.tracksView eq 'Table'}">
+					<c:when test="${tracksOverviewCmd.selectedTracksView eq 'Table'}">
 						&nbsp;<a href="#" style="width:30px;" onclick="javascript:refreshTrackOverview('Map');">					
 							<img src="img/led/map.png" style="border: none; margin-left: -7px;"/>
 						</a>&nbsp;
@@ -397,30 +390,70 @@ window.onload=startAutoRefresh;
 					</c:otherwise>
 				</c:choose>
 			</div>						
-		</td>		
-		<td style="white-space: nowrap;border:none;text-align: right;">
-			&nbsp;<spring:message code="overview.refresh.interval" />&nbsp;
-			<c:set var="selectedTracksOverviewOptsRefresh">${tracksOverviewCmd.selectedTracksOverviewOptsRefresh}</c:set>	
-			<select id="selectedTracksOverviewOptsRefresh" name="selectedTracksOverviewOptsRefresh"
-				style="border-style: groove; border-width: 2px;" 
-				onchange="javascript:refreshTrackOverview(null);" > 
-				<c:forEach var="optRefresh" items="${tracksOverviewCmd.tracksOverviewOptsRefresh}">
- 						<c:choose>
-   						<c:when test="${optRefresh.value == selectedTracksOverviewOptsRefresh}">
-					    	<option value="${optRefresh.value}" selected>
-					        	<spring:message code="${optRefresh.label}" />
-					      	</option>
-					    </c:when>
-				    	<c:otherwise>
-				      		<option value="${optRefresh.value}" >
-					        	<spring:message code="${optRefresh.label}" />
-					      	</option>
-					    </c:otherwise>
-					</c:choose>
-				</c:forEach>
-			</select>&nbsp;
+		</td>	
+		<c:choose>
+			<c:when test="${tracksOverviewCmd.selectedTracksView eq 'Map'}">
+				<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border:none;text-align: right;">
+				<table style="padding: 0px;border-spacing: 0px;">
+					<tr><td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border: none;text-align: left;font-size: x-small;">
+					&nbsp;<spring:message code="overview.map.flytomode" />&nbsp;
+					</td></tr>
+					<tr><td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border: none;text-align: left;">
+					<c:set var="selectedTracksOverviewOptFlyToMode">${tracksOverviewCmd.selectedTracksOverviewOptFlyToMode}</c:set>
+					<select id="selectedTracksOverviewOptFlyToMode" name="selectedTracksOverviewOptFlyToMode" 
+						style="border-style: groove; border-width: 2px;" 
+						onchange="javascript:refreshTrackOverview(null);"> 
+						<c:forEach var="optMapFlyToMode" items="${tracksOverviewCmd.tracksOverviewOptsFlyToMode}">
+		 						<c:choose>
+		   						<c:when test="${optMapFlyToMode.value == selectedTracksOverviewOptFlyToMode}">
+							    	<option value="${optMapFlyToMode.value}" selected>
+							        	<spring:message code="${optMapFlyToMode.label}" />
+							      	</option>
+							    </c:when>
+						    	<c:otherwise>
+						      		<option value="${optMapFlyToMode.value}" >
+							        	<spring:message code="${optMapFlyToMode.label}" />
+							      	</option>
+							    </c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
+					</td></tr>
+				</table>
+				</td>	
+			</c:when>
+			<c:otherwise>
+			</c:otherwise>
+		</c:choose>
+		<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border:none;text-align: right;">
+			<table style="padding: 0px;border-spacing: 0px;">
+				<tr><td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border: none;text-align: left;font-size: x-small;">
+					&nbsp;<spring:message code="overview.refresh.interval" />&nbsp;
+				</td></tr>	
+				<c:set var="selectedTracksOverviewOptRefresh">${tracksOverviewCmd.selectedTracksOverviewOptRefresh}</c:set>
+				<tr><td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border: none;text-align: left;">	
+				<select id="selectedTracksOverviewOptRefresh" name="selectedTracksOverviewOptRefresh"
+					style="border-style: groove; border-width: 2px;" 
+					onchange="javascript:refreshTrackOverview(null);" > 
+					<c:forEach var="optRefresh" items="${tracksOverviewCmd.tracksOverviewOptsRefresh}">
+	 						<c:choose>
+	   						<c:when test="${optRefresh.value == selectedTracksOverviewOptRefresh}">
+						    	<option value="${optRefresh.value}" selected>
+						        	<spring:message code="${optRefresh.label}" />
+						      	</option>
+						    </c:when>
+					    	<c:otherwise>
+					      		<option value="${optRefresh.value}" >
+						        	<spring:message code="${optRefresh.label}" />
+						      	</option>
+						    </c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</select>
+				</td></tr>
+			</table>
 		</td>
-		<td style="white-space: nowrap;border:none;text-align: right;">	
+		<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border:none;text-align: right;">	
 			<div class="mlt-button">
 				&nbsp;<a href="#" onclick="javascript:mlt_refreshTracksOverview();" style="width:30px;">					
 					<img id="refreshIcon" src="img/led/arrow_refresh.png" style="border: none; margin-left: -7px;"/>
@@ -434,7 +467,7 @@ window.onload=startAutoRefresh;
 <hr/>	
 	<div id="divTracks" >
 		<c:choose>
-			<c:when test="${tracksOverviewCmd.tracksView eq 'Table'}">
+			<c:when test="${tracksOverviewCmd.selectedTracksView eq 'Table'}">
 				<tiles:insertAttribute name="tracks-as-table" />
 			</c:when>
 			<c:otherwise>

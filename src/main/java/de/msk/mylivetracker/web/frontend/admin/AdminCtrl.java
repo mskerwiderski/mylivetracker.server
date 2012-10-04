@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
+import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
 import de.msk.mylivetracker.domain.track.TrackFilterVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserPlainVo;
@@ -223,7 +224,7 @@ public class AdminCtrl extends ParameterizableViewController {
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_LIVE, true)	
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_KEEP_RECENT_POSITIONS, 0)
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_UPDATE_INTERVAL_IN_SECS, 5)
-				.add(AbstractTrackingCtrl.PARAM_TRACKING_FLY_TO_MODE, 0)
+				.add(AbstractTrackingCtrl.PARAM_TRACKING_FLY_TO_MODE, TrackingFlyToModeVo.None.name())
 				.add(AbstractTrackingCtrl.PARAM_WINDOW_FULLSCREEN, true)
 				.add(AbstractTrackingCtrl.PARAM_SHOW_TRACK_INFO, true));							
 		
@@ -254,7 +255,6 @@ public class AdminCtrl extends ParameterizableViewController {
 		model.put("uploadProcessors", uploadProcessors);
 		model.put("storePosProcessors", storePosProcessorsRO);
 		model.put("result", result);
-		model.put("emailAddresses", this.userService.getEmailAddressesOfAllUsers());
 		model.put("trackListResult", trackListResult);
 		model.put("trackUrlMap", trackUrlMap);
 		model.put("demoStatus", demoStatus);

@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
+import de.msk.mylivetracker.service.IApplicationService;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
 import de.msk.mylivetracker.web.uploader.processor.DataPacketCreator;
 import de.msk.mylivetracker.web.uploader.processor.ProcessorType;
@@ -29,6 +30,7 @@ public class UdpServer extends Thread {
 
 	private static final Log log = LogFactory.getLog(UdpServer.class);
 	
+	private IApplicationService applicationService;
 	private IStatisticsService statisticsService;
 	
 	private UdpServerConfig udpServerConfig;
@@ -66,6 +68,14 @@ public class UdpServer extends Thread {
 	@Override
 	public synchronized void start() {
 		boolean running = false;
+		if (!this.applicationService.isUdpPortUsed(
+			this.udpServerConfig.getListenPort())) {
+			log.info(getName() + 
+				": server at port " + 
+				udpServerConfig.getListenPort() + 
+				" skipped."); 
+			return;
+		}
 		try {
 			serverSocket = new DatagramSocket(udpServerConfig.getListenPort());
 			setShutdown(false);
@@ -133,10 +143,7 @@ public class UdpServer extends Thread {
 				serverSocket.receive(packet);	
 				this.createAndRunProcessor(serverSocket, packet);				
 			} catch (Exception e) {
-				log.info(this.getName() + 
-					": exception while running server: " + 
-					e.getMessage());	
-				e.printStackTrace();
+				log.fatal(e);	
 			}
 		}		
 	}
@@ -195,6 +202,14 @@ public class UdpServer extends Thread {
 	 */
 	public void setServerSocket(DatagramSocket serverSocket) {
 		this.serverSocket = serverSocket;
+	}
+
+	public IApplicationService getApplicationService() {
+		return applicationService;
+	}
+
+	public void setApplicationService(IApplicationService applicationService) {
+		this.applicationService = applicationService;
 	}
 
 	/**

@@ -44,7 +44,7 @@
 			&nbsp;<c:out value="${result}"/>&nbsp;
 		</td>
 		<td style="text-align:right;white-space: nowrap;">
-			<a href="mailto:support@mylivetracker.de?bcc=<c:out value='${emailAddresses}'/>">Email to users (bcc)</a>
+			&nbsp;
 		</td>
 		<td style="text-align:right;white-space: nowrap;">
 			<div class="mlt-button">

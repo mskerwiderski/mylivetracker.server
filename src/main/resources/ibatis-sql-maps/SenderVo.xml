@@ -77,6 +77,6 @@
   		<isNotNull prepend="where" property="userId">
   			t.USER_ID = #userId#
   		</isNotNull> 
-  		order by t.SENDER_ID asc  		
+  		order by t.NAME asc  		
   	</select>   	
 </sqlMap>

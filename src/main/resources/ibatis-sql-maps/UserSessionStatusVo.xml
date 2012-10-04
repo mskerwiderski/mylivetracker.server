@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="UserSessionStatusVo">
+  	
+	<typeAlias alias="userSessionStatus" 
+		type="de.msk.mylivetracker.domain.user.UserSessionStatusVo"/>			
+    		
+    <resultMap id="userSessionStatusResult" class="userSessionStatus">
+	    <result property="userId" column="USER_ID" />
+	    <result property="lastUpdated" column="LAST_UPDATED" />
+		<result property="toSelSenderForCreateTrack" column="TO_SEL_SENDER_FOR_CREATE_TRACK" />
+		<result property="toSelLiveTrackingOpt" column="TO_SEL_LIVE_TRACKING_OPT" />
+		<result property="toSelLiveTrackingOptKeepRecentPos" column="TO_SEL_LIVE_TRACKING_OPT_KEEP_RECENT_POS" />
+		<result property="toSelLiveTrackingOptUpdateInterval" column="TO_SEL_LIVE_TRACKING_OPT_UPDATE_INTERVAL" />
+		<result property="toSelLiveTrackingOptFlyToMode" column="TO_SEL_LIVE_TRACKING_OPT_FLY_TO_MODE" />
+		<result property="toSelSenderFilter" column="TO_SEL_SENDER_FILTER" />
+		<result property="toSelDatePeriodFilter" column="TO_SEL_DATE_PERIOD_FILTER" />
+		<result property="toSelSearchStrFilter" column="TO_SEL_SEARCH_STR_FILTER" />
+		<result property="toSelTracksView" column="TO_SEL_TRACKS_VIEW" />
+		<result property="toSelTracksOverviewOptFlyToMode" column="TO_SEL_TRACKS_OVERVIEW_OPT_FLY_TO_MODE" />           
+		<result property="toSelTracksOverviewOptRefresh" column="TO_SEL_TRACKS_OVERVIEW_OPT_REFRESH" />                               	   	    
+    </resultMap>
+
+	<select id="selectUserSessionStatusByUserId" parameterClass="string" resultMap="userSessionStatusResult">
+  		select * from T_USER_SESSION_STATUS t 
+  		where (t.USER_ID = #?#)  		
+  	</select>
+  	
+	<insert id="updateUserSessionStatus" parameterClass="userSessionStatus">
+  		insert into T_USER_SESSION_STATUS (
+  			USER_ID,
+  			LAST_UPDATED,
+			TO_SEL_SENDER_FOR_CREATE_TRACK,
+			TO_SEL_LIVE_TRACKING_OPT,
+			TO_SEL_LIVE_TRACKING_OPT_KEEP_RECENT_POS,
+			TO_SEL_LIVE_TRACKING_OPT_UPDATE_INTERVAL,
+			TO_SEL_LIVE_TRACKING_OPT_FLY_TO_MODE,
+			TO_SEL_SENDER_FILTER,
+			TO_SEL_DATE_PERIOD_FILTER,
+			TO_SEL_SEARCH_STR_FILTER,
+			TO_SEL_TRACKS_VIEW,
+			TO_SEL_TRACKS_OVERVIEW_OPT_FLY_TO_MODE,
+			TO_SEL_TRACKS_OVERVIEW_OPT_REFRESH   
+  		) values (
+  			#userId#,
+  			#lastUpdated#,
+			#toSelSenderForCreateTrack#,
+			#toSelLiveTrackingOpt#,
+			#toSelLiveTrackingOptKeepRecentPos#,
+			#toSelLiveTrackingOptUpdateInterval#,
+			#toSelLiveTrackingOptFlyToMode#,
+			#toSelSenderFilter#,
+			#toSelDatePeriodFilter#,
+			#toSelSearchStrFilter#,
+			#toSelTracksView#,
+			#toSelTracksOverviewOptFlyToMode#,
+			#toSelTracksOverviewOptRefresh#       
+  		) on duplicate key update
+  			LAST_UPDATED = #lastUpdated#,
+			TO_SEL_SENDER_FOR_CREATE_TRACK = #toSelSenderForCreateTrack#,
+			TO_SEL_LIVE_TRACKING_OPT = #toSelLiveTrackingOpt#,
+			TO_SEL_LIVE_TRACKING_OPT_KEEP_RECENT_POS = #toSelLiveTrackingOptKeepRecentPos#,
+			TO_SEL_LIVE_TRACKING_OPT_UPDATE_INTERVAL = #toSelLiveTrackingOptUpdateInterval#,
+			TO_SEL_LIVE_TRACKING_OPT_FLY_TO_MODE = #toSelLiveTrackingOptFlyToMode#,
+			TO_SEL_SENDER_FILTER = #toSelSenderFilter#,
+			TO_SEL_DATE_PERIOD_FILTER = #toSelDatePeriodFilter#,
+			TO_SEL_SEARCH_STR_FILTER = #toSelSearchStrFilter#,
+			TO_SEL_TRACKS_VIEW = #toSelTracksView#,
+			TO_SEL_TRACKS_OVERVIEW_OPT_FLY_TO_MODE = #toSelTracksOverviewOptFlyToMode#,
+			TO_SEL_TRACKS_OVERVIEW_OPT_REFRESH = #toSelTracksOverviewOptRefresh# 		
+  	</insert>  	     
+</sqlMap>
+

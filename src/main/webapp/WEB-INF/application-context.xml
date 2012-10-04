@@ -158,6 +158,11 @@
         <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
     </bean>
     
+    <bean id="userSessionStatusDao"
+        class="de.msk.mylivetracker.dao.UserSessionStatusDao">
+        <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
+    </bean>
+    
     <bean id="userDao"
         class="de.msk.mylivetracker.dao.UserDao">
         <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
@@ -209,6 +214,16 @@
         <property name="statisticsDao" ref="statisticsDao" />
         <property name="statisticsLimits" ref="statisticsLimits" />
     </bean>    
+    
+    <bean id="userSessionStatusService"
+        class="de.msk.mylivetracker.service.UserSessionStatusService">
+        <property name="senderService" ref="senderService" />
+        <property name="liveTrackingOptsKeepRecentPos" ref="liveTrackingOptsKeepRecentPos" />
+		<property name="liveTrackingOptsUpdateInterval" ref="liveTrackingOptsUpdateInterval" />
+		<property name="tracksOverviewOptsDatePeriod" ref="tracksOverviewOptsDatePeriod"/>
+		<property name="tracksOverviewOptsRefresh" ref="tracksOverviewOptsRefresh" />
+        <property name="userSessionStatusDao" ref="userSessionStatusDao" />
+    </bean>
       
     <bean id="userService"
         class="de.msk.mylivetracker.service.UserService">

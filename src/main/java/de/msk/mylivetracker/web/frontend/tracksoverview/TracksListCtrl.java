@@ -5,7 +5,6 @@ package de.msk.mylivetracker.web.frontend.tracksoverview;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +25,7 @@ import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.ISenderService;
 import de.msk.mylivetracker.service.ITrackService;
 import de.msk.mylivetracker.service.ITrackService.TrackListResult;
-import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
+import de.msk.mylivetracker.web.frontend.tracksoverview.command.SenderEntry;
 import de.msk.mylivetracker.web.frontend.tracksoverview.json.JsonCommonsDscJsonSerializer;
 import de.msk.mylivetracker.web.frontend.util.json.TrackVoJsonSerializer;
 import de.msk.mylivetracker.web.util.WebUtils;
@@ -50,14 +49,14 @@ public class TracksListCtrl extends AbstractController {
 	
 	public static ReqParam<String> PARAM_SENDER_ID = 
 		new ReqParam<String>("senderId", String.class);
-	public static ReqParam<String> PARAM_DATE_FROM = 
-		new ReqParam<String>("dateFrom", String.class);
-	public static ReqParam<String> PARAM_DATE_TO = 
-		new ReqParam<String>("dateTo", String.class);
+	public static ReqParam<Integer> PARAM_DATE_PERIOD = 
+		new ReqParam<Integer>("datePeriod", Integer.class);
 	public static ReqParam<String> PARAM_SEARCH_STR = 
 		new ReqParam<String>("searchStr", String.class);
 	public static ReqParam<Boolean> PARAM_ONLY_ACTIVE = 
 		new ReqParam<Boolean>("onlyActive", Boolean.class);
+	
+	private static final int DATE_PERIOD_OPT_ALL_TRACKS = -1;
 	
 	private ITrackService trackService;
 	private ISenderService senderService;
@@ -77,14 +76,13 @@ public class TracksListCtrl extends AbstractController {
 	}
 	
 	private TrackFilterVo createTrackFilter(UserWithRoleVo user, 
-		String senderId, DateTime dateFrom, DateTime dateTo,
+		String senderId, DateTime dateFrom, 
 		String searchStr, boolean onlyActiveTracks, int maxCountOfRecords) {
 		TrackFilterVo trackFilter = new TrackFilterVo();
 		
 		log.debug("userId=" + user.getUserId());
 		log.debug("senderId=" + senderId);
-		log.debug("dateFrom=" + dateFrom.toString());
-		log.debug("dateTo=" + dateTo.toString());
+		log.debug("dateFrom=" + ((dateFrom != null) ? dateFrom.toString() : "null"));
 		log.debug("searchStr=" + searchStr);
 		log.debug("onlyActiveTracks=" + onlyActiveTracks);
 		log.debug("maxCountOfRecords=" + maxCountOfRecords);
@@ -95,13 +93,12 @@ public class TracksListCtrl extends AbstractController {
 		trackFilter.setGuestAccClosedTrEnabled(user.getOptions().getGuestAccClosedTrEnabled());
 		trackFilter.setGuestAccPrivTrEnabled(user.getOptions().getGuestAccPrivTrEnabled());
 				
-		if (!StringUtils.equals(senderId, 
-			TracksOverviewCmd.STR_OPTION_VALUE_ALL.getValue())) {
+		if (!SenderEntry.isAll(senderId)) {
 			trackFilter.setBySenderId(senderId);
 		}
 		
 		trackFilter.setByDateFrom(dateFrom);
-		trackFilter.setByDateTo(dateTo);
+		trackFilter.setByDateTo(null);
 		
 		if (!StringUtils.isEmpty(searchStr)) {
 			searchStr = "%" + searchStr + "%";
@@ -130,31 +127,26 @@ public class TracksListCtrl extends AbstractController {
 		String senderId = PARAM_SENDER_ID.getValueFromReq(request, null);
 		String searchStr = PARAM_SEARCH_STR.getValueFromReq(request, null);
 		
-		String dateFromStr = PARAM_DATE_FROM.getValueFromReq(request, null);
-		String dateToStr = PARAM_DATE_TO.getValueFromReq(request, null);
+		Integer datePeriod = PARAM_DATE_PERIOD.getValueFromReq(request, null);
 		
-		if ((dateFromStr == null) || (dateToStr == null)) {
-			throw new IllegalArgumentException("dateFrom and dateTo must not be null.");
+		if (datePeriod == null) {
+			throw new IllegalArgumentException("datePeriod must not be null.");
 		}
 		
-		DateTime dateFrom = new DateTime(dateFromStr, DateTime.PRETTY_DATE_FORMAT, 
-			TimeZone.getTimeZone(user.getOptions().getTimeZone()));
-		DateTime dateTo = new DateTime(dateToStr, DateTime.PRETTY_DATE_FORMAT, 
-			TimeZone.getTimeZone(user.getOptions().getTimeZone()));
-		
-		dateFrom =
-			DateTime.getAsDayBased(dateFrom, 
-				TimeZone.getTimeZone(user.getOptions().getTimeZone()), true);							
-		dateTo =
-			DateTime.getAsDayBased(dateTo, 
-				TimeZone.getTimeZone(user.getOptions().getTimeZone()), false);
+		DateTime dateFrom = null;
+		if (datePeriod != DATE_PERIOD_OPT_ALL_TRACKS) {
+			long daysAgo = (new DateTime().getAsMSecs()) -
+				(1000L * 60L * 60L * 24L * datePeriod.longValue());
+			log.debug("daysAgo=" + daysAgo);
+			dateFrom = new DateTime(daysAgo);	
+		}
 
 		boolean onlyActiveTracks = PARAM_ONLY_ACTIVE.getValueFromReq(request, Boolean.FALSE);
-		
+
 		TrackListResult trackListResult = 
 			this.trackService.getTracksAsRecent(
 				createTrackFilter(user, senderId, 
-					dateFrom, dateTo, searchStr, 
+					dateFrom, searchStr, 
 					onlyActiveTracks, MAX_SIZE_RESULT_SET));
 		
 		model.put("jsonCommons",	

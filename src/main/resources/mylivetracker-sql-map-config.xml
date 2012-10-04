@@ -16,6 +16,9 @@
 	<typeHandler
 		javaType="de.msk.mylivetracker.domain.user.GeocoderModeVo"
 		callback="de.msk.mylivetracker.dao.typehandler.GeocoderModeTypeHandlerCallback" />	
+	<typeHandler
+		javaType="de.msk.mylivetracker.domain.TrackingFlyToModeVo"
+		callback="de.msk.mylivetracker.dao.typehandler.TrackingFlyToModeTypeHandlerCallback" />	
     <sqlMap resource="ibatis-sql-maps/Application.xml"/>
     <sqlMap resource="ibatis-sql-maps/StatusParams.xml"/>
     <sqlMap resource="ibatis-sql-maps/UserVo.xml"/>
@@ -27,5 +30,6 @@
     <sqlMap resource="ibatis-sql-maps/CardiacFunctionVo.xml"/>
     <sqlMap resource="ibatis-sql-maps/EmergencySignalVo.xml"/>      
     <sqlMap resource="ibatis-sql-maps/SenderVo.xml"/>   
-    <sqlMap resource="ibatis-sql-maps/DemoTrackVo.xml"/>     
+    <sqlMap resource="ibatis-sql-maps/DemoTrackVo.xml"/>
+    <sqlMap resource="ibatis-sql-maps/UserSessionStatusVo.xml"/>     
 </sqlMapConfig>

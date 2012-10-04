@@ -10,6 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
+import de.msk.mylivetracker.service.IApplicationService;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
 import de.msk.mylivetracker.web.uploader.processor.DataPacketCreator;
 import de.msk.mylivetracker.web.uploader.processor.ProcessorType;
@@ -30,6 +31,7 @@ public class TcpServer extends Thread {
 
  	private static final Log log = LogFactory.getLog(TcpServer.class);
 	
+ 	private IApplicationService applicationService;
  	private IStatisticsService statisticsService;
  	
 	private TcpServerConfig tcpServerConfig;
@@ -69,7 +71,14 @@ public class TcpServer extends Thread {
 	@Override
 	public synchronized void start() {
 		boolean running = false;
-		
+		if (!this.applicationService.isTcpPortUsed(
+			this.tcpServerConfig.getListenPort())) {
+			log.info(getName() + 
+				": server at port " + 
+				tcpServerConfig.getListenPort() + 
+				" skipped."); 
+			return;
+		}
 		try {
 			serverSocket = new ServerSocket(tcpServerConfig.getListenPort());
 			setShutdown(false);
@@ -162,10 +171,7 @@ public class TcpServer extends Thread {
 						"started.");
 				}
 			} catch (Exception e) {
-				log.info(this.getName() + 
-					": exception while running server: " + 
-					e.getMessage());	
-				e.printStackTrace();
+				log.fatal(e);	
 			}
 		}		
 	}
@@ -253,6 +259,14 @@ public class TcpServer extends Thread {
 	 */
 	public void setServerSocket(ServerSocket serverSocket) {
 		this.serverSocket = serverSocket;
+	}
+
+	public IApplicationService getApplicationService() {
+		return applicationService;
+	}
+
+	public void setApplicationService(IApplicationService applicationService) {
+		this.applicationService = applicationService;
 	}
 
 	/**

@@ -55,6 +55,31 @@ public class ApplicationService implements IApplicationService {
 		init();
 	}	
 		
+	private boolean isPortUsed(String ports, int port) {
+		boolean isUsed = false;
+		String[] portArr = 
+			StringUtils.split(ports, ',');
+		if ((portArr == null) || portArr.length == 0) return isUsed;
+		for (int i=0; !isUsed && (i < portArr.length); i++) {
+			isUsed = StringUtils.equals(portArr[i], String.valueOf(port));
+		}
+		return isUsed;	
+	}
+	
+	@Override
+	public boolean isTcpPortUsed(int port) {
+		return isPortUsed(
+			this.getParameterValueAsString(Parameter.ClientTcpPorts), 
+			port);
+	}
+
+	@Override
+	public boolean isUdpPortUsed(int port) {
+		return isPortUsed(
+			this.getParameterValueAsString(Parameter.ClientUdpPorts), 
+			port);
+	}
+
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.IApplicationService#getServerAddress()
 	 */

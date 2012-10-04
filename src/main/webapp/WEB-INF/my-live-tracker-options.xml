@@ -2654,19 +2654,61 @@
    	</util:list>
    	
    	 <util:list id="liveTrackingOptsFlyToMode">
-    	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="0"/>
+    	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="None"/>
     	 	<constructor-arg index="1" value="livetracking.opts.flytomode.none"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="1"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="FlyToView"/>
     	 	<constructor-arg index="1" value="livetracking.opts.flytomode.flytoview"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="2"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="FlyToCurrentPosition"/>
     	 	<constructor-arg index="1" value="livetracking.opts.flytomode.flytocurrpos"/>
    	 	</bean>   	 	   	 
     </util:list>
+
+    <util:list id="tracksOverviewOptsFlyToMode">
+    	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="None"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.flytomode.none"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="FlyToView"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.flytomode.flytoview"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="FlyToCurrentSender"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.flytomode.flytocurrsender"/>
+   	 	</bean>   	 	   	 
+    </util:list>
+    
+    <util:list id="tracksOverviewOptsDatePeriod">
+    	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="1"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.dateperiod.tracksoftoday"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="3"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.dateperiod.tracksoflast3days"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="7"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.dateperiod.tracksoflast7days"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="14"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.dateperiod.tracksoflast14days"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="28"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.dateperiod.tracksoflast28days"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="-1"/>
+    	 	<constructor-arg index="1" value="tracksoverview.opts.dateperiod.alltracks"/>
+   	 	</bean>
+    </util:list> 	
     
     <util:list id="tracksOverviewOptsRefresh">
     	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">

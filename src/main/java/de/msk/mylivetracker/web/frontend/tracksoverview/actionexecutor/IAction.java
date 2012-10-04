@@ -21,7 +21,8 @@ import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCm
  */
 public interface IAction {
 	
-	public void preExecuteCheck(TracksOverviewCmd cmd) 
+	public void preExecuteCheck(TracksOverviewCmd cmd,
+		ISenderService senderService) 
 		throws ActionExecutionException;
 	
 	public String execute(

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.msk.mylivetracker.domain.PositionVo;
+import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.web.util.UrlUtils;
 import de.msk.mylivetracker.web.util.WebUtils;
@@ -60,7 +61,7 @@ public class TrackAsStatusInfoCtrl extends AbstractTrackingCtrl {
 				.add(AbstractTrackingCtrl.PARAM_WINDOW_FULLSCREEN, 
 					true)
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_LIVE, true)		
-				.add(AbstractTrackingCtrl.PARAM_TRACKING_FLY_TO_MODE, 1)
+				.add(AbstractTrackingCtrl.PARAM_TRACKING_FLY_TO_MODE, TrackingFlyToModeVo.FlyToView.name())
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_KEEP_RECENT_POSITIONS, 0)
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_UPDATE_INTERVAL_IN_SECS, 10)
 				.add(AbstractTrackingCtrl.PARAM_TRACK_ID,

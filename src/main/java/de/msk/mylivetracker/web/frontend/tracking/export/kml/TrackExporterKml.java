@@ -28,8 +28,8 @@ import de.micromata.opengis.kml.v_2_2_0.RefreshMode;
 import de.micromata.opengis.kml.v_2_2_0.Style;
 import de.msk.mylivetracker.domain.MessageVo;
 import de.msk.mylivetracker.domain.PositionVo;
-import de.msk.mylivetracker.domain.StatusParamsVo;
 import de.msk.mylivetracker.domain.TicketVo;
+import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
@@ -123,7 +123,7 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 			AbstractTrackingCtrl.PARAM_TRACKING_KEEP_RECENT_POSITIONS.getValueFromReq(request, 0);
 		Integer updateInterval = 
 			AbstractTrackingCtrl.PARAM_TRACKING_UPDATE_INTERVAL_IN_SECS.getValueFromReq(request);
-		Integer flyToMode =
+		String flyToMode =
 			AbstractTrackingCtrl.PARAM_TRACKING_FLY_TO_MODE.getValueFromReq(request);
 		
 		if (!live) {
@@ -161,7 +161,7 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 					WebUtils.getMessage(request, "kml.livetracking"))				
 				.withRefreshVisibility(true);
 			boolean flyToView = false;
-			if (flyToMode == StatusParamsVo.TrackingFlyToMode.FlyToView.ordinal()) {
+			if (flyToMode == TrackingFlyToModeVo.FlyToView.name()) {
 				flyToView = true;
 			}
 			networklink.setFlyToView(flyToView);	

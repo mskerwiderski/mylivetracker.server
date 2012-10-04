@@ -29,41 +29,7 @@
         <property name="smsService" ref="smsService" />
 	</bean>
                                
-	<!-- tcp servers -->    	
-	<bean id="tcpServerAt51395" 
-		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
-		init-method="start" destroy-method="interrupt">
-		<constructor-arg name="name" value="TcpServerAt51395" />
-		<property name="tcpServerConfig" ref="tcpServerAt51395Config" />
-		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
-		<property name="supportedServices" ref="supportedServices" />
-        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
-        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
-        <property name="statisticsService" ref="statisticsService" />        	
-	</bean>
-	
-	<bean id="tcpServerAt51395Config" 
-		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
-	 	<property name="listenPort" value="51395" />        		
-	</bean>
-	                       
-	<bean id="tcpServerAt31395" 
-		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
-		init-method="start" destroy-method="interrupt">
-		<constructor-arg name="name" value="TcpServerAt31395" />
-		<property name="tcpServerConfig" ref="tcpServerAt31395Config" />
-		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_SingleRecords" />
-		<property name="supportedServices" ref="supportedServices" />
-        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
-        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
-        <property name="statisticsService" ref="statisticsService" />        	
-	</bean>
-	
-	<bean id="tcpServerAt31395Config" 
-		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
-	 	<property name="listenPort" value="31395" />        		
-	</bean>
-	
+	<!-- tcp servers -->
 	<bean id="tcpServerAt30175" 
 		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
 		init-method="start" destroy-method="interrupt">
@@ -73,6 +39,7 @@
 		<property name="supportedServices" ref="supportedServices" />
         <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
         <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
+        <property name="applicationService" ref="applicationService" />
         <property name="statisticsService" ref="statisticsService" />        	
 	</bean>
 	 
@@ -80,7 +47,115 @@
 		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
 	 	<property name="listenPort" value="30175" />        		
 	</bean>
-	 
+	
+	<bean id="tcpServerAt31395" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="TcpServerAt31395" />
+		<property name="tcpServerConfig" ref="tcpServerAt31395Config" />
+		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_SingleRecords" />
+		<property name="supportedServices" ref="supportedServices" />
+        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
+        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
+        <property name="applicationService" ref="applicationService" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	
+	<bean id="tcpServerAt31395Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
+	 	<property name="listenPort" value="31395" />        		
+	</bean>
+	    	
+	<bean id="tcpServerAt51395" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="TcpServerAt51395" />
+		<property name="tcpServerConfig" ref="tcpServerAt51395Config" />
+		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
+		<property name="supportedServices" ref="supportedServices" />
+        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
+        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
+        <property name="applicationService" ref="applicationService" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	
+	<bean id="tcpServerAt51395Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
+	 	<property name="listenPort" value="51395" />        		
+	</bean>
+
+	<bean id="tcpServerAt61395" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="TcpServerAt61395" />
+		<property name="tcpServerConfig" ref="tcpServerAt61395Config" />
+		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
+		<property name="supportedServices" ref="supportedServices" />
+        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
+        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
+        <property name="applicationService" ref="applicationService" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	
+	<bean id="tcpServerAt61395Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
+	 	<property name="listenPort" value="61395" />        		
+	</bean>
+
+	<bean id="tcpServerAt62395" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="TcpServerAt62395" />
+		<property name="tcpServerConfig" ref="tcpServerAt62395Config" />
+		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
+		<property name="supportedServices" ref="supportedServices" />
+        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
+        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
+        <property name="applicationService" ref="applicationService" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	
+	<bean id="tcpServerAt62395Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
+	 	<property name="listenPort" value="62395" />        		
+	</bean>
+	
+	<bean id="tcpServerAt63395" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="TcpServerAt63395" />
+		<property name="tcpServerConfig" ref="tcpServerAt63395Config" />
+		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
+		<property name="supportedServices" ref="supportedServices" />
+        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
+        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
+        <property name="applicationService" ref="applicationService" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	
+	<bean id="tcpServerAt63395Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
+	 	<property name="listenPort" value="63395" />        		
+	</bean>
+	                       
+	<bean id="tcpServerAt64395" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="TcpServerAt64395" />
+		<property name="tcpServerConfig" ref="tcpServerAt64395Config" />
+		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
+		<property name="supportedServices" ref="supportedServices" />
+        <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
+        <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
+        <property name="applicationService" ref="applicationService" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	
+	<bean id="tcpServerAt64395Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig">
+	 	<property name="listenPort" value="64395" />        		
+	</bean>
+	                       
 	<bean id="tcpSrvSockProcCfg_SingleRecords" 
 		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.SocketProcessorConfig">
 	 	<property name="doReadLine" value="false" /> 
@@ -170,6 +245,7 @@
 		<property name="udpServerConfig" ref="udpServerAt41395Config" />
 		<property name="supportedServices" ref="supportedServices" />
         <property name="dataPacketCreator" ref="udpServerDataPacketCreator" />
+        <property name="applicationService" ref="applicationService" />
         <property name="statisticsService" ref="statisticsService" />        	
 	</bean>
 	 

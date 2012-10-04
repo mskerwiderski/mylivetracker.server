@@ -14,22 +14,42 @@
 
 <script type="text/javascript" src="<c:url value='/js/leaflet/leaflet-0.4.4.js'/>"></script>
 <script src="<c:url value='/js/leaflet/leaflet.iconlabel.js'/>"></script>
-<script src="<c:url value='/js/leaflet/leaflet.fullscreen.js'/>"></script>
+<script src="<c:url value='/js/leaflet/leaflet.zoomfs.js'/>"></script>
 <script src="<c:url value='/js/leaflet/leaflet.autozoom.js'/>"></script>
 <script src="<c:url value='/js/leaflet/leaflet.providers-0.0.1.js'/>"></script>
 <script src="<c:url value='/js/map.commons.js'/>"></script>
 
-<style type="text/css">
-	#map { width: 700px; height: 433px; }
-	.leaflet-control-zoom-fullscreen { background-image: url(<c:url value='/js/leaflet/images/icon-fullscreen.png'/>); }
-	.leaflet-control-zoom-fullscreen.last { margin-top: 5px }
-	/* on selector per rule as explained here : http://www.sitepoint.com/html5-full-screen-api/ */
-	#map:-webkit-full-screen { width: 100% !important; height: 100% !important; }
-	#map:-moz-full-screen { width: 100% !important; height: 100% !important; }
-	#map:full-screen { width: 100% !important; height: 100% !important; }
-	.leaflet-control-zoom-autozoom { background-image: url(<c:url value='/js/leaflet/images/icon-fullscreen.png'/>); }
-	.leaflet-control-zoom-autozoom.last { margin-top: 5px }
+<style>
+    #map_canvas {
+    	height: 100%;
+      	width: 100%;
+    }
+    #map_canvas.leaflet-fullscreen {
+    	position: fixed;
+      	width: 100%;
+      	height: 100%;
+      	top: 0;
+      	right: 0;
+      	bottom: 0;
+     	left: 0;
+      	margin: 0;
+      	padding: 0;
+      	border: 0;
+    }
+    .leaflet-control-fullscreen {
+    	background-image: url(<c:url value='img/others/fullscreen.png'/>);
+      	margin-bottom: 5px;
+    }
+    .leaflet-control-autozoom-on {
+    	background-image: url(<c:url value='img/musthave/zoom_out.png'/>);
+      	margin-bottom: 5px;
+    }
+    .leaflet-control-autozoom-off {
+    	background-image: url(<c:url value='img/musthave/zoom_in.png'/>);
+      	margin-bottom: 5px;
+    }
 </style>
+
 
 <script type="text/javascript">
 	mlt_getOnlyActiveTracks = true;
@@ -42,6 +62,8 @@
 	var mlt_markers = null;
 	var mlt_bounds = null;
 	var mlt_bounds_empty = true;
+	var mlt_current_sender_pos = null;
+	var mlt_adaptZoomLevelIsFirstCall = true;
 	
 	//process response callback.
 	function mlt_renderTracksOverview(mlt_data) {
@@ -76,6 +98,9 @@
    					mlt_data.tracks[i].recPos.lon);
 				mlt_bounds.extend(pos);		
 	   			mlt_bounds_empty = false;
+	   			if (i == 0) {
+	   				mlt_current_sender_pos = pos;
+	   			}
 			}	
    		}
 		var infoTxt = '<spring:message code="overview.track.map.no.active.tracks.found" />';
@@ -97,11 +122,34 @@
 		   	}
 		}
  		mlt_bounds = new L.LatLngBounds();
+ 		mlt_current_sender_pos = null;
 		mlt_bounds_empty = true;
 		mlt_markers = [];
  	}
 	
 	function mlt_adaptZoomLevel() {
+		var flyToMode = "<c:out value='${tracksOverviewCmd.selectedTracksOverviewOptFlyToMode}' />";
+		mlt_log("flyToMode=" + flyToMode);		
+		if (flyToMode == "None") { 
+			// zoom mode is off.
+			if (mlt_adaptZoomLevelIsFirstCall) {
+				mlt_zoomModeAllSenders();
+			}
+		} else if (flyToMode == "FlyToView") {
+			// zoom mode is 'all senders'.
+			mlt_zoomModeAllSenders();
+		} else if (flyToMode == "FlyToCurrentSender") {
+			// zoom mode is 'current sender'.
+			mlt_zoomModeCurrentSender();
+		} else {
+			// unknown zoom mode.
+			mlt_zoomModeAllSenders();
+		}
+		
+		mlt_adaptZoomLevelIsFirstCall = false;
+	}
+	
+	function mlt_zoomModeAllSenders() {
 		var center = mlt_DEFAULT_CENTER;
 		var zoom = mlt_DEFAULT_ZOOM;
 		if (!mlt_bounds_empty) {
@@ -111,11 +159,24 @@
 		}
 	 	mlt_map.setView(center, zoom);
 	}
+	
+	function mlt_zoomModeCurrentSender() {
+		var center = mlt_DEFAULT_CENTER;
+		var zoom = mlt_DEFAULT_ZOOM;
+		if (mlt_current_sender_pos != null) {
+			var bounds = new L.LatLngBounds();
+			bounds.extend(mlt_current_sender_pos);
+			center = bounds.getCenter();
+	 		zoom = mlt_map.getBoundsZoom(bounds, false);
+	 		if (zoom > 0) { zoom--; }
+		}
+	 	mlt_map.setView(center, zoom);
+	}
 </script> 
 <table id="map_complete" style="width:100%;height:80%;">
 	<tr>
 		<td>
-			<div id="map_canvas" style="width:100%;height:100%;"></div>
+			<div id="map_canvas"></div>
 		</td>
 	</tr>
 	<tr style="height:10px;">
@@ -189,16 +250,14 @@
 		var map = new L.Map(anker, {
 			center: defCenter,
 			zoom: defZoom,
-			attributionControl: true
+			attributionControl: true,
+			zoomControl: false,
 		});
-		var fullscreen = new L.Control.FullScreen();
-		map.addControl(fullscreen);
-		var autozoom = new L.Control.AutoZoom();
-		map.addControl(autozoom);
 		var defaultLayer = supportedLayers[defMapId];
 		map.addLayer(defaultLayer);
-		map.addControl(new L.Control.Layers(baseLayers,'',{collapsed: true}));
-		
+		map.addControl(new L.Control.Layers(baseLayers,'',{collapsed: true, position:'topleft'}));
+		var zoomFS = new L.Control.ZoomFS({position:'topright'});
+	    map.addControl(zoomFS);
 		return map;
 	}
 	
