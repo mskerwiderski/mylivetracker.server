@@ -36,7 +36,7 @@
 
 <script>
 	function changeLanguage() {
-		var locale = document.getElementById("language").value;
+		var locale = document.getElementById("locale").value;
 		var path = window.location.pathname;
 		window.location.href = path + "?locale=" + locale;		
 	}
@@ -75,7 +75,7 @@
 	request.setAttribute("timezone", timezone);
 	
 	String language = WebUtils.getLanguage(request);
-	request.setAttribute("language", language);
+	request.setAttribute("locale", language);
 	
 	List<StrOptionDsc> userOptsLanguage =
 		WebUtils.getUserOptsLanguage(request);

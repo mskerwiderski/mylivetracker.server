@@ -62,9 +62,9 @@
 			&nbsp;<spring:message code="login.please" />&nbsp;
 		</td>
 		<c:choose>
-			<c:when test="${!empty msg}">
+			<c:when test="${!empty loginCmd.loginResultMessage}">
 				<td class="ui-state-error ui-widget-header" colspan="3" style="border:none;">
-					&nbsp;<c:out value="${msg}" />&nbsp;						
+					&nbsp;<c:out value="${loginCmd.loginResultMessage}" />&nbsp;					
 				</td>		
 			</c:when>
 			<c:otherwise>
@@ -106,6 +106,11 @@
 				</a>&nbsp;														
 			</div>    		
     	</td>        	    
+   	</tr>
+   	<tr>
+   		<td colspan="3" style="border:none;white-space: nowrap;" class="ui-widget-content">
+   			&nbsp;<spring:message code="login.demo" arguments="${loginCmd.autoLoginUrlForDemoGuest}"/>&nbsp;
+   		</td>
    	</tr>
 </table>
 <script>usernameFocus();</script>
@@ -171,7 +176,7 @@
 	<tr>
 		<th colspan="2" class="ui-widget-header" style="height:30px;text-align:left;border:none;white-space: nowrap;">&nbsp;<spring:message code="login.twitter" />&nbsp;</th>
 	</tr>  
-	<c:forEach items="${twitterMessages}" var="twitterMessage">
+	<c:forEach items="${loginCmd.twitterMessages}" var="twitterMessage">
 		<tr>
 			<td style="border:none;white-space: nowrap;" class="ui-widget-content">
 			&nbsp;&nbsp;&bull;&nbsp;<c:out value="${twitterMessage.timestamp}"/>:&nbsp;<c:out value="${twitterMessage.message}"/>

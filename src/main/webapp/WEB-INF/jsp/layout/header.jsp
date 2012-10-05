@@ -50,8 +50,8 @@
 					</div>									
 				</c:when>									
 				<c:otherwise>
-					<c:set var="selLanguage">${language}</c:set>
-					&nbsp;&nbsp;<select id="language" name="language" class="ui-state-default" 
+					<c:set var="selLanguage">${locale}</c:set>
+					&nbsp;&nbsp;<select id="locale" name="locale" class="ui-state-default" 
 						style="vertical-align: middle" onchange="javascript:changeLanguage();"> 
 						<c:forEach var="language" items="${userOptsLanguage}">
 							<c:choose>
@@ -68,7 +68,6 @@
 							</c:choose>
 						</c:forEach>
 					</select>
-					
 				</c:otherwise>
 			</c:choose>				
 		</td>

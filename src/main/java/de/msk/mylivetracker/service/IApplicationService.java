@@ -14,21 +14,22 @@ package de.msk.mylivetracker.service;
 public interface IApplicationService {
 	
 	public enum Parameter {
-		ServerAddress, // server address (dns or ip).
 		ApplicationBaseUrl, // application base url.
 		ApplicationName, // application name.		
 		ApplicationPort, // application port.
 		ApplicationRealm, // application realm (used for user password encryption).
-		EvaluationModeEnabled, // if yes: only one registered user is allowed.
-		GeocodingEnabled, // if no: geocoding is system wide disabled.
-		RunDemoAfterStartup, // if yes: demo tracks are started after application startup.
-		SmsCreatorDePassword, // password of sms service smscreator.de.
-		SmsCreatorDeUsername, // username of sms service smscreator.de.
-		TrackLifeTimeInMSecs, // lifetime of track records in milliseconds.
-		RunCleanTasksAfterStartup, // if yes: clean tasks are started after application startup.
-		SupportEmail, // email address for contact MyLiveTracker support.
+		AutoLoginTicketForDemoGuest, // auto-login ticket for guests of demo.
 		ClientTcpPorts, // open tcp ports for clients.
 		ClientUdpPorts, // open udp ports for clients.
+		EvaluationModeEnabled, // if yes: only one registered user is allowed.
+		GeocodingEnabled, // if no: geocoding is system wide disabled.
+		RunCleanTasksAfterStartup, // if yes: clean tasks are started after application startup.
+		RunDemoAfterStartup, // if yes: demo tracks are started after application startup.
+		ServerAddress, // server address (dns or ip).
+		SmsCreatorDePassword, // password of sms service smscreator.de.
+		SmsCreatorDeUsername, // username of sms service smscreator.de.
+		SupportEmail, // email address for contact MyLiveTracker support.
+		TrackLifeTimeInMSecs, // lifetime of track records in milliseconds.
 	};
 				
 	public void reloadParameters();

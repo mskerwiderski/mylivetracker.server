@@ -13,7 +13,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 
 import de.msk.mylivetracker.service.IApplicationService;
 import de.msk.mylivetracker.web.frontend.login.LoginCtrl;
-import de.msk.mylivetracker.web.util.UrlUtils;
+import de.msk.mylivetracker.web.util.request.ReqParam;
+import de.msk.mylivetracker.web.util.request.ReqUrlStr;
 
 /**
  * AuthFailureHandler.
@@ -30,6 +31,9 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
 	private static final Log log = LogFactory.getLog(AuthFailureHandler.class);
 	
+	public static final ReqParam<String> PARAM_MESSAGE_CODE = 
+		new ReqParam<String>(LoginCtrl.REQUEST_PARAM_MESSAGE_CODE, String.class);
+	
 	private IApplicationService applicationService;
 	
 	/* (non-Javadoc)
@@ -41,13 +45,12 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 			throws IOException, ServletException {
 		String applicationBaseUrl =
 			this.applicationService.getApplicationBaseUrl();
-		String defaultFailureUrl = applicationBaseUrl + "/" + 
-			UrlUtils.URL_LOGIN_CTRL + "?" + LoginCtrl.REQUEST_PARAM_MESSAGE_CODE + 
-			"=" + LoginCtrl.MESSAGE_LOGIN_FAILED;
+		String defaultFailureUrl =
+			ReqUrlStr.create(applicationBaseUrl, LoginCtrl.URL_LOGIN_CTRL).
+			addParamValue(PARAM_MESSAGE_CODE, LoginCtrl.MESSAGE_LOGIN_FAILED).
+			toString();
 		this.setDefaultFailureUrl(defaultFailureUrl);
-		
 		log.info("defaultFailureUrl set to " + defaultFailureUrl);
-		
 		super.onAuthenticationFailure(request, response, exception);
 	}
 

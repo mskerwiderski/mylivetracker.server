@@ -101,9 +101,12 @@
         <property name="userStorePositionQueues" ref="userStorePositionQueues" />                       
     </bean>
             
-    <bean name="loginCtrl"
-		class="de.msk.mylivetracker.web.frontend.login.LoginCtrl"
-        p:viewName="login" >                         
+    <bean name="loginCtrl" class="de.msk.mylivetracker.web.frontend.login.LoginCtrl">
+    	<property name="commandClass" value="de.msk.mylivetracker.web.frontend.login.LoginCmd"/>
+        <property name="commandName" value="loginCmd" />
+        <property name="formView" value="login"/>
+        <property name="successView" value="login"/>
+        <property name="applicationService" ref="applicationService" />                         
     </bean>                       
     
     <bean name="tracksOverviewCtrl"

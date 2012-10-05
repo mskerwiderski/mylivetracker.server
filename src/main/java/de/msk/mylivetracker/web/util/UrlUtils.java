@@ -12,8 +12,7 @@ package de.msk.mylivetracker.web.util;
  * 
  */
 public class UrlUtils {
-	public static final String URL_LOGIN_VIEW = "login";
-	public static final String URL_LOGIN_CTRL = "login.sec";
+	
 	public static final String URL_TRACKS_OVERVIEW_CTRL = "tracks_overview.do";	
 	public static final String URL_TRACK_AS_MAP_CTRL = "track_as_map.sec";
 	public static final String URL_TRACK_AS_STATUS_INFO_CTRL = "track_as_status_info.sec";

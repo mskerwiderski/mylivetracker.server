@@ -5,6 +5,10 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 
+import de.msk.mylivetracker.security.UsernamePasswordAuthenticationFilter;
+import de.msk.mylivetracker.web.frontend.login.LoginCtrl;
+import de.msk.mylivetracker.web.util.request.ReqUrlStr;
+
 /**
  * UserAutoLoginVo.
  * 
@@ -31,6 +35,11 @@ public class UserAutoLoginVo implements Cloneable, Serializable {
     }
 	public static String createAutoLoginTicket() {
 		return TICKET_PREFIX + UUID.randomUUID().toString();
+	}
+	public static String createAutoLoginUrl(String applicationBaseUrl, String autoLoginTicket) {
+		return ReqUrlStr.create(applicationBaseUrl, LoginCtrl.URL_LOGIN).
+			addParamValue(UsernamePasswordAuthenticationFilter.PARAM_USER_ID, 
+				autoLoginTicket).toString();
 	}
 	public void setDefaultValues() {	
 		this.autoLoginEnabledForUser = false;

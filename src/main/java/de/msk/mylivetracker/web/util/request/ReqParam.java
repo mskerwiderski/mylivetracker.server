@@ -78,6 +78,15 @@ public class ReqParam<T> {
 	public boolean valueExists(HttpServletRequest request) {
 		return (this.getValueFromReq(request, null) != null);
 	}
+
+	public T getValueFromSess(HttpServletRequest request) {
+		return getValueFromSess(request, null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public T getValueFromSess(HttpServletRequest request, T defValue) {
+		return (T)request.getSession().getAttribute(this.name);
+	}
 	
 	public T getValueFromReq(HttpServletRequest request) {
 		return this.getValueFromReq(request, null);

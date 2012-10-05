@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 
-import de.msk.mylivetracker.domain.sender.SenderSymbolVo;
 import de.msk.mylivetracker.domain.sender.SenderSwitchesVo;
+import de.msk.mylivetracker.domain.sender.SenderSymbolVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
 import de.msk.mylivetracker.domain.user.UserEmergencyVo;
@@ -18,13 +18,11 @@ import de.msk.mylivetracker.domain.user.UserMasterDataVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserStatusPageVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.security.UsernamePasswordAuthenticationFilter;
 import de.msk.mylivetracker.web.frontend.options.actionexecutor.ActionExecutor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
 import de.msk.mylivetracker.web.options.IntOptionDsc;
 import de.msk.mylivetracker.web.options.StrOptionDsc;
 import de.msk.mylivetracker.web.util.WebUtils;
-import de.msk.mylivetracker.web.util.request.ReqUrlStr;
 
 /**
  * OptionsCmd.
@@ -96,15 +94,10 @@ public class OptionsCmd {
 	public void buildUpLinks(HttpServletRequest request,
 		String applicationBaseUrl, UserWithoutRoleVo user) {
 		
-		autoLoginUrlForUser = ReqUrlStr.
-			create(applicationBaseUrl, "login").
-			addParamValue(UsernamePasswordAuthenticationFilter.PARAM_USER_ID, 
-				userAutoLogin.getAutoLoginTicketForUser()).toString();
-		
-		autoLoginUrlForGuest = ReqUrlStr.
-			create(applicationBaseUrl, "login").
-			addParamValue(UsernamePasswordAuthenticationFilter.PARAM_USER_ID, 
-				userAutoLogin.getAutoLoginTicketForGuest()).toString();
+		autoLoginUrlForUser = UserAutoLoginVo.createAutoLoginUrl(
+			applicationBaseUrl, userAutoLogin.getAutoLoginTicketForUser());
+		autoLoginUrlForGuest = UserAutoLoginVo.createAutoLoginUrl(
+			applicationBaseUrl, userAutoLogin.getAutoLoginTicketForGuest());
 		
 		if (StringUtils.isEmpty(user.getStatusPage().getLinkTrackAsStatusInfo())) {
 			this.iframeTrackAsStatusInfo = null;

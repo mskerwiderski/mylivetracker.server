@@ -80,10 +80,7 @@ public class UsersLocaleResolver implements LocaleResolver {
 	public Locale resolveLocale(HttpServletRequest request) {
 		Locale locale = null;
 		
-		// get locale from url parameter.
-		locale = getLocale(PARAM_LOCALE.getValueFromReq(request, null));
-			
-		// get locale from user object.
+		// try to get locale from user object.
 		if (locale == null) {
 			UserWithoutRoleVo user = 
 				WebUtils.getCurrentUserWithoutRole(request.getSession());
@@ -92,7 +89,22 @@ public class UsersLocaleResolver implements LocaleResolver {
 			}
 		}
 		
-		// get locale from request.
+		// try to get locale from url parameter.
+		if (locale == null) {
+			String localeStr = PARAM_LOCALE.getValueFromReq(request);
+			if (!StringUtils.isEmpty(localeStr)) {
+				// store locale in session if found in url.
+				request.getSession().setAttribute(PARAM_LOCALE.getName(), localeStr);
+			} else {
+				// try to get locale from session. 
+				localeStr = PARAM_LOCALE.getValueFromSess(request);	
+			}
+			if (!StringUtils.isEmpty(localeStr)) {
+				locale = getLocale(localeStr);
+			}
+		}
+		
+		// try to get locale from request.
 		if (locale == null) {
 			locale = request.getLocale();
 			boolean supported = false;
@@ -105,7 +117,7 @@ public class UsersLocaleResolver implements LocaleResolver {
 			}
 		}
 		
-		// get default locale if no supported locale was found.
+		// set default locale if no supported locale was found before.
 		if (locale == null) {
 			locale = DEFAULT_LOCALE;
 		}

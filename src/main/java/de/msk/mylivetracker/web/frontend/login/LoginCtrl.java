@@ -1,19 +1,19 @@
 package de.msk.mylivetracker.web.frontend.login;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
+import org.springframework.validation.Errors;
+import org.springframework.web.servlet.mvc.SimpleFormController;
 
+import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
+import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.IApplicationService.Parameter;
 import de.msk.mylivetracker.web.util.TwitterUtils;
-import de.msk.mylivetracker.web.util.UrlUtils;
 import de.msk.mylivetracker.web.util.WebUtils;
 
 /**
@@ -27,37 +27,61 @@ import de.msk.mylivetracker.web.util.WebUtils;
  * 000 initial 2011-08-11
  * 
  */
-public class LoginCtrl extends ParameterizableViewController {
+@SuppressWarnings("deprecation")
+public class LoginCtrl extends SimpleFormController {
 	
 	private static final Log log = LogFactory.getLog(LoginCtrl.class);
 	
+	public static final String URL_LOGIN_VIEW = "login";
+	public static final String URL_LOGIN_CTRL = "login.sec";
+	public static final String URL_LOGIN = "login";
+	
 	public static final String REQUEST_PARAM_MESSAGE_CODE = "msgcode";
-	public static final String ATTR_MESSAGE = "msg";	
 	public static final String MESSAGE_LOGIN_FAILED = "login.failed";
-	
-	public static final String ATTR_TWITTER_MESSAGES = "twitterMessages";
-	
-	
-	
+
+	private IApplicationService applicationService;
+
 	@Override
-	public ModelAndView handleRequest(HttpServletRequest request,
-		HttpServletResponse response) throws Exception {		
-		
-		String msgcode = request.getParameter(REQUEST_PARAM_MESSAGE_CODE);
-		String message = "";
-		if (!StringUtils.isEmpty(msgcode)) {
-			message = WebUtils.getMessage(request, msgcode);
+	protected Object formBackingObject(HttpServletRequest request)
+		throws Exception {
+		LoginCmd cmd = (LoginCmd)
+			request.getSession().getAttribute(this.getCommandName());
+		if (cmd == null) {
+			cmd = new LoginCmd();	
+			cmd.setLoginResultMessage("");
+			cmd.setAutoLoginUrlForDemoGuest(
+				UserAutoLoginVo.createAutoLoginUrl(
+					this.applicationService.getApplicationBaseUrl(), 
+					this.applicationService.getParameterValueAsString(
+						Parameter.AutoLoginTicketForDemoGuest)));
+			cmd.setTwitterMessages(TwitterUtils.getTwitterMessages(3, 120));
+			request.getSession().setAttribute(this.getCommandName(), cmd);
 		}
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put(ATTR_MESSAGE, message);		
-		log.debug("msgcode = " + msgcode);
-		
-		model.put(ATTR_TWITTER_MESSAGES, TwitterUtils.getTwitterMessages(3, 120));
-		
-		response.setHeader("Cache-Control", "no-cache");
-		
-		return new ModelAndView(UrlUtils.URL_LOGIN_VIEW, model);		
+		log.debug(cmd);
+		return cmd;
 	}
 
+	@SuppressWarnings("rawtypes")
+	@Override
+	protected Map referenceData(
+		HttpServletRequest request, Object command,
+		Errors errors) throws Exception {
+		LoginCmd cmd = (LoginCmd)command;
+		String msgcode = request.getParameter(REQUEST_PARAM_MESSAGE_CODE);
+		String loginResultMessage = "";
+		if (!StringUtils.isEmpty(msgcode)) {
+			loginResultMessage = WebUtils.getMessage(request, msgcode);
+		}
+		cmd.setLoginResultMessage(loginResultMessage);
+		log.debug(cmd);
+		return super.referenceData(request, command, errors);
+	}
 	
+	public IApplicationService getApplicationService() {
+		return applicationService;
+	}
+
+	public void setApplicationService(IApplicationService applicationService) {
+		this.applicationService = applicationService;
+	}
 }
