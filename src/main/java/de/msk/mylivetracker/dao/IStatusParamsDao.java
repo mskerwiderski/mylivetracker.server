@@ -17,5 +17,5 @@ public interface IStatusParamsDao {
 
 	public void saveStatusParams(StatusParamsVo statusParams);
 	public StatusParamsVo getStatusParams(String statusParamsId);
-	public void removeAllStatusParamsOfUser(String userId);
+	public void deleteAllStatusParamsOfUser(String userId);
 }

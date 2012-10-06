@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.sms;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -15,8 +15,10 @@ import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.PositionVo;
 import de.msk.mylivetracker.domain.statistics.SmsTransportVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.IApplicationService.Parameter;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
+import de.msk.mylivetracker.service.user.IUserService;
 import de.msk.mylivetracker.web.util.FmtUtils;
 import de.msk.mylivetracker.web.util.UsersLocaleResolver;
 

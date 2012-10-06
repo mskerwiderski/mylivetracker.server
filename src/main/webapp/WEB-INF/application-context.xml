@@ -188,14 +188,14 @@
     </bean>  
      	       
     <bean id="applicationService"
-        class="de.msk.mylivetracker.service.ApplicationService"
+        class="de.msk.mylivetracker.service.application.ApplicationService"
         init-method="init">
         <property name="applicationDao" ref="applicationDao" />
         <property name="applicationCache" ref="applicationCache" />        
     </bean>
            
     <bean id="ticketService"
-        class="de.msk.mylivetracker.service.TicketService">
+        class="de.msk.mylivetracker.service.ticket.TicketService">
         <property name="ticketCache" ref="ticketCache" />        
     </bean>
             
@@ -205,6 +205,7 @@
         <property name="maxStatServiceCall" value="500" />
         <property name="maxStatSmsTransport" value="100" />
         <property name="maxStatStorePosProcInfo" value="500" />
+        <property name="maxStatStorePosProcError" value="500" />
         <property name="maxStatUplDataProc" value="100000" />
         <property name="maxStatUploaderServerStatus" value="500" />
     </bean>
@@ -216,7 +217,7 @@
     </bean>    
     
     <bean id="userSessionStatusService"
-        class="de.msk.mylivetracker.service.UserSessionStatusService">
+        class="de.msk.mylivetracker.service.user.UserSessionStatusService">
         <property name="senderService" ref="senderService" />
         <property name="liveTrackingOptsKeepRecentPos" ref="liveTrackingOptsKeepRecentPos" />
 		<property name="liveTrackingOptsUpdateInterval" ref="liveTrackingOptsUpdateInterval" />
@@ -226,7 +227,7 @@
     </bean>
       
     <bean id="userService"
-        class="de.msk.mylivetracker.service.UserService">
+        class="de.msk.mylivetracker.service.user.UserService">
         <property name="userWithoutRoleCache" ref="userWithoutRoleCache" />
         <property name="applicationService" ref="applicationService" />        
         <property name="senderService" ref="senderService" />
@@ -242,16 +243,16 @@
     </bean> 
     
   	<bean id="statusParamsService"
-        class="de.msk.mylivetracker.service.StatusParamsService">        
+        class="de.msk.mylivetracker.service.statusparams.StatusParamsService">        
         <property name="statusParamsDao" ref="statusParamsDao" />
     </bean>   
     
     <bean id="mobileNetworkService"
-        class="de.msk.mylivetracker.service.MobileNetworkService">                
+        class="de.msk.mylivetracker.service.mobilenetwork.MobileNetworkService">                
     </bean> 
     
     <bean id="smsService"
-        class="de.msk.mylivetracker.service.SmsService">        
+        class="de.msk.mylivetracker.service.sms.SmsService">        
         <property name="minPauseInMSecsForUserBetweenTwoSmsSent" value="300000" />
         <property name="applicationService" ref="applicationService" />
         <property name="userService" ref="userService" />
@@ -266,7 +267,7 @@
 	</bean>
 	
 	<bean id="utilService" init-method="start"
-        class="de.msk.mylivetracker.service.UtilService">        
+        class="de.msk.mylivetracker.service.util.UtilService">        
         <property name="utilTaskExecutor" ref="utilTaskExecutor" />
         <property name="applicationService" ref="applicationService" />
         <property name="trackService" ref="trackService" />        
@@ -301,8 +302,26 @@
     </bean> 
       
     <bean id="senderService"
-        class="de.msk.mylivetracker.service.SenderService">
+        class="de.msk.mylivetracker.service.sender.SenderService">
         <property name="senderCache" ref="senderCache" />
         <property name="senderDao" ref="senderDao" />
-    </bean>          
+    </bean>  
+    
+    <bean id="services" 
+		class="de.msk.mylivetracker.service.Services">
+		<property name="applicationService" ref="applicationService" />
+		<property name="demoService" ref="demoService" />
+		<property name="geocodingService" ref="geocodingService" />	
+		<property name="mobileNetworkService" ref="mobileNetworkService" />
+		<property name="rpcService" ref="rpcService" />
+		<property name="senderService" ref="senderService" />
+		<property name="smsService" ref="smsService" />
+	 	<property name="statisticsService" ref="statisticsService" />
+		<property name="statusParamsService" ref="statusParamsService" />
+ 		<property name="ticketService" ref="ticketService" />  
+	 	<property name="trackService" ref="trackService" />
+	 	<property name="userService" ref="userService" />
+        <property name="userSessionStatusService" ref="userSessionStatusService" />
+        <property name="utilService" ref="utilService" />
+	</bean>        
 </beans>

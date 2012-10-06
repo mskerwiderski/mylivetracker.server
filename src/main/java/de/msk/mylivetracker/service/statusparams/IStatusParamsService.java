@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.statusparams;
 
 import de.msk.mylivetracker.domain.StatusParamsVo;
 
@@ -17,5 +17,5 @@ public interface IStatusParamsService {
 
 	public void saveStatusParams(StatusParamsVo statusParams);
 	public StatusParamsVo getStatusParams(String statusParamsId);
-	public void removeAllStatusParamsOfUser(String userId);
+	public void deleteAllStatusParamsOfUser(String userId);
 }

@@ -5,7 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.msk.mylivetracker.domain.statistics.ServiceCallVo;
-import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
 
 /**

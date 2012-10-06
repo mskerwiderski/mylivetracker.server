@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
-import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService;
 import de.msk.mylivetracker.web.frontend.login.LoginCtrl;
 import de.msk.mylivetracker.web.util.request.ReqUrlStr;
 

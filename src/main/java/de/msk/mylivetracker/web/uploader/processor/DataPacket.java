@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.apache.commons.lang.StringUtils;
 
 import de.msk.mylivetracker.domain.DataReceivedVo;
-import de.msk.mylivetracker.service.ISenderService;
+import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.IDataInterpreter;
 
 /**

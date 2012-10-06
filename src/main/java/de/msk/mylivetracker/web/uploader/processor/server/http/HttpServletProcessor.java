@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.uploader.processor.DataPacketCreator;
 import de.msk.mylivetracker.web.uploader.processor.PreProcessResultDsc;
 import de.msk.mylivetracker.web.uploader.processor.ProcessorType;
 import de.msk.mylivetracker.web.uploader.processor.RemoteInfo;
 import de.msk.mylivetracker.web.uploader.processor.ServerInfo;
-import de.msk.mylivetracker.web.uploader.processor.SupportedServices;
 import de.msk.mylivetracker.web.uploader.processor.UploadProcessor;
 
 /**
@@ -36,7 +36,7 @@ public class HttpServletProcessor extends UploadProcessor {
 	
 	public HttpServletProcessor(String serverName, 
 		ProcessorType processorType,
-		SupportedServices supportedServices,
+		Services supportedServices,
 		DataPacketCreator dataPacketCreator,
 		HttpServletRequest request,
 		HttpServletResponse response) {

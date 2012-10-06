@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import de.msk.mylivetracker.domain.StatusParamsVo;
 import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.IStatusParamsService;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.statusparams.IStatusParamsService;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
 import de.msk.mylivetracker.web.util.UrlUtils;
 import de.msk.mylivetracker.web.util.request.ReqUrlStr;

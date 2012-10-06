@@ -2,8 +2,8 @@ package de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor;
 
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
-import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.ITrackService;
+import de.msk.mylivetracker.service.sender.ISenderService;
+import de.msk.mylivetracker.service.track.ITrackService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 
 /**

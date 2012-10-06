@@ -11,8 +11,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.IApplicationService.Parameter;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
 import de.msk.mylivetracker.web.util.TwitterUtils;
 import de.msk.mylivetracker.web.util.WebUtils;
 
@@ -35,6 +35,7 @@ public class LoginCtrl extends SimpleFormController {
 	public static final String URL_LOGIN_VIEW = "login";
 	public static final String URL_LOGIN_CTRL = "login.sec";
 	public static final String URL_LOGIN = "login";
+	public static final String URL_LOGOUT = "logout";
 	
 	public static final String REQUEST_PARAM_MESSAGE_CODE = "msgcode";
 	public static final String MESSAGE_LOGIN_FAILED = "login.failed";

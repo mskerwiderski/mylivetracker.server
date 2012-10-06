@@ -30,6 +30,6 @@ public interface IUserDao {
 	public void updateUserAutoLogin(UserWithoutRoleVo user);
 	public void updateUserStatusPage(UserWithoutRoleVo user);
 	public void updateUserEmergency(UserWithoutRoleVo user);
-	public Integer getUserCount(boolean adminsIncluded);	
-	public String getEmailAddressesOfAllUsers();
+	public Integer getUserCount(boolean adminsIncluded);
+	public void deleteUser(String userId);
 }

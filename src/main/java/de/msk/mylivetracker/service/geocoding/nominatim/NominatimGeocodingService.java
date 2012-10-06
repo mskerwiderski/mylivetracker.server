@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebResponse;
 
-import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService;
 import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService;
 
 /**

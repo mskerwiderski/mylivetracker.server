@@ -5,7 +5,54 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 
+<div id="dlgDeleteAccountCheck1" 
+	title="<spring:message code="masterdata.delete.account.confirm.title" />">
+</div>
+<div id="dlgDeleteAccountCheck2"
+	title="<spring:message code="masterdata.delete.account.confirm.title" />">
+</div>
 <script type="text/javascript">
+
+	var $dlgDeleteAccount;
+
+	$(document).ready(function(e) {		
+		$dlgDeleteAccountCheck1 = $('#dlgDeleteAccountCheck1').dialog({
+			modal: true,				
+			autoOpen: false,
+			closeOnEscape: true,		
+			buttons: {
+				'<spring:message code="masterdata.delete.account.confirm.no" />': function() {
+					$(this).dialog('close');
+				},
+				'<spring:message code="masterdata.delete.account.confirm.yes" />': function() {
+					//actionExecute("DeleteAccount");
+					$(this).dialog('close');
+					$dlgDeleteAccountCheck2.dialog('open');
+				}														
+			},
+			open: function(event, ui) {			
+				$(this).html("<spring:message code='masterdata.delete.account.confirm.check1' />");			 
+			}					
+		});
+		$dlgDeleteAccountCheck2 = $('#dlgDeleteAccountCheck2').dialog({
+			modal: true,				
+			autoOpen: false,
+			closeOnEscape: true,		
+			buttons: {
+				'<spring:message code="masterdata.delete.account.confirm.no" />': function() {
+					$(this).dialog('close');
+				},
+				'<spring:message code="masterdata.delete.account.confirm.yes" />': function() {
+					actionExecute("DeleteAccount");
+					$(this).dialog('close');
+				}														
+			},
+			open: function(event, ui) {
+				$(this).css("color", "f5454d");
+				$(this).html("<spring:message code='masterdata.delete.account.confirm.check2' />");			 
+			}					
+		});
+	});
 
 	function saveAllMasterData() {
 		actionExecute('SaveAllMasterData');
@@ -15,6 +62,10 @@
 		document.forms["optionsForm"].elements["userMasterData.password"].value = "";
 		document.forms["optionsForm"].elements["retypedPassword"].value = "";
 		actionExecute('ResetAllMasterData');
+	}
+	
+	function deleteAccount() {
+		$dlgDeleteAccountCheck1.dialog('open');
 	}
 	
 </script>
@@ -106,6 +157,20 @@
 		<td>
 			&nbsp;<form:errors cssClass="ui-state-error"  
 				path="retypedPassword" />&nbsp;	
+		</td>					
+	</tr>
+	<tr>
+		<td>
+			&nbsp;<spring:message code="masterdata.newsletter" />&nbsp;
+		</td>
+		<td>
+			&nbsp;<form:checkbox path="userMasterData.newsletterEnabled"
+			cssClass="text ui-widget-content ui-corner-all"
+			/>&nbsp;
+			<spring:message code="masterdata.newsletter.enabled" />
+		</td>
+		<td>
+			&nbsp;&nbsp;	
 		</td>					
 	</tr>
 	<tr>
@@ -219,5 +284,18 @@
 				<td>&nbsp;</td>
 			</c:otherwise>
 		</c:choose>								
+	</tr>
+	<tr>
+		<td style="width:30%;">
+			&nbsp;<spring:message code="masterdata.delete.account" />&nbsp;
+		</td>
+		<td style="width:30%;white-space: nowrap;">
+			<div class="mlt-button" >
+				&nbsp;<a href="#" style="border-width:3px;border-color:f5454d;" onclick="javascript:deleteAccount();">
+					<spring:message code='masterdata.delete.account.button' />
+				</a>												
+			</div>				
+		</td>
+		<td>&nbsp;</td>
 	</tr>
 </table>	

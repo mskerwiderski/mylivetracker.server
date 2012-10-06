@@ -8,9 +8,9 @@ import org.apache.commons.lang.BooleanUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import de.msk.mylivetracker.dao.IDemoDao;
-import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.ITrackService;
-import de.msk.mylivetracker.service.IUserService;
+import de.msk.mylivetracker.service.sender.ISenderService;
+import de.msk.mylivetracker.service.track.ITrackService;
+import de.msk.mylivetracker.service.user.IUserService;
 
 /**
  * DemoService.

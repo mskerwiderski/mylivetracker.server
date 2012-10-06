@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
-import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService;
 import de.msk.mylivetracker.web.frontend.login.LoginCtrl;
 import de.msk.mylivetracker.web.util.request.ReqParam;
 import de.msk.mylivetracker.web.util.request.ReqUrlStr;

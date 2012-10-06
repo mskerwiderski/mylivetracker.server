@@ -3,11 +3,11 @@ package de.msk.mylivetracker.web.uploader.processor.interpreter;
 import java.util.Map;
 
 import de.msk.mylivetracker.domain.DataReceivedVo;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.uploader.processor.DataPacket;
 import de.msk.mylivetracker.web.uploader.processor.IDataCtx;
 import de.msk.mylivetracker.web.uploader.processor.IDeviceSpecific;
 import de.msk.mylivetracker.web.uploader.processor.SenderFromRequestVo;
-import de.msk.mylivetracker.web.uploader.processor.SupportedServices;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.InterpreterException;
 
 /**
@@ -28,7 +28,7 @@ public interface IDataInterpreter {
 	public String getVersion();
 	
 	public DataPacket createDataPacket(
-		SupportedServices supportedServices, 
+		Services supportedServices, 
 		SenderFromRequestVo senderFromRequest, 
 		IDataCtx data, Map<String, Object> uploadProcessContext);
 	

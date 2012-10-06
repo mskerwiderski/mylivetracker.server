@@ -13,13 +13,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.uploader.processor.CutConnectionException;
 import de.msk.mylivetracker.web.uploader.processor.DataPacketCreator;
 import de.msk.mylivetracker.web.uploader.processor.PreProcessResultDsc;
 import de.msk.mylivetracker.web.uploader.processor.ProcessorType;
 import de.msk.mylivetracker.web.uploader.processor.RemoteInfo;
 import de.msk.mylivetracker.web.uploader.processor.ServerInfo;
-import de.msk.mylivetracker.web.uploader.processor.SupportedServices;
 import de.msk.mylivetracker.web.uploader.processor.UploadProcessor;
 
 /**
@@ -54,7 +54,7 @@ public class TcpSocketProcessor extends UploadProcessor implements Runnable {
 	 */
 	public TcpSocketProcessor(String serverName, 
 		ProcessorType processorType,		
-		SupportedServices supportedServices,
+		Services supportedServices,
 		DataPacketCreator dataPacketCreator,
 		SocketProcessorConfig socketProcessorConfig,
 		Socket socket) {

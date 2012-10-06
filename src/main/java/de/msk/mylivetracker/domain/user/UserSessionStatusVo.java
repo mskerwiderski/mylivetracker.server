@@ -11,7 +11,7 @@ import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
 import de.msk.mylivetracker.domain.TracksOverviewMapFlyToModeVo;
 import de.msk.mylivetracker.domain.TracksViewVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
-import de.msk.mylivetracker.service.ISenderService;
+import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.SenderEntry;
 import de.msk.mylivetracker.web.options.IntOptionDsc;
 

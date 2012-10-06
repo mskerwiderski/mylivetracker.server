@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.statistics.UploadedDataProcessVo;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.uploader.deviceactionexecutor.DeviceActionResult;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.IDataInterpreter;
 
@@ -45,7 +46,7 @@ public abstract class UploadProcessor {
 	public UploadProcessor(
 		String serverName,
 		ProcessorType processorType,
-		SupportedServices supportedServices,
+		Services supportedServices,
 		DataPacketCreator dataPacketCreator,
 		boolean handleInProcessorMap) {
 		this.serverName = serverName;
@@ -94,7 +95,7 @@ public abstract class UploadProcessor {
 	
 	private String serverName;
 	private ProcessorType processorType;
-	private SupportedServices supportedServices;
+	private Services supportedServices;
 	private DataPacketCreator dataPacketCreator;
 	private Map<String, Object> context;
 	
@@ -280,7 +281,7 @@ public abstract class UploadProcessor {
 	/**
 	 * @return the supportedServices
 	 */
-	public SupportedServices getSupportedServices() {
+	public Services getSupportedServices() {
 		return supportedServices;
 	}
 

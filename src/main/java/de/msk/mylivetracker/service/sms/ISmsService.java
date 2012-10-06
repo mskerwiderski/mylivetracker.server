@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.sms;
 
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;

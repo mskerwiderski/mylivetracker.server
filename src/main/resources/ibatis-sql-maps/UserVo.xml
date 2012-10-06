@@ -19,6 +19,7 @@
     		LAST_NAME,
     		FIRST_NAME,
     		EMAIL_ADDRESS,
+    		NEWSLETTER_ENABLED,
     		HASHED_PASSWORD,
     		ROLE,
     		SENDER_LIMIT,
@@ -30,6 +31,7 @@
     		#lastName#,
     		#firstName#,
     		#emailAddress#,
+    		#newsletterEnabled#,
     		#password#,
     		#role#,
     		#senderLimit#,
@@ -43,7 +45,8 @@
 	    <result property="masterData.lastName" column="LAST_NAME" />
 	    <result property="masterData.firstName" column="FIRST_NAME" />
 	    <result property="masterData.emailAddress" column="EMAIL_ADDRESS" />
-	    <result property="masterData.password" column="HASHED_PASSWORD" />     	    
+	    <result property="masterData.password" column="HASHED_PASSWORD" />
+	    <result property="masterData.newsletterEnabled" column="NEWSLETTER_ENABLED" />     	    
 	    <result property="senderLimit"  column="SENDER_LIMIT" />               
 	    <result property="lastLogin"  column="LAST_LOGIN" />
 	    <result property="loginCount"  column="LOGIN_COUNT" />
@@ -159,10 +162,11 @@
   		set 
   			t.LAST_NAME = #masterData.lastName#,
   			t.FIRST_NAME = #masterData.firstName#,
-  			t.EMAIL_ADDRESS = #masterData.emailAddress#
-  			<isNotEmpty prepend="," property="masterData.password">
-  				t.HASHED_PASSWORD = #masterData.password#
+  			t.EMAIL_ADDRESS = #masterData.emailAddress#,
+  			<isNotEmpty property="masterData.password">
+  				t.HASHED_PASSWORD = #masterData.password#,
   			</isNotEmpty>
+  			t.NEWSLETTER_ENABLED = #masterData.newsletterEnabled#
   		where (t.USER_ID = #userId#)  
   	</update>
   	  	
@@ -230,5 +234,9 @@
   		where (t.USER_ID = #userId#)  
   	</update> 
   	
+  	<delete id="deleteUser" parameterClass="string">
+  		delete FROM T_USER
+		where USER_ID = #?#
+  	</delete>
 </sqlMap>
 

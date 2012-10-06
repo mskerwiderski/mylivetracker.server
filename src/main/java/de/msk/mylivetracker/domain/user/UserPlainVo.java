@@ -28,10 +28,12 @@ public class UserPlainVo implements Serializable {
 	private Integer senderLimit;	
 	private boolean enabled;
 	private String language;
+	private boolean newsletterEnabled;
 	
 	public UserPlainVo(String userId, String lastName, String firstName,
 			String emailAddress, String password, UserRole role,
-			Integer senderLimit, boolean enabled, String language) {
+			Integer senderLimit, boolean enabled, String language,
+			boolean newsletterEnabled) {
 		this.userId = userId;
 		this.lastName = lastName;
 		this.firstName = firstName;
@@ -41,6 +43,7 @@ public class UserPlainVo implements Serializable {
 		this.senderLimit = senderLimit;
 		this.enabled = enabled;
 		this.language = language;
+		this.newsletterEnabled = newsletterEnabled;
 	}
 
 	@Override
@@ -49,7 +52,8 @@ public class UserPlainVo implements Serializable {
 			+ ", firstName=" + firstName + ", emailAddress=" + emailAddress
 			+ ", password=" + password + ", role=" + role
 			+ ", senderLimit=" + senderLimit + ", enabled=" + enabled
-			+ ", language=" + language + "]";
+			+ ", language=" + language + ", newsletterEnabled="
+			+ newsletterEnabled + "]";
 	}
 
 	/**
@@ -110,5 +114,9 @@ public class UserPlainVo implements Serializable {
 
 	public String getLanguage() {
 		return language;
+	}
+
+	public boolean isNewsletterEnabled() {
+		return newsletterEnabled;
 	}
 }

@@ -10,9 +10,9 @@ import org.springframework.core.task.TaskExecutor;
 
 import de.msk.mylivetracker.dao.IDemoDao;
 import de.msk.mylivetracker.domain.demo.DemoTrackVo;
-import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.ITrackService;
-import de.msk.mylivetracker.service.IUserService;
+import de.msk.mylivetracker.service.sender.ISenderService;
+import de.msk.mylivetracker.service.track.ITrackService;
+import de.msk.mylivetracker.service.user.IUserService;
 
 /**
  * DemoRunner.

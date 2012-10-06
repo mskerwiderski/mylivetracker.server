@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.track;
 
 import java.util.List;
 
@@ -143,18 +143,18 @@ public interface ITrackService {
 	 * @param trackId - id of track.
 	 */
 	public void removeTrack(String trackId);
-	
-	/**
-	 * remove closed tracks.
-	 * @param userId - id of user.
-	 */
-	public void removeClosedTracks(String userId);
-	
+
 	/**
 	 * remove old tracks.
 	 * @param olderThanInMSecs - remove tracks which are older than <code>olderThanInMSecs</code>.
 	 */
 	public void removeOldTracks(long olderThanInMSecs);
+	
+	/**
+	 * remove all track of a user.
+	 * @param userId - id of user.
+	 */
+	public void removeAllTracksOfUsers(String userId);
 	
 	public static class DeleteTrackResult {
 		private String trackId;

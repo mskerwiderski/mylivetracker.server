@@ -20,8 +20,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.IApplicationService.Parameter;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
 import de.msk.mylivetracker.web.options.StrOptionDsc;
 
 /**

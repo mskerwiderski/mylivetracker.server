@@ -1,7 +1,7 @@
 package de.msk.mylivetracker.web.uploader.processor;
 
 import de.msk.mylivetracker.domain.sender.SenderVo;
-import de.msk.mylivetracker.service.ISenderService;
+import de.msk.mylivetracker.service.sender.ISenderService;
 
 /**
  * SenderFromRequestVo.

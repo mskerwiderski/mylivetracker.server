@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.sender;
 
 import java.util.List;
 
@@ -85,13 +85,23 @@ public class SenderService implements ISenderService {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.ISenderService#removeSender(java.lang.String)
-	 */
 	@Override
-	public void removeSender(String senderId) {
+	public void deleteSender(String senderId) {
 		senderCache.remove(senderId);
-		senderDao.removeSender(senderId);
+		senderDao.deleteSender(senderId);
+	}
+
+	@Override
+	public void deleteSendersOfUser(String userId) {
+		@SuppressWarnings("unchecked")
+		List<String> senderIds = (List<String>)this.senderCache.getKeys();
+		for (String senderId : senderIds) {
+			SenderVo sender = (SenderVo)this.senderCache.get(senderId).getObjectValue();
+			if (StringUtils.equals(sender.getUserId(), userId)) {
+				this.senderCache.remove(senderId);
+			}
+		}
+		this.senderDao.deleteSendersOfUser(userId);
 	}
 
 	/* (non-Javadoc)

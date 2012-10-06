@@ -14,8 +14,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.IUserService;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.user.IUserService;
 import de.msk.mylivetracker.web.util.UrlUtils;
 import de.msk.mylivetracker.web.util.request.ReqUrlStr;
 

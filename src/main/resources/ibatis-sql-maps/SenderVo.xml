@@ -67,9 +67,14 @@
   		where t.SENDER_ID = #senderId#   		
   	</update> 
   	
-  	<delete id="removeSender" parameterClass="string">
+  	<delete id="deleteSender" parameterClass="string">
   		delete FROM T_SENDER
 		where SENDER_ID = #?#
+  	</delete>
+  	  	
+  	<delete id="deleteSendersOfUser" parameterClass="string">
+  		delete FROM T_SENDER
+		where USER_ID = #?#
   	</delete>
   	  	
   	<select id="getSendersByUserId" parameterClass="java.util.Map" resultMap="senderResult">

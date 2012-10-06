@@ -10,11 +10,9 @@ import org.springframework.web.servlet.mvc.AbstractController;
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
 import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo.Status;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.statistics.IStatisticsService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.uploader.processor.DataPacketCreator;
 import de.msk.mylivetracker.web.uploader.processor.ProcessorType;
-import de.msk.mylivetracker.web.uploader.processor.SupportedServices;
 
 /**
  * HttpServletCtrl.
@@ -29,10 +27,7 @@ import de.msk.mylivetracker.web.uploader.processor.SupportedServices;
  */
 public class HttpServletCtrl extends AbstractController {
 	
-	private IApplicationService applicationService;
-	private IStatisticsService statisticsService;
-	
-	private SupportedServices supportedServices;
+	private Services services;
 	private DataPacketCreator dataPacketCreator;
 	
 	/* (non-Javadoc)
@@ -40,10 +35,10 @@ public class HttpServletCtrl extends AbstractController {
 	 */
 	@Override
 	protected void initServletContext(ServletContext servletContext) {
-		this.statisticsService.logUploaderServerStatus(
+		this.services.getStatisticsService().logUploaderServerStatus(
 			new UploaderServerStatusVo(
-				"HttpServerAt" + this.applicationService.getApplicationPort(),
-				this.applicationService.getApplicationPort().intValue(), 
+				"HttpServerAt" + this.services.getApplicationService().getApplicationPort(),
+				this.services.getApplicationService().getApplicationPort().intValue(), 
 				ProcessorType.Http.getProtocol(), 
 				Status.Running, 
 				new DateTime(), 
@@ -63,28 +58,19 @@ public class HttpServletCtrl extends AbstractController {
 		HttpServletProcessor httpServletProcessor =
 			new HttpServletProcessor("HttpServletAt80",
 				ProcessorType.Http,
-				supportedServices,
+				services,
 				dataPacketCreator,
 				request,
 				response);
 		httpServletProcessor.process();
 		return null;
 	}
-
-	/**
-	 * @return the supportedServices
-	 */
-	public SupportedServices getSupportedServices() {
-		return supportedServices;
+	public Services getServices() {
+		return services;
 	}
-
-	/**
-	 * @param supportedServices the supportedServices to set
-	 */
-	public void setSupportedServices(SupportedServices supportedServices) {
-		this.supportedServices = supportedServices;
+	public void setServices(Services services) {
+		this.services = services;
 	}
-
 	/**
 	 * @return the dataPacketCreator
 	 */
@@ -99,32 +85,4 @@ public class HttpServletCtrl extends AbstractController {
 			DataPacketCreator dataPacketCreator) {
 		this.dataPacketCreator = dataPacketCreator;
 	}
-
-	/**
-	 * @return the statisticsService
-	 */
-	public IStatisticsService getStatisticsService() {
-		return statisticsService;
-	}
-
-	/**
-	 * @param statisticsService the statisticsService to set
-	 */
-	public void setStatisticsService(IStatisticsService statisticsService) {
-		this.statisticsService = statisticsService;
-	}
-
-	/**
-	 * @return the applicationService
-	 */
-	public IApplicationService getApplicationService() {
-		return applicationService;
-	}
-
-	/**
-	 * @param applicationService the applicationService to set
-	 */
-	public void setApplicationService(IApplicationService applicationService) {
-		this.applicationService = applicationService;
-	}	
 }

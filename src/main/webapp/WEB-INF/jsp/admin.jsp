@@ -44,9 +44,6 @@
 			&nbsp;<c:out value="${result}"/>&nbsp;
 		</td>
 		<td style="text-align:right;white-space: nowrap;">
-			&nbsp;
-		</td>
-		<td style="text-align:right;white-space: nowrap;">
 			<div class="mlt-button">
 				&nbsp;<a href="performance/" >
 					Performance Monitor
@@ -278,7 +275,7 @@
 				</a>&nbsp;														
 			</div>		
 		</th>
-		<th style="width:100%;">
+		<th colspan="2" style="width:100%;">
 			&nbsp;&nbsp;							
 		</th>
 	</tr>

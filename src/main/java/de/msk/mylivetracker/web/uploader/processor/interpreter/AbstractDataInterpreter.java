@@ -12,13 +12,13 @@ import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.sender.SenderSwitchesVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
-import de.msk.mylivetracker.service.ISenderService;
+import de.msk.mylivetracker.service.Services;
+import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.web.uploader.deviceactionexecutor.DeviceActionExecutor;
 import de.msk.mylivetracker.web.uploader.processor.DataPacket;
 import de.msk.mylivetracker.web.uploader.processor.IDataCtx;
 import de.msk.mylivetracker.web.uploader.processor.IDeviceSpecific;
 import de.msk.mylivetracker.web.uploader.processor.SenderFromRequestVo;
-import de.msk.mylivetracker.web.uploader.processor.SupportedServices;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.InterpreterException;
 
 /**
@@ -64,7 +64,7 @@ public abstract class AbstractDataInterpreter implements IDataInterpreter {
 	 * @see de.msk.mylivetracker.web.uploader.processor.interpreter.IDataInterpreter#createDataPacket(de.msk.mylivetracker.web.uploader.processor.SupportedServices, de.msk.mylivetracker.web.uploader.processor.SenderFromRequestVo, de.msk.mylivetracker.web.uploader.processor.IDataCtx, java.util.Map)
 	 */
 	@Override
-	public DataPacket createDataPacket(SupportedServices supportedServices,
+	public DataPacket createDataPacket(Services supportedServices,
 		SenderFromRequestVo senderFromRequest, IDataCtx data,
 		Map<String, Object> uploadProcessContext) {
 		DataPacket dataPacket = null;	

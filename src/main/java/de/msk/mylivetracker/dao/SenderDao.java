@@ -55,14 +55,18 @@ public class SenderDao extends SqlMapClientDaoSupport implements ISenderDao {
 			update("SenderVo.updateSenderType", params);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.ISenderDao#removeSender(java.lang.String)
-	 */
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void removeSender(String senderId) {
+	public void deleteSender(String senderId) {
 		this.getSqlMapClientTemplate().
-			delete("SenderVo.removeSender", senderId);
+			delete("SenderVo.deleteSender", senderId);
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public void deleteSendersOfUser(String userId) {
+		this.getSqlMapClientTemplate().
+		delete("SenderVo.deleteSendersOfUser", userId);
 	}
 
 	/* (non-Javadoc)

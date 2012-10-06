@@ -9,11 +9,11 @@ import org.apache.commons.logging.LogFactory;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
-import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.Services;
+import de.msk.mylivetracker.service.application.IApplicationService;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
 import de.msk.mylivetracker.web.uploader.processor.DataPacketCreator;
 import de.msk.mylivetracker.web.uploader.processor.ProcessorType;
-import de.msk.mylivetracker.web.uploader.processor.SupportedServices;
 
 /**
  * UdpServer.
@@ -34,7 +34,7 @@ public class UdpServer extends Thread {
 	private IStatisticsService statisticsService;
 	
 	private UdpServerConfig udpServerConfig;
-	private SupportedServices supportedServices;
+	private Services services;
 	private DataPacketCreator dataPacketCreator;
 		
 	private DatagramSocket serverSocket = null;		
@@ -125,7 +125,7 @@ public class UdpServer extends Thread {
 			new UdpSocketProcessor(
 				this.getName(),		
 				ProcessorType.Udp,
-				this.supportedServices,
+				this.services,
 				this.dataPacketCreator,				
 				socket, packet);							
 		processor.process();		
@@ -161,21 +161,12 @@ public class UdpServer extends Thread {
 	public void setUdpServerConfig(UdpServerConfig udpServerConfig) {
 		this.udpServerConfig = udpServerConfig;
 	}
-
-	/**
-	 * @return the supportedServices
-	 */
-	public SupportedServices getSupportedServices() {
-		return supportedServices;
+	public Services getServices() {
+		return services;
 	}
-
-	/**
-	 * @param supportedServices the supportedServices to set
-	 */
-	public void setSupportedServices(SupportedServices supportedServices) {
-		this.supportedServices = supportedServices;
-	}	
-
+	public void setServices(Services services) {
+		this.services = services;
+	}
 	/**
 	 * @return the dataPacketCreator
 	 */

@@ -27,8 +27,8 @@ import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.ITrackService.DeleteTrackResult;
-import de.msk.mylivetracker.service.ITrackService.TrackListResult;
+import de.msk.mylivetracker.service.track.ITrackService.DeleteTrackResult;
+import de.msk.mylivetracker.service.track.ITrackService.TrackListResult;
 import de.msk.mylivetracker.util.GpsUtils;
 
 /**
@@ -65,7 +65,6 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	private static final String SQL_GET_TRACK_BY_ID_AS_RECENT_TRACK = "TrackVo.getTrackByIdAsRecentTrack";
 	private static final String SQL_GET_RECENT_TRACK_AS_MIN_TRACK = "TrackVo.getRecentTrackAsMinTrack";
 	private static final String SQL_GET_RECENT_TRACK_AS_RECENT_TRACK = "TrackVo.getRecentTrackAsRecentTrack";
-	private static final String SQL_GET_CLOSED_TRACK_IDS_BY_USER_ID = "TrackVo.getClosedTrackIdsByUserId";
 	private static final String SQL_GET_OLD_TRACK_IDS_BY_TIMESTAMP = "TrackVo.getOldTrackIdsByTimestamp";
 	private static final String SQL_GET_ONE_TRACK_ID_WITH_REMOVE_FLAG = "TrackVo.getOneTrackIdWithRemoveFlag";
 		
@@ -88,15 +87,18 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	private static final String SQL_STORE_MOB_NW_CELL = "MobNwCellVo.storeMobNwCell";
 	private static final String SQL_STORE_POSITION = "PositionVo.storePosition";
 	
-	// remove
-	private static final String SQL_MARK_TRACK_FOR_REMOVING = "TrackVo.markTrackForRemoving";
-	private static final String SQL_REMOVE_TRACK = "TrackVo.removeTrack";	
-	private static final String SQL_REMOVE_POSITION = "TrackVo.removePosition";
-	private static final String SQL_REMOVE_MESSAGE = "TrackVo.removeMessage";
-	private static final String SQL_REMOVE_MOB_NW_CELL = "TrackVo.removeMobNwCell";	
-	private static final String SQL_REMOVE_SENDER_STATE= "TrackVo.removeSenderState";
-	private static final String SQL_REMOVE_CARDIAC_FUNCTION= "TrackVo.removeCardiacFunction";
-	private static final String SQL_REMOVE_EMERGENCY_SIGNAL= "TrackVo.removeEmergencySignal";
+	// remove (means: mark for deletion)
+	private static final String SQL_REMOVE_TRACK = "TrackVo.removeTrack";
+	private static final String SQL_REMOVE_TRACKS_OF_USER = "TrackVo.removeTracksOfUser";
+	
+	// delete (means: really delete from database)
+	private static final String SQL_DELETE_TRACK = "TrackVo.deleteTrack";	
+	private static final String SQL_DELETE_POSITION = "TrackVo.deletePosition";
+	private static final String SQL_DELETE_MESSAGE = "TrackVo.deleteMessage";
+	private static final String SQL_DELETE_MOB_NW_CELL = "TrackVo.deleteMobNwCell";	
+	private static final String SQL_DELETE_SENDER_STATE= "TrackVo.deleteSenderState";
+	private static final String SQL_DELETE_CARDIAC_FUNCTION= "TrackVo.deleteCardiacFunction";
+	private static final String SQL_DELETE_EMERGENCY_SIGNAL= "TrackVo.deleteEmergencySignal";
 		
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#getTracksAsRecent(de.msk.mylivetracker.domain.track.TrackFilterVo)
@@ -612,25 +614,16 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.ITrackDao#removeTrack(java.lang.String)
 	 */
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void removeTrack(String trackId) {
-		this.markTrackForRemoving(trackId);
-	}
-	
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.ITrackDao#removeClosedTracks(java.lang.String)
-	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void removeClosedTracks(String userId) {
-		List<String> trackIds = (List<String>)
-			this.getSqlMapClientTemplate().queryForList(
-				SQL_GET_CLOSED_TRACK_IDS_BY_USER_ID, userId);	
-		for (String trackId : trackIds) {
-			this.markTrackForRemoving(trackId);
-		}	
-		log.debug(trackIds.size() + " tracks removed of userId " + userId);
+	public void removeTrack(String trackId) {
+		this.removeTrackAux(trackId);
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public void removeAllTracksOfUsers(String userId) {
+		this.getSqlMapClientTemplate().update(SQL_REMOVE_TRACKS_OF_USER, userId);
 	}
 
 	/* (non-Javadoc)
@@ -648,7 +641,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 			SQL_GET_OLD_TRACK_IDS_BY_TIMESTAMP, timestamp);	
 		for (String trackId : trackIds) {
 			log.debug("remove track with trackId = '" + trackId + "'");
-			this.markTrackForRemoving(trackId);
+			this.removeTrackAux(trackId);
 		}	
 		log.debug(trackIds.size() + " tracks removed which are older than " + olderThanInMSecs + " msecs.");
 	}
@@ -748,25 +741,25 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 		TrackVo track = 
 			(TrackVo)this.getSqlMapClientTemplate().
 			queryForObject(SQL_GET_TRACK_BY_ID_AS_MIN_TRACK, trackId);		
-		this.markTrackForRemoving(trackId); 
+		this.removeTrackAux(trackId); 
 		track = TrackVo.reset(track);
 		this.getSqlMapClientTemplate().insert(SQL_INSERT_TRACK, track);
 		log.debug("track with trackId '" + trackId + "' successfully resetted.");
 	}
 	
-	private void markTrackForRemoving(String trackId) {
-		this.getSqlMapClientTemplate().update(SQL_MARK_TRACK_FOR_REMOVING, trackId);
+	private void removeTrackAux(String trackId) {
+		this.getSqlMapClientTemplate().update(SQL_REMOVE_TRACK, trackId);
 	}
 	
 	private int deleteTrackAux(String trackId) {
 		int cnt = 0;
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_TRACK, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_POSITION, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_MESSAGE, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_MOB_NW_CELL, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_SENDER_STATE, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_CARDIAC_FUNCTION, trackId);
-		cnt += this.getSqlMapClientTemplate().delete(SQL_REMOVE_EMERGENCY_SIGNAL, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_DELETE_TRACK, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_DELETE_POSITION, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_DELETE_MESSAGE, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_DELETE_MOB_NW_CELL, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_DELETE_SENDER_STATE, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_DELETE_CARDIAC_FUNCTION, trackId);
+		cnt += this.getSqlMapClientTemplate().delete(SQL_DELETE_EMERGENCY_SIGNAL, trackId);
 		return cnt;
 	}
 	

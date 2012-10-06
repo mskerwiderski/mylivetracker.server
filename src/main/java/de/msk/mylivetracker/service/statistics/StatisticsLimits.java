@@ -17,6 +17,7 @@ public class StatisticsLimits {
 	private Integer maxStatServiceCall = 500;
 	private Integer maxStatSmsTransport = 100;
 	private Integer maxStatStorePosProcInfo = 500;
+	private Integer maxStatStorePosProcError = 500;
 	private Integer maxStatUplDataProc = 100000;
 	private Integer maxStatUploaderServerStatus = 500;
 	
@@ -43,6 +44,12 @@ public class StatisticsLimits {
 	}
 	public void setMaxStatStorePosProcInfo(Integer maxStatStorePosProcInfo) {
 		this.maxStatStorePosProcInfo = maxStatStorePosProcInfo;
+	}
+	public Integer getMaxStatStorePosProcError() {
+		return maxStatStorePosProcError;
+	}
+	public void setMaxStatStorePosProcError(Integer maxStatStorePosProcError) {
+		this.maxStatStorePosProcError = maxStatStorePosProcError;
 	}
 	public Integer getMaxStatUplDataProc() {
 		return maxStatUplDataProc;

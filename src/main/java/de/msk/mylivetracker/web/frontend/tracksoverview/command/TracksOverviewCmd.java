@@ -14,7 +14,7 @@ import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.MapsUsedVo;
 import de.msk.mylivetracker.domain.user.UserSessionStatusVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
-import de.msk.mylivetracker.service.ISenderService;
+import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.ActionExecutor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
 import de.msk.mylivetracker.web.options.IntOptionDsc;

@@ -16,4 +16,5 @@ import de.msk.mylivetracker.domain.user.UserSessionStatusVo;
 public interface IUserSessionStatusDao {
 	public UserSessionStatusVo getUserSessionStatus(String userId);
 	public void updateUserSessionStatus(UserSessionStatusVo userSessionStatus);
+	public void deleteUserSessionStatus(String userId);
 }

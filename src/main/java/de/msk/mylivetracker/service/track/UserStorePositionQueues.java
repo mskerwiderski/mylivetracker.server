@@ -13,9 +13,9 @@ import de.msk.mylivetracker.dao.ITrackDao;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.ISmsService;
 import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService;
+import de.msk.mylivetracker.service.sender.ISenderService;
+import de.msk.mylivetracker.service.sms.ISmsService;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
 
 /**

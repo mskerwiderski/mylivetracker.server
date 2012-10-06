@@ -65,7 +65,7 @@
   		)    		
   	</insert>  	 
   	
-  	<delete id="removeStatusParamsByUserId" parameterClass="string">
+  	<delete id="deleteStatusParamsByUserId" parameterClass="string">
   		delete t FROM T_STATUS_PARAMS t where t.USER_ID = #?#
   	</delete> 	  
 </sqlMap>

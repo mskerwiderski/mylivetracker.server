@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.user;
 
 import de.msk.mylivetracker.domain.user.UserSessionStatusVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
@@ -17,4 +17,5 @@ import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 public interface IUserSessionStatusService {
 	public UserSessionStatusVo getUserSessionStatus(UserWithRoleVo user);
 	public void updateUserSessionStatus(UserSessionStatusVo userSessionStatus);
+	public void deleteUserSessionStatus(String userId);
 }

@@ -10,11 +10,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
-import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.Services;
+import de.msk.mylivetracker.service.application.IApplicationService;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
 import de.msk.mylivetracker.web.uploader.processor.DataPacketCreator;
 import de.msk.mylivetracker.web.uploader.processor.ProcessorType;
-import de.msk.mylivetracker.web.uploader.processor.SupportedServices;
 
 /**
  * TcpServer.
@@ -36,7 +36,7 @@ public class TcpServer extends Thread {
  	
 	private TcpServerConfig tcpServerConfig;
 	private SocketProcessorConfig socketProcessorConfig;	
-	private SupportedServices supportedServices;
+	private Services services;
 	private ThreadPoolTaskExecutor taskExecutorForProcessors;
 	private DataPacketCreator dataPacketCreator;
 		
@@ -138,7 +138,7 @@ public class TcpServer extends Thread {
 			new TcpSocketProcessor(				
 				this.getName(),		
 				ProcessorType.Tcp,
-				this.supportedServices,
+				this.services,
 				this.dataPacketCreator,
 				this.socketProcessorConfig,
 				socket);				
@@ -203,21 +203,12 @@ public class TcpServer extends Thread {
 	public void setSocketProcessorConfig(SocketProcessorConfig socketProcessorConfig) {
 		this.socketProcessorConfig = socketProcessorConfig;
 	}
-
-	/**
-	 * @return the supportedServices
-	 */
-	public SupportedServices getSupportedServices() {
-		return supportedServices;
+	public Services getServices() {
+		return services;
 	}
-
-	/**
-	 * @param supportedServices the supportedServices to set
-	 */
-	public void setSupportedServices(SupportedServices supportedServices) {
-		this.supportedServices = supportedServices;
+	public void setServices(Services services) {
+		this.services = services;
 	}
-
 	/**
 	 * @return the taskExecutorForProcessors
 	 */

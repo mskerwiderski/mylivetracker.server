@@ -17,7 +17,7 @@ import de.msk.mylivetracker.domain.SenderStateVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
-import de.msk.mylivetracker.service.ISenderService;
+import de.msk.mylivetracker.service.sender.ISenderService;
 
 /**
  * TrackVo.

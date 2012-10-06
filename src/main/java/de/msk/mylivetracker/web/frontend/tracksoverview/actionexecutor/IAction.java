@@ -3,9 +3,9 @@ package de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor;
 import javax.servlet.http.HttpServletRequest;
 
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.ITrackService;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.sender.ISenderService;
+import de.msk.mylivetracker.service.track.ITrackService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 
 /**

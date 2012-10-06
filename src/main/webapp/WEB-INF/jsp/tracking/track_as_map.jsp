@@ -846,7 +846,7 @@
 	function mlt_createMarkerAux(icon, lat, lon, clickable) {  	
    	   	var marker = new L.Marker(
 	    	new L.LatLng(lat, lon), 
-    		{ icon:icon, clickable:clickable });	    
+    		{ icon:icon, clickable:clickable, opacity:0.7 });	    
 	    return marker; 
    	}
 	

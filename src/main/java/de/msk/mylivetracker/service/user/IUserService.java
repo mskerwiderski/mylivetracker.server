@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.user;
 
 import de.msk.mylivetracker.domain.user.UserPlainVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
@@ -26,5 +26,5 @@ public interface IUserService {
 	public void updateUserStatusPage(UserWithoutRoleVo user);
 	public void updateUserEmergency(UserWithoutRoleVo user);
 	public Integer getUserCount(boolean adminsIncluded);
-	public String getEmailAddressesOfAllUsers();
+	public void deleteUser(String userId);
 }

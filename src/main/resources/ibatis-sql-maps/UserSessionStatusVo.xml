@@ -72,6 +72,11 @@
 			TO_SEL_TRACKS_VIEW = #toSelTracksView#,
 			TO_SEL_TRACKS_OVERVIEW_OPT_FLY_TO_MODE = #toSelTracksOverviewOptFlyToMode#,
 			TO_SEL_TRACKS_OVERVIEW_OPT_REFRESH = #toSelTracksOverviewOptRefresh# 		
-  	</insert>  	     
+  	</insert>  	
+  	
+  	<delete id="deleteUserSessionStatus" parameterClass="string">
+  		delete FROM T_USER_SESSION_STATUS
+		where USER_ID = #?#
+  	</delete>     
 </sqlMap>
 

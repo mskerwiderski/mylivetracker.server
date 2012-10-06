@@ -7,9 +7,9 @@ import de.msk.mylivetracker.commons.rpc.LinkSenderResponse;
 import de.msk.mylivetracker.commons.rpc.RpcResponse.ResultCode;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.IUserService;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.sender.ISenderService;
+import de.msk.mylivetracker.service.user.IUserService;
 import de.msk.mylivetracker.util.PwdUtils;
 import de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig;
 

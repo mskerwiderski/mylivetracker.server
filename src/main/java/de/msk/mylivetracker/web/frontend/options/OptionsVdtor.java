@@ -11,7 +11,7 @@ import org.springframework.validation.Validator;
 
 import de.msk.mylivetracker.domain.sender.SenderSwitchesVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
-import de.msk.mylivetracker.service.ISenderService;
+import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.web.frontend.options.actionexecutor.ActionExecutor;
 
 /**

@@ -5,7 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
-import de.msk.mylivetracker.service.ISenderService;
+import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.web.uploader.deviceactionexecutor.DeviceActionExecutor;
 import de.msk.mylivetracker.web.uploader.processor.IDataCtx;
 import de.msk.mylivetracker.web.uploader.processor.SenderFromRequestVo;

@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.user;
 
 import java.io.Serializable;
 
@@ -16,7 +16,9 @@ import de.msk.mylivetracker.domain.user.UserPlainVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.IApplicationService.Parameter;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
+import de.msk.mylivetracker.service.sender.ISenderService;
 
 /**
  * UserService.
@@ -133,12 +135,10 @@ public class UserService implements
 		return userDao.getUserCount(adminsIncluded);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IUserService#getEmailAddressesOfAllUsers()
-	 */
 	@Override
-	public String getEmailAddressesOfAllUsers() {
-		return userDao.getEmailAddressesOfAllUsers();
+	public void deleteUser(String userId) {
+		userWithoutRoleCache.remove(userId);
+		userDao.deleteUser(userId);
 	}
 
 	/* (non-Javadoc)

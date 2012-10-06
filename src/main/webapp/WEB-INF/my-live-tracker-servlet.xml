@@ -263,21 +263,12 @@
         <property name="validator" ref="optionsVdtor" />	
         <property name="formView" value="options"/>
         <property name="successView" value="options"/>  
-        <property name="applicationService" ref="applicationService" />
-        <property name="userService" ref="userService" />
-        <property name="senderService" ref="senderService" />        
-        <property name="geocodingService" ref="geocodingService" />
-        <property name="smsService" ref="smsService" />          
-        <property name="statusParamsService" ref="statusParamsService" />
-        <property name="trackService" ref="trackService" />   
+        <property name="services" ref="services" />   
     </bean>    
      
     <bean name="uploaderCtrl"
-        class="de.msk.mylivetracker.web.uploader.processor.server.http.HttpServletCtrl"
-        >
-        <property name="applicationService" ref="applicationService" />
-        <property name="statisticsService" ref="statisticsService" />
-        <property name="supportedServices" ref="supportedServices" />
+        class="de.msk.mylivetracker.web.uploader.processor.server.http.HttpServletCtrl">
+        <property name="services" ref="services" />
         <property name="dataPacketCreator" ref="httpServerDataPacketCreator" />        
     </bean>
               

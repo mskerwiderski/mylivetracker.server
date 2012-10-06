@@ -1,10 +1,11 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.user;
 
 import java.util.List;
 
 import de.msk.mylivetracker.dao.IUserSessionStatusDao;
 import de.msk.mylivetracker.domain.user.UserSessionStatusVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
+import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.web.options.IntOptionDsc;
 
 /**
@@ -49,6 +50,11 @@ public class UserSessionStatusService implements IUserSessionStatusService {
 		this.userSessionStatusDao.updateUserSessionStatus(userSessionStatus);
 	}
 	
+	@Override
+	public void deleteUserSessionStatus(String userId) {
+		this.userSessionStatusDao.deleteUserSessionStatus(userId);
+	}
+
 	public ISenderService getSenderService() {
 		return senderService;
 	}

@@ -24,7 +24,7 @@ import de.msk.mylivetracker.domain.SenderStateVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.ISenderService;
+import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.util.datetime.DateTimeUtils;
 import de.msk.mylivetracker.web.util.FmtUtils;
 

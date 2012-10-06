@@ -10,7 +10,6 @@ import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.track.TrackFilterVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.ITrackService;
 
 /**
  * TrackService.
@@ -146,19 +145,16 @@ public class TrackService implements ITrackService {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.ITrackService#removeClosedTracks(java.lang.String)
-	 */
-	@Override
-	public void removeClosedTracks(String userId) {
-		trackDao.removeClosedTracks(userId);
-	}
-
-	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.ITrackService#removeOldTracks(long)
 	 */
 	@Override
 	public void removeOldTracks(long olderThanInMSecs) {
 		trackDao.removeOldTracks(olderThanInMSecs);
+	}
+
+	@Override
+	public void removeAllTracksOfUsers(String userId) {
+		trackDao.removeAllTracksOfUsers(userId);
 	}
 
 	/* (non-Javadoc)

@@ -390,14 +390,6 @@
   		select * from T_TRACK t where t.TRACK_ID = #?# and t.REMOVE = false  			
   	</select>  	
   	
-  	<select id="getClosedTrackIdsByUserId" 
-  		parameterClass="string" resultClass="string">
-  		select t.TRACK_ID from T_TRACK t where 
-  		t.USER_ID = #?# and
-  		t.IS_ACTIVE = FALSE and			
-  		t.REMOVE = false
-  	</select>
-  	
   	<select id="getOldTrackIdsByTimestamp" 
   		parameterClass="dateTime" resultClass="string">
   		select t.TRACK_ID from T_TRACK t 
@@ -508,16 +500,6 @@
   		and t.REMOVE = false   		
   	</update>  
   	
-  	<update id="closeAndRemoveTrack" parameterClass="java.util.Map">
-  		update T_TRACK t
-  		set 
-  			t.REMOVE = true,
-  			t.IS_ACTIVE = FALSE, 
-  			t.TRACK_UPDATED = #trackUpdated# 		   
-  		where t.TRACK_ID = #trackId#
-  		and t.REMOVE = false   		
-  	</update>  
-  	
   	<update id="closeActiveTrack" parameterClass="java.util.Map">
   		update T_TRACK t
   		set 
@@ -555,13 +537,21 @@
   		and t.REMOVE = false   		
   	</update>
   	
-  	<update id="markTrackForRemoving" parameterClass="String">
+  	<update id="removeTrack" parameterClass="String">
   		update T_TRACK t
   		set 
   			t.REMOVE = true		   
   		where t.TRACK_ID = #?#
   		and t.REMOVE = false
   	</update>  
+  	  	
+  	<update id="removeTracksOfUser" parameterClass="String">
+  		update T_TRACK t
+  		set 
+  			t.REMOVE = true		   
+  		where t.USER_ID = #?#
+  		and t.REMOVE = false
+  	</update>
   	  	
   	<update id="updateTrack" parameterClass="track">
   		update T_TRACK t
@@ -602,25 +592,25 @@
   		and t.REMOVE = false
   	</update>
   	
-  	<delete id="removeTrack" parameterClass="string">
+  	<delete id="deleteTrack" parameterClass="string">
   		delete t FROM T_TRACK t where t.TRACK_ID = #?#
   	</delete>  	
-  	<delete id="removePosition" parameterClass="string">
+  	<delete id="deletePosition" parameterClass="string">
   		delete t FROM T_POSITION t where t.TRACK_ID = #?#
   	</delete>
-  	<delete id="removeMessage" parameterClass="string">
+  	<delete id="deleteMessage" parameterClass="string">
   		delete t FROM T_MESSAGE t where t.TRACK_ID = #?#
   	</delete>
-  	<delete id="removeMobNwCell" parameterClass="string">
+  	<delete id="deleteMobNwCell" parameterClass="string">
   		delete t FROM T_MOB_NW_CELL t where t.TRACK_ID = #?#
   	</delete>
-  	<delete id="removeSenderState" parameterClass="string">
+  	<delete id="deleteSenderState" parameterClass="string">
   		delete t FROM T_SENDER_STATE t where t.TRACK_ID = #?#
   	</delete>
-  	<delete id="removeCardiacFunction" parameterClass="string">
+  	<delete id="deleteCardiacFunction" parameterClass="string">
   		delete t FROM T_CARDIAC_FUNCTION t where t.TRACK_ID = #?#
   	</delete>
-  	<delete id="removeEmergencySignal" parameterClass="string">
+  	<delete id="deleteEmergencySignal" parameterClass="string">
   		delete t FROM T_EMERGENCY_SIGNAL t where t.TRACK_ID = #?#
   	</delete>         
 </sqlMap>

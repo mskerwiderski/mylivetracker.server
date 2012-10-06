@@ -18,13 +18,7 @@ import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.GeocoderModeVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.ISmsService;
-import de.msk.mylivetracker.service.IStatusParamsService;
-import de.msk.mylivetracker.service.ITrackService;
-import de.msk.mylivetracker.service.IUserService;
-import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.util.CustomGeocoderModeEditor;
 import de.msk.mylivetracker.web.frontend.util.CustomSenderSymbolEditor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
@@ -61,21 +55,19 @@ public class OptionsCtrl extends SimpleFormController {
 	private List<IntOptionDsc> stPgTrOptsUpdateInterval;
 	private List<IntOptionDsc> supportedMaps;
 	
-	private IApplicationService applicationService;
-	private IUserService userService;
-	private ISenderService senderService;
-	private AbstractGeocodingService geocodingService;
-	private ISmsService smsService;
-	private IStatusParamsService statusParamsService;
-	private ITrackService trackService;
+	private Services services;
 	
 	private void updateCommandObject(HttpServletRequest request, OptionsCmd cmd) {	
-		UserWithoutRoleVo user = this.userService.getUserWithoutRole(
+		UserWithoutRoleVo user = 
+			this.services.getUserService().getUserWithoutRole(
 			WebUtils.getCurrentUserWithRole().getUserId());
-		List<SenderVo> senderList = senderService.getSenders(user.getUserId());
+		List<SenderVo> senderList = 
+			this.services.getSenderService().getSenders(user.getUserId());
 		cmd.buildUpSenderEntries(request, senderList);
 		cmd.buildUpSymbolEntries(request, senderList);
-		cmd.buildUpLinks(request, applicationService.getApplicationBaseUrl(), user);
+		cmd.buildUpLinks(request, 
+			this.services.getApplicationService().getApplicationBaseUrl(), 
+			user);
 	}
 
 	/* (non-Javadoc)
@@ -93,7 +85,8 @@ public class OptionsCtrl extends SimpleFormController {
 			cmd.setTrackOptsReleaseStatus(trackOptsReleaseStatus);
 			cmd.setTrackOptsAutoClose(trackOptsAutoClose);
 			cmd.setTrackRouteOptsWidth(trackRouteOptsWidth);			
-			UserWithoutRoleVo user = this.userService.getUserWithoutRole(
+			UserWithoutRoleVo user = 
+				this.services.getUserService().getUserWithoutRole(
 				WebUtils.getCurrentUserWithRole().getUserId());
 			cmd.setSenderLimit(user.getSenderLimit());
 			cmd.setUserMasterData(user.getMasterData().copyWoPwd());
@@ -142,21 +135,16 @@ public class OptionsCtrl extends SimpleFormController {
 			HttpServletResponse response, Object command, BindException errors)
 			throws Exception {
 		OptionsCmd cmd = (OptionsCmd)command;						
-		
+		String redirectUrl = null;
 		try {
 			if (StringUtils.isEmpty(cmd.getUserOptions().getDefTrackName())) {
 				cmd.getUserOptions().setDefTrackName(
 					WebUtils.getMessage(request, UserOptionsVo.CODE_DEF_TRACK_NAME));
 			}
 			
-			cmd.getActionExecutor().execute(
-				this.applicationService,
-				this.statusParamsService,
-				this.userService,
-				this.senderService,
-				this.geocodingService, 
-				this.smsService,
-				this.trackService,
+			redirectUrl = 
+				cmd.getActionExecutor().execute(
+				this.services,
 				WebUtils.getCurrentUserWithRole(), cmd,
 				WebUtils.getMessageSource(request),
 				WebUtils.getLocale(request));		
@@ -164,9 +152,14 @@ public class OptionsCtrl extends SimpleFormController {
 			e.printStackTrace();
 		}
 		
-		updateCommandObject(request, cmd);
-		
-		return super.onSubmit(request, response, command, errors);
+		ModelAndView mv = null;
+		if (StringUtils.isEmpty(redirectUrl)) {
+			updateCommandObject(request, cmd);
+			mv = super.onSubmit(request, response, command, errors);
+		} else {
+			mv = new ModelAndView("redirect:" + redirectUrl);
+		}
+		return mv; 
 	}
 
 	/* (non-Javadoc)
@@ -182,6 +175,12 @@ public class OptionsCtrl extends SimpleFormController {
 		super.initBinder(request, binder);
 	}
 
+	public Services getServices() {
+		return services;
+	}
+	public void setServices(Services services) {
+		this.services = services;
+	}
 	/**
 	 * @return the userOptsLanguage
 	 */
@@ -373,102 +372,4 @@ public class OptionsCtrl extends SimpleFormController {
 	public void setSupportedMaps(List<IntOptionDsc> supportedMaps) {
 		this.supportedMaps = supportedMaps;
 	}
-
-	/**
-	 * @return the applicationService
-	 */
-	public IApplicationService getApplicationService() {
-		return applicationService;
-	}
-
-	/**
-	 * @param applicationService the applicationService to set
-	 */
-	public void setApplicationService(IApplicationService applicationService) {
-		this.applicationService = applicationService;
-	}
-
-	/**
-	 * @return the userService
-	 */
-	public IUserService getUserService() {
-		return userService;
-	}
-
-	/**
-	 * @param userService the userService to set
-	 */
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
-	}
-
-	/**
-	 * @return the senderService
-	 */
-	public ISenderService getSenderService() {
-		return senderService;
-	}
-
-	/**
-	 * @param senderService the senderService to set
-	 */
-	public void setSenderService(ISenderService senderService) {
-		this.senderService = senderService;
-	}
-	
-	/**
-	 * @return the geocodingService
-	 */
-	public AbstractGeocodingService getGeocodingService() {
-		return geocodingService;
-	}
-
-	/**
-	 * @param geocodingService the geocodingService to set
-	 */
-	public void setGeocodingService(AbstractGeocodingService geocodingService) {
-		this.geocodingService = geocodingService;
-	}
-
-	/**
-	 * @return the smsService
-	 */
-	public ISmsService getSmsService() {
-		return smsService;
-	}
-
-	/**
-	 * @param smsService the smsService to set
-	 */
-	public void setSmsService(ISmsService smsService) {
-		this.smsService = smsService;
-	}
-
-	/**
-	 * @return the statusParamsService
-	 */
-	public IStatusParamsService getStatusParamsService() {
-		return statusParamsService;
-	}
-
-	/**
-	 * @param statusParamsService the statusParamsService to set
-	 */
-	public void setStatusParamsService(IStatusParamsService statusParamsService) {
-		this.statusParamsService = statusParamsService;
-	}
-
-	/**
-	 * @return the trackService
-	 */
-	public ITrackService getTrackService() {
-		return trackService;
-	}
-
-	/**
-	 * @param trackService the trackService to set
-	 */
-	public void setTrackService(ITrackService trackService) {
-		this.trackService = trackService;
-	}	
 }

@@ -21,7 +21,7 @@
    	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
    
     <bean name="/rpc.json" class="com.googlecode.jsonrpc4j.spring.JsonServiceExporter">
-        <property name="service" ref="jsonRpcService"/>
+        <property name="service" ref="rpcService"/>
         <property name="serviceInterface" value="de.msk.mylivetracker.service.rpc.IRpcService"/>
     </bean>
      	

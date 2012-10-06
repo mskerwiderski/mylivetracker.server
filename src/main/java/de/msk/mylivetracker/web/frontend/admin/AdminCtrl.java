@@ -29,15 +29,15 @@ import de.msk.mylivetracker.domain.user.UserPlainVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
 import de.msk.mylivetracker.security.PasswordEncoder;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.IApplicationService.Parameter;
-import de.msk.mylivetracker.service.ITrackService;
-import de.msk.mylivetracker.service.ITrackService.TrackListResult;
-import de.msk.mylivetracker.service.IUserService;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
 import de.msk.mylivetracker.service.demo.IDemoService;
 import de.msk.mylivetracker.service.demo.IDemoService.DemoStatus;
+import de.msk.mylivetracker.service.track.ITrackService;
 import de.msk.mylivetracker.service.track.StorePositionProcessor;
 import de.msk.mylivetracker.service.track.UserStorePositionQueues;
+import de.msk.mylivetracker.service.track.ITrackService.TrackListResult;
+import de.msk.mylivetracker.service.user.IUserService;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
 import de.msk.mylivetracker.web.uploader.processor.UploadProcessor;
 import de.msk.mylivetracker.web.util.UrlUtils;
@@ -148,7 +148,7 @@ public class AdminCtrl extends ParameterizableViewController {
 				UserPlainVo user = new UserPlainVo(
 					userId, lastName, firstName, 
 					emailAddress, hashedPassword, 
-					UserRole.User, 3, true, language);
+					UserRole.User, 3, true, language, true);
 				boolean success = this.userService.registerNewUser(user);
 				if (success) {
 					result = "New user successfully registered.";

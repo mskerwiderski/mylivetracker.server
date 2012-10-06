@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.mobilenetwork;
 
 import java.util.HashMap;
 import java.util.Map;

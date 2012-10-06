@@ -39,10 +39,16 @@ public interface ISenderDao {
 	public void updateSenderType(String senderId, String senderType);
 	
 	/**
-	 * remove sender.
+	 * delete sender.
 	 * @param senderId - the sender id.
 	 */
-	public void removeSender(String senderId);
+	public void deleteSender(String senderId);
+	
+	/**
+	 * delete all senders of user.
+	 * @param userId - the user id.
+	 */
+	public void deleteSendersOfUser(String userId);
 	
 	/**
 	 * get senders of specified user id.

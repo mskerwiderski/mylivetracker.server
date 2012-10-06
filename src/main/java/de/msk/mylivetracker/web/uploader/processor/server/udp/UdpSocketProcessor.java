@@ -3,12 +3,12 @@ package de.msk.mylivetracker.web.uploader.processor.server.udp;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.uploader.processor.DataPacketCreator;
 import de.msk.mylivetracker.web.uploader.processor.PreProcessResultDsc;
 import de.msk.mylivetracker.web.uploader.processor.ProcessorType;
 import de.msk.mylivetracker.web.uploader.processor.RemoteInfo;
 import de.msk.mylivetracker.web.uploader.processor.ServerInfo;
-import de.msk.mylivetracker.web.uploader.processor.SupportedServices;
 import de.msk.mylivetracker.web.uploader.processor.UploadProcessor;
 
 /**
@@ -38,7 +38,7 @@ public class UdpSocketProcessor extends UploadProcessor {
 	 */
 	public UdpSocketProcessor(String serverName, 
 		ProcessorType processorType,		
-		SupportedServices supportedServices,
+		Services supportedServices,
 		DataPacketCreator dataPacketCreator,
 		DatagramSocket socket,
 		DatagramPacket packet) {

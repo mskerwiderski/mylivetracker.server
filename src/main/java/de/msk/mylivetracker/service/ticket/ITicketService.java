@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.ticket;
 
 import de.msk.mylivetracker.domain.TicketVo;
 import de.msk.mylivetracker.domain.TicketVo.Type;

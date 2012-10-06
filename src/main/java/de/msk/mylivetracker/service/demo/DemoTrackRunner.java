@@ -7,9 +7,9 @@ import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.demo.DemoPositionVo;
 import de.msk.mylivetracker.domain.demo.DemoTrackVo;
-import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.ITrackService;
-import de.msk.mylivetracker.service.IUserService;
+import de.msk.mylivetracker.service.sender.ISenderService;
+import de.msk.mylivetracker.service.track.ITrackService;
+import de.msk.mylivetracker.service.user.IUserService;
 import de.msk.mylivetracker.web.uploader.deviceactionexecutor.DeviceActionExecutor;
 
 /**

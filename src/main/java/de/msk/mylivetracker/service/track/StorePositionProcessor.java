@@ -19,13 +19,14 @@ import de.msk.mylivetracker.domain.MobNwCellVo;
 import de.msk.mylivetracker.domain.PositionVo;
 import de.msk.mylivetracker.domain.SenderStateVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
+import de.msk.mylivetracker.domain.statistics.StorePositionProcessorErrorVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorInfoVo;
 import de.msk.mylivetracker.domain.user.GeocoderModeVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.ISmsService;
 import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService;
 import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService.LatLonPos;
+import de.msk.mylivetracker.service.sender.ISenderService;
+import de.msk.mylivetracker.service.sms.ISmsService;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
 
 /**
@@ -441,10 +442,12 @@ public class StorePositionProcessor extends Thread {
 		PositionVo position, MobNwCellVo mobNwCell,
 		MessageVo message, SenderStateVo senderState, CardiacFunctionVo cardiacFunction,
 		EmergencySignalVo emergencySignal, ClientInfoVo clientInfo) {
-		boolean done = false;
+		boolean insertSucessfullyDone = false;
+		boolean doContinueInsert = true;
 		String lastErrorMsg = null;
 		int retries = 0;
-		while (!done && (retries < maxNumberOfRetriesOnDataAccessException)) {
+		while (!insertSucessfullyDone && doContinueInsert) {
+			retries++;
 			try {
 				trackDao.storePositionAndMessage(
 					user, sender, 
@@ -453,15 +456,47 @@ public class StorePositionProcessor extends Thread {
 					cardiacFunction,
 					emergencySignal,
 					clientInfo,
-					user.getOptions());				
-				done = true;				
+					user.getOptions());	
+				insertSucessfullyDone = true;	
+				doContinueInsert = false;
 			} catch (DataAccessException e) {
-				log.fatal(e.toString());
-				lastErrorMsg = e.getLocalizedMessage();
-				done = false;			
+				this.statisticsService.logStorePositionProcessorError(
+					new StorePositionProcessorErrorVo(
+						(user != null) ? user.getUserId() : null,
+						(sender != null) ? sender.getSenderId() : null,
+						(position != null) ? position.getPositionId() : null, 
+						retries, 
+						e.toString(),
+						(position != null) ? position.toString() : null,
+						(mobNwCell != null) ? position.toString() : null,
+						(message != null) ? position.toString() : null,
+						(senderState != null) ? position.toString() : null,
+						(cardiacFunction != null) ? position.toString() : null,
+						(emergencySignal != null) ? position.toString() : null,
+						(clientInfo != null) ? position.toString() : null));
+				lastErrorMsg = e.toString();
+				insertSucessfullyDone = false;			
+				doContinueInsert = (retries < maxNumberOfRetriesOnDataAccessException);
+			} catch (Exception e) {
+				this.statisticsService.logStorePositionProcessorError(
+					new StorePositionProcessorErrorVo(
+						(user != null) ? user.getUserId() : null,
+						(sender != null) ? sender.getSenderId() : null,
+						(position != null) ? position.getPositionId() : null, 
+						retries, 
+						e.toString(),
+						(position != null) ? position.toString() : null,
+						(mobNwCell != null) ? position.toString() : null,
+						(message != null) ? position.toString() : null,
+						(senderState != null) ? position.toString() : null,
+						(cardiacFunction != null) ? position.toString() : null,
+						(emergencySignal != null) ? position.toString() : null,
+						(clientInfo != null) ? position.toString() : null));
+				lastErrorMsg = e.toString();
+				insertSucessfullyDone = false;
+				doContinueInsert = false;
 			} finally {
-				if (!done) {
-					retries++;
+				if (doContinueInsert) {
 					try {
 						Thread.sleep(this.pauseBeforeRetryOfStorePositionInMSecs);
 					} catch (InterruptedException e) {
@@ -470,7 +505,7 @@ public class StorePositionProcessor extends Thread {
 				}
 			}
 		}		 		
-		return new StoreInDbResult(done, retries, lastErrorMsg);
+		return new StoreInDbResult(insertSucessfullyDone, retries, lastErrorMsg);
 	}
 	
 	private StoreResult storePosition(StorePositionDsc storePositionDsc) {

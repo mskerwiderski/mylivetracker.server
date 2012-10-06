@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.statusparams;
 
 import de.msk.mylivetracker.dao.IStatusParamsDao;
 import de.msk.mylivetracker.domain.StatusParamsVo;
@@ -18,20 +18,14 @@ public class StatusParamsService implements IStatusParamsService {
 
 	private IStatusParamsDao statusParamsDao;
 	
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IStatusParamsService#getStatusParams(java.lang.String)
-	 */
 	@Override
 	public StatusParamsVo getStatusParams(String statusParamsId) {
 		return this.statusParamsDao.getStatusParams(statusParamsId);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IStatusParamsService#removeAllStatusParamsOfUser(java.lang.String)
-	 */
 	@Override
-	public void removeAllStatusParamsOfUser(String userId) {
-		this.statusParamsDao.removeAllStatusParamsOfUser(userId);
+	public void deleteAllStatusParamsOfUser(String userId) {
+		this.statusParamsDao.deleteAllStatusParamsOfUser(userId);
 	}
 
 	/* (non-Javadoc)

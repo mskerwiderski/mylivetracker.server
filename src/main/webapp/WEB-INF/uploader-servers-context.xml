@@ -17,17 +17,6 @@
                            http://www.springframework.org/schema/context 
         				   http://www.springframework.org/schema/context/spring-context-3.0.xsd"
                            >
-    
-    <!-- used by all uploaders -->                       
-   	<bean id="supportedServices" 
-		class="de.msk.mylivetracker.web.uploader.processor.SupportedServices">
-	 	<property name="statisticsService" ref="statisticsService" />
-	 	<property name="userService" ref="userService" />
-        <property name="senderService" ref="senderService" />
-        <property name="trackService" ref="trackService" />  		
-        <property name="mobileNetworkService" ref="mobileNetworkService" />
-        <property name="smsService" ref="smsService" />
-	</bean>
                                
 	<!-- tcp servers -->
 	<bean id="tcpServerAt30175" 
@@ -36,7 +25,7 @@
 		<constructor-arg name="name" value="TcpServerAt30175" />
 		<property name="tcpServerConfig" ref="tcpServerAt30175Config" />
 		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_SingleRecords" />
-		<property name="supportedServices" ref="supportedServices" />
+		<property name="services" ref="services" />
         <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
         <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
         <property name="applicationService" ref="applicationService" />
@@ -54,7 +43,7 @@
 		<constructor-arg name="name" value="TcpServerAt31395" />
 		<property name="tcpServerConfig" ref="tcpServerAt31395Config" />
 		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_SingleRecords" />
-		<property name="supportedServices" ref="supportedServices" />
+		<property name="services" ref="services" />
         <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
         <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
         <property name="applicationService" ref="applicationService" />
@@ -72,7 +61,7 @@
 		<constructor-arg name="name" value="TcpServerAt51395" />
 		<property name="tcpServerConfig" ref="tcpServerAt51395Config" />
 		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
-		<property name="supportedServices" ref="supportedServices" />
+		<property name="services" ref="services" />
         <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
         <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
         <property name="applicationService" ref="applicationService" />
@@ -90,7 +79,7 @@
 		<constructor-arg name="name" value="TcpServerAt61395" />
 		<property name="tcpServerConfig" ref="tcpServerAt61395Config" />
 		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
-		<property name="supportedServices" ref="supportedServices" />
+		<property name="services" ref="services" />
         <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
         <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
         <property name="applicationService" ref="applicationService" />
@@ -108,7 +97,7 @@
 		<constructor-arg name="name" value="TcpServerAt62395" />
 		<property name="tcpServerConfig" ref="tcpServerAt62395Config" />
 		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
-		<property name="supportedServices" ref="supportedServices" />
+		<property name="services" ref="services" />
         <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
         <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
         <property name="applicationService" ref="applicationService" />
@@ -126,7 +115,7 @@
 		<constructor-arg name="name" value="TcpServerAt63395" />
 		<property name="tcpServerConfig" ref="tcpServerAt63395Config" />
 		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
-		<property name="supportedServices" ref="supportedServices" />
+		<property name="services" ref="services" />
         <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
         <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
         <property name="applicationService" ref="applicationService" />
@@ -144,7 +133,7 @@
 		<constructor-arg name="name" value="TcpServerAt64395" />
 		<property name="tcpServerConfig" ref="tcpServerAt64395Config" />
 		<property name="socketProcessorConfig" ref="tcpSrvSockProcCfg_MultipleRecords" />
-		<property name="supportedServices" ref="supportedServices" />
+		<property name="services" ref="services" />
         <property name="taskExecutorForProcessors" ref="tcpServerTaskExecutor" />
         <property name="dataPacketCreator" ref="tcpServerDataPacketCreator" />
         <property name="applicationService" ref="applicationService" />
@@ -243,7 +232,7 @@
 		init-method="start" destroy-method="interrupt">
 		<constructor-arg name="name" value="UdpServerAt41395" />
 		<property name="udpServerConfig" ref="udpServerAt41395Config" />
-		<property name="supportedServices" ref="supportedServices" />
+		<property name="services" ref="services" />
         <property name="dataPacketCreator" ref="udpServerDataPacketCreator" />
         <property name="applicationService" ref="applicationService" />
         <property name="statisticsService" ref="statisticsService" />        	

@@ -3,6 +3,7 @@ package de.msk.mylivetracker.service.statistics;
 import de.msk.mylivetracker.dao.statistics.IStatisticsDao;
 import de.msk.mylivetracker.domain.statistics.ServiceCallVo;
 import de.msk.mylivetracker.domain.statistics.SmsTransportVo;
+import de.msk.mylivetracker.domain.statistics.StorePositionProcessorErrorVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorInfoVo;
 import de.msk.mylivetracker.domain.statistics.UploadedDataProcessVo;
 import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
@@ -73,6 +74,13 @@ public class StatisticsService implements IStatisticsService {
 			statisticsLimits.getMaxStatStorePosProcInfo(), storePositionProcessorInfo);		
 	}
 	
+	@Override
+	public void logStorePositionProcessorError(
+		StorePositionProcessorErrorVo storePositionProcessorError) {
+		statisticsDao.logStorePositionProcessorError(
+			statisticsLimits.getMaxStatStorePosProcError(), storePositionProcessorError);
+	}
+
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.statistics.IStatisticsService#logSmsTransport(de.msk.mylivetracker.domain.statistics.SmsTransportVo)
 	 */

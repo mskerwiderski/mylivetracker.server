@@ -2,7 +2,7 @@ package de.msk.mylivetracker.security;
 
 import javax.servlet.ServletRequest;
 
-import de.msk.mylivetracker.service.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService;
 
 /**
  * AuthEntryPointPortResolver.

@@ -30,14 +30,11 @@ public class StatusParamsDao extends SqlMapClientDaoSupport implements IStatusPa
 			statusParamsId);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.IStatusParamsDao#removeAllStatusParamsOfUser(java.lang.String)
-	 */
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void removeAllStatusParamsOfUser(String userId) {
+	public void deleteAllStatusParamsOfUser(String userId) {
 		this.getSqlMapClientTemplate().delete(
-			"StatusParams.removeStatusParamsByUserId", userId);
+			"StatusParams.deleteStatusParamsByUserId", userId);
 	}
 
 	/* (non-Javadoc)

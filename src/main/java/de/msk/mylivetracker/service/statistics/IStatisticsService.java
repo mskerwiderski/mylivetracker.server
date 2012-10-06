@@ -2,6 +2,7 @@ package de.msk.mylivetracker.service.statistics;
 
 import de.msk.mylivetracker.domain.statistics.ServiceCallVo;
 import de.msk.mylivetracker.domain.statistics.SmsTransportVo;
+import de.msk.mylivetracker.domain.statistics.StorePositionProcessorErrorVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorInfoVo;
 import de.msk.mylivetracker.domain.statistics.UploadedDataProcessVo;
 import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
@@ -24,5 +25,6 @@ public interface IStatisticsService {
 	public void logServiceCall(ServiceCallVo serviceCall);
 	public int getServiceCallCountOfToday(String service);
 	public void logStorePositionProcessorInfo(StorePositionProcessorInfoVo storePositionProcessorInfo);
+	public void logStorePositionProcessorError(StorePositionProcessorErrorVo storePositionProcessorError);
 	public void logSmsTransport(SmsTransportVo smsTransport);
 }

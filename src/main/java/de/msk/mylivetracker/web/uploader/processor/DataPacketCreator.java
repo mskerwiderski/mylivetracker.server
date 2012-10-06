@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.IDataInterpreter;
 
 /**
@@ -34,7 +35,7 @@ public class DataPacketCreator {
 	}
 
 	
-	public DataPacket create(IDataCtx data, SupportedServices supportedServices, 
+	public DataPacket create(IDataCtx data, Services supportedServices, 
 		IDataInterpreter interpreter, SenderFromRequestVo senderFromRequest,
 		Map<String, Object> uploadProcessContext) {
 		DataPacket dataPacket = null;

@@ -14,6 +14,7 @@ import de.msk.mylivetracker.domain.statistics.AbstractStatisticVo;
 import de.msk.mylivetracker.domain.statistics.ApplicationStartUpVo;
 import de.msk.mylivetracker.domain.statistics.ServiceCallVo;
 import de.msk.mylivetracker.domain.statistics.SmsTransportVo;
+import de.msk.mylivetracker.domain.statistics.StorePositionProcessorErrorVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorInfoVo;
 import de.msk.mylivetracker.domain.statistics.UploadedDataProcessVo;
 import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
@@ -72,6 +73,13 @@ public class StatisticsDao extends SqlMapClientDaoSupport implements IStatistics
 	
 	/*************************************************************************/
 	
+	private static final String SQL_SELECT_LAST_LOG_ID_FROM_STORE_POSITION_PROCESSOR_ERROR = 
+		"Statistics.selectLastLogIdFromStorePositionProcessorError";
+	private static final String SQL_INSERT_STORE_POSITION_PROCESSOR_ERROR = 
+		"Statistics.insertStorePositionProcessorError";	
+		
+	/*************************************************************************/
+		
 	private static final String SQL_SELECT_LAST_LOG_ID_FROM_SMS_TRANSPORT = 
 		"Statistics.selectLastLogIdFromSmsTransport";
 	private static final String SQL_INSERT_SMS_TRANSPORT = 
@@ -174,6 +182,17 @@ public class StatisticsDao extends SqlMapClientDaoSupport implements IStatistics
 			SQL_SELECT_LAST_LOG_ID_FROM_STORE_POSITION_PROCESSOR_INFO,	
 			SQL_INSERT_STORE_POSITION_PROCESSOR_INFO, 
 			storePositionProcessorInfo);
+	}
+
+	@Override
+	public void logStorePositionProcessorError(Integer maxStatStorePosProcError,
+		StorePositionProcessorErrorVo storePositionProcessorError) {
+		insertAux(
+			"logStorePositionProcessorError",
+			maxStatStorePosProcError,	
+			SQL_SELECT_LAST_LOG_ID_FROM_STORE_POSITION_PROCESSOR_ERROR,	
+			SQL_INSERT_STORE_POSITION_PROCESSOR_ERROR, 
+			storePositionProcessorError);
 	}
 
 	@Override

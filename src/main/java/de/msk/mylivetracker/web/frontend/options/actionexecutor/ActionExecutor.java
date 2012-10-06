@@ -7,13 +7,7 @@ import java.util.Map;
 import org.springframework.context.MessageSource;
 
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.ISenderService;
-import de.msk.mylivetracker.service.ISmsService;
-import de.msk.mylivetracker.service.IStatusParamsService;
-import de.msk.mylivetracker.service.ITrackService;
-import de.msk.mylivetracker.service.IUserService;
-import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.options.OptionsCmd;
 
 /**
@@ -48,7 +42,8 @@ public enum ActionExecutor {
 	SaveAllMaps(new SaveAllMaps()),
 	ResetAllEmergency(new ResetAllEmergency()),
 	SaveAllEmergency(new SaveAllEmergency()),
-	SaveAndSendTestSms(new SaveAndSendTestSms());
+	SaveAndSendTestSms(new SaveAndSendTestSms()),
+	DeleteAccount(new DeleteAccount());
 		
 	private IAction action;
 	private static Map<String, ActionExecutor> actionValueMap;
@@ -63,25 +58,13 @@ public enum ActionExecutor {
 			actionValueMap.put(actionId.name(), actionId);
 		}
 	}
-	public void execute(
-		IApplicationService applicationService,
-		IStatusParamsService urlService,	
-		IUserService userService, 
-		ISenderService senderService,
-		AbstractGeocodingService geocodingService,
-		ISmsService smsService,
-		ITrackService trackService,
+	public String execute(
+		Services services,
 		UserWithoutRoleVo user, OptionsCmd cmd,
 		MessageSource messageSource, Locale locale) 
 		throws ActionExecutionException {
-		this.action.execute(
-			applicationService,
-			urlService,
-			userService, 
-			senderService,
-			geocodingService,
-			smsService,
-			trackService,
+		return this.action.execute(
+			services,
 			user, cmd, 
 			messageSource, locale);
 	}

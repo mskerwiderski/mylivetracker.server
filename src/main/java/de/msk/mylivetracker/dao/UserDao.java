@@ -1,7 +1,6 @@
 package de.msk.mylivetracker.dao;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.BooleanUtils;
@@ -19,8 +18,8 @@ import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
 import de.msk.mylivetracker.domain.user.UserPlainVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.IApplicationService;
-import de.msk.mylivetracker.service.IStatusParamsService;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.statusparams.IStatusParamsService;
 
 /**
  * UserDao.
@@ -219,25 +218,10 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 		this.getSqlMapClientTemplate().update("UserVo.updateUserOptionsMapsUsedByUserId", user);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.IUserDao#getEmailAddressesOfAllUsers()
-	 */
 	@Override
-	@Transactional(propagation=Propagation.NEVER, readOnly=true)
-	public String getEmailAddressesOfAllUsers() {
-		String res = "";
-		@SuppressWarnings("unchecked")
-		List<String> emailAddresses = (List<String>)
-			this.getSqlMapClientTemplate().queryForList("UserVo.selectEmailAddressesOfAllUsers");
-		if ((emailAddresses != null) && !emailAddresses.isEmpty()) {
-			for (String emailAddress : emailAddresses) {
-				if (!StringUtils.isEmpty(res)) {
-					res += ";";
-				}
-				res += emailAddress;
-			}
-		}
-		return res;
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public void deleteUser(String userId) {
+		this.getSqlMapClientTemplate().delete("UserVo.deleteUser", userId);
 	}
 
 	/**

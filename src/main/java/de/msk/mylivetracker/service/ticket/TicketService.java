@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.service;
+package de.msk.mylivetracker.service.ticket;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
