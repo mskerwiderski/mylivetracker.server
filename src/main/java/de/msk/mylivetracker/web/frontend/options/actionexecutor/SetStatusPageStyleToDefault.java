@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.springframework.context.MessageSource;
 
+import de.msk.mylivetracker.domain.user.UserObjectUtils;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.options.OptionsCmd;
@@ -27,7 +28,7 @@ public class SetStatusPageStyleToDefault implements IAction {
 		UserWithoutRoleVo user, OptionsCmd cmd,
 		MessageSource messageSource, Locale locale)
 		throws ActionExecutionException {
-		user.getStatusPage().setStyleToDefaultValue();
+		user.getStatusPage().setCssStyle(UserObjectUtils.DEF_USER_STATUS_PAGE_CSS_STYLE);
 		services.getUserService().updateUserStatusPage(user);
 		cmd.setUserStatusPage(user.getStatusPage().copy());	
 		cmd.setInfoMessage(messageSource.getMessage(

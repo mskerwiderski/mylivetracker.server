@@ -10,40 +10,11 @@
 <!--[if lte IE 8]>
      <link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet.ie-0.4.4.css'/>" />
 <![endif]-->
+<link rel="stylesheet" href="<c:url value='/style/map-and-controls.css'/>" />
 <script type="text/javascript" src="<c:url value='/js/leaflet/leaflet-0.4.4.js'/>"></script>
-<script src="<c:url value='/js/leaflet/leaflet.zoomfs.js'/>"></script>
+<script src="<c:url value='/js/leaflet/leaflet.fullscreen-and-symbols.controls.js'/>"></script>
 <script src="<c:url value='/js/leaflet/leaflet.providers-0.0.1.js'/>"></script>
 <script src="<c:url value='/js/map.commons.js'/>"></script>
-<style>
-    #map_canvas {
-    	height: 100%;
-      	width: 100%;
-    }
-    #map_canvas.leaflet-fullscreen {
-    	position: fixed;
-      	width: 100%;
-      	height: 100%;
-      	top: 0;
-      	right: 0;
-      	bottom: 0;
-     	left: 0;
-      	margin: 0;
-      	padding: 0;
-      	border: 0;
-    }
-    .leaflet-control-fullscreen {
-    	background-image: url(<c:url value='img/others/fullscreen.png'/>);
-      	margin-bottom: 5px;
-    }
-    .leaflet-control-autozoom-on {
-    	background-image: url(<c:url value='img/musthave/zoom_out.png'/>);
-      	margin-bottom: 5px;
-    }
-    .leaflet-control-autozoom-off {
-    	background-image: url(<c:url value='img/musthave/zoom_in.png'/>);
-      	margin-bottom: 5px;
-    }
-</style>
 
 <div style="font-size: small;background-color: "></div>
 <script type="text/javascript">			
@@ -128,6 +99,8 @@
 	var mlt_bounds = null;
 	var mlt_bounds_empty = true;
 	var mlt_markers = null;	
+	var mlt_markersVisible = true;
+	var mlt_circleMarkers = null;
 	
 	var mlt_startMarker = null;
 	var mlt_recentMarker = null;
@@ -161,6 +134,49 @@
 		}
 	}
 	
+	function mlt_removeMarkersFromLayer() {
+		if (mlt_markers != null) {
+			for (var i in mlt_markers) {
+				mlt_map.removeLayer(mlt_markers[i]);
+			}
+		}
+		if (mlt_startMarker != null) {
+			mlt_map.removeLayer(mlt_startMarker);
+		}
+		if (mlt_recentMarker != null) {
+			mlt_map.removeLayer(mlt_recentMarker);
+		}
+		if (mlt_homeMarker != null) {
+			mlt_map.removeLayer(mlt_homeMarker);
+		}
+	}
+	function mlt_removeCircleMarkersFromLayer() {
+		if (mlt_circleMarkers != null) {
+			for (var i in mlt_markers) {
+				mlt_map.removeLayer(mlt_markers[i]);
+			}
+		}
+	}
+	function mlt_putMarkersToLayer() {
+		if (!mlt_markersVisible) return;
+		for (var i in mlt_markers) {
+			mlt_map.addLayer(mlt_markers[i]);
+		}
+		if (mlt_startMarker != null) {
+			mlt_map.addLayer(mlt_startMarker);
+		}
+		if (mlt_recentMarker != null) {
+			mlt_map.addLayer(mlt_recentMarker);
+		}
+		if (mlt_homeMarker != null) {
+			mlt_map.addLayer(mlt_homeMarker);
+		}
+	}
+	function mlt_putCircleMarkersToLayer() {
+		for (var i in mlt_circleMarkers) {
+			mlt_map.addLayer(mlt_circleMarkers[i]);
+		}
+	}
 	function mlt_clearAllLayers() {
 		if (mlt_polyline != null) {
 			mlt_map.removeLayer(mlt_polyline);
@@ -183,11 +199,8 @@
 		if (mlt_homeCircleMarker != null) {
 			mlt_map.removeLayer(mlt_homeCircleMarker);
 		}
-		if (mlt_markers != null) {
-			for (var i in mlt_markers) {
-				mlt_map.removeLayer(mlt_markers[i]);
-			}
-		}
+		mlt_removeMarkersFromLayer();
+		mlt_removeCircleMarkersFromLayer();
 	}
 	
 	function mlt_drawPolylineAndMarkers(reset) {
@@ -208,73 +221,77 @@
    			// add startMarker only if there is minimum 1 position.
    			// exception: there is only one position and this position has a message or a emergency signal.	
    			if (cntPos > 1) {
+   				var info = mlt_posAndInfo[0].info(
+   	   				"<spring:message code='track.map.info.window.title.startPosition' />",
+   	   				mlt_infoTableHdrColor4StartPosition);
 	   			mlt_startMarker =
 	   				mlt_createMarkerWithInfoWindow(
 	    	   			mlt_startIcon, 
 	    	   			mlt_positions[0].lat, 
 	    	   			mlt_positions[0].lng,
-	    	   			mlt_posAndInfo[0].info(
-	    	   				"<spring:message code='track.map.info.window.title.startPosition' />",
-	    	   				mlt_infoTableHdrColor4StartPosition));
-		   		mlt_map.addLayer(mlt_startMarker);
+	    	   			info);
+		   		if (mlt_markersVisible) {
+		   			mlt_map.addLayer(mlt_startMarker);
+		   		}
 		   		mlt_startCircleMarker = mlt_addCircleMarkerToMap(
 		   			mlt_map,
 	   				mlt_positions[0].lat, 
 	   				mlt_positions[0].lng,
 	   				mlt_START_POS,
-	   				false);
-		   		mlt_log("put startMarker on map");
+	   				false,
+	   				info);
 	   		}
-   			mlt_log("cntPos=" + cntPos);
-   			mlt_log("currPosHasEmSi=" + mlt_data.track.currPosHasEmSi);
-   			mlt_log("currPosHasMsg=" + mlt_data.track.currPosHasMsg);
 		   	if ((cntPos > 0) && 
 		   		!mlt_data.track.currPosHasEmSi && 
 		   		!mlt_data.track.currPosHasMsg) {
 		   		// add recentMarker only if there are minimum 2 positions and
 	   			// the recent position has no message and no emergency signal.
 		   		mlt_createRecentIcon(mlt_data.track.senderSymbolId);
+		   		var info = mlt_posAndInfo[cntPos-1].info(
+   	   				"<spring:message code='track.map.info.window.title.currentPosition' />",
+   	   				mlt_infoTableHdrColor4RecentPosition);
 		   		mlt_recentMarker =
 		   			mlt_createMarkerWithInfoWindow(
 	    	   			mlt_recentIcon, 
 	    	   			mlt_positions[cntPos-1].lat, 
 	    	   			mlt_positions[cntPos-1].lng,
-	    	   			mlt_posAndInfo[cntPos-1].info(
-	    	   				"<spring:message code='track.map.info.window.title.currentPosition' />",
-	    	   				mlt_infoTableHdrColor4RecentPosition));
-		   		mlt_map.addLayer(mlt_recentMarker);
+	    	   			info);
+		   		if (mlt_markersVisible) {
+		   			mlt_map.addLayer(mlt_recentMarker);
+		   		}
 		   		mlt_recentCircleMarker = mlt_addCircleMarkerToMap(
 		   			mlt_map,
 	   				mlt_positions[cntPos-1].lat, 
 	   				mlt_positions[cntPos-1].lng,
-	   				mlt_RECENT_POS, true);
-		   		mlt_log("put recentMarker on map");
+	   				mlt_RECENT_POS, 
+	   				true,
+	   				info);
 		   	} 
 	   	}
 	   	if ((mlt_data.track == null) && mlt_data.user.hasHome) {
 	   		mlt_clearAllLayers();
+	   		var info = mlt_posAndInfo[0].infoWOTimestamp(
+   	   			"<spring:message code='track.map.info.window.title.homePosition' />",
+   	   			mlt_infoTableHdrColor4HomePosition);
 	   		mlt_homeMarker = 
 	   			mlt_createMarkerWithInfoWindow(
 	    	   		mlt_homeIcon, 
 	    	   		mlt_positions[0].lat, 
 	    	   		mlt_positions[0].lng,	    	   		
-	    	   		mlt_posAndInfo[0].infoWOTimestamp(
-	    	   			"<spring:message code='track.map.info.window.title.homePosition' />",
-	    	   			mlt_infoTableHdrColor4HomePosition));
-		   	mlt_map.addLayer(mlt_homeMarker);
+	    	   		info);
+	   		if (mlt_markersVisible) {
+		   		mlt_map.addLayer(mlt_homeMarker);
+	   		}
 		   	mlt_homeCircleMarker = mlt_addCircleMarkerToMap(
 		   		mlt_map,
    				mlt_positions[0].lat, 
    				mlt_positions[0].lng,
-   				mlt_HOME_POS, false);
+   				mlt_HOME_POS, 
+   				false,
+   				info);
 	   	}
-	   	
-	   	mlt_log("start putting all markes to map...");
-	   	for (var i in mlt_markers) {
-			mlt_map.addLayer(mlt_markers[i]);
-			mlt_log("* put '" + i + "' on map.");
-		}
-	   	mlt_log("start putting all markes to map...done");
+	   	mlt_putMarkersToLayer();
+	   	mlt_putCircleMarkersToLayer();
    	}
 	
 	function mlt_flyToView() {
@@ -334,6 +351,7 @@
 		mlt_bounds = new L.LatLngBounds();
 		mlt_bounds_empty = true;
 		mlt_markers = new Array();
+		mlt_circleMarkers = new Array();
  	}
 
  	function mlt_UpdateStatus(fitMap, reset) {		
@@ -377,7 +395,7 @@
 		   		// if there are new positions,
 		   		// existing lastMessageCircleMarker must be set to 'not recent'.
 		   		if (mlt_lastMessageCircleMarkerId != null) {
-		   			mlt_markers[mlt_lastMessageCircleMarkerId] =
+		   			mlt_circleMarkers[mlt_lastMessageCircleMarkerId] =
 		   				mlt_lastMessageCircleMarker;
 		   			mlt_lastMessageCircleMarkerId = null;
 			   		mlt_lastMessageCircleMarker = null;
@@ -385,7 +403,7 @@
 		   		// if there are new positions,
 		   		// existing lastEmergencySignalCircleMarker must be set to 'not recent'.
 		   		if (mlt_lastEmergencySignalCircleMarkerId != null) {
-		   			mlt_markers[mlt_lastEmergencySignalCircleMarkerId] =
+		   			mlt_circleMarkers[mlt_lastEmergencySignalCircleMarkerId] =
 		   				mlt_lastEmergencySignalCircleMarker;
 		   			mlt_lastEmergencySignalCircleMarkerId = null;
 		   			mlt_lastEmergencySignalCircleMarker = null;
@@ -403,21 +421,22 @@
  	   					var isRecent = 
  	   						(i == (mlt_data.track.messages.length-1)) &&
  	     			   		mlt_data.track.currPosHasMsg;
+ 	   					var info = mlt_infoTable("<spring:message code='track.map.info.window.title.message' />", 
+	    	   				mlt_infoTableHdrColor4Message,	
+  	   						mlt_data.track.messages[i].rcvd, 
+  	   						mlt_data.track.messages[i].infoTitle,
+  	   						mlt_data.track.messages[i].msg);
 	  	   				mlt_markers[mlt_createMsgMarkerId(mlt_data.track.messages[i].id)] = 
 	  	  	   				mlt_createMarkerWithInfoWindow(
 	  	    	   				mlt_messageIcon, 
 	  	    	   				mlt_data.track.messages[i].lat, 
 	  	    	   				mlt_data.track.messages[i].lon,
-	  	    	   				mlt_infoTable("<spring:message code='track.map.info.window.title.message' />", 
-	  	    	   					mlt_infoTableHdrColor4Message,	
-  	    	   						mlt_data.track.messages[i].rcvd, 
-  	    	   						mlt_data.track.messages[i].infoTitle,
-  	    	   						mlt_data.track.messages[i].msg));
-	  	   				mlt_markers[mlt_createMsgCircleMarkerId(mlt_data.track.messages[i].id)] =
+	  	    	   				info);
+	  	   				mlt_circleMarkers[mlt_createMsgCircleMarkerId(mlt_data.track.messages[i].id)] =
 	  	   					mlt_createCircleMarker(
 		  	   					mlt_data.track.messages[i].lat, 
 		  	   					mlt_data.track.messages[i].lon,
-		  	   					mlt_MESSAGE_POS, isRecent);
+		  	   					mlt_MESSAGE_POS, isRecent, info);
 	  	   				if (isRecent) {
 	  	   					mlt_lastMessageCircleMarkerId = 
 	  	   						mlt_createMsgCircleMarkerId(mlt_data.track.messages[i].id); 
@@ -435,6 +454,16 @@
   	   					var isRecent = 
 	   						(i == (mlt_data.track.emergencySignals.length-1)) &&
 	     			   		mlt_data.track.currPosHasEmSi;
+  	   					var info = mlt_infoTable(
+    	   					(mlt_data.track.emergencySignals[i].active ?	
+    	   						"<spring:message code='track.map.info.window.title.emergencySignalActivated' />" :
+    	   						"<spring:message code='track.map.info.window.title.emergencySignalDeactivated' />"), 
+    	   					(mlt_data.track.emergencySignals[i].active ? 
+   	   							mlt_infoTableHdrColor4EmergencySignalActivated :
+   	   							mlt_infoTableHdrColor4EmergencySignalDeactivated),	
+   	   						mlt_data.track.emergencySignals[i].rcvd, 
+   	   						mlt_data.track.emergencySignals[i].infoTitle,
+   	   						mlt_data.track.emergencySignals[i].msg);
   	  	   				mlt_markers[mlt_createEmSiMarkerId(mlt_data.track.emergencySignals[i].id)] = 
   	  	   					mlt_createMarkerWithInfoWindow(
 	  	   						(mlt_data.track.emergencySignals[i].active ?
@@ -442,24 +471,16 @@
 	    	   						mlt_emergencyDeactivatedIcon), 
 	  	    	   				mlt_data.track.emergencySignals[i].lat, 
 	  	    	   				mlt_data.track.emergencySignals[i].lon,
-	  	    	   				mlt_infoTable(
-	  	    	   					(mlt_data.track.emergencySignals[i].active ?	
-	  	    	   						"<spring:message code='track.map.info.window.title.emergencySignalActivated' />" :
-	  	    	   						"<spring:message code='track.map.info.window.title.emergencySignalDeactivated' />"), 
-	  	    	   					(mlt_data.track.emergencySignals[i].active ? 
-  	    	   							mlt_infoTableHdrColor4EmergencySignalActivated :
-  	    	   							mlt_infoTableHdrColor4EmergencySignalDeactivated),	
-  	    	   						mlt_data.track.emergencySignals[i].rcvd, 
-  	    	   						mlt_data.track.emergencySignals[i].infoTitle,
-  	    	   						mlt_data.track.emergencySignals[i].msg));
+	  	    	   				info);
   	  	   				var posType = mlt_data.track.emergencySignals[i].active ?
   	  	   					mlt_EMERGENCY_SIGNAL_ACTIVATED_POS : mlt_EMERGENCY_SIGNAL_DEACTIVATED_POS; 
-  	  	   				mlt_markers[mlt_createEmSiCircleMarkerId(mlt_data.track.emergencySignals[i].id)] =
+  	  	   					mlt_circleMarkers[mlt_createEmSiCircleMarkerId(mlt_data.track.emergencySignals[i].id)] =
   	  	   					mlt_createCircleMarker(
 		  	   					mlt_data.track.emergencySignals[i].lat, 
 		  	   					mlt_data.track.emergencySignals[i].lon,
 		  	   					posType,
-		  	   					isRecent);
+		  	   					isRecent,
+		  	   					info);
 	  	  	   			if (isRecent) {
 	  	   					mlt_lastEmergencySignalCircleMarkerId = 
 	  	   						mlt_createEmSiCircleMarkerId(mlt_data.track.emergencySignals[i].id);
@@ -506,97 +527,23 @@
    	function mlt_processResponse(data) {   	   	   		
    	   	if (!data.jsonCommons.reqRejected) {
    	   	   	mlt_data = data;
-   	   	   	mlt_log(mlt_data);
    	   		mlt_updateView();
             mlt_reqId = mlt_data.jsonCommons.reqId;
         }        
    	}
    	
-   	function mlt_initMap(anker, mapsUsedStr, defMapId, defCenter, defZoom) {
-		var supportedLayerNames = [
-			"<spring:message code='map.OpenStreetMap.Mapnik' />",
-			"<spring:message code='map.OpenStreetMap.DE' />",
-			"<spring:message code='map.OpenStreetMap.BlackAndWhite' />",
-			"<spring:message code='map.Thunderforest.OpenCycleMap' />",
-			"<spring:message code='map.Thunderforest.Transport' />",
-			"<spring:message code='map.Thunderforest.Landscape' />",
-			"<spring:message code='map.MapQuestOpen.OSM' />",
-			"<spring:message code='map.MapQuestOpen.Aerial' />",
-			"<spring:message code='map.MapBox.Simple' />",
-			"<spring:message code='map.MapBox.Streets' />",
-			"<spring:message code='map.MapBox.Light' />",
-			"<spring:message code='map.MapBox.Lacquer' />",
-			"<spring:message code='map.MapBox.Warden' />",
-			"<spring:message code='map.Stamen.Toner' />",
-			"<spring:message code='map.Stamen.Terrain' />",
-			"<spring:message code='map.Stamen.Watercolor' />",
-			"<spring:message code='map.Esri.WorldStreetMap' />",
-			"<spring:message code='map.Esri.DeLorme' />",
-			"<spring:message code='map.Esri.WorldTopoMap' />",
-			"<spring:message code='map.Esri.WorldImagery' />",
-			"<spring:message code='map.Esri.OceanBasemap' />",
-			"<spring:message code='map.Esri.NatGeoWorldMap' />"
-		];
-		var supportedLayers = [
-			new L.TileLayer.OpenStreetMap.Mapnik,
-			new L.TileLayer.OpenStreetMap.DE,
-			new L.TileLayer.OpenStreetMap.BlackAndWhite,
-			new L.TileLayer.Thunderforest.OpenCycleMap,
-			new L.TileLayer.Thunderforest.Transport,
-			new L.TileLayer.Thunderforest.Landscape,
-			new L.TileLayer.MapQuestOpen.OSM,
-			new L.TileLayer.MapQuestOpen.Aerial,
-			new L.TileLayer.MapBox.Simple,
-			new L.TileLayer.MapBox.Streets,
-			new L.TileLayer.MapBox.Light,
-			new L.TileLayer.MapBox.Lacquer,
-			new L.TileLayer.MapBox.Warden,
-			new L.TileLayer.Stamen.Toner,
-			new L.TileLayer.Stamen.Terrain,
-			new L.TileLayer.Stamen.Watercolor,
-			new L.TileLayer.Esri.WorldStreetMap,
-			new L.TileLayer.Esri.DeLorme,
-			new L.TileLayer.Esri.WorldTopoMap,
-			new L.TileLayer.Esri.WorldImagery,
-			new L.TileLayer.Esri.OceanBasemap,
-			new L.TileLayer.Esri.NatGeoWorldMap
-		];
-		var baseLayers = {};
-		for (var idx=0; idx < mapsUsedStr.length; idx++) {
-			if (mapsUsedStr[idx] == "1") {
-				baseLayers[supportedLayerNames[idx]] = supportedLayers[idx];	
-			}
-		}
-		var map = new L.Map(anker, {
-			center: defCenter,
-			zoom: defZoom,
-			attributionControl: true,
-			zoomControl: false,
-		});
-		var defaultLayer = supportedLayers[defMapId];
-		map.addLayer(defaultLayer);
-		map.addControl(new L.Control.Layers(baseLayers,'',{collapsed: true, position:'topleft'}));
-		var zoomFS = new L.Control.ZoomFS({position:'topright'});
-	    map.addControl(zoomFS);
-	    
-	    // you can bind to 2 events: enterFullscreen and exitFullscreen
-	    // note that these events are on the map object, not the zoomfs object... 
-	    map.on('autoZoomOn', function(){
-	      if(window.console) window.console.log('autoZoomOn');
-	    });
-	    map.on('autoZoomOff', function(){
-	      if(window.console) window.console.log('autoZoomOff');
-	    });
-	    
-		return map;
-	}
-	
    	function mlt_refreshTracksOverview() {
    		if (mlt_map == null) {
+   			var mlt_supportedLayerNames = [
+             	<c:forEach var="supportedMap" items="${supportedMaps}">
+                 	"<spring:message code='${supportedMap.label}' />",
+             	</c:forEach>
+            ];
    			mlt_map = mlt_initMap("map_canvas",
    				"<c:out value='${mapsUsedStr}' />",
    				"<c:out value='${defMapId}' />",
-   				mlt_DEFAULT_CENTER, mlt_DEFAULT_ZOOM);
+   				mlt_DEFAULT_CENTER, mlt_DEFAULT_ZOOM,
+   				mlt_supportedLayerNames);
    		}   			
    		if (mlt_reqId != null) {   	   	   		
    	   		var reqType = "json";   			

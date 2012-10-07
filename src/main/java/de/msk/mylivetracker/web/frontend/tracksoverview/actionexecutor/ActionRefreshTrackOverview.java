@@ -1,8 +1,7 @@
 package de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor;
 
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
-import de.msk.mylivetracker.service.sender.ISenderService;
-import de.msk.mylivetracker.service.track.ITrackService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 
 /**
@@ -18,21 +17,9 @@ import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCm
  */
 public class ActionRefreshTrackOverview extends AbstractActionWithoutRedirect {
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.AbstractActionWithoutRedirect#executeAux(de.msk.mylivetracker.domain.user.UserWithRoleVo, de.msk.mylivetracker.service.ITrackService, de.msk.mylivetracker.service.ISenderService, de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd)
-	 */
 	@Override
-	public void executeAux(UserWithRoleVo user, ITrackService trackService,
-		ISenderService senderService, TracksOverviewCmd cmd)
-		throws ActionExecutionException {
-		// noop.
-	}
-
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.web.tracksoverview.actionexecutor.IAction#preExecuteCheck(de.msk.mylivetracker.web.tracksoverview.command.TracksOverviewCmd)
-	 */
-	public void preExecuteCheck(TracksOverviewCmd cmd)
-			throws ActionExecutionException {
-		// noop.
+	public void executeAux(Services services, UserWithRoleVo user,
+		TracksOverviewCmd cmd) throws ActionExecutionException {
+		// default noop.
 	}
 }

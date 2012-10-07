@@ -732,17 +732,6 @@
 	</tr>
 	<tr>
 		<td style="width:200px;text-align:left;white-space: nowrap;">
-			&nbsp;Plain password&nbsp;
-		</td>
-		<td style="width:200px;text-align:left;white-space: nowrap;">
-			&nbsp;<input id='plainPassword' name='plainPassword' value='test2012' size="30">&nbsp;
-		</td>
-		<th style="width:100%;">
-			&nbsp;&nbsp;							
-		</th>
-	</tr>
-	<tr>
-		<td style="width:200px;text-align:left;white-space: nowrap;">
 			&nbsp;Last name&nbsp;
 		</td>
 		<td style="width:200px;text-align:left;white-space: nowrap;">

@@ -22,25 +22,17 @@ public class MapsUsedVo implements Cloneable, Serializable {
 
 	private static final int MAPS_USED_SIZE = 32;
 	
-	private final boolean[] MAPS_USED_DEFAULT = {
-		true, true, false, false, false, false, false, false,
-		false, false, false, false, false, false, false, false,
-		false, false, false, false, false, false, false, false,
-		false, false, false, false, false, false, false, false,
-	};
+	
 	
 	private static final String SEP = ",";
 	private static final int DEF_MAP_ID_DEFAULT = 0;
 	
-	private boolean[] mapsUsed = MAPS_USED_DEFAULT;
+	private boolean[] mapsUsed;
 	private int defMapId = DEF_MAP_ID_DEFAULT;
 	
-	public int getMapsUsedSize() {
-		return MAPS_USED_SIZE;
-	}
-
-	public MapsUsedVo() {
-	}
+//	public int getMapsUsedSize() {
+//		return MAPS_USED_SIZE;
+//	}
 	
 	public MapsUsedVo(String mapsUsedStr) {
 		if (StringUtils.isEmpty(mapsUsedStr)) {
@@ -58,12 +50,12 @@ public class MapsUsedVo implements Cloneable, Serializable {
 		if ((this.defMapId < 0) || (this.defMapId >= MAPS_USED_SIZE)) {
 			throw new IllegalArgumentException("invalid defMapId=" + this.defMapId);
 		}
-		mapsUsed = MAPS_USED_DEFAULT;
+		mapsUsed = new boolean[MAPS_USED_SIZE];
 		for (int mapId=0; mapId < items[1].length(); mapId++) {
 			mapsUsed[mapId] = BooleanUtils.toBoolean(String.valueOf(items[1].charAt(mapId)), "1", "0");
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */

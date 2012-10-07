@@ -7,19 +7,25 @@
 <%@ page import="de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl" %>
 
 <script type="text/javascript">
-
 	function saveAllStatusPage() {
 		actionExecute('SaveAllStatusPage');
 	}
-
 	function resetAllStatusPage() {
 		actionExecute('ResetAllStatusPage');
 	}
-
 	function setStatusPageStyleToDefault() {
 		actionExecute('SetStatusPageStyleToDefault');
 	}
-			
+	function switchStatusPageSizeOnOff() {
+		if (document.forms["optionsForm"].elements["userStatusPage.fullScreen"].value == "true") {
+			$("#statusPageSize").hide();				
+		} else {
+			$("#statusPageSize").show();			
+		}
+	}	
+	$(document).ready(function() {
+		switchStatusPageSizeOnOff();
+	});
 </script>
 
 <table>
@@ -193,14 +199,16 @@
 		</td>
 		<td>
 			<table><tr>
-			<td colspan="2" style="border:none;">	
+			<td colspan="2" style="border:none;vertical-align: left;white-space: nowrap;">	
 				<c:set var="selStatusPageFullScreen">
 					${optionsCmd.userStatusPage.fullScreen}
 				</c:set>
 				&nbsp;<spring:message code="statuspage.window.size.fullscreen" />&nbsp;
 					<select id="userStatusPage.fullScreen" 
 					name="userStatusPage.fullScreen" 
-					class="text ui-widget-content ui-corner-all"> 
+					class="text ui-widget-content ui-corner-all"
+					onchange="javascript:switchStatusPageSizeOnOff();"
+					> 
 					<c:forEach var="commonsOptYesNo" 
 						items="${optionsCmd.commonsOptsYesNo}">
 	 					<c:choose>
@@ -220,7 +228,7 @@
 			</td>
 			<td style="border:none;width:100%">&nbsp;</td>
 			</tr>
-			<tr>
+			<tr id="statusPageSize">
 			<td style="border:none;vertical-align: left;white-space: nowrap;">
 				&nbsp;<spring:message code="statuspage.window.size.width" />&nbsp;
 				<form:input 

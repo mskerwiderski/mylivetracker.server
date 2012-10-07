@@ -26,11 +26,6 @@ public class UserEmergencyVo implements Cloneable, Serializable {
 	private DateTime smsLastSent;
 	private Integer smsSentCount;
 	
-	public void setDefaultValues() {	
-		smsEnabled = false;
-		smsSentCount = 0;
-	}
-	
 	public UserEmergencyVo copy() {
 		UserEmergencyVo emergency = null;
 		try {

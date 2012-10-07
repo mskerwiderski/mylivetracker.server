@@ -3,19 +3,13 @@ package de.msk.mylivetracker.dao;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.msk.mylivetracker.domain.user.MapsUsedVo;
-import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
-import de.msk.mylivetracker.domain.user.UserPlainVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.application.IApplicationService;
@@ -35,30 +29,21 @@ import de.msk.mylivetracker.service.statusparams.IStatusParamsService;
  */
 public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 
-	private static final Log log = LogFactory.getLog(UserDao.class);	
-	
 	private MessageSource messageSource;
 	private PasswordEncoder passwordEncoder;
 	private IStatusParamsService statusParamsService;
 	private IApplicationService applicationService;
 	
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.IUserDao#registerNewUser(de.msk.mylivetracker.domain.user.UserPlainVo)
-	 */
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public boolean registerNewUser(UserPlainVo user) {
+	public boolean insertUser(UserWithRoleVo user) {
+		if (user == null) {
+			throw new IllegalArgumentException("user must not be null");
+		}
 		boolean userAlreadyExists = (getUserAux(user.getUserId(), 
 			"UserVo.selectUserWithoutRoleByUserId") != null);
 		if (!userAlreadyExists) {
-			this.getSqlMapClientTemplate().insert("UserVo.registerUser", user);
-			UserWithRoleVo userWithRole = (UserWithRoleVo)this.getUserAux(
-				user.getUserId(), "UserVo.selectUserWithRoleByUserId");
-			if (userWithRole != null) {
-				log.debug("userPlainVo inserted: " + user.toString());
-			} else {
-				log.debug("insert userPlainVo FAILED");
-			}
+			this.getSqlMapClientTemplate().insert("UserVo.insertUser", user);
 		}
 		return !userAlreadyExists;
 	}
@@ -115,28 +100,6 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	private UserWithoutRoleVo getUserAux(String searchCriteria, String selectStrId) {
 		UserWithoutRoleVo user = (UserWithoutRoleVo)this.getSqlMapClientTemplate().
 			queryForObject(selectStrId, searchCriteria);		
-		if (user != null) {
-			if (user.getAutoLogin() == null) {
-				user.setAutoLogin(new UserAutoLoginVo());
-				user.getAutoLogin().setDefaultValues();
-				this.updateUserAutoLogin(user);	
-			}
-			if (BooleanUtils.isNotTrue(user.getOptions().getOptionsSaved())) {
-				user.getOptions().setDefaultValues(messageSource);
-				user.getEmergency().setDefaultValues();
-				this.updateUserOptions(user);
-				this.updateUserEmergency(user);
-			}
-			if (user.getOptions().getMapsUsed() == null) {
-				user.getOptions().setMapsUsed(new MapsUsedVo());
-				this.updateUserOptionsMapsUsed(user);
-			}
-			if (BooleanUtils.isNotTrue(user.getStatusPage().getStatusPageSaved())) {
-				user.getStatusPage().setDefaultValues(
-					this.statusParamsService, this.applicationService, user);
-				this.updateUserStatusPage(user);
-			}			
-		}		
 		return user;
 	}
 

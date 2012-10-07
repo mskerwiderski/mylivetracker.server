@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 import de.msk.mylivetracker.domain.sender.SenderSymbolVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.GeocoderModeVo;
-import de.msk.mylivetracker.domain.user.UserOptionsVo;
+import de.msk.mylivetracker.domain.user.UserObjectUtils;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.util.CustomGeocoderModeEditor;
@@ -139,7 +139,7 @@ public class OptionsCtrl extends SimpleFormController {
 		try {
 			if (StringUtils.isEmpty(cmd.getUserOptions().getDefTrackName())) {
 				cmd.getUserOptions().setDefTrackName(
-					WebUtils.getMessage(request, UserOptionsVo.CODE_DEF_TRACK_NAME));
+					UserObjectUtils.DEF_USER_OPTIONS_TRACK_NAME);
 			}
 			
 			redirectUrl = 

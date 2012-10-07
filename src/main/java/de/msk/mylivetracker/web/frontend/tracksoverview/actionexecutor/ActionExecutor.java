@@ -6,9 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
-import de.msk.mylivetracker.service.application.IApplicationService;
-import de.msk.mylivetracker.service.sender.ISenderService;
-import de.msk.mylivetracker.service.track.ITrackService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 import de.msk.mylivetracker.web.util.UrlUtils;
@@ -62,14 +60,13 @@ public enum ActionExecutor {
 		}
 	}
 	public String execute(
+		Services services,	
 		HttpServletRequest request, UserWithRoleVo user,	
-		IApplicationService applicationService,
-		ITrackService trackService, ISenderService senderService,
 		TracksOverviewCmd cmd) 
 		throws ActionExecutionException {
-		this.action.preExecuteCheck(cmd, senderService);
-		return this.action.execute(request, user, 
-			applicationService, trackService, senderService, cmd);
+		this.action.preExecuteCheck(cmd, services);
+		return this.action.execute(
+			services, request, user, cmd);
 	}
 	
 	public static boolean isValidActionExecutor(String actionExecutor) {

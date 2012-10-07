@@ -1,15 +1,8 @@
 package de.msk.mylivetracker.domain.user;
 
 import java.io.Serializable;
-import java.util.Locale;
-import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.context.MessageSource;
-
-import de.msk.mylivetracker.commons.util.datetime.DateTime;
-import de.msk.mylivetracker.util.PwdUtils;
-import de.msk.mylivetracker.web.util.UsersLocaleResolver;
 
 /**
  * UserOptionsVo.
@@ -26,7 +19,6 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	
 	private static final long serialVersionUID = -8532173448835158813L;
 	
-	private Boolean optionsSaved;
 	private String timeZone;
 	private String language;	
 	private String geocoderLanguage;
@@ -47,7 +39,6 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	private MapsUsedVo mapsUsed;
 	
 	private static final String DELIMITER = "#";
-	
 	
 	private void updateHomeLocAddress() {
 		StringBuffer buf = new StringBuffer(80);
@@ -140,68 +131,14 @@ public class UserOptionsVo implements Cloneable, Serializable {
 		return addr;
 	}
 
-	public static final String CODE_DEF_TRACK_NAME = 
-		"options.track.defname.default";
-	
-	public void setDefaultValues(MessageSource messageSource) {
-		Locale userLocale = UsersLocaleResolver.DEFAULT_LOCALE;
-		if (!StringUtils.isEmpty(this.language)) {
-			userLocale = UsersLocaleResolver.getLocale(this.language);
-		}
-		optionsSaved = true;
-		timeZone = DateTime.TIME_ZONE_UTC;
-		language = userLocale.getLanguage();
-		geocoderLanguage = userLocale.getLanguage();
-		scaleUnit = userLocale.getLanguage();
-		defTrackName = messageSource.getMessage(
-			CODE_DEF_TRACK_NAME, null, userLocale);
-		defTrackReleaseStatus = false;
-		trackAutoClose = 0;
-		
-		guestAccEnabled = false;
-		guestAccPassword = PwdUtils.getPlainPassword();
-		guestAccClosedTrEnabled = false;
-		guestAccPrivTrEnabled = false;
-		
-		recTrAccEnabled = false;
-		recTrAccCode = UUID.randomUUID().toString();
-		recTrAccPrivTrEnabled = false;
-		
-		trackRouteColor = "FF3300";
-		trackRouteWidth = 3;	
-		
-		geocoderMode = GeocoderModeVo.disabled;
-		
-		mapsUsed = new MapsUsedVo();
-		
-		homeLocAddress = "Munich, Germany";
-		homeLocLatitude = 48.1391265d;
-		homeLocLongitude = 11.5801863d;
-	}
-		
 	public UserOptionsVo copy() {
 		UserOptionsVo options = null;
 		try {
 			options = (UserOptionsVo)clone();
 		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 		return options;
-	}
-
-	/**
-	 * @return the optionsSaved
-	 */
-	public Boolean getOptionsSaved() {
-		return optionsSaved;
-	}
-
-	/**
-	 * @param optionsSaved the optionsSaved to set
-	 */
-	public void setOptionsSaved(Boolean optionsSaved) {
-		this.optionsSaved = optionsSaved;
 	}
 
 	/**

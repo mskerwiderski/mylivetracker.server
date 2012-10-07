@@ -20,11 +20,7 @@ import de.msk.mylivetracker.domain.user.MapsUsedVo;
 import de.msk.mylivetracker.domain.user.UserSessionStatusVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
-import de.msk.mylivetracker.service.application.IApplicationService;
-import de.msk.mylivetracker.service.sender.ISenderService;
-import de.msk.mylivetracker.service.track.ITrackService;
-import de.msk.mylivetracker.service.user.IUserService;
-import de.msk.mylivetracker.service.user.IUserSessionStatusService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 import de.msk.mylivetracker.web.frontend.util.CustomDateTimeEditor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
@@ -48,6 +44,7 @@ public class TracksOverviewCtrl extends SimpleFormController {
 		
 	private static final Log log = LogFactory.getLog(TracksOverviewCtrl.class);
 	
+	private Services services;
 	private List<BoolOptionDsc> liveTrackingOpts;
 	private List<IntOptionDsc> liveTrackingOptsKeepRecentPos;
 	private List<IntOptionDsc> liveTrackingOptsUpdateInterval;
@@ -60,11 +57,7 @@ public class TracksOverviewCtrl extends SimpleFormController {
 	private List<IntOptionDsc> tracksOverviewOptsDatePeriod;
 	private List<IntOptionDsc> tracksOverviewOptsRefresh;
 	
-	private IUserSessionStatusService userSessionStatusService;
-	private IUserService userService;
-	private IApplicationService applicationService;
-	private ITrackService trackService;
-	private ISenderService senderService;
+	private List<IntOptionDsc> supportedMaps;
 	
 	private void updateCommandObject(HttpServletRequest request, TracksOverviewCmd cmd) {
 		UserWithRoleVo user = WebUtils.getCurrentUserWithRole(); 
@@ -74,23 +67,23 @@ public class TracksOverviewCtrl extends SimpleFormController {
 			StringUtils.isEmpty(user.getAdminUsername());
 		log.debug("isUser=" + isUser);
 		UserSessionStatusVo currentUserSessionStatus = isUser ?
-			this.userSessionStatusService.getUserSessionStatus(
+			this.services.getUserSessionStatusService().getUserSessionStatus(
 				WebUtils.getCurrentUserWithRole()) :
 			UserSessionStatusVo.createDefault(
 				WebUtils.getCurrentUserWithRole(), 
-				this.senderService, 
+				this.services.getSenderService(), 
 				this.liveTrackingOptsKeepRecentPos, 
 				this.liveTrackingOptsUpdateInterval,
 				this.tracksOverviewOptsDatePeriod,
 				this.tracksOverviewOptsRefresh);
 		log.debug("currentUserSessionStatus=" + currentUserSessionStatus);
-		cmd.init(request, this.senderService, currentUserSessionStatus);
+		cmd.init(request, this.services.getSenderService(), currentUserSessionStatus);
 		if (isUser) {
 			UserSessionStatusVo newUserSessionStatus = 
 					cmd.getUserSessionStatus();
 			log.debug("newUserSessionStatus=" + newUserSessionStatus);
 			if (!currentUserSessionStatus.equals(newUserSessionStatus)) {
-				this.userSessionStatusService.updateUserSessionStatus(
+				this.services.getUserSessionStatusService().updateUserSessionStatus(
 					newUserSessionStatus);
 				log.debug("saved newUserSessionStatus to database");
 			}
@@ -116,6 +109,7 @@ public class TracksOverviewCtrl extends SimpleFormController {
 			cmd.setTracksOverviewOptsRefresh(this.getTracksOverviewOptsRefresh());
 			cmd.setTrackOptsReleaseStatus(this.trackOptsReleaseStatus);
 			cmd.setTrackOptsActivityStatus(this.trackOptsActivityStatus);
+			cmd.setSupportedMaps(this.supportedMaps);
 			MapsUsedVo mapsUsed = WebUtils.getCurrentUserWithRole().getOptions().getMapsUsed();
 			cmd.setMapsUsedStr(mapsUsed.getMapsUsedStr());
 			cmd.setDefMapId(mapsUsed.getDefMapId());
@@ -148,11 +142,7 @@ public class TracksOverviewCtrl extends SimpleFormController {
 		try {
 			UserWithRoleVo user = WebUtils.getCurrentUserWithRole();
 			redirectUrl = cmd.getActionExecutor().execute(
-				request, user, 
-				this.applicationService, 
-				this.trackService,
-				this.senderService,
-				cmd);		
+				services, request, user, cmd);		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -299,68 +289,19 @@ public class TracksOverviewCtrl extends SimpleFormController {
 		this.tracksOverviewOptsRefresh = tracksOverviewOptsRefresh;
 	}
 
-	public IUserSessionStatusService getUserSessionStatusService() {
-		return userSessionStatusService;
+	public List<IntOptionDsc> getSupportedMaps() {
+		return supportedMaps;
 	}
 
-	public void setUserSessionStatusService(
-			IUserSessionStatusService userSessionStatusService) {
-		this.userSessionStatusService = userSessionStatusService;
+	public void setSupportedMaps(List<IntOptionDsc> supportedMaps) {
+		this.supportedMaps = supportedMaps;
 	}
 
-	/**
-	 * @return the userService
-	 */
-	public IUserService getUserService() {
-		return userService;
+	public Services getServices() {
+		return services;
 	}
 
-	/**
-	 * @param userService the userService to set
-	 */
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
+	public void setServices(Services services) {
+		this.services = services;
 	}
-
-	/**
-	 * @return the applicationService
-	 */
-	public IApplicationService getApplicationService() {
-		return applicationService;
-	}
-
-	/**
-	 * @param applicationService the applicationService to set
-	 */
-	public void setApplicationService(IApplicationService applicationService) {
-		this.applicationService = applicationService;
-	}
-
-	/**
-	 * @return the trackService
-	 */
-	public ITrackService getTrackService() {
-		return trackService;
-	}
-
-	/**
-	 * @param trackService the trackService to set
-	 */
-	public void setTrackService(ITrackService trackService) {
-		this.trackService = trackService;
-	}	
-
-	/**
-	 * @return the senderService
-	 */
-	public ISenderService getSenderService() {
-		return senderService;
-	}
-
-	/**
-	 * @param senderService the senderService to set
-	 */
-	public void setSenderService(ISenderService senderService) {
-		this.senderService = senderService;
-	}	
 }

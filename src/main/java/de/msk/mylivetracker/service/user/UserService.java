@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import de.msk.mylivetracker.dao.IUserDao;
 import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
-import de.msk.mylivetracker.domain.user.UserPlainVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
@@ -44,12 +43,16 @@ public class UserService implements
 	private Cache userWithoutRoleCache;
 	private IUserDao userDao;
 			
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IUserService#registerNewUser(de.msk.mylivetracker.domain.user.UserPlainVo)
-	 */
 	@Override
-	public boolean registerNewUser(UserPlainVo user) {
-		return this.userDao.registerNewUser(user);
+	public boolean insertUser(UserWithRoleVo user) {
+		if (user == null) {
+			throw new IllegalArgumentException("user must not be null");
+		}
+		if (!user.getRole().equals(UserRole.User) &&
+			!user.getRole().equals(UserRole.Admin)) {
+			throw new IllegalArgumentException("only user with role 'User' or 'Admin' can be inserted.");
+		}
+		return this.userDao.insertUser(user);
 	}
 
 	/* (non-Javadoc)

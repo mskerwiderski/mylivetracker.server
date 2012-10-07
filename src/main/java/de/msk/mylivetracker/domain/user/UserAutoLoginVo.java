@@ -41,12 +41,6 @@ public class UserAutoLoginVo implements Cloneable, Serializable {
 			addParamValue(UsernamePasswordAuthenticationFilter.PARAM_USER_ID, 
 				autoLoginTicket).toString();
 	}
-	public void setDefaultValues() {	
-		this.autoLoginEnabledForUser = false;
-		this.autoLoginEnabledForGuest = false;
-		this.autoLoginTicketForUser = createAutoLoginTicket();
-		this.autoLoginTicketForGuest = createAutoLoginTicket();
-	}
 	
 	public UserAutoLoginVo copy() {
 		UserAutoLoginVo autoLogin = null;

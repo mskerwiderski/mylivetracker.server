@@ -39,23 +39,7 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 	private String cssStyle;
 	private String linkTrackAsStatusInfo;
 	private String linkTrackAsMap;
-			
-	public void setDefaultValues(IStatusParamsService urlService, 
-		IApplicationService applicationService, UserWithoutRoleVo user) {		
-		this.statusPageSaved = true;
-		this.senderId = null;
-		this.trackingLive = true;
-		this.trackingKeepRecentPositions = -1;
-		this.trackingUpdateIntervalInSecs = 30;
-		this.trackingFlyToMode = TrackingFlyToModeVo.None;
-		this.fullScreen = false;
-		this.windowWidth = 260;
-		this.windowHeight = 260;		
-		this.showTrackInfo = true;
-		this.setStyleToDefaultValue();
-		this.generateLinks(urlService, applicationService, user);
-	}
-	
+				
 	public void generateLinks(IStatusParamsService statusParamsService, 
 		IApplicationService applicationService, UserWithoutRoleVo user) {
 		StatusParamsVo statusParams = StatusParamsVo.createInstance();
@@ -85,18 +69,6 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 				.addParamValue(AbstractTrackingCtrl.PARAM_PARAMS_ID, 
 					statusParams.getStatusParamsId())
 				.toString());				
-	}
-	
-	private static final String CRLF = "\r\n";
-	public void setStyleToDefaultValue() {
-		this.cssStyle = 
-			".track-status-content { background: #d4d0c8; font-family: Verdana,Arial,sans-serif; font-variant: small-caps; font-size: x-small;}" + CRLF +
-			".track-status-username { color: red; font-weight: bold; }" + CRLF + 
-			".track-status-trackname { color: green; font-weight: bold; }" + CRLF +	
-			".track-status-noactivetrack { color: red; font-weight: bold }" + CRLF +
-			".track-status-labels { color: blue; font-size: small; }" + CRLF +
-			".track-status-values { color: #125be2; font-size: small; }" + CRLF +
-			".track-status-footer { color: white; font-size: 10px; font-variant: normal; }";
 	}
 	
 	public UserStatusPageVo copy() {

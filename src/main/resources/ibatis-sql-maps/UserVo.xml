@@ -6,39 +6,10 @@
     
 <sqlMap namespace="UserVo">
   	
-  	<typeAlias alias="userPlain" 
-		type="de.msk.mylivetracker.domain.user.UserPlainVo"/>
-	<typeAlias alias="userWithoutRole" 
+  	<typeAlias alias="userWithoutRole" 
 		type="de.msk.mylivetracker.domain.user.UserWithoutRoleVo"/>
 	<typeAlias alias="userWithRole" 
 		type="de.msk.mylivetracker.domain.user.UserWithRoleVo"/>			
-    		
-    <insert id="registerUser" parameterClass="userPlain" >
-    	insert into T_USER (
-    		USER_ID,
-    		LAST_NAME,
-    		FIRST_NAME,
-    		EMAIL_ADDRESS,
-    		NEWSLETTER_ENABLED,
-    		HASHED_PASSWORD,
-    		ROLE,
-    		SENDER_LIMIT,
-    		IS_ENABLED,
-    		LANGUAGE    		
-    	)
-    	values (
-    		#userId#,
-    		#lastName#,
-    		#firstName#,
-    		#emailAddress#,
-    		#newsletterEnabled#,
-    		#password#,
-    		#role#,
-    		#senderLimit#,
-    		#enabled#,
-    		#language#
-    	)
-    </insert> 	
     		
 	<resultMap id="userWithoutRoleResult" class="userWithoutRole">
 	    <result property="userId" column="USER_ID" />
@@ -55,7 +26,6 @@
         <result property="autoLogin.autoLoginEnabledForGuest" column="AUTO_LOGIN_ENABLED_FOR_GUEST" />
         <result property="autoLogin.autoLoginTicketForUser" column="AUTO_LOGIN_TICKET_FOR_USER" />
         <result property="autoLogin.autoLoginTicketForGuest" column="AUTO_LOGIN_TICKET_FOR_GUEST" />  
-        <result property="options.optionsSaved" column="IS_OPTIONS_SAVED" />
         <result property="options.timeZone" column="TIME_ZONE" />
         <result property="options.language" column="LANGUAGE" />
         <result property="options.geocoderLanguage" column="GEOCODER_LANGUAGE" />
@@ -77,7 +47,6 @@
 	    <result property="options.homeLocAddress" column="HOME_LOC_ADDRESS" />
 	    <result property="options.homeLocLatitude" column="HOME_LOC_LATITUDE" />     
 	    <result property="options.homeLocLongitude" column="HOME_LOC_LONGITUDE" />
-	    <result property="statusPage.statusPageSaved" column="IS_STATUS_PAGE_SAVED" />
 	    <result property="statusPage.senderId" column="STATUS_PAGE_SENDER_ID" />
 	    <result property="statusPage.trackingLive" column="STATUS_PAGE_TRACKING_LIVE" />                                    
 		<result property="statusPage.trackingKeepRecentPositions" column="STATUS_PAGE_TRACKING_KEEP_RECENT_POSITIONS" />    
@@ -101,7 +70,7 @@
     <resultMap id="userWithRoleResult" extends="userWithoutRoleResult" class="userWithRole">
     	<result property="role"  column="ROLE" />
     </resultMap>
-        
+    
     <select id="selectEmailAddressesOfAllUsers" resultClass="string">
   		select t.EMAIL_ADDRESS from T_USER t  		  		
   	</select>
@@ -173,7 +142,6 @@
   	<update id="updateUserStatusPageByUserId" parameterClass="userWithoutRole">
   		update T_USER t
   		set 
-  			t.IS_STATUS_PAGE_SAVED = #statusPage.statusPageSaved#,  	
   			t.STATUS_PAGE_SENDER_ID = #statusPage.senderId#,		
   			t.STATUS_PAGE_TRACKING_LIVE = #statusPage.trackingLive#, 									
 			t.STATUS_PAGE_TRACKING_KEEP_RECENT_POSITIONS = #statusPage.trackingKeepRecentPositions#, 	
@@ -203,7 +171,6 @@
   	<update id="updateUserOptionsByUserId" parameterClass="userWithoutRole">
   		update T_USER t
   		set 
-  			t.IS_OPTIONS_SAVED = #options.optionsSaved#,
   			t.TIME_ZONE = #options.timeZone#,
   			t.LANGUAGE = #options.language#,
   			t.GEOCODER_LANGUAGE = #options.geocoderLanguage#,
@@ -233,7 +200,122 @@
   			t.MAPS_USED = #options.mapsUsed#                                                                              			  						
   		where (t.USER_ID = #userId#)  
   	</update> 
-  	
+
+ 	<insert id="insertUser" parameterClass="userWithRole" >
+    	insert into T_USER (
+	    	USER_ID,
+	    	ROLE,
+		    LAST_NAME,
+		    FIRST_NAME,
+		    EMAIL_ADDRESS,
+		    HASHED_PASSWORD,
+		    NEWSLETTER_ENABLED,     	    
+		    SENDER_LIMIT,               
+		    LAST_LOGIN,
+		    LOGIN_COUNT,
+	        IS_ENABLED,
+	        AUTO_LOGIN_ENABLED_FOR_USER,
+	        AUTO_LOGIN_ENABLED_FOR_GUEST,
+	        AUTO_LOGIN_TICKET_FOR_USER,
+	        AUTO_LOGIN_TICKET_FOR_GUEST,  
+	        TIME_ZONE,
+	        LANGUAGE,
+	        GEOCODER_LANGUAGE,
+	        SCALE_UNIT,
+	        DEF_TRACK_NAME,
+	        DEF_TRACK_RELEASE_STATUS,
+	        TRACK_AUTO_CLOSE,        
+	        IS_GUEST_ACC_ENABLED,
+	        GUEST_ACC_PASSWORD,
+	        IS_GUEST_ACC_CLOSED_TR_ENABLED,
+	        IS_GUEST_ACC_PRIV_TR_ENABLED,
+	        IS_REC_TR_ACC_ENABLED,
+		    REC_TR_ACC_CODE,
+		    IS_REC_ACC_PRIV_TR_ENABLED,	    
+		    TRACK_ROUTE_COLOR,
+		    TRACK_ROUTE_WIDTH,
+		    GEOCODER_MODE,
+		    MAPS_USED,
+		    HOME_LOC_ADDRESS,
+		    HOME_LOC_LATITUDE,     
+		    HOME_LOC_LONGITUDE,
+		    STATUS_PAGE_SENDER_ID,
+		    STATUS_PAGE_TRACKING_LIVE,                                    
+			STATUS_PAGE_TRACKING_KEEP_RECENT_POSITIONS,    
+			STATUS_PAGE_TRACKING_UPDATE_INTERVAL_IN_SECS, 
+			STATUS_PAGE_TRACKING_FLY_TO_MODE,
+			STATUS_PAGE_FULL_SCREEN,		                        
+			STATUS_PAGE_WINDOW_WIDTH,                                      
+			STATUS_PAGE_WINDOW_HEIGHT,            
+			STATUS_PAGE_SHOW_TRACK_INFO,                        
+			STATUS_PAGE_CSS_STYLE,  
+			STATUS_PAGE_LINK_TRACK_AS_STATUS_INFO,
+			STATUS_PAGE_LINK_TRACK_AS_MAP,
+			EMERGENCY_SMS_UNLOCKED,
+			EMERGENCY_SMS_ENABLED,
+		    EMERGENCY_SMS_SENDER, 
+		    EMERGENCY_SMS_RECIPIENT, 
+		    EMERGENCY_SMS_LAST_SENT,
+		    EMERGENCY_SMS_SENT_COUNT		
+    	)
+    	values (
+    		#userId#,
+    		#role#,
+			#masterData.lastName#,
+			#masterData.firstName#,
+			#masterData.emailAddress#,
+			#masterData.password#,
+			#masterData.newsletterEnabled#,
+			#senderLimit#,
+			#lastLogin#,
+			#loginCount#,
+			#enabled#,
+			#autoLogin.autoLoginEnabledForUser#,
+			#autoLogin.autoLoginEnabledForGuest#,
+			#autoLogin.autoLoginTicketForUser#,
+			#autoLogin.autoLoginTicketForGuest#,
+			#options.timeZone#,
+			#options.language#,
+			#options.geocoderLanguage#,
+			#options.scaleUnit#,
+			#options.defTrackName#,
+			#options.defTrackReleaseStatus#,
+			#options.trackAutoClose#,
+			#options.guestAccEnabled#,
+			#options.guestAccPassword#,
+			#options.guestAccClosedTrEnabled#,
+			#options.guestAccPrivTrEnabled#,
+			#options.recTrAccEnabled#,
+			#options.recTrAccCode#,
+			#options.recTrAccPrivTrEnabled#,
+			#options.trackRouteColor#,
+			#options.trackRouteWidth#,
+			#options.geocoderMode#,
+			#options.mapsUsed#,
+			#options.homeLocAddress#,
+			#options.homeLocLatitude#,
+			#options.homeLocLongitude#,
+			#statusPage.senderId#,
+			#statusPage.trackingLive#,
+			#statusPage.trackingKeepRecentPositions#,
+			#statusPage.trackingUpdateIntervalInSecs#,
+			#statusPage.trackingFlyToMode#,
+			#statusPage.fullScreen#,
+			#statusPage.windowWidth#,
+			#statusPage.windowHeight#,
+			#statusPage.showTrackInfo#,
+			#statusPage.cssStyle#,
+			#statusPage.linkTrackAsStatusInfo#,
+			#statusPage.linkTrackAsMap#,
+			#emergency.smsUnlocked#,
+			#emergency.smsEnabled#,
+			#emergency.smsSender#,
+			#emergency.smsRecipient#,
+			#emergency.smsLastSent#,
+			#emergency.smsSentCount#
+    	)
+    </insert> 	
+      	
   	<delete id="deleteUser" parameterClass="string">
   		delete FROM T_USER
 		where USER_ID = #?#

@@ -25,19 +25,15 @@ import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
 import de.msk.mylivetracker.domain.track.TrackFilterVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
-import de.msk.mylivetracker.domain.user.UserPlainVo;
+import de.msk.mylivetracker.domain.user.UserObjectUtils;
+import de.msk.mylivetracker.domain.user.UserObjectUtils.CreateUserWithRoleResult;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
-import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
-import de.msk.mylivetracker.security.PasswordEncoder;
-import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
-import de.msk.mylivetracker.service.demo.IDemoService;
 import de.msk.mylivetracker.service.demo.IDemoService.DemoStatus;
-import de.msk.mylivetracker.service.track.ITrackService;
+import de.msk.mylivetracker.service.track.ITrackService.TrackListResult;
 import de.msk.mylivetracker.service.track.StorePositionProcessor;
 import de.msk.mylivetracker.service.track.UserStorePositionQueues;
-import de.msk.mylivetracker.service.track.ITrackService.TrackListResult;
-import de.msk.mylivetracker.service.user.IUserService;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
 import de.msk.mylivetracker.web.uploader.processor.UploadProcessor;
 import de.msk.mylivetracker.web.util.UrlUtils;
@@ -61,10 +57,7 @@ public class AdminCtrl extends ParameterizableViewController {
 	
 	Log log = LogFactory.getLog(AdminCtrl.class);
 	
-	private IApplicationService applicationService;
-	private IUserService userService;
-	private ITrackService trackService;
-	private IDemoService demoService;
+	private Services services;
 	private Cache applicationCache;
 	private Cache userWithoutRoleCache;
 	private Cache senderCache;
@@ -83,7 +76,7 @@ public class AdminCtrl extends ParameterizableViewController {
 		String action = request.getParameter("action");
 		
 		if (StringUtils.equals(action, "reloadApplicationParameters")) {
-			this.applicationService.reloadParameters();
+			this.services.getApplicationService().reloadParameters();
 			result = "application parameters reloaded.";
 		} 
 		
@@ -132,28 +125,31 @@ public class AdminCtrl extends ParameterizableViewController {
 			String userId = request.getParameter("userId");
 			String lastName = request.getParameter("lastName");
 			String firstName = request.getParameter("firstName");				
-			String plainPassword = request.getParameter("plainPassword");
 			String emailAddress = request.getParameter("emailAddress");
 			String language = request.getParameter("language");
-			if (StringUtils.isEmpty(plainPassword) ||
-				StringUtils.isEmpty(emailAddress)) {
-				result = "Register user failed: Plain password or Email address must not be empty.";
+			if (StringUtils.isEmpty(emailAddress)) {
+				result = "Register user failed: Email address must not be empty.";
 			} else if (UsersLocaleResolver.getLocale(language) == null) {
 				result = "Register user failed: Only the languages 'en' and 'de' are supported.";
 			} else {
-				String hashedPassword = PasswordEncoder.encode(
-					userId, 
-					this.applicationService.getParameterValueAsString(Parameter.ApplicationRealm), 
-					plainPassword);
-				UserPlainVo user = new UserPlainVo(
-					userId, lastName, firstName, 
-					emailAddress, hashedPassword, 
-					UserRole.User, 3, true, language, true);
-				boolean success = this.userService.registerNewUser(user);
+				CreateUserWithRoleResult createUserWithRoleResult =
+					UserObjectUtils.createUserWithRole(
+						userId, 
+						this.services.getApplicationService().getParameterValueAsString(Parameter.ApplicationRealm), 
+						UserWithRoleVo.UserRole.User, 
+						language, DateTime.TIME_ZONE_UTC, 
+						lastName, firstName, emailAddress, 
+						3);
+				boolean success = 
+					this.services.getUserService().insertUser(createUserWithRoleResult.getUser());
 				if (success) {
-					result = "New user successfully registered.";
+					result = "New user successfully registered: " +
+						"[userId=" + userId + ", password=" + 
+						createUserWithRoleResult.getPlainPassword() + 
+						"]";
 				} else {
-					result = "New user registration failed: Maybe User id already exists.";
+					result = "New user registration failed: " +
+						"[userId=" + userId + "]";
 				}
 			}
 		}
@@ -163,7 +159,8 @@ public class AdminCtrl extends ParameterizableViewController {
 			if (StringUtils.isEmpty(trackId)) {
 				result = "Create demo track failed: Track id must not be empty.";
 			} else {
-				long count = this.demoService.insertTrackAsDemoTrack(trackId);
+				long count = this.services.getDemoService().
+					insertTrackAsDemoTrack(trackId);
 				if (count > 0) {
 					result = "Demo track successfully created with " + count + " records.";
 				} else {
@@ -173,12 +170,13 @@ public class AdminCtrl extends ParameterizableViewController {
 		}
 				
 		if (StringUtils.equals(action, "startStopDemo")) {
-			DemoStatus demoStatus = this.demoService.getDemoStatus();
+			DemoStatus demoStatus = 
+				this.services.getDemoService().getDemoStatus();
 			if (demoStatus.isRunning()) {
-				this.demoService.stopDemo();
+				this.services.getDemoService().stopDemo();
 				result = "Demo successfully stopped.";
 			} else {
-				this.demoService.runDemo();
+				this.services.getDemoService().runDemo();
 				result = "Demo successfully started.";
 			}
 		}
@@ -212,10 +210,12 @@ public class AdminCtrl extends ParameterizableViewController {
 			TimeZone.getTimeZone(user.getOptions().getTimeZone()), false));
 		trackFilter.setMaxCountOfRecords(10);
 		trackFilter.setByActive(1);
-		TrackListResult trackListResult = this.trackService.getTracksAsRecent(trackFilter);
+		TrackListResult trackListResult = 
+			this.services.getTrackService().getTracksAsRecent(trackFilter);
 		
 		ReqUrlStr trackUrlPrefix = 
-			ReqUrlStr.create(this.applicationService.getApplicationBaseUrl())
+			ReqUrlStr.create(
+				this.services.getApplicationService().getApplicationBaseUrl())
 			.addUrlPath(UrlUtils.URL_TRACK_AS_MAP_CTRL)
 			.addParamValues(
 				ReqParamValues.create()
@@ -236,7 +236,7 @@ public class AdminCtrl extends ParameterizableViewController {
 			trackUrlMap.put(track.getTrackId(), trackUrl);
 		}
 		
-		DemoStatus demoStatus = this.demoService.getDemoStatus();
+		DemoStatus demoStatus = this.services.getDemoService().getDemoStatus();
 		
 		String accordionId = request.getParameter("accordionId");
 		if (StringUtils.isEmpty(accordionId)) {
@@ -263,62 +263,12 @@ public class AdminCtrl extends ParameterizableViewController {
 		return new ModelAndView(this.getViewName(), model);
 	}
 
-	/**
-	 * @return the applicationService
-	 */
-	public IApplicationService getApplicationService() {
-		return applicationService;
+	public Services getServices() {
+		return services;
 	}
-
-	/**
-	 * @param applicationService the applicationService to set
-	 */
-	public void setApplicationService(IApplicationService applicationService) {
-		this.applicationService = applicationService;
+	public void setServices(Services services) {
+		this.services = services;
 	}
-
-	/**
-	 * @return the userService
-	 */
-	public IUserService getUserService() {
-		return userService;
-	}
-
-	/**
-	 * @param userService the userService to set
-	 */
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
-	}
-
-	/**
-	 * @return the trackService
-	 */
-	public ITrackService getTrackService() {
-		return trackService;
-	}
-
-	/**
-	 * @param trackService the trackService to set
-	 */
-	public void setTrackService(ITrackService trackService) {
-		this.trackService = trackService;
-	}
-
-	/**
-	 * @return the demoService
-	 */
-	public IDemoService getDemoService() {
-		return demoService;
-	}
-
-	/**
-	 * @param demoService the demoService to set
-	 */
-	public void setDemoService(IDemoService demoService) {
-		this.demoService = demoService;
-	}
-
 	/**
 	 * @return the applicationCache
 	 */

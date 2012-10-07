@@ -22,8 +22,7 @@ import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.track.TrackFilterVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
-import de.msk.mylivetracker.service.sender.ISenderService;
-import de.msk.mylivetracker.service.track.ITrackService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.service.track.ITrackService.TrackListResult;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.SenderEntry;
 import de.msk.mylivetracker.web.frontend.tracksoverview.json.JsonCommonsDscJsonSerializer;
@@ -58,8 +57,7 @@ public class TracksListCtrl extends AbstractController {
 	
 	private static final int DATE_PERIOD_OPT_ALL_TRACKS = -1;
 	
-	private ITrackService trackService;
-	private ISenderService senderService;
+	private Services services;
 	
 	public static class JsonCommonsDsc {
 		public DateTime statusUpdated;
@@ -144,7 +142,7 @@ public class TracksListCtrl extends AbstractController {
 		boolean onlyActiveTracks = PARAM_ONLY_ACTIVE.getValueFromReq(request, Boolean.FALSE);
 
 		TrackListResult trackListResult = 
-			this.trackService.getTracksAsRecent(
+			this.services.getTrackService().getTracksAsRecent(
 				createTrackFilter(user, senderId, 
 					dateFrom, searchStr, 
 					onlyActiveTracks, MAX_SIZE_RESULT_SET));
@@ -165,7 +163,7 @@ public class TracksListCtrl extends AbstractController {
 		gsonBuilder.registerTypeAdapter(TrackVo.class, 
 			new TrackVoJsonSerializer(request, 
 				user, user.getRole(),
-				this.senderService));
+				this.services.getSenderService()));
 		Gson gson = gsonBuilder.create();
 		String modelAsJson = gson.toJson(model);
 		
@@ -176,19 +174,10 @@ public class TracksListCtrl extends AbstractController {
 		return null;
 	}
 
-	public ITrackService getTrackService() {
-		return trackService;
+	public Services getServices() {
+		return services;
 	}
-
-	public void setTrackService(ITrackService trackService) {
-		this.trackService = trackService;
-	}
-
-	public ISenderService getSenderService() {
-		return senderService;
-	}
-
-	public void setSenderService(ISenderService senderService) {
-		this.senderService = senderService;
+	public void setServices(Services services) {
+		this.services = services;
 	}
 }

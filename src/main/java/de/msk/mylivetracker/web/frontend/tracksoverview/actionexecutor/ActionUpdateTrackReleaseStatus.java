@@ -1,8 +1,7 @@
 package de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor;
 
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
-import de.msk.mylivetracker.service.sender.ISenderService;
-import de.msk.mylivetracker.service.track.ITrackService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 
 /**
@@ -18,17 +17,14 @@ import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCm
  */
 public class ActionUpdateTrackReleaseStatus extends AbstractActionEditTrack {
 	
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.AbstractActionWithoutRedirect#executeAux(de.msk.mylivetracker.domain.user.UserWithRoleVo, de.msk.mylivetracker.service.ITrackService, de.msk.mylivetracker.service.ISenderService, de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd)
-	 */
 	@Override
-	public void executeAux(UserWithRoleVo user, ITrackService trackService,
-		ISenderService senderService, TracksOverviewCmd cmd) {
+	public void executeAux(Services services, UserWithRoleVo user,
+		TracksOverviewCmd cmd) throws ActionExecutionException {
 		String trackId = cmd.getSelectedTrackId();
 		if (cmd.getSelectedTrackReleaseStatus() == Boolean.TRUE) {
-			trackService.publishTrack(trackId);
+			services.getTrackService().publishTrack(trackId);
 		} else {
-			trackService.privatizeTrack(trackId);
+			services.getTrackService().privatizeTrack(trackId);
 		}
 	}
 

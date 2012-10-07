@@ -72,6 +72,8 @@ public class TracksOverviewCmd {
 	private List<BoolOptionDsc> trackOptsReleaseStatus;
 	private List<BoolOptionDsc> trackOptsActivityStatus;
 	
+	private List<IntOptionDsc> supportedMaps;
+	
 	public UserSessionStatusVo getUserSessionStatus() {
 		UserSessionStatusVo userSessionStatus = new UserSessionStatusVo();
 		userSessionStatus.setUserId(WebUtils.getCurrentUserWithRole().getUserId());
@@ -497,5 +499,13 @@ public class TracksOverviewCmd {
 	 */
 	public void setSelectedSearchStrFilter(String selectedSearchStrFilter) {
 		this.selectedSearchStrFilter = selectedSearchStrFilter;
+	}
+
+	public List<IntOptionDsc> getSupportedMaps() {
+		return supportedMaps;
+	}
+
+	public void setSupportedMaps(List<IntOptionDsc> supportedMaps) {
+		this.supportedMaps = supportedMaps;
 	}	
 }

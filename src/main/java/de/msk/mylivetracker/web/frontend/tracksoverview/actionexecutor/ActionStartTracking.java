@@ -8,9 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
-import de.msk.mylivetracker.service.application.IApplicationService;
-import de.msk.mylivetracker.service.sender.ISenderService;
-import de.msk.mylivetracker.service.track.ITrackService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 import de.msk.mylivetracker.web.util.request.ReqParamValues;
@@ -43,16 +41,13 @@ public class ActionStartTracking implements IAction {
 		this.requestType = requestType;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.web.frontend.tracksoverview.actionexecutor.IAction#execute(javax.servlet.http.HttpServletRequest, de.msk.mylivetracker.domain.user.UserWithRoleVo, de.msk.mylivetracker.service.IApplicationService, de.msk.mylivetracker.service.ITrackService, de.msk.mylivetracker.service.ISenderService, de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd)
-	 */
+	
 	@Override
-	public String execute(HttpServletRequest request, UserWithRoleVo user,
-		IApplicationService applicationService, ITrackService trackService,
-		ISenderService senderService, TracksOverviewCmd cmd)
+	public String execute(Services services, HttpServletRequest request,
+		UserWithRoleVo user, TracksOverviewCmd cmd)
 		throws ActionExecutionException {
 
-		TrackVo track = trackService.getTrackAsMin(cmd.getSelectedTrackId());
+		TrackVo track = services.getTrackService().getTrackAsMin(cmd.getSelectedTrackId());
 		
 		ReqParamValues reqParamValues = ReqParamValues.create()
 			.add(AbstractTrackingCtrl.PARAM_REQ_TYPE, 
@@ -85,21 +80,13 @@ public class ActionStartTracking implements IAction {
 		}		
 						
 		return ReqUrlStr.create(
-			applicationService.getApplicationBaseUrl(), targetUrl).
+			services.getApplicationService().getApplicationBaseUrl(), targetUrl).
 			addParamValues(reqParamValues).toString();  				
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.web.tracksoverview.actionexecutor.IAction#preExecuteCheck(de.msk.mylivetracker.web.tracksoverview.command.TracksOverviewCmd)
-	 */
-	public void preExecuteCheck(TracksOverviewCmd cmd)
-			throws ActionExecutionException {
-		// noop.
-	}
-
 	@Override
-	public void preExecuteCheck(TracksOverviewCmd cmd,
-		ISenderService senderService) throws ActionExecutionException {
-		// noop.
+	public void preExecuteCheck(TracksOverviewCmd cmd, Services services)
+		throws ActionExecutionException {
+		// default noop.
 	}
 }

@@ -11,45 +11,12 @@
      <link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet.ie-0.4.4.css'/>" />
 <![endif]-->
 <link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet.iconlabel.css'/>" />
-
+<link rel="stylesheet" href="<c:url value='/style/map-and-controls.css'/>" />
 <script type="text/javascript" src="<c:url value='/js/leaflet/leaflet-0.4.4.js'/>"></script>
 <script src="<c:url value='/js/leaflet/leaflet.iconlabel.js'/>"></script>
-<script src="<c:url value='/js/leaflet/leaflet.zoomfs.js'/>"></script>
-<script src="<c:url value='/js/leaflet/leaflet.autozoom.js'/>"></script>
+<script src="<c:url value='/js/leaflet/leaflet.fullscreen-and-symbols.controls.js'/>"></script>
 <script src="<c:url value='/js/leaflet/leaflet.providers-0.0.1.js'/>"></script>
 <script src="<c:url value='/js/map.commons.js'/>"></script>
-
-<style>
-    #map_canvas {
-    	height: 100%;
-      	width: 100%;
-    }
-    #map_canvas.leaflet-fullscreen {
-    	position: fixed;
-      	width: 100%;
-      	height: 100%;
-      	top: 0;
-      	right: 0;
-      	bottom: 0;
-     	left: 0;
-      	margin: 0;
-      	padding: 0;
-      	border: 0;
-    }
-    .leaflet-control-fullscreen {
-    	background-image: url(<c:url value='img/others/fullscreen.png'/>);
-      	margin-bottom: 5px;
-    }
-    .leaflet-control-autozoom-on {
-    	background-image: url(<c:url value='img/musthave/zoom_out.png'/>);
-      	margin-bottom: 5px;
-    }
-    .leaflet-control-autozoom-off {
-    	background-image: url(<c:url value='img/musthave/zoom_in.png'/>);
-      	margin-bottom: 5px;
-    }
-</style>
-
 
 <script type="text/javascript">
 	mlt_getOnlyActiveTracks = true;
@@ -60,6 +27,8 @@
 	var mlt_DEFAULT_ZOOM = 3;
 
 	var mlt_markers = null;
+	var mlt_markersVisible = true;
+	var mlt_circleMarkers = null;
 	var mlt_bounds = null;
 	var mlt_bounds_empty = true;
 	var mlt_current_sender_pos = null;
@@ -74,6 +43,14 @@
 				if (mlt_data.tracks[i].cntEmSi > 0) {
 					recEmSiIsActive = mlt_data.tracks[i].recEmSi.active;
 				}
+				var info = mlt_infoTable(
+					mlt_data.tracks[i].trackId, 
+					mlt_data.tracks[i].name, 
+					mlt_data.tracks[i].recPos.rcvd, 
+					mlt_data.tracks[i].recPos.infoPosition, 
+					mlt_data.tracks[i].cntMsg > 0, 
+					mlt_data.tracks[i].cntEmSi > 0, 
+					recEmSiIsActive);
 				var marker = mlt_createAndSetSenderMarker(
 					mlt_data.tracks[i].senderName,
 					mlt_data.tracks[i].senderSymbolId,
@@ -85,14 +62,18 @@
 					mlt_data.tracks[i].name,
 					mlt_data.tracks[i].cntMsg > 0,
 					mlt_data.tracks[i].cntEmSi > 0,
-					recEmSiIsActive);
+					recEmSiIsActive,
+					info);
 				mlt_markers.push(marker);
-				mlt_map.addLayer(marker);
+				if (mlt_markersVisible) {
+					mlt_map.addLayer(marker);	
+				}
 				mlt_addCircleMarkerToMarkersAndMap(
-					mlt_markers, mlt_map,
+					mlt_circleMarkers, mlt_map,
 					mlt_data.tracks[i].recPos.lat, 
 					mlt_data.tracks[i].recPos.lon,
-					mlt_RECENT_POS, true);
+					mlt_RECENT_POS, true,
+					info);
 				var pos = new L.LatLng(
    					mlt_data.tracks[i].recPos.lat,
    					mlt_data.tracks[i].recPos.lon);
@@ -114,17 +95,35 @@
 		$("#infoTxt").html(infoTxt);	
 		mlt_adaptZoomLevel();
     }        
-	
-	function mlt_resetBoundsAndMarkers() {
+	function mlt_removeMarkersFromLayer() {
 		if (mlt_markers != null) {
 			for (var i=0; i < mlt_markers.length; i++) {
 			   	mlt_map.removeLayer(mlt_markers[i]);				   	
 		   	}
 		}
+	}
+	function mlt_removeCircleMarkersFromLayer() {
+		if (mlt_circleMarkers != null) {
+			for (var i=0; i < mlt_circleMarkers.length; i++) {
+			   	mlt_map.removeLayer(mlt_circleMarkers[i]);				   	
+		   	}
+		}
+	}
+	function mlt_putMarkersToLayer() {
+		if (mlt_markers != null) {
+			for (var i=0; i < mlt_markers.length; i++) {
+			   	mlt_map.addLayer(mlt_markers[i]);				   	
+		   	}
+		}
+	}
+	function mlt_resetBoundsAndMarkers() {
+		mlt_removeMarkersFromLayer();
+		mlt_removeCircleMarkersFromLayer();
  		mlt_bounds = new L.LatLngBounds();
  		mlt_current_sender_pos = null;
 		mlt_bounds_empty = true;
 		mlt_markers = [];
+		mlt_circleMarkers = [];
  	}
 	
 	function mlt_adaptZoomLevel() {
@@ -192,82 +191,20 @@
 	</tr>
 </table>
 <script>
-	function mlt_initMap(anker, mapsUsedStr, defMapId, defCenter, defZoom) {
-		var supportedLayerNames = [
-			"<spring:message code='map.OpenStreetMap.Mapnik' />",
-			"<spring:message code='map.OpenStreetMap.DE' />",
-			"<spring:message code='map.OpenStreetMap.BlackAndWhite' />",
-			"<spring:message code='map.Thunderforest.OpenCycleMap' />",
-			"<spring:message code='map.Thunderforest.Transport' />",
-			"<spring:message code='map.Thunderforest.Landscape' />",
-			"<spring:message code='map.MapQuestOpen.OSM' />",
-			"<spring:message code='map.MapQuestOpen.Aerial' />",
-			"<spring:message code='map.MapBox.Simple' />",
-			"<spring:message code='map.MapBox.Streets' />",
-			"<spring:message code='map.MapBox.Light' />",
-			"<spring:message code='map.MapBox.Lacquer' />",
-			"<spring:message code='map.MapBox.Warden' />",
-			"<spring:message code='map.Stamen.Toner' />",
-			"<spring:message code='map.Stamen.Terrain' />",
-			"<spring:message code='map.Stamen.Watercolor' />",
-			"<spring:message code='map.Esri.WorldStreetMap' />",
-			"<spring:message code='map.Esri.DeLorme' />",
-			"<spring:message code='map.Esri.WorldTopoMap' />",
-			"<spring:message code='map.Esri.WorldImagery' />",
-			"<spring:message code='map.Esri.OceanBasemap' />",
-			"<spring:message code='map.Esri.NatGeoWorldMap' />"
-		];
-		var supportedLayers = [
-			new L.TileLayer.OpenStreetMap.Mapnik,
-			new L.TileLayer.OpenStreetMap.DE,
-			new L.TileLayer.OpenStreetMap.BlackAndWhite,
-			new L.TileLayer.Thunderforest.OpenCycleMap,
-			new L.TileLayer.Thunderforest.Transport,
-			new L.TileLayer.Thunderforest.Landscape,
-			new L.TileLayer.MapQuestOpen.OSM,
-			new L.TileLayer.MapQuestOpen.Aerial,
-			new L.TileLayer.MapBox.Simple,
-			new L.TileLayer.MapBox.Streets,
-			new L.TileLayer.MapBox.Light,
-			new L.TileLayer.MapBox.Lacquer,
-			new L.TileLayer.MapBox.Warden,
-			new L.TileLayer.Stamen.Toner,
-			new L.TileLayer.Stamen.Terrain,
-			new L.TileLayer.Stamen.Watercolor,
-			new L.TileLayer.Esri.WorldStreetMap,
-			new L.TileLayer.Esri.DeLorme,
-			new L.TileLayer.Esri.WorldTopoMap,
-			new L.TileLayer.Esri.WorldImagery,
-			new L.TileLayer.Esri.OceanBasemap,
-			new L.TileLayer.Esri.NatGeoWorldMap
-		];		
-		var baseLayers = {};
-		for (var idx=0; idx < mapsUsedStr.length; idx++) {
-			if (mapsUsedStr[idx] == "1") {
-				baseLayers[supportedLayerNames[idx]] = supportedLayers[idx];	
-			}
-		}
-		var map = new L.Map(anker, {
-			center: defCenter,
-			zoom: defZoom,
-			attributionControl: true,
-			zoomControl: false,
-		});
-		var defaultLayer = supportedLayers[defMapId];
-		map.addLayer(defaultLayer);
-		map.addControl(new L.Control.Layers(baseLayers,'',{collapsed: true, position:'topleft'}));
-		var zoomFS = new L.Control.ZoomFS({position:'topright'});
-	    map.addControl(zoomFS);
-		return map;
-	}
+	var mlt_supportedLayerNames = [
+		<c:forEach var="supportedMap" items="${tracksOverviewCmd.supportedMaps}">
+	    	"<spring:message code='${supportedMap.label}' />",
+		</c:forEach>
+	];
 	
 	mlt_map = mlt_initMap("map_canvas",
 		"<c:out value='${tracksOverviewCmd.mapsUsedStr}' />",
 		"<c:out value='${tracksOverviewCmd.defMapId}' />",
-		mlt_DEFAULT_CENTER, mlt_DEFAULT_ZOOM);
+		mlt_DEFAULT_CENTER, mlt_DEFAULT_ZOOM,
+		mlt_supportedLayerNames);
 	
 	function mlt_createAndSetSenderMarker(name, symbolId, lat, lon, posStr, rcvd, 
-		trackId, trackName, hasMsg, hasEmSi, recEmSiIsActive) {
+		trackId, trackName, hasMsg, hasEmSi, recEmSiIsActive, info) {
 		var SenderIcon = L.Icon.Label.extend({
 			options: {
 		    	iconUrl: "<c:url value='img/map/'/>" + symbolId + ".png",
@@ -294,7 +231,7 @@
 			{ icon: new SenderIcon({ labelText: name }), 
     		clickable:true, opacity: 0.8, });
 	   	
-	   	marker.bindPopup(mlt_infoTable(trackId, trackName, rcvd, posStr, hasMsg, hasEmSi, recEmSiIsActive));
+	   	marker.bindPopup(info);
     	return marker; 
 	}
 	function mlt_infoTable(trackId, trackName, timestamp, location, hasMsg, hasEmSi, recEmSiIsActive) {

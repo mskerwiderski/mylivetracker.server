@@ -11,7 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
-import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
 import de.msk.mylivetracker.web.util.TwitterUtils;
 import de.msk.mylivetracker.web.util.WebUtils;
@@ -40,7 +40,7 @@ public class LoginCtrl extends SimpleFormController {
 	public static final String REQUEST_PARAM_MESSAGE_CODE = "msgcode";
 	public static final String MESSAGE_LOGIN_FAILED = "login.failed";
 
-	private IApplicationService applicationService;
+	private Services services;
 
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)
@@ -52,8 +52,8 @@ public class LoginCtrl extends SimpleFormController {
 			cmd.setLoginResultMessage("");
 			cmd.setAutoLoginUrlForDemoGuest(
 				UserAutoLoginVo.createAutoLoginUrl(
-					this.applicationService.getApplicationBaseUrl(), 
-					this.applicationService.getParameterValueAsString(
+					this.services.getApplicationService().getApplicationBaseUrl(), 
+					this.services.getApplicationService().getParameterValueAsString(
 						Parameter.AutoLoginTicketForDemoGuest)));
 			cmd.setTwitterMessages(TwitterUtils.getTwitterMessages(3, 120));
 			request.getSession().setAttribute(this.getCommandName(), cmd);
@@ -77,12 +77,11 @@ public class LoginCtrl extends SimpleFormController {
 		log.debug(cmd);
 		return super.referenceData(request, command, errors);
 	}
-	
-	public IApplicationService getApplicationService() {
-		return applicationService;
-	}
 
-	public void setApplicationService(IApplicationService applicationService) {
-		this.applicationService = applicationService;
+	public Services getServices() {
+		return services;
+	}
+	public void setServices(Services services) {
+		this.services = services;
 	}
 }

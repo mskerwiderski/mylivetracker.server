@@ -33,8 +33,7 @@ import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.application.IApplicationService;
-import de.msk.mylivetracker.service.ticket.ITicketService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.util.datetime.DateTimeUtils;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl.UserAndRoleDsc;
@@ -59,10 +58,9 @@ import de.msk.mylivetracker.web.util.request.ReqUrlStr;
 public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 	
 	private static final Log log = LogFactory.getLog(TrackExporterKml.class);
-	                            
+
+	private Services services;
 	private boolean onlyStaticExport;
-	private IApplicationService applicationService;
-	private ITicketService ticketService;
 	
 	private static final String STYLE_MARKER_MESSAGE = "message-marker-style";
 	private static final String STYLE_MARKER_STARTPOS = "startpos-marker-style";
@@ -72,7 +70,7 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 	private String getUpdateUrl(HttpServletRequest request,
 		UserAndRoleDsc userAndRoleDsc, TrackVo track) {		
 		String applicationBaseUrl = 
-			this.applicationService.getApplicationBaseUrl();
+			this.services.getApplicationService().getApplicationBaseUrl();
 		
 		String exportUrl = 
 			ReqUrlStr.create(applicationBaseUrl)
@@ -82,10 +80,11 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 				.add(AbstractTrackingCtrl.PARAM_REQ_TYPE, 
 					AbstractTrackingCtrl.RequestType.binary.toString())
 				.add(AbstractTrackingCtrl.PARAM_USER_ID, userAndRoleDsc.user.getUserId())
-				.add(AbstractTrackingCtrl.PARAM_TICKET_ID, this.ticketService.createTicket(
-					TicketVo.Type.UrlTicket,
-					userAndRoleDsc.user.getUserId(),	
-					userAndRoleDsc.role))
+				.add(AbstractTrackingCtrl.PARAM_TICKET_ID, 
+					this.services.getTicketService().createTicket(
+						TicketVo.Type.UrlTicket,
+						userAndRoleDsc.user.getUserId(),	
+						userAndRoleDsc.role))
 				.add(AbstractTrackingCtrl.PARAM_TRACK_ID, track.getTrackId())	
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_LIVE, false)	
 				.add(request, AbstractTrackingCtrl.PARAM_TRACKING_KEEP_RECENT_POSITIONS)
@@ -103,7 +102,7 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 	public ByteArrayOutputStream convert(HttpServletRequest request,
 		TrackVo track, UserAndRoleDsc userAndRoleDsc) throws Exception {
 		String applicationBaseUrl = 
-			this.applicationService.getApplicationBaseUrl();
+			this.services.getApplicationService().getApplicationBaseUrl();
 		
 		final Kml kml = KmlFactory.createKml();
 		
@@ -347,45 +346,16 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 		return bos;  
 	}
 
-	/**
-	 * @return the onlyStaticExport
-	 */
 	public boolean isOnlyStaticExport() {
 		return onlyStaticExport;
 	}
-
-	/**
-	 * @param onlyStaticExport the onlyStaticExport to set
-	 */
 	public void setOnlyStaticExport(boolean onlyStaticExport) {
 		this.onlyStaticExport = onlyStaticExport;
 	}
-
-	/**
-	 * @return the applicationService
-	 */
-	public IApplicationService getApplicationService() {
-		return applicationService;
+	public Services getServices() {
+		return services;
 	}
-
-	/**
-	 * @param applicationService the applicationService to set
-	 */
-	public void setApplicationService(IApplicationService applicationService) {
-		this.applicationService = applicationService;
+	public void setServices(Services services) {
+		this.services = services;
 	}
-
-	/**
-	 * @return the ticketService
-	 */
-	public ITicketService getTicketService() {
-		return ticketService;
-	}
-
-	/**
-	 * @param ticketService the ticketService to set
-	 */
-	public void setTicketService(ITicketService ticketService) {
-		this.ticketService = ticketService;
-	}	
 }

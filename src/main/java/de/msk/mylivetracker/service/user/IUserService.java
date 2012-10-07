@@ -1,6 +1,6 @@
 package de.msk.mylivetracker.service.user;
 
-import de.msk.mylivetracker.domain.user.UserPlainVo;
+import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 
 /**
@@ -16,7 +16,7 @@ import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
  * 
  */
 public interface IUserService {
-	public boolean registerNewUser(UserPlainVo user);
+	public boolean insertUser(UserWithRoleVo user);
 	public UserWithoutRoleVo getUserWithoutRole(String userId);
 	public void updateLoginInfo(UserWithoutRoleVo user);
 	public void updateUserOptions(UserWithoutRoleVo user);

@@ -23,12 +23,7 @@ import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.application.IApplicationService;
-import de.msk.mylivetracker.service.sender.ISenderService;
-import de.msk.mylivetracker.service.statusparams.IStatusParamsService;
-import de.msk.mylivetracker.service.ticket.ITicketService;
-import de.msk.mylivetracker.service.track.ITrackService;
-import de.msk.mylivetracker.service.user.IUserService;
+import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.exception.MyLiveTrackerException;
 import de.msk.mylivetracker.web.frontend.tracking.json.JsonCommonsDscJsonSerializer;
 import de.msk.mylivetracker.web.frontend.util.json.TrackVoJsonSerializer;
@@ -93,12 +88,7 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 	private String viewLayoutSimple = null;
 	private boolean useJsonReqId = false;
 	private boolean trackAsDetailed = false;	
-	private IUserService userService;
-	private ITrackService trackService;
-	private ISenderService senderService;
-	private IApplicationService applicationService;
-	private ITicketService ticketService;	
-	private IStatusParamsService statusParamsService;
+	private Services services;
 	
 	public enum RequestType {
 		json, binary, viewGet;
@@ -156,9 +146,9 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 				String newTicketId = null;
 				if (this.isUseJsonReqId()) {
 					String reqId = PARAM_REQ_ID.getValueFromReq(request, null);
-					reqRejected = !this.ticketService.checkAndDiscardTicket(reqId);
+					reqRejected = !this.services.getTicketService().checkAndDiscardTicket(reqId);
 					log.debug("reqId=" + reqId + ", reqRejected=" + reqRejected);
-					newTicketId = this.ticketService.createTicket(
+					newTicketId = this.services.getTicketService().createTicket(
 						TicketVo.Type.JsonRequestId,	
 						userAndRoleDsc.user.getUserId(), 
 						userAndRoleDsc.role); 
@@ -214,7 +204,7 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 		RequestType requestType, UserAndRoleDsc userAndRoleDsc, Map<String, Object> model) {
 		if (this.useJsonReqId) {
 			model.put(PARAM_REQ_ID.getName(), 
-				this.ticketService.createTicket(
+				this.services.getTicketService().createTicket(
 					TicketVo.Type.JsonRequestId,	
 					userAndRoleDsc.user.getUserId(), 
 					userAndRoleDsc.role));
@@ -310,7 +300,8 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 		StatusParamsVo statusParams = null;
 		if (PARAM_PARAMS_ID.valueExists(request)) {
 			statusParams = 
-				this.statusParamsService.getStatusParams(PARAM_PARAMS_ID.getValueFromReq(request));
+				this.services.getStatusParamsService().getStatusParams(
+					PARAM_PARAMS_ID.getValueFromReq(request));
 			if (statusParams == null) {
 				throw new IllegalArgumentException("StatusParams not found.");
 			} 
@@ -330,9 +321,9 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 				statusParams.getTrackId();		
 		
 		if (!StringUtils.isEmpty(userId) && (!StringUtils.isEmpty(ticketId))) {
-			UserWithoutRoleVo user = this.userService.getUserWithoutRole(userId);
+			UserWithoutRoleVo user = this.services.getUserService().getUserWithoutRole(userId);
 			if (user != null) {
-				TicketVo ticket = this.ticketService.useTicket(ticketId);
+				TicketVo ticket = this.services.getTicketService().useTicket(ticketId);
 				if (ticket != null) {				
 					userAndRoleDsc = new UserAndRoleDsc(
 						user, ticket.getAuthorizedRole(), statusParams);					
@@ -354,7 +345,7 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 		}
 		
 		if ((userAndRoleDsc != null) && !StringUtils.isEmpty(trackId)) {
-			TrackVo track = this.trackService.getTrackAsMin(trackId);
+			TrackVo track = this.services.getTrackService().getTrackAsMin(trackId);
 			if (track == null) {
 				throw new MyLiveTrackerException(request,
 					MyLiveTrackerException.ExceptionCode.TrackDoesNotExist);
@@ -407,23 +398,23 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 		
 		if (!StringUtils.isEmpty(trackId)) {
 			track = (this.trackAsDetailed ? 
-				this.trackService.getTrackAsDetailed(trackId, 
+				this.services.getTrackService().getTrackAsDetailed(trackId, 
 					cntCutPositions, true, true, false, false, false) :
-				this.trackService.getTrackAsRecent(trackId));									
+				this.services.getTrackService().getTrackAsRecent(trackId));									
 		} else {
 			track = null;
 			if (this.trackAsDetailed) {
-				track = this.trackService.getRecentTrackAsMin(userAndRoleDsc.user, senderId);
+				track = this.services.getTrackService().getRecentTrackAsMin(userAndRoleDsc.user, senderId);
 				if (track != null) {					
 					if (!StringUtils.equals(track.getTrackId(), recTrackId)) {
 						cntCutPositions = keepRecentPositions;
 						log.debug("track has changed --> cntCutPositions is set to keepRecentPositions.");
 					}
-					track = this.trackService.getTrackAsDetailed(
+					track = this.services.getTrackService().getTrackAsDetailed(
 						track.getTrackId(), cntCutPositions, true, true, false, false, false);
 				}
 			} else {
-				track = this.trackService.getRecentTrackAsRecent(
+				track = this.services.getTrackService().getRecentTrackAsRecent(
 					userAndRoleDsc.user, senderId);
 			}
 				
@@ -515,88 +506,12 @@ public abstract class AbstractTrackingCtrl extends AbstractController {
 		this.useJsonReqId = useJsonReqId;
 	}
 
-	/**
-	 * @return the userService
-	 */
-	public IUserService getUserService() {
-		return userService;
+	public Services getServices() {
+		return services;
 	}
 
-	/**
-	 * @param userService the userService to set
-	 */
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
-	}
-
-	/**
-	 * @return the applicationService
-	 */
-	public IApplicationService getApplicationService() {
-		return applicationService;
-	}
-
-	/**
-	 * @param applicationService the applicationService to set
-	 */
-	public void setApplicationService(IApplicationService applicationService) {
-		this.applicationService = applicationService;
-	}
-
-	/**
-	 * @return the ticketService
-	 */
-	public ITicketService getTicketService() {
-		return ticketService;
-	}
-
-	/**
-	 * @param ticketService the ticketService to set
-	 */
-	public void setTicketService(ITicketService ticketService) {
-		this.ticketService = ticketService;
-	}
-
-	/**
-	 * @return the trackService
-	 */
-	public ITrackService getTrackService() {
-		return trackService;
-	}
-
-	/**
-	 * @param trackService the trackService to set
-	 */
-	public void setTrackService(ITrackService trackService) {
-		this.trackService = trackService;
-	}
-
-	/**
-	 * @return the senderService
-	 */
-	public ISenderService getSenderService() {
-		return senderService;
-	}
-
-	/**
-	 * @param senderService the senderService to set
-	 */
-	public void setSenderService(ISenderService senderService) {
-		this.senderService = senderService;
-	}
-
-	/**
-	 * @return the statusParamsService
-	 */
-	public IStatusParamsService getStatusParamsService() {
-		return statusParamsService;
-	}
-
-	/**
-	 * @param statusParamsService the statusParamsService to set
-	 */
-	public void setStatusParamsService(IStatusParamsService statusParamsService) {
-		this.statusParamsService = statusParamsService;
+	public void setServices(Services services) {
+		this.services = services;
 	}
 
 	/**

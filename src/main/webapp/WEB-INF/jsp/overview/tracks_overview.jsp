@@ -315,63 +315,91 @@ window.onload=startAutoRefresh;
 	</tr>
 </table>
 <table>
-	<tr>	
+	<tr>
+		<td style="padding: 0px;border-spacing: 0px;text-align: right;">
+			<table><tr style="text-align: right;">
+				<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border:none;text-align: right;">
+					&nbsp;<spring:message code="overview.label.filter" />&nbsp;
+				</td>	
+				<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border:none;text-align: right;">
+					<table style="padding: 0px;border-spacing: 0px;">
+						<tr>
+							<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border: none;text-align: left;font-size: x-small;">
+								&nbsp;<spring:message code="overview.label.filter.timeperiod" />&nbsp;
+							</td>
+							<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border: none;text-align: left;font-size: x-small;">
+								&nbsp;<spring:message code="overview.label.filter.sender" />&nbsp;
+							</td>
+							<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border: none;text-align: left;font-size: x-small;">
+								&nbsp;<spring:message code="overview.label.filter.trackname" />&nbsp;
+							</td>
+						</tr>	
+						<tr>
+							<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border: none;text-align: left;">	
+								<c:set var="selectedDatePeriodFilter">${tracksOverviewCmd.selectedDatePeriodFilter}</c:set>
+								<select id="selectedDatePeriodFilter" name="selectedDatePeriodFilter"
+									style="border-style: groove; border-width: 2px;" 
+									onchange="javascript:refreshTrackOverview(null);" > 
+									<c:forEach var="optDatePeriod" items="${tracksOverviewCmd.tracksOverviewOptsDatePeriod}">
+					 						<c:choose>
+					   						<c:when test="${optDatePeriod.value == selectedDatePeriodFilter}">
+										    	<option value="${optDatePeriod.value}" selected>
+										        	<spring:message code="${optDatePeriod.label}" />
+										      	</option>
+										    </c:when>
+									    	<c:otherwise>
+									      		<option value="${optDatePeriod.value}" >
+										        	<spring:message code="${optDatePeriod.label}" />
+										      	</option>
+										    </c:otherwise>
+										</c:choose>
+									</c:forEach>
+								</select>&nbsp;
+							</td>
+							<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border: none;text-align: left;">
+								<form:select									 
+									path="selectedSenderFilter" 				 
+									multiple="false"
+									cssStyle="border-style: groove; border-width: 2px;"
+									onchange="javascript:refreshTrackOverview(null);"
+									>
+									<c:forEach var="senderEntry" 
+										items="${tracksOverviewCmd.senderEntriesForFilter}"
+										varStatus="status">
+					    				<form:option value="${senderEntry.value}"  
+					    					label="${senderEntry.label}"/>
+					  				</c:forEach>
+								</form:select>&nbsp;
+							</td>
+							<td style="padding: 0px;border-spacing: 0px;white-space: nowrap;border: none;text-align: left;">
+								<spring:message code="overview.track.table.title.track.name.search" var="titleTrackNameSearch" />
+								<form:input cssStyle="margin-left:3px;width:150px; text-align:left; border-style: groove; border-width: 2px;"
+									onkeypress="javascript:checkSearchEnterPressed();"
+									path="selectedSearchStrFilter"
+									title="${titleTrackNameSearch}" />&nbsp;
+								<img src="img/led/cross.png" onclick="javascript:resetSearchStr();" 
+									style="border: none;margin-bottom: -3px;"/>&nbsp;	
+								<script>
+									document.getElementById("selectedSearchStrFilter").focus();
+									function resetSearchStr() {
+										document.getElementById("selectedSearchStrFilter").value = "";
+										refreshTrackOverview(null);
+									}
+									function checkSearchEnterPressed(e) {
+									  	var keyCode=(e)? e.which :event.keyCode;
+									  	if(keyCode==13) {
+									  		refreshTrackOverview(null);
+									  	}
+									}
+								</script>	
+							</td>
+						</tr>
+					</table>
+				</td></tr>
+			</table>
+		</td>			
 		<td style="padding: 0px;border-spacing: 0px;height:35px;white-space: nowrap;width:100%;">
-			<table><tr><td style="border:none;">
-			<c:set var="selectedDatePeriodFilter">${tracksOverviewCmd.selectedDatePeriodFilter}</c:set>
-			<select id="selectedDatePeriodFilter" name="selectedDatePeriodFilter"
-				style="border-style: groove; border-width: 2px;" 
-				onchange="javascript:refreshTrackOverview(null);" > 
-				<c:forEach var="optDatePeriod" items="${tracksOverviewCmd.tracksOverviewOptsDatePeriod}">
- 						<c:choose>
-   						<c:when test="${optDatePeriod.value == selectedDatePeriodFilter}">
-					    	<option value="${optDatePeriod.value}" selected>
-					        	<spring:message code="${optDatePeriod.label}" />
-					      	</option>
-					    </c:when>
-				    	<c:otherwise>
-				      		<option value="${optDatePeriod.value}" >
-					        	<spring:message code="${optDatePeriod.label}" />
-					      	</option>
-					    </c:otherwise>
-					</c:choose>
-				</c:forEach>
-			</select>
-			&nbsp;<form:select									 
-				path="selectedSenderFilter" 				 
-				multiple="false"
-				cssStyle="border-style: groove; border-width: 2px;"
-				onchange="javascript:refreshTrackOverview(null);"
-				>
-				<c:forEach var="senderEntry" 
-					items="${tracksOverviewCmd.senderEntriesForFilter}"
-					varStatus="status">
-    				<form:option value="${senderEntry.value}"  
-    					label="${senderEntry.label}"/>
-  				</c:forEach>
-			</form:select>
-			&nbsp;<spring:message code="overview.label.track.name.search" />&nbsp;
-			<spring:message code="overview.track.table.title.track.name.search" var="titleTrackNameSearch" />
-			<form:input cssStyle="width:150px; text-align:left; border-style: groove; border-width: 2px;"
-				onkeypress="javascript:checkSearchEnterPressed();"
-				path="selectedSearchStrFilter"
-				title="${titleTrackNameSearch}" />
-			<img src="img/led/cross.png" onclick="javascript:resetSearchStr();" 
-				style="border: none;margin-bottom: -3px;"/>	
-			<script>
-				document.getElementById("selectedSearchStrFilter").focus();
-				function resetSearchStr() {
-					document.getElementById("selectedSearchStrFilter").value = "";
-					refreshTrackOverview(null);
-				}
-				function checkSearchEnterPressed(e) {
-				  	var keyCode=(e)? e.which :event.keyCode;
-				  	if(keyCode==13) {
-				  		refreshTrackOverview(null);
-				  	}
-				}
-			</script>		
-			</td></tr></table>			
+			&nbsp;		
 		</td> 
 		<td style="padding: 0px;border-spacing: 0px;text-align: right;">
 		<table><tr style="text-align: right;">

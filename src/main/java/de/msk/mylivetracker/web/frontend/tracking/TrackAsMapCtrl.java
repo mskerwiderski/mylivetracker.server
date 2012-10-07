@@ -1,11 +1,13 @@
 package de.msk.mylivetracker.web.frontend.tracking;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.msk.mylivetracker.domain.track.TrackVo;
+import de.msk.mylivetracker.web.options.IntOptionDsc;
 
 /**
  * TrackAsMapCtrl.
@@ -19,7 +21,9 @@ import de.msk.mylivetracker.domain.track.TrackVo;
  * 
  */
 public class TrackAsMapCtrl extends AbstractTrackingCtrl {
-			
+	
+	private List<IntOptionDsc> supportedMaps;
+	
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl#addToJsonModel(javax.servlet.http.HttpServletRequest, de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl.UserAndRoleDsc, de.msk.mylivetracker.domain.track.TrackVo, java.util.Map)
 	 */
@@ -47,8 +51,17 @@ public class TrackAsMapCtrl extends AbstractTrackingCtrl {
 	@Override
 	protected void addToViewModel(HttpServletRequest request,
 		UserAndRoleDsc userAndRoleDsc, Map<String, Object> model) {
+		model.put("supportedMaps", supportedMaps);
 		model.put("mapsUsedStr", userAndRoleDsc.user.getOptions().getMapsUsed().getMapsUsedStr());
 		model.put("defMapId", userAndRoleDsc.user.getOptions().getMapsUsed().getDefMapId());
 		model.put("showTrackInfo", (Boolean)model.get(PARAM_SHOW_TRACK_INFO.getName()));		
+	}
+
+	public List<IntOptionDsc> getSupportedMaps() {
+		return supportedMaps;
+	}
+
+	public void setSupportedMaps(List<IntOptionDsc> supportedMaps) {
+		this.supportedMaps = supportedMaps;
 	}
 }
