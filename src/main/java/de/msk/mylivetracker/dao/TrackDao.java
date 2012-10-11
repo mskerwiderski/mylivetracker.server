@@ -100,9 +100,6 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	private static final String SQL_DELETE_CARDIAC_FUNCTION= "TrackVo.deleteCardiacFunction";
 	private static final String SQL_DELETE_EMERGENCY_SIGNAL= "TrackVo.deleteEmergencySignal";
 		
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.ITrackDao#getTracksAsRecent(de.msk.mylivetracker.domain.track.TrackFilterVo)
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(propagation=Propagation.NEVER, readOnly=true)
@@ -154,7 +151,7 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("trackId", trackId);
 			Integer startAt = 0;
-			if (cntCutPositions > 0) {
+			if ((cntCutPositions > 0) && (cntCutPositions < track.getCountPositions())) {
 				startAt = track.getCountPositions() - cntCutPositions;
 			} else if (cntCutPositions < 0) {
 				startAt = -1 * cntCutPositions;

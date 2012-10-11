@@ -15,6 +15,17 @@ import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.SenderEntry;
 import de.msk.mylivetracker.web.options.IntOptionDsc;
 
+/**
+ * UserSessionStatusVo.
+ * 
+ * @author michael skerwiderski, (c)2012
+ * 
+ * @version 000
+ * 
+ * history
+ * 000 initial 2012-10-11
+ * 
+ */
 public class UserSessionStatusVo implements Serializable {
 	
 	private static final long serialVersionUID = 7063852164890562807L;
@@ -76,7 +87,7 @@ public class UserSessionStatusVo implements Serializable {
 		userSessionStatus.setToSelDatePeriodFilter(
 			tracksOverviewOptsDatePeriod.get(0).getValue());
 		userSessionStatus.setToSelSearchStrFilter("");
-		userSessionStatus.setToSelTracksView(TracksViewVo.Table);
+		userSessionStatus.setToSelTracksView(TracksViewVo.Map);
 		userSessionStatus.setToSelTracksOverviewOptFlyToMode(TracksOverviewMapFlyToModeVo.FlyToView);
 		userSessionStatus.setToSelTracksOverviewOptRefresh(
 			tracksOverviewOptsRefresh.get(0).getValue());

@@ -42,6 +42,7 @@ public class JsonCommonsDscJsonSerializer extends AbstractVoJsonSerializer<JsonC
 		JsonObject jsonJsonCommonsDsc = new JsonObject();
 		jsonJsonCommonsDsc.addProperty("statusUpdated", 
 			DateTimeUtils.getDateTimeStr4UserRep(this.getUserWithoutRole(), jsonCommonsDsc.statusUpdated));
+		jsonJsonCommonsDsc.addProperty("versionId", jsonCommonsDsc.versionId);
 		jsonJsonCommonsDsc.addProperty("maxCountOfRecordsExceeded", jsonCommonsDsc.maxCountOfRecordsExceeded);
 		jsonJsonCommonsDsc.addProperty("countFoundTracks", jsonCommonsDsc.countFoundTracks);
 		jsonJsonCommonsDsc.addProperty("countDisplayedTracks", jsonCommonsDsc.countDisplayedTracks);

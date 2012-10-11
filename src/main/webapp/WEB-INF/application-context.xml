@@ -163,6 +163,11 @@
         <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
     </bean>
     
+    <bean id="userOperationsCounterDao"
+        class="de.msk.mylivetracker.dao.UserOperationsCounterDao">
+        <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
+    </bean>
+    
     <bean id="userDao"
         class="de.msk.mylivetracker.dao.UserDao">
         <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
@@ -224,6 +229,11 @@
 		<property name="tracksOverviewOptsDatePeriod" ref="tracksOverviewOptsDatePeriod"/>
 		<property name="tracksOverviewOptsRefresh" ref="tracksOverviewOptsRefresh" />
         <property name="userSessionStatusDao" ref="userSessionStatusDao" />
+    </bean>
+    
+    <bean id="userOperationsCounterService"
+        class="de.msk.mylivetracker.service.user.UserOperationsCounterService">
+        <property name="userOperationsCounterDao" ref="userOperationsCounterDao" />
     </bean>
       
     <bean id="userService"
@@ -299,6 +309,7 @@
         class="de.msk.mylivetracker.service.track.TrackService">        
         <property name="trackDao" ref="trackDao" />
         <property name="userStorePositionQueues" ref="userStorePositionQueues" />
+        <property name="userOperationsCounterService" ref="userOperationsCounterService" />
     </bean> 
       
     <bean id="senderService"
@@ -322,6 +333,7 @@
 	 	<property name="trackService" ref="trackService" />
 	 	<property name="userService" ref="userService" />
         <property name="userSessionStatusService" ref="userSessionStatusService" />
+        <property name="userOperationsCounterService" ref="userOperationsCounterService" />
         <property name="utilService" ref="utilService" />
 	</bean>        
 </beans>

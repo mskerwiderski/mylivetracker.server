@@ -1,7 +1,8 @@
 
 var mlt_infoTableHdrFontColor = "#FFFFFF";
 var mlt_infoTableHdrColor4HomePosition = "#529647";
-var mlt_infoTableHdrColor4StartPosition = "#529647";
+var mlt_infoTableHdrColor4StartPosition = "#a8a8a8";
+var mlt_infoTableHdrColor4FirstOfLastRecentPositions = "a8a8a8";
 var mlt_infoTableHdrColor4RecentPosition = "#529647";
 var mlt_infoTableHdrColor4Message = "#477c94";
 var mlt_infoTableHdrColor4EmergencySignalActivated = "#f5454d";

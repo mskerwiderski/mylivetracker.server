@@ -33,6 +33,7 @@ public class DeleteAccount implements IAction {
 		services.getTrackService().removeAllTracksOfUsers(userId);
 		services.getStatusParamsService().deleteAllStatusParamsOfUser(userId);
 		services.getUserSessionStatusService().deleteUserSessionStatus(userId);
+		services.getUserOperationsCounterService().deleteUserOperationsCounter(userId);
 		services.getUserService().deleteUser(userId);
 		return LoginCtrl.URL_LOGOUT;
 	}

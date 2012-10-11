@@ -20,6 +20,8 @@ public class TrackFilterVo implements Serializable {
 
 	private static final long serialVersionUID = -8825211722592425417L;
 	
+	private Long versionId = null;
+	
 	private int maxCountOfRecords;
 	
 	// *********************************************************
@@ -49,6 +51,12 @@ public class TrackFilterVo implements Serializable {
 	private String bySearchStr = null;
 	private Integer byActive = null;
 	
+	public Long getVersionId() {
+		return versionId;
+	}
+	public void setVersionId(Long versionId) {
+		this.versionId = versionId;
+	}
 	/**
 	 * @return the maxCountOfRecords
 	 */
@@ -61,15 +69,9 @@ public class TrackFilterVo implements Serializable {
 	public void setMaxCountOfRecords(int maxCountOfRecords) {
 		this.maxCountOfRecords = maxCountOfRecords;
 	}
-	/**
-	 * @return the userId
-	 */
 	public String getUserId() {
 		return userId;
 	}
-	/**
-	 * @param userId the userId to set
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
@@ -171,12 +173,13 @@ public class TrackFilterVo implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "TrackFilterVo [maxCountOfRecords=" + maxCountOfRecords
-			+ ", userId=" + userId + ", userRole=" + userRole
-			+ ", guestAccClosedTrEnabled=" + guestAccClosedTrEnabled
-			+ ", guestAccPrivTrEnabled=" + guestAccPrivTrEnabled
-			+ ", bySenderId=" + bySenderId + ", byDateFrom=" + byDateFrom
-			+ ", byDateTo=" + byDateTo + ", bySearchStr=" + bySearchStr
-			+ ", byActive=" + byActive + "]";
-	}		
+		return "TrackFilterVo [versionId=" + versionId + ", maxCountOfRecords="
+			+ maxCountOfRecords + ", userId=" + userId + ", userRole="
+			+ userRole + ", guestAccClosedTrEnabled="
+			+ guestAccClosedTrEnabled + ", guestAccPrivTrEnabled="
+			+ guestAccPrivTrEnabled + ", bySenderId=" + bySenderId
+			+ ", byDateFrom=" + byDateFrom + ", byDateTo=" + byDateTo
+			+ ", bySearchStr=" + bySearchStr + ", byActive=" + byActive
+			+ "]";
+	}
 }

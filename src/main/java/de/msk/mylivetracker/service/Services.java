@@ -11,6 +11,7 @@ import de.msk.mylivetracker.service.statistics.IStatisticsService;
 import de.msk.mylivetracker.service.statusparams.IStatusParamsService;
 import de.msk.mylivetracker.service.ticket.ITicketService;
 import de.msk.mylivetracker.service.track.ITrackService;
+import de.msk.mylivetracker.service.user.IUserOperationsCounterService;
 import de.msk.mylivetracker.service.user.IUserService;
 import de.msk.mylivetracker.service.user.IUserSessionStatusService;
 import de.msk.mylivetracker.service.util.IUtilService;
@@ -40,6 +41,7 @@ public class Services {
 	private ITrackService trackService;
 	private IUserService userService;
 	private IUserSessionStatusService userSessionStatusService;
+	private IUserOperationsCounterService userOperationsCounterService;
 	private IUtilService utilService;
 	public IApplicationService getApplicationService() {
 		return applicationService;
@@ -119,6 +121,13 @@ public class Services {
 	public void setUserSessionStatusService(
 			IUserSessionStatusService userSessionStatusService) {
 		this.userSessionStatusService = userSessionStatusService;
+	}
+	public IUserOperationsCounterService getUserOperationsCounterService() {
+		return userOperationsCounterService;
+	}
+	public void setUserOperationsCounterService(
+			IUserOperationsCounterService userOperationsCounterService) {
+		this.userOperationsCounterService = userOperationsCounterService;
 	}
 	public IUtilService getUtilService() {
 		return utilService;

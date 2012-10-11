@@ -16,8 +16,39 @@
 <script src="<c:url value='/js/leaflet/leaflet.providers-0.0.1.js'/>"></script>
 <script src="<c:url value='/js/map.commons.js'/>"></script>
 
+<style>
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url(./img/others/loader.gif) 
+                50% 50% 
+                no-repeat;
+}
+body.loading {
+    overflow: hidden;   
+}
+body.loading .modal {
+    display: block;
+}
+</style>
+
 <div style="font-size: small;background-color: "></div>
-<script type="text/javascript">			
+<script type="text/javascript">
+	var loadingWindow = true;
+	function showLoadingWindow() {
+		$('body').addClass("loading"); 
+	}
+	function hideLoadingWindow() {
+		if (!loadingWindow) return; 
+		$('body').removeClass("loading");
+		loadingWindow = false;
+	}
 	function mlt_infoTable(title, titleColor, timestamp, location, message) {
 		var res = "<table>";
 		res += "<tr><td style='color:" + mlt_infoTableHdrFontColor + ";background-color:" + titleColor + "' colspan='2'>&nbsp;<b>" + title + "</b>&nbsp;</td></tr>";
@@ -221,15 +252,29 @@
    			// add startMarker only if there is minimum 1 position.
    			// exception: there is only one position and this position has a message or a emergency signal.	
    			if (cntPos > 1) {
-   				var info = mlt_posAndInfo[0].info(
-   	   				"<spring:message code='track.map.info.window.title.startPosition' />",
-   	   				mlt_infoTableHdrColor4StartPosition);
-	   			mlt_startMarker =
-	   				mlt_createMarkerWithInfoWindow(
-	    	   			mlt_startIcon, 
-	    	   			mlt_positions[0].lat, 
-	    	   			mlt_positions[0].lng,
-	    	   			info);
+   				var displayTrackComplete = mlt_data.track.cntPos == cntPos;
+   				var info = null;
+   				if (displayTrackComplete) {
+   					info = mlt_posAndInfo[0].info(
+   	   					"<spring:message code='track.map.info.window.title.startPosition' />",
+   	   					mlt_infoTableHdrColor4StartPosition);
+   					mlt_startMarker =
+   		   				mlt_createMarkerWithInfoWindow(
+   		    	   			mlt_startIcon, 
+   		    	   			mlt_positions[0].lat, 
+   		    	   			mlt_positions[0].lng,
+   		    	   			info);
+   				} else {
+   					info = mlt_posAndInfo[0].info(
+ 	   	   				"<spring:message code='track.map.info.window.title.firstOfLastRecentPositions' />",
+ 	   	   				mlt_infoTableHdrColor4FirstOfLastRecentPositions);
+   					mlt_startMarker =
+   		   				mlt_createMarkerWithInfoWindow(
+   		    	   			mlt_firstIcon, 
+   		    	   			mlt_positions[0].lat, 
+   		    	   			mlt_positions[0].lng,
+   		    	   			info);
+   				}
 		   		if (mlt_markersVisible) {
 		   			mlt_map.addLayer(mlt_startMarker);
 		   		}
@@ -529,7 +574,8 @@
    	   	   	mlt_data = data;
    	   		mlt_updateView();
             mlt_reqId = mlt_data.jsonCommons.reqId;
-        }        
+        }
+   	 	hideLoadingWindow();
    	}
    	
    	function mlt_refreshTracksOverview() {
@@ -575,8 +621,9 @@
    		$("#loadDataMarker").hide();
    	}
    	
-    $(document).ready(      		    				    			
+    $(document).ready(      		   
    		function mlt_processRequest() {
+   			showLoadingWindow();
    			mlt_refreshTracksOverview();
    		}   	   		   	   	   		
     ); 	
@@ -753,10 +800,12 @@
 	</c:if>		
 	</table>
     </div>
+    <div class="modal"><!-- Place at bottom of page --></div>
 </body>
 
 <script type="text/javascript" >		
 	var mlt_startIcon = null;
+	var mlt_firstIcon = null;
 	var mlt_recentIcon = null;
 	var mlt_messageIcon = null;
 	var mlt_homeIcon = null;
@@ -779,6 +828,7 @@
 	
 	function mlt_createIcons() {
 		mlt_startIcon     = mlt_createIcon("<c:url value="img/map/start.png"/>", new L.Point(32, 37));
+		mlt_firstIcon     = mlt_createIcon("<c:url value="img/map/star.png"/>", new L.Point(32, 37));
 		mlt_messageIcon   = mlt_createIcon("<c:url value="img/map/message.png" />", new L.Point(32, 37));
 		mlt_homeIcon      = mlt_createIcon("<c:url value="img/map/home.png" />", new L.Point(32, 37));
 		mlt_emergencyActivatedIcon = mlt_createIcon("<c:url value="img/map/emergencyactivated.png" />", new L.Point(32, 37));

@@ -110,14 +110,26 @@ public interface ITrackService {
 	public TrackVo getActiveTrackAsRecent(String senderId);
 	
 	public static final class TrackListResult {
+		private long versionId;
 		private int countFoundTracks;
 		private List<TrackVo> tracks;		
 		private boolean maxCountOfRecordsExceeded;
+		public static TrackListResult createResultUnchanged(long versionId) {
+			TrackListResult trackListResult = new TrackListResult(0, null, false);
+			trackListResult.versionId = versionId;
+			return trackListResult;
+		}
 		public TrackListResult(int countFoundTracks, List<TrackVo> tracks,
 			boolean maxCountOfRecordsExceeded) {
 			this.countFoundTracks = countFoundTracks;
 			this.tracks = tracks;
 			this.maxCountOfRecordsExceeded = maxCountOfRecordsExceeded;
+		}
+		public void setVersionId(long versionId) {
+			this.versionId = versionId;
+		}
+		public long getVersionId() {
+			return versionId;
 		}
 		public int getCountFoundTracks() {
 			return countFoundTracks;

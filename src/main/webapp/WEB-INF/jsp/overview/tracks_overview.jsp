@@ -133,20 +133,33 @@ table.display tr.even.emergency {
 	});
 	
 	var mlt_getOnlyActiveTracks = false;
+	var mlt_versionId = null;
 	
 	function mlt_refreshTracksOverview() {
    		var senderId = document.forms["tracksOverviewForm"].elements["selectedSenderFilter"].value;
    		var datePeriod = document.forms["tracksOverviewForm"].elements["selectedDatePeriodFilter"].value;
    		var searchStr = document.forms["tracksOverviewForm"].elements["selectedSearchStrFilter"].value;
 		$.getJSON('tracks_list.do', {
+			versionId:mlt_versionId,
 			senderId:senderId,
 			datePeriod:datePeriod,
 			searchStr:searchStr,
 			onlyActive:mlt_getOnlyActiveTracks},
-			mlt_renderTracksOverview
+			mlt_processData
 		);
 		$("#refreshIcon").attr("src", "img/led/arrow_refresh.png");
    	}
+	
+	function mlt_processData(mlt_data) {
+		if (mlt_data == null) return;
+		if ((mlt_versionId != null) && (mlt_versionId == mlt_data.jsonCommons.versionId)) {
+			mlt_log("versionId unchanged = " + mlt_versionId);
+			return;
+		}
+		mlt_versionId = mlt_data.jsonCommons.versionId;
+		mlt_log("versionId changed = " + mlt_versionId);
+		mlt_renderTracksOverview(mlt_data);
+	}
 	
 	$(document).ready(
 		function mlt_processRequest() {
@@ -157,8 +170,14 @@ table.display tr.even.emergency {
 
 <script>
 var autoRefreshTimer = null;
+var showRedBullotSecs = null;
 function startAutoRefresh() {
 	autoRefreshTimer = document.forms["tracksOverviewForm"].elements["selectedTracksOverviewOptRefresh"].value;
+	if (autoRefreshTimer > 1) {
+		showRedBullotSecs = 2;
+	} else {
+		showRedBullotSecs = 1;
+	}
 	autoRefresh();
 }
 function autoRefresh() {			
@@ -168,7 +187,7 @@ function autoRefresh() {
 	} else if (autoRefreshTimer == -1) { 
 		setTimeout("autoRefresh()", 1000);
 	} else {
-		if (autoRefreshTimer == 2) {
+		if (autoRefreshTimer == showRedBullotSecs) {
 			$("#refreshIcon").attr("src", "img/glossbasic/bullet_red.png");
 		}
 		autoRefreshTimer--;

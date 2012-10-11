@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="UserOperationsCounterVo">  	
+	<typeAlias alias="dateTime" type="de.msk.mylivetracker.commons.util.datetime.DateTime"/>
+	<typeAlias alias="userOperationsCounter" 
+		type="de.msk.mylivetracker.domain.user.UserOperationsCounterVo"/>	
+	
+	<resultMap id="userOperationsCounterResult" class="userOperationsCounter" >
+		<result property="userId" column="USER_ID" />
+		<result property="versionId" column="VERSION_ID" />
+		<result property="lastUpdated" column="LAST_UPDATED" />
+		<result property="countTracksCreated" column="COUNT_TRACKS_CREATED" />
+		<result property="countPositionsReceived" column="COUNT_POSITIONS_RECEIVED" />
+		<result property="countMessagesReceived" column="COUNT_MESSAGES_RECEIVED" />
+		<result property="countMobNwCellsReceived" column="COUNT_MOB_NW_CELLS_RECEIVED" />
+		<result property="countSenderStatesReceived" column="COUNT_SENDER_STATES_RECEIVED" />
+		<result property="countCardiacFunctionsReceived" column="COUNT_CARDIAC_FUNCTIONS_RECEIVED" />
+		<result property="countEmergencySignalsReceived" column="COUNT_EMERGENCY_SIGNALS_RECEIVED" />
+		<result property="countClientInfosReceived" column="COUNT_CLIENT_INFOS_RECEIVED" />
+	</resultMap>
+		  	   		
+	<select id="selectUserOperationsCounterByUserId" parameterClass="string" resultMap="userOperationsCounterResult">
+  		select * from T_USER_OPERATIONS_COUNTER t 
+  		where t.USER_ID = #?# 	
+  	</select>
+  	
+	<insert id="updateUserOperationsCounter" parameterClass="userOperationsCounter">
+  		insert into T_USER_OPERATIONS_COUNTER (
+  			USER_ID,
+  			VERSION_ID,
+			LAST_UPDATED,
+			COUNT_TRACKS_CREATED,
+			COUNT_POSITIONS_RECEIVED,
+			COUNT_MESSAGES_RECEIVED,
+			COUNT_MOB_NW_CELLS_RECEIVED,
+			COUNT_SENDER_STATES_RECEIVED,
+			COUNT_CARDIAC_FUNCTIONS_RECEIVED,
+			COUNT_EMERGENCY_SIGNALS_RECEIVED,
+			COUNT_CLIENT_INFOS_RECEIVED   
+  		) values (
+  			#userId#,
+  			#versionId#,
+			#lastUpdated#,
+			#countTracksCreated#,
+			#countPositionsReceived#,
+			#countMessagesReceived#,
+			#countMobNwCellsReceived#,
+			#countSenderStatesReceived#,
+			#countCardiacFunctionsReceived#,
+			#countEmergencySignalsReceived#,
+			#countClientInfosReceived#       
+  		) on duplicate key update
+  			VERSION_ID = #versionId#,
+  			LAST_UPDATED = #lastUpdated#,
+  			COUNT_TRACKS_CREATED = #countTracksCreated#,
+			COUNT_POSITIONS_RECEIVED = #countPositionsReceived#,
+			COUNT_MESSAGES_RECEIVED = #countMessagesReceived#,
+			COUNT_MOB_NW_CELLS_RECEIVED = #countMobNwCellsReceived#,
+			COUNT_SENDER_STATES_RECEIVED = #countSenderStatesReceived#,
+			COUNT_CARDIAC_FUNCTIONS_RECEIVED = #countCardiacFunctionsReceived#,
+			COUNT_EMERGENCY_SIGNALS_RECEIVED = #countEmergencySignalsReceived#,
+			COUNT_CLIENT_INFOS_RECEIVED = #countClientInfosReceived#
+  	</insert>  	
+  	
+  	<delete id="deleteUserOperationsCounter" parameterClass="string">
+  		delete FROM T_USER_OPERATIONS_COUNTER
+		where USER_ID = #?#
+  	</delete>		  	   	
+</sqlMap>

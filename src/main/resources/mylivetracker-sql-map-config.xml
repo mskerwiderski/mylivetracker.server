@@ -31,5 +31,6 @@
     <sqlMap resource="ibatis-sql-maps/EmergencySignalVo.xml"/>      
     <sqlMap resource="ibatis-sql-maps/SenderVo.xml"/>   
     <sqlMap resource="ibatis-sql-maps/DemoTrackVo.xml"/>
-    <sqlMap resource="ibatis-sql-maps/UserSessionStatusVo.xml"/>     
+    <sqlMap resource="ibatis-sql-maps/UserSessionStatusVo.xml"/>  
+    <sqlMap resource="ibatis-sql-maps/UserOperationsCounterVo.xml"/>   
 </sqlMapConfig>

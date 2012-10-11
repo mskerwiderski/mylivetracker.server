@@ -20,7 +20,7 @@ public class Global {
 	}
 
 	public static String getVersion() {
-		return "v1.4.0 beta 12";
+		return "v1.4.0 beta 13 (freezed)";
 	}
 	
 	public static String getAppId() {

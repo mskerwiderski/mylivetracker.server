@@ -9,7 +9,9 @@ import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.track.TrackFilterVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
+import de.msk.mylivetracker.domain.user.UserOperationsCounterVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
+import de.msk.mylivetracker.service.user.IUserOperationsCounterService;
 
 /**
  * TrackService.
@@ -29,14 +31,17 @@ public class TrackService implements ITrackService {
 	
 	private ITrackDao trackDao;	
 	private UserStorePositionQueues userStorePositionQueues;
-
+	private IUserOperationsCounterService userOperationsCounterService;
+	
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.ITrackService#createTrack(de.msk.mylivetracker.domain.SenderVo, java.lang.String, boolean)
 	 */
 	@Override
 	public TrackVo createTrack(SenderVo sender, 
 		String trackName, boolean trackReleased) {
-			return trackDao.createTrack(sender, trackName, trackReleased);
+			TrackVo track = trackDao.createTrack(sender, trackName, trackReleased);
+			this.userOperationsCounterService.incCountTracksCreated(sender.getUserId());
+			return track;
 	}
 
 	/* (non-Javadoc)
@@ -134,7 +139,18 @@ public class TrackService implements ITrackService {
 	 */
 	@Override
 	public TrackListResult getTracksAsRecent(TrackFilterVo trackFilter) {
-		return trackDao.getTracksAsRecent(trackFilter);
+		UserOperationsCounterVo userOperationsCounter = 
+			userOperationsCounterService.getUserOperationsCounter(trackFilter.getUserId());
+		TrackListResult trackListResult = null;
+		if ((trackFilter.getVersionId() != null) && 
+			(userOperationsCounter.getVersionId().longValue() == trackFilter.getVersionId().longValue())) {
+			trackListResult = TrackListResult.createResultUnchanged(
+				userOperationsCounter.getVersionId().longValue());
+		} else {
+			trackListResult = trackDao.getTracksAsRecent(trackFilter);
+			trackListResult.setVersionId(userOperationsCounter.getVersionId().longValue());
+		}
+		return trackListResult;
 	}
 	
 	/* (non-Javadoc)
@@ -195,6 +211,8 @@ public class TrackService implements ITrackService {
 	public void storePositionAndMessage(UserWithoutRoleVo user,
 		DataReceivedVo dataReceived) {
 		userStorePositionQueues.push(user, dataReceived);
+		this.userOperationsCounterService.update(
+			user.getUserId(), dataReceived);
 	}
 
 	/* (non-Javadoc)
@@ -238,5 +256,14 @@ public class TrackService implements ITrackService {
 	public void setUserStorePositionQueues(
 			UserStorePositionQueues userStorePositionQueues) {
 		this.userStorePositionQueues = userStorePositionQueues;
-	}		
+	}
+
+	public IUserOperationsCounterService getUserOperationsCounterService() {
+		return userOperationsCounterService;
+	}
+
+	public void setUserOperationsCounterService(
+			IUserOperationsCounterService userOperationsCounterService) {
+		this.userOperationsCounterService = userOperationsCounterService;
+	}
 }

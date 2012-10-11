@@ -46,6 +46,8 @@ public class TracksListCtrl extends AbstractController {
 
 	public static final int MAX_SIZE_RESULT_SET = 30;
 	
+	public static ReqParam<Long> PARAM_VERSION_ID = 
+		new ReqParam<Long>("versionId", Long.class);
 	public static ReqParam<String> PARAM_SENDER_ID = 
 		new ReqParam<String>("senderId", String.class);
 	public static ReqParam<Integer> PARAM_DATE_PERIOD = 
@@ -61,11 +63,14 @@ public class TracksListCtrl extends AbstractController {
 	
 	public static class JsonCommonsDsc {
 		public DateTime statusUpdated;
+		public Long versionId;
 		public Boolean maxCountOfRecordsExceeded;
 		public Integer countFoundTracks;
 		public Integer countDisplayedTracks;
-		public JsonCommonsDsc(DateTime statusUpdated, Boolean maxCountOfRecordsExceeded,
-				Integer countFoundTracks, Integer countDisplayedTracks) {
+		public JsonCommonsDsc(DateTime statusUpdated, 
+			Long versionId, Boolean maxCountOfRecordsExceeded,
+			Integer countFoundTracks, Integer countDisplayedTracks) {
+			this.versionId = versionId;
 			this.statusUpdated = statusUpdated;
 			this.maxCountOfRecordsExceeded = maxCountOfRecordsExceeded;
 			this.countFoundTracks = countFoundTracks;
@@ -74,17 +79,19 @@ public class TracksListCtrl extends AbstractController {
 	}
 	
 	private TrackFilterVo createTrackFilter(UserWithRoleVo user, 
-		String senderId, DateTime dateFrom, 
+		Long versionId, String senderId, DateTime dateFrom, 
 		String searchStr, boolean onlyActiveTracks, int maxCountOfRecords) {
 		TrackFilterVo trackFilter = new TrackFilterVo();
 		
 		log.debug("userId=" + user.getUserId());
+		log.debug("versionId=" + versionId);
 		log.debug("senderId=" + senderId);
 		log.debug("dateFrom=" + ((dateFrom != null) ? dateFrom.toString() : "null"));
 		log.debug("searchStr=" + searchStr);
 		log.debug("onlyActiveTracks=" + onlyActiveTracks);
 		log.debug("maxCountOfRecords=" + maxCountOfRecords);
 		
+		trackFilter.setVersionId(versionId);
 		trackFilter.setMaxCountOfRecords(maxCountOfRecords);
 		trackFilter.setUserId(user.getUserId());
 		trackFilter.setUserRole(user.getRole());
@@ -122,6 +129,7 @@ public class TracksListCtrl extends AbstractController {
 		
 		UserWithRoleVo user = WebUtils.getCurrentUserWithRole();
 		
+		Long versionId = PARAM_VERSION_ID.getValueFromReq(request, null);
 		String senderId = PARAM_SENDER_ID.getValueFromReq(request, null);
 		String searchStr = PARAM_SEARCH_STR.getValueFromReq(request, null);
 		
@@ -143,13 +151,15 @@ public class TracksListCtrl extends AbstractController {
 
 		TrackListResult trackListResult = 
 			this.services.getTrackService().getTracksAsRecent(
-				createTrackFilter(user, senderId, 
+				createTrackFilter(user, 
+					versionId, senderId, 
 					dateFrom, searchStr, 
 					onlyActiveTracks, MAX_SIZE_RESULT_SET));
 		
 		model.put("jsonCommons",	
 			new JsonCommonsDsc(
 				new DateTime(),	
+				trackListResult.getVersionId(),
 				trackListResult.isMaxCountOfRecordsExceeded(),
 				trackListResult.getCountFoundTracks(),
 				MAX_SIZE_RESULT_SET));
