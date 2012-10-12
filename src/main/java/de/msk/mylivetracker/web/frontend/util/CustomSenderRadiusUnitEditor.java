@@ -2,31 +2,31 @@ package de.msk.mylivetracker.web.frontend.util;
 
 import java.beans.PropertyEditorSupport;
 
-import de.msk.mylivetracker.domain.sender.SenderSymbol;
+import de.msk.mylivetracker.domain.sender.SenderRadiusUnit;
 
 /**
- * CustomSenderSymbolEditor.
+ * CustomSenderRadiusUnitEditor.
  * 
  * @author michael skerwiderski, (c)2012
  * 
  * @version 000
  * 
  * history
- * 000 initial 2012-09-08
+ * 000 initial 2012-10-12
  * 
  */
-public class CustomSenderSymbolEditor extends PropertyEditorSupport {
+public class CustomSenderRadiusUnitEditor extends PropertyEditorSupport {
 	
-	public CustomSenderSymbolEditor() {
+	public CustomSenderRadiusUnitEditor() {
 	}
 	
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		setValue(SenderSymbol.getById(text));				
+		setValue(SenderRadiusUnit.valueOf(text));				
 	}
 
 	@Override
 	public String getAsText() {
-		return ((SenderSymbol)getValue()).getId();
+		return ((SenderRadiusUnit)getValue()).name();
 	}
 }

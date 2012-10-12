@@ -69,7 +69,7 @@ public class DemoTrackRunner extends Thread {
 			try {
 				log.debug("start demo case: " + demoCase.getTrackId());
 				Thread.sleep(demoCase.getStartInSeconds() * 1000);				
-				trackService.createTrack(
+				trackService.createTrack(demoCase.getUserId(),
 					this.senderService.getSender(demoCase.getSenderId()), 
 					demoTrack.getTrackName(), 
 					this.userService.getUserWithoutRole(demoCase.getUserId()).getOptions().getDefTrackReleaseStatus());		

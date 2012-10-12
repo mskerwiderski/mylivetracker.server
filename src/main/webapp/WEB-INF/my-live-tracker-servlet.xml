@@ -217,6 +217,7 @@
         <property name="commonsOptsOnOff" ref="commonsOptsOnOff" />
         <property name="commonsOptsEnDisabled" ref="commonsOptsEnDisabled" />        
         <property name="commonsOptsTimeZone" ref="commonsOptsTimeZone" />        
+        <property name="senderOptsRadiusUnit" ref="senderOptsRadiusUnit" />
         <property name="senderOptsRunningMode" ref="senderOptsRunningMode" />                
         <property name="stPgTrOptsFlyToMode" ref="liveTrackingOptsFlyToMode" />
         <property name="stPgTrOptsKeepRecentPos" ref="liveTrackingOptsKeepRecentPos" />

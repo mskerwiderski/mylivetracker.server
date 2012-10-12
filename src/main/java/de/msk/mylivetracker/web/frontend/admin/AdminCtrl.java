@@ -22,7 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
-import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
+import de.msk.mylivetracker.domain.TrackingFlyToMode;
+import de.msk.mylivetracker.domain.statistics.DatabaseInfoVo;
 import de.msk.mylivetracker.domain.track.TrackFilterVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserObjectUtils;
@@ -62,7 +63,7 @@ public class AdminCtrl extends ParameterizableViewController {
 	private Cache userWithoutRoleCache;
 	private Cache senderCache;
 	private Cache ticketCache;
-	private UserStorePositionQueues userStorePositionQueues;	
+	private UserStorePositionQueues userStorePositionQueues;
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.web.servlet.mvc.ParameterizableViewController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -224,7 +225,7 @@ public class AdminCtrl extends ParameterizableViewController {
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_LIVE, true)	
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_KEEP_RECENT_POSITIONS, 0)
 				.add(AbstractTrackingCtrl.PARAM_TRACKING_UPDATE_INTERVAL_IN_SECS, 5)
-				.add(AbstractTrackingCtrl.PARAM_TRACKING_FLY_TO_MODE, TrackingFlyToModeVo.None.name())
+				.add(AbstractTrackingCtrl.PARAM_TRACKING_FLY_TO_MODE, TrackingFlyToMode.None.name())
 				.add(AbstractTrackingCtrl.PARAM_WINDOW_FULLSCREEN, true)
 				.add(AbstractTrackingCtrl.PARAM_SHOW_TRACK_INFO, true));							
 		
@@ -235,6 +236,8 @@ public class AdminCtrl extends ParameterizableViewController {
 				.toString();
 			trackUrlMap.put(track.getTrackId(), trackUrl);
 		}
+
+		DatabaseInfoVo databaseInfo = this.services.getStatisticsService().getDatabaseInfo();
 		
 		DemoStatus demoStatus = this.services.getDemoService().getDemoStatus();
 		
@@ -257,6 +260,7 @@ public class AdminCtrl extends ParameterizableViewController {
 		model.put("result", result);
 		model.put("trackListResult", trackListResult);
 		model.put("trackUrlMap", trackUrlMap);
+		model.put("databaseInfo", databaseInfo);
 		model.put("demoStatus", demoStatus);
 		model.put("accordionId", accordionId);
 				

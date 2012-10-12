@@ -13,13 +13,14 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import de.msk.mylivetracker.domain.sender.SenderSymbolVo;
+import de.msk.mylivetracker.domain.sender.SenderSymbol;
 import de.msk.mylivetracker.domain.sender.SenderVo;
-import de.msk.mylivetracker.domain.user.GeocoderModeVo;
+import de.msk.mylivetracker.domain.user.GeocoderMode;
 import de.msk.mylivetracker.domain.user.UserObjectUtils;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.util.CustomGeocoderModeEditor;
+import de.msk.mylivetracker.web.frontend.util.CustomSenderRadiusUnitEditor;
 import de.msk.mylivetracker.web.frontend.util.CustomSenderSymbolEditor;
 import de.msk.mylivetracker.web.options.BoolOptionDsc;
 import de.msk.mylivetracker.web.options.IntOptionDsc;
@@ -49,6 +50,7 @@ public class OptionsCtrl extends SimpleFormController {
 	private List<BoolOptionDsc> commonsOptsOnOff;
 	private List<BoolOptionDsc> commonsOptsEnDisabled;
 	private List<StrOptionDsc> commonsOptsTimeZone;
+	private List<StrOptionDsc> senderOptsRadiusUnit;
 	private List<StrOptionDsc> senderOptsRunningMode;
 	private List<StrOptionDsc> stPgTrOptsFlyToMode;
 	private List<IntOptionDsc> stPgTrOptsKeepRecentPos;
@@ -104,6 +106,7 @@ public class OptionsCtrl extends SimpleFormController {
 			cmd.setCommonsOptsOnOff(commonsOptsOnOff);
 			cmd.setCommonsOptsEnDisabled(commonsOptsEnDisabled);
 			cmd.setCommonsOptsTimeZone(commonsOptsTimeZone);
+			cmd.setSenderOptsRadiusUnit(senderOptsRadiusUnit);
 			cmd.setSenderOptsRunningMode(senderOptsRunningMode);
 			cmd.setStPgTrOptsFlyToMode(stPgTrOptsFlyToMode);
 			cmd.setStPgTrOptsKeepRecentPos(stPgTrOptsKeepRecentPos);
@@ -125,6 +128,15 @@ public class OptionsCtrl extends SimpleFormController {
 		OptionsCmd cmd = (OptionsCmd)command;
 		updateCommandObject(request, cmd);
 		return super.referenceData(request, command, errors);
+	}
+
+	@Override
+	protected ModelAndView processFormSubmission(HttpServletRequest request,
+		HttpServletResponse response, Object command, BindException errors)
+		throws Exception {
+		OptionsVdtor validator = (OptionsVdtor)this.getValidator();
+		validator.validate(request, command, errors);
+		return super.processFormSubmission(request, response, command, errors);
 	}
 
 	/* (non-Javadoc)
@@ -169,9 +181,11 @@ public class OptionsCtrl extends SimpleFormController {
 	protected void initBinder(HttpServletRequest request,
 		ServletRequestDataBinder binder) throws Exception {
 		CustomSenderSymbolEditor editorSenderSymbol = new CustomSenderSymbolEditor();
-		binder.registerCustomEditor(SenderSymbolVo.class, "senderDetails.symbol", editorSenderSymbol);
+		binder.registerCustomEditor(SenderSymbol.class, "senderDetails.symbol", editorSenderSymbol);
+		CustomSenderRadiusUnitEditor editorSenderRadiusUnit = new CustomSenderRadiusUnitEditor();
+		binder.registerCustomEditor(SenderSymbol.class, "senderDetails.radiusUnit", editorSenderRadiusUnit);
 		CustomGeocoderModeEditor editorGeocoderMode = new CustomGeocoderModeEditor();
-		binder.registerCustomEditor(GeocoderModeVo.class, "userOptions.geocoderMode", editorGeocoderMode);
+		binder.registerCustomEditor(GeocoderMode.class, "userOptions.geocoderMode", editorGeocoderMode);
 		super.initBinder(request, binder);
 	}
 
@@ -305,6 +319,14 @@ public class OptionsCtrl extends SimpleFormController {
 	 */
 	public void setCommonsOptsTimeZone(List<StrOptionDsc> commonsOptsTimeZone) {
 		this.commonsOptsTimeZone = commonsOptsTimeZone;
+	}
+
+	public List<StrOptionDsc> getSenderOptsRadiusUnit() {
+		return senderOptsRadiusUnit;
+	}
+
+	public void setSenderOptsRadiusUnit(List<StrOptionDsc> senderOptsRadiusUnit) {
+		this.senderOptsRadiusUnit = senderOptsRadiusUnit;
 	}
 
 	/**

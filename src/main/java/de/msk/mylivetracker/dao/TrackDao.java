@@ -27,7 +27,7 @@ import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
-import de.msk.mylivetracker.service.track.ITrackService.DeleteTrackResult;
+import de.msk.mylivetracker.service.track.DeletedTrackInfoVo;
 import de.msk.mylivetracker.service.track.ITrackService.TrackListResult;
 import de.msk.mylivetracker.util.GpsUtils;
 
@@ -648,17 +648,17 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 	 */
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public DeleteTrackResult deleteOneRemovedTrack() {
-		int cnt = 0;
-		String trackId = (String)
-			this.getSqlMapClientTemplate().queryForObject(
-				SQL_GET_ONE_TRACK_ID_WITH_REMOVE_FLAG);
-		if (!StringUtils.isEmpty(trackId)) {
-			cnt = this.deleteTrackAux(trackId);
+	public DeletedTrackInfoVo deleteOneRemovedTrack() {
+		int deletedRecords = 0;
+		DeletedTrackInfoVo deletedTrackInfo = 
+			(DeletedTrackInfoVo)this.getSqlMapClientTemplate().
+				queryForObject(SQL_GET_ONE_TRACK_ID_WITH_REMOVE_FLAG);
+		if ((deletedTrackInfo != null) && deletedTrackInfo.isValid()) {
+			deletedRecords = this.deleteTrackAux(deletedTrackInfo.getTrackId());
+			deletedTrackInfo.setDeletedRecords(deletedRecords);
+			log.debug(deletedTrackInfo.toString());
 		}
-		DeleteTrackResult res = new DeleteTrackResult(trackId, cnt);
-		log.debug(res.toString());
-		return res;
+		return deletedTrackInfo;
 	}
 	
 	/* (non-Javadoc)

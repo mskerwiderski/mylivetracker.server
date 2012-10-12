@@ -39,6 +39,11 @@ public class PositionVo  implements Serializable {
 	public PositionVo() {
 	}
 		
+	public PositionVo(Double latitudeInDecimal, Double longitudeInDecimal) {
+		this.latitudeInDecimal = latitudeInDecimal;
+		this.longitudeInDecimal = longitudeInDecimal;
+	}
+	
 	/**
 	 * @param timeRecorded
 	 * @param timeReceived

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.msk.mylivetracker.domain.statistics.AbstractStatisticVo;
 import de.msk.mylivetracker.domain.statistics.ApplicationStartUpVo;
+import de.msk.mylivetracker.domain.statistics.DatabaseInfoVo;
 import de.msk.mylivetracker.domain.statistics.ServiceCallVo;
 import de.msk.mylivetracker.domain.statistics.SmsTransportVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorErrorVo;
@@ -33,7 +34,12 @@ import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
 public class StatisticsDao extends SqlMapClientDaoSupport implements IStatisticsDao {
 
 	private static final Log log = LogFactory.getLog(StatisticsDao.class);
+
+	/*************************************************************************/
 	
+	private static final String SQL_SELECT_DATABASE_INFO = 
+		"Statistics.selectDatabaseInfo";
+
 	/*************************************************************************/
 	
 	private static final String SQL_SELECT_LAST_LOG_ID_FROM_APPLICATION_START_UP = 
@@ -108,7 +114,18 @@ public class StatisticsDao extends SqlMapClientDaoSupport implements IStatistics
 			logError(logFct, e);
 		}
 	}
+	
+	/*************************************************************************/
 
+	@Transactional(propagation=Propagation.NEVER, readOnly=true)
+	public DatabaseInfoVo getDatabaseInfo(String tableSchema) {
+		return (DatabaseInfoVo)
+			this.getSqlMapClientTemplate().queryForObject(
+				SQL_SELECT_DATABASE_INFO, tableSchema);
+	}
+	
+	/*************************************************************************/
+	
 	@Override
 	public void logApplicationStartUp(Integer maxStatAppStartUp) {
 		insertAux(

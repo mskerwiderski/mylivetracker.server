@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 
 import de.msk.mylivetracker.domain.sender.SenderSwitchesVo;
-import de.msk.mylivetracker.domain.sender.SenderSymbolVo;
+import de.msk.mylivetracker.domain.sender.SenderSymbol;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.UserAutoLoginVo;
 import de.msk.mylivetracker.domain.user.UserEmergencyVo;
@@ -51,6 +51,7 @@ public class OptionsCmd {
 	private List<BoolOptionDsc> commonsOptsOnOff;
 	private List<BoolOptionDsc> commonsOptsEnDisabled;
 	private List<StrOptionDsc> commonsOptsTimeZone;
+	private List<StrOptionDsc> senderOptsRadiusUnit;
 	private List<StrOptionDsc> senderOptsRunningMode;
 	
 	private List<StrOptionDsc> stPgTrOptsFlyToMode;
@@ -170,7 +171,7 @@ public class OptionsCmd {
 	public void buildUpSymbolEntries(HttpServletRequest request, 
 		List<SenderVo> senders) {
 		this.symbolEntries = new ArrayList<SymbolEntry>();
-		for (SenderSymbolVo carrier : SenderSymbolVo.values()) {
+		for (SenderSymbol carrier : SenderSymbol.values()) {
 			this.symbolEntries.add(new SymbolEntry(request, carrier));
 		}
 	}
@@ -367,6 +368,14 @@ public class OptionsCmd {
 	 */
 	public void setCommonsOptsTimeZone(List<StrOptionDsc> commonsOptsTimeZone) {
 		this.commonsOptsTimeZone = commonsOptsTimeZone;
+	}
+
+	public List<StrOptionDsc> getSenderOptsRadiusUnit() {
+		return senderOptsRadiusUnit;
+	}
+
+	public void setSenderOptsRadiusUnit(List<StrOptionDsc> senderOptsRadiusUnit) {
+		this.senderOptsRadiusUnit = senderOptsRadiusUnit;
 	}
 
 	/**

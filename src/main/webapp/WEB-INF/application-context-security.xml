@@ -42,8 +42,7 @@
 		
 	<beans:bean id="authSuccessHandler" 
 		class="de.msk.mylivetracker.security.AuthSuccessHandler">
-		<beans:property name="applicationService" ref="applicationService" />	 		  	
-		<beans:property name="userService" ref="userService" />	 
+		<beans:property name="services" ref="services" />	 		  	
 	</beans:bean>
 		
 	<beans:bean id="authProcessingFilter" class=

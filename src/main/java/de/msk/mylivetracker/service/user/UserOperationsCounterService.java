@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import de.msk.mylivetracker.dao.IUserOperationsCounterDao;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.user.UserOperationsCounterVo;
+import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 
 /**
  * UserOperationsCounterService.
@@ -30,11 +31,35 @@ public class UserOperationsCounterService implements IUserOperationsCounterServi
 	}
 
 	@Override
+	public void incVersion(String userId) {
+		if (StringUtils.isEmpty(userId)) {
+			throw new IllegalArgumentException("userId must not be empty.");
+		}
+		this.userOperationsCounterDao.incVersion(userId);		
+	}
+
+	@Override
+	public void incCountLogin(UserWithRoleVo user) {
+		if (user == null) {
+			throw new IllegalArgumentException("user must not be null.");
+		}		
+		this.userOperationsCounterDao.incCountLogin(user);
+	}
+
+	@Override
 	public void incCountTracksCreated(String userId) {
 		if (StringUtils.isEmpty(userId)) {
 			throw new IllegalArgumentException("userId must not be empty.");
 		}
 		this.userOperationsCounterDao.incCountTracksCreated(userId);
+	}
+
+	@Override
+	public void incCountTracksDeleted(String userId) {
+		if (StringUtils.isEmpty(userId)) {
+			throw new IllegalArgumentException("userId must not be empty.");
+		}
+		this.userOperationsCounterDao.incCountTracksDeleted(userId);
 	}
 
 	@Override

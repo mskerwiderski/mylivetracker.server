@@ -71,15 +71,6 @@ public class UserService implements
 	}
 	
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IUserService#updateLoginInfo(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
-	 */
-	@Override
-	public void updateLoginInfo(UserWithoutRoleVo user) {
-		userWithoutRoleCache.remove(user.getUserId());
-		userDao.updateLoginInfo(user);
-	}
-
-	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.IUserService#updateUserMasterData(de.msk.mylivetracker.domain.UserWithoutRoleVo)
 	 */
 	@Override

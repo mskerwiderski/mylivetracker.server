@@ -21,7 +21,7 @@ public class SenderVo implements Serializable {
 
 	private static final long serialVersionUID = 7097707478860598895L;
 		
-	public static final SenderSymbolVo DEFAULT_SYMBOL = SenderSymbolVo.Phone;
+	public static final SenderSymbol DEFAULT_SYMBOL = SenderSymbol.Phone;
 	
 	private String senderId;
 	private String senderType;
@@ -30,12 +30,15 @@ public class SenderVo implements Serializable {
 	private String timeZone = DateTime.TIME_ZONE_UTC;
 	private String switches;
 	private SenderSwitchesVo senderSwitches;
+	private boolean withinRadiusCheckEnabled;
+	private Integer radius;
+	private SenderRadiusUnit radiusUnit; 
 	private String authUsername;
 	private String authPlainPassword;
 	private boolean authRequired;
 	private boolean active;
 	private String redirectTo;		
-	private SenderSymbolVo symbol = DEFAULT_SYMBOL;
+	private SenderSymbol symbol = DEFAULT_SYMBOL;
 	
 	/**
 	 * constructor.
@@ -124,6 +127,30 @@ public class SenderVo implements Serializable {
 		this.switches = switches;
 	}
 
+	public boolean isWithinRadiusCheckEnabled() {
+		return withinRadiusCheckEnabled;
+	}
+
+	public void setWithinRadiusCheckEnabled(boolean withinRadiusCheckEnabled) {
+		this.withinRadiusCheckEnabled = withinRadiusCheckEnabled;
+	}
+
+	public Integer getRadius() {
+		return radius;
+	}
+
+	public void setRadius(Integer radius) {
+		this.radius = radius;
+	}
+
+	public SenderRadiusUnit getRadiusUnit() {
+		return radiusUnit;
+	}
+
+	public void setRadiusUnit(SenderRadiusUnit radiusUnit) {
+		this.radiusUnit = radiusUnit;
+	}
+
 	/**
 	 * @return the authUsername
 	 */
@@ -187,11 +214,11 @@ public class SenderVo implements Serializable {
 		this.redirectTo = redirectTo;
 	}
 
-	public SenderSymbolVo getSymbol() {
+	public SenderSymbol getSymbol() {
 		return symbol;
 	}
 
-	public void setSymbol(SenderSymbolVo symbol) {
+	public void setSymbol(SenderSymbol symbol) {
 		this.symbol = symbol;
 	}
 
@@ -200,8 +227,10 @@ public class SenderVo implements Serializable {
 		return "SenderVo [senderId=" + senderId + ", senderType=" + senderType
 			+ ", userId=" + userId + ", name=" + name + ", timeZone="
 			+ timeZone + ", switches=" + switches + ", senderSwitches="
-			+ senderSwitches + ", authUsername=" + authUsername
-			+ ", authPlainPassword=" + authPlainPassword
+			+ senderSwitches + ", withinRadiusCheckEnabled="
+			+ withinRadiusCheckEnabled + ", radius=" + radius
+			+ ", radiusUnit=" + radiusUnit + ", authUsername="
+			+ authUsername + ", authPlainPassword=" + authPlainPassword
 			+ ", authRequired=" + authRequired + ", active=" + active
 			+ ", redirectTo=" + redirectTo + ", symbol=" + symbol + "]";
 	}

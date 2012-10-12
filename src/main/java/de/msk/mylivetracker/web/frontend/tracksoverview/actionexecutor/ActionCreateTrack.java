@@ -32,7 +32,8 @@ public class ActionCreateTrack extends AbstractActionWithoutRedirect {
 		TracksOverviewCmd cmd) throws ActionExecutionException {
 		SenderVo sender = services.getSenderService().getSender(
 			cmd.getSelectedSenderForCreateTrack());
-		services.getTrackService().createTrack(sender, 
+		services.getTrackService().createTrack(
+			user.getUserId(), sender, 
 			user.getOptions().getDefTrackName(), 
 			user.getOptions().getDefTrackReleaseStatus());
 	}

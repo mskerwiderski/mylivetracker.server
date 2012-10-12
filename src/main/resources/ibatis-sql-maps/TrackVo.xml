@@ -8,7 +8,13 @@
 	<typeAlias alias="dateTime" type="de.msk.mylivetracker.commons.util.datetime.DateTime"/>
 	<typeAlias alias="track" type="de.msk.mylivetracker.domain.track.TrackVo"/>
 	<typeAlias alias="trackFilter" type="de.msk.mylivetracker.domain.track.TrackFilterVo"/>
+	<typeAlias alias="deletedTrackInfo" type="de.msk.mylivetracker.service.track.DeletedTrackInfoVo"/>
 	
+	<resultMap id="deletedTrackInfoResult" class="deletedTrackInfo">
+		<result property="userId" column="USER_ID" />
+		<result property="trackId" column="TRACK_ID" />
+    </resultMap>
+    	
 	<resultMap id="minTrackResult" class="track">
 		<result property="trackId" column="TRACK_ID" />
 		<result property="remove" column="REMOVE" />
@@ -397,8 +403,9 @@
   		and t.REMOVE = false	
   	</select>
   	
-  	<select id="getOneTrackIdWithRemoveFlag" resultClass="string">
-  		select t.TRACK_ID from T_TRACK t where 
+  	<select id="getOneTrackIdWithRemoveFlag" resultMap="deletedTrackInfoResult">
+  		select t.USER_ID, t.TRACK_ID 
+  		from T_TRACK t where 
   		t.REMOVE = true	limit 1	
   	</select>
   	

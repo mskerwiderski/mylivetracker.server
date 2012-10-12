@@ -43,7 +43,8 @@ public class DeviceActionCreateTrack extends AbstractDeviceAction {
 		if (StringUtils.isEmpty(trackName)) {
 			trackName = user.getOptions().getDefTrackName();
 		}
-		track = trackService.createTrack(sender, trackName, 
+		track = trackService.createTrack(user.getUserId(), 
+			sender, trackName, 
 			user.getOptions().getDefTrackReleaseStatus());
 		if (dataReceived.hasValidData()) {
 			trackService.storePositionAndMessage( 

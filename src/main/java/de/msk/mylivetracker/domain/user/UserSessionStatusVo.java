@@ -7,7 +7,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
-import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
+import de.msk.mylivetracker.domain.TrackingFlyToMode;
 import de.msk.mylivetracker.domain.TracksOverviewMapFlyToModeVo;
 import de.msk.mylivetracker.domain.TracksViewVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
@@ -36,7 +36,7 @@ public class UserSessionStatusVo implements Serializable {
 	private Boolean toSelLiveTrackingOpt;
 	private Integer toSelLiveTrackingOptKeepRecentPos;
 	private Integer toSelLiveTrackingOptUpdateInterval;
-	private TrackingFlyToModeVo toSelLiveTrackingOptFlyToMode;
+	private TrackingFlyToMode toSelLiveTrackingOptFlyToMode;
 	private String toSelSenderFilter;
 	private Integer toSelDatePeriodFilter;
 	private String toSelSearchStrFilter;
@@ -82,7 +82,7 @@ public class UserSessionStatusVo implements Serializable {
 			liveTrackingOptsKeepRecentPos.get(0).getValue());
 		userSessionStatus.setToSelLiveTrackingOptUpdateInterval(
 			liveTrackingOptsUpdateInterval.get(0).getValue());
-		userSessionStatus.setToSelLiveTrackingOptFlyToMode(TrackingFlyToModeVo.FlyToView);
+		userSessionStatus.setToSelLiveTrackingOptFlyToMode(TrackingFlyToMode.FlyToView);
 		userSessionStatus.setToSelSenderFilter(SenderEntry.VALUE_ALL);
 		userSessionStatus.setToSelDatePeriodFilter(
 			tracksOverviewOptsDatePeriod.get(0).getValue());
@@ -174,11 +174,11 @@ public class UserSessionStatusVo implements Serializable {
 			Integer toSelLiveTrackingOptUpdateInterval) {
 		this.toSelLiveTrackingOptUpdateInterval = toSelLiveTrackingOptUpdateInterval;
 	}
-	public TrackingFlyToModeVo getToSelLiveTrackingOptFlyToMode() {
+	public TrackingFlyToMode getToSelLiveTrackingOptFlyToMode() {
 		return toSelLiveTrackingOptFlyToMode;
 	}
 	public void setToSelLiveTrackingOptFlyToMode(
-			TrackingFlyToModeVo toSelLiveTrackingOptFlyToMode) {
+			TrackingFlyToMode toSelLiveTrackingOptFlyToMode) {
 		this.toSelLiveTrackingOptFlyToMode = toSelLiveTrackingOptFlyToMode;
 	}
 	public String getToSelSenderFilter() {

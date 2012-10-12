@@ -13,7 +13,10 @@
 		<result property="userId" column="USER_ID" />
 		<result property="versionId" column="VERSION_ID" />
 		<result property="lastUpdated" column="LAST_UPDATED" />
+		<result property="countLoginUser" column="COUNT_LOGIN_USER" />
+		<result property="countLoginGuest" column="COUNT_LOGIN_GUEST" />
 		<result property="countTracksCreated" column="COUNT_TRACKS_CREATED" />
+		<result property="countTracksDeleted" column="COUNT_TRACKS_DELETED" />
 		<result property="countPositionsReceived" column="COUNT_POSITIONS_RECEIVED" />
 		<result property="countMessagesReceived" column="COUNT_MESSAGES_RECEIVED" />
 		<result property="countMobNwCellsReceived" column="COUNT_MOB_NW_CELLS_RECEIVED" />
@@ -28,12 +31,15 @@
   		where t.USER_ID = #?# 	
   	</select>
   	
-	<insert id="updateUserOperationsCounter" parameterClass="userOperationsCounter">
+  	<insert id="insertUserOperationsCounter" parameterClass="userOperationsCounter">
   		insert into T_USER_OPERATIONS_COUNTER (
   			USER_ID,
   			VERSION_ID,
 			LAST_UPDATED,
+			COUNT_LOGIN_USER,
+			COUNT_LOGIN_GUEST,
 			COUNT_TRACKS_CREATED,
+			COUNT_TRACKS_DELETED,
 			COUNT_POSITIONS_RECEIVED,
 			COUNT_MESSAGES_RECEIVED,
 			COUNT_MOB_NW_CELLS_RECEIVED,
@@ -45,7 +51,10 @@
   			#userId#,
   			#versionId#,
 			#lastUpdated#,
+			#countLoginUser#,
+			#countLoginGuest#,
 			#countTracksCreated#,
+			#countTracksDeleted#,
 			#countPositionsReceived#,
 			#countMessagesReceived#,
 			#countMobNwCellsReceived#,
@@ -53,18 +62,49 @@
 			#countCardiacFunctionsReceived#,
 			#countEmergencySignalsReceived#,
 			#countClientInfosReceived#       
-  		) on duplicate key update
-  			VERSION_ID = #versionId#,
-  			LAST_UPDATED = #lastUpdated#,
-  			COUNT_TRACKS_CREATED = #countTracksCreated#,
-			COUNT_POSITIONS_RECEIVED = #countPositionsReceived#,
-			COUNT_MESSAGES_RECEIVED = #countMessagesReceived#,
-			COUNT_MOB_NW_CELLS_RECEIVED = #countMobNwCellsReceived#,
-			COUNT_SENDER_STATES_RECEIVED = #countSenderStatesReceived#,
-			COUNT_CARDIAC_FUNCTIONS_RECEIVED = #countCardiacFunctionsReceived#,
-			COUNT_EMERGENCY_SIGNALS_RECEIVED = #countEmergencySignalsReceived#,
-			COUNT_CLIENT_INFOS_RECEIVED = #countClientInfosReceived#
-  	</insert>  	
+  		)
+  	</insert>
+  	
+	<update id="updateUserOperationsCounter" parameterClass="java.util.Map">
+  		update T_USER_OPERATIONS_COUNTER t 
+  		set
+ 			VERSION_ID = VERSION_ID + 1,
+  			LAST_UPDATED = #lastUpdated#
+  			<isEqual prepend="," property="countLoginUser" compareValue="true">
+  				COUNT_LOGIN_USER = COUNT_LOGIN_USER + 1
+  			</isEqual>
+  			<isEqual prepend="," property="countLoginGuest" compareValue="true">
+  				COUNT_LOGIN_GUEST = COUNT_LOGIN_GUEST + 1
+  			</isEqual>
+  			<isEqual prepend="," property="countTracksCreated" compareValue="true">
+  				COUNT_TRACKS_CREATED = COUNT_TRACKS_CREATED + 1
+  			</isEqual>
+  			<isEqual prepend="," property="countTracksDeleted" compareValue="true">
+  				COUNT_TRACKS_DELETED = COUNT_TRACKS_DELETED + 1
+  			</isEqual>
+  			<isEqual prepend="," property="countPositionsReceived" compareValue="true">
+				COUNT_POSITIONS_RECEIVED = COUNT_POSITIONS_RECEIVED + 1
+			</isEqual>
+			<isEqual prepend="," property="countMessagesReceived" compareValue="true">
+				COUNT_MESSAGES_RECEIVED = COUNT_MESSAGES_RECEIVED + 1
+			</isEqual>
+			<isEqual prepend="," property="countMobNwCellsReceived" compareValue="true">
+				COUNT_MOB_NW_CELLS_RECEIVED = COUNT_MOB_NW_CELLS_RECEIVED + 1
+			</isEqual>
+			<isEqual prepend="," property="countSenderStatesReceived" compareValue="true">
+				COUNT_SENDER_STATES_RECEIVED = COUNT_SENDER_STATES_RECEIVED + 1
+			</isEqual>
+			<isEqual prepend="," property="countCardiacFunctionsReceived" compareValue="true">
+				COUNT_CARDIAC_FUNCTIONS_RECEIVED = COUNT_CARDIAC_FUNCTIONS_RECEIVED + 1
+			</isEqual>
+			<isEqual prepend="," property="countEmergencySignalsReceived" compareValue="true">
+				COUNT_EMERGENCY_SIGNALS_RECEIVED = COUNT_EMERGENCY_SIGNALS_RECEIVED + 1
+			</isEqual>
+			<isEqual prepend="," property="countClientInfosReceived" compareValue="true">
+				COUNT_CLIENT_INFOS_RECEIVED = COUNT_CLIENT_INFOS_RECEIVED + 1
+			</isEqual>
+		where t.USER_ID = #userId#	
+  	</update>  	
   	
   	<delete id="deleteUserOperationsCounter" parameterClass="string">
   		delete FROM T_USER_OPERATIONS_COUNTER

@@ -18,7 +18,6 @@ import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 public interface IUserService {
 	public boolean insertUser(UserWithRoleVo user);
 	public UserWithoutRoleVo getUserWithoutRole(String userId);
-	public void updateLoginInfo(UserWithoutRoleVo user);
 	public void updateUserOptions(UserWithoutRoleVo user);
 	public void updateUserOptionsMapsUsed(UserWithoutRoleVo user);
 	public void updateUserMasterData(UserWithoutRoleVo user);

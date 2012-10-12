@@ -14,6 +14,9 @@
         <result property="name" column="NAME" />
         <result property="timeZone" column="TIME_ZONE" />        
         <result property="switches" column="SWITCHES" />
+        <result property="withinRadiusCheckEnabled" column="WITHIN_RADIUS_CHECK_ENABLED" />
+        <result property="radius" column="RADIUS" />
+        <result property="radiusUnit" column="RADIUS_UNIT" />
         <result property="authRequired"  column="AUTH_REQUIRED" />        
         <result property="authUsername" column="AUTH_USERNAME" />     
         <result property="authPlainPassword"  column="AUTH_PLAIN_PASSWORD" /> 
@@ -38,6 +41,9 @@
     		NAME,
     		TIME_ZONE,  
     		SWITCHES,
+    		WITHIN_RADIUS_CHECK_ENABLED,
+        	RADIUS,
+        	RADIUS_UNIT,
     		AUTH_REQUIRED,
     		AUTH_USERNAME,
     		AUTH_PLAIN_PASSWORD,
@@ -51,6 +57,9 @@
     		#name#,
     		#timeZone#,  
     		#switches#,
+    		#withinRadiusCheckEnabled#,
+        	#radius#,
+        	#radiusUnit#,
     		#authRequired#,
     		#authUsername#,
     		#authPlainPassword#,

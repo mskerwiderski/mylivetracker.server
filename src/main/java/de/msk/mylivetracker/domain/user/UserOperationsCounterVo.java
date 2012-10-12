@@ -5,7 +5,6 @@ import java.io.Serializable;
 import org.apache.commons.lang.StringUtils;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
-import de.msk.mylivetracker.domain.DataReceivedVo;
 
 /**
  * UserOperationsCounterVo.
@@ -25,7 +24,10 @@ public class UserOperationsCounterVo implements Serializable {
 	private String userId;
 	private Long versionId;
 	private DateTime lastUpdated;
+	private Integer countLoginUser;
+	private Integer countLoginGuest;
 	private Integer countTracksCreated;
+	private Integer countTracksDeleted;
 	private Integer countPositionsReceived;
 	private Integer countMessagesReceived;
 	private Integer countMobNwCellsReceived;
@@ -42,7 +44,10 @@ public class UserOperationsCounterVo implements Serializable {
 		userOperationsCounter.userId = userId;
 		userOperationsCounter.versionId = 0L;
 		userOperationsCounter.lastUpdated = new DateTime();
+		userOperationsCounter.countLoginUser = 0;
+		userOperationsCounter.countLoginGuest = 0;
 		userOperationsCounter.countTracksCreated = 0;
+		userOperationsCounter.countTracksDeleted = 0;
 		userOperationsCounter.countPositionsReceived = 0;
 		userOperationsCounter.countMessagesReceived = 0;
 		userOperationsCounter.countMobNwCellsReceived = 0;
@@ -53,37 +58,10 @@ public class UserOperationsCounterVo implements Serializable {
 		return userOperationsCounter;
 	}
 	
-	public void incCountTracksCreated() {
-		this.lastUpdated = new DateTime();
-		this.countTracksCreated++;
-		this.versionId++;
-	}
-	
-	public void update(DataReceivedVo dataReceived) {
-		if ((dataReceived == null) || !dataReceived.isValid()) return;
-		this.lastUpdated = new DateTime();
-		if (dataReceived.hasValidPosition()) {
-			this.countPositionsReceived++;
-		}
-		if (dataReceived.hasValidMessage()) {
-			this.countMessagesReceived++;
-		}
-		if (dataReceived.hasValidMobNwCell()) {
-			this.countMobNwCellsReceived++;
-		}
-		if (dataReceived.hasValidSenderState()) {
-			this.countSenderStatesReceived++;
-		}
-		if (dataReceived.hasValidCardiacFunction()) {
-			this.countCardiacFunctionsReceived++;
-		}
-		if (dataReceived.hasValidEmergencySignal()) {
-			this.countEmergencySignalsReceived++;
-		}
-		if (dataReceived.hasValidClientInfo()) {
-			this.countClientInfosReceived++;
-		}
-		this.versionId++;
+	public boolean isMoreRecentThan(Long versionId) {
+		if (versionId == null) return true;
+		return this.versionId.longValue() != 
+			versionId.longValue();
 	}
 	
 	public String getUserId() {
@@ -104,11 +82,29 @@ public class UserOperationsCounterVo implements Serializable {
 	public void setVersionId(Long versionId) {
 		this.versionId = versionId;
 	}
+	public Integer getCountLoginUser() {
+		return countLoginUser;
+	}
+	public void setCountLoginUser(Integer countLoginUser) {
+		this.countLoginUser = countLoginUser;
+	}
+	public Integer getCountLoginGuest() {
+		return countLoginGuest;
+	}
+	public void setCountLoginGuest(Integer countLoginGuest) {
+		this.countLoginGuest = countLoginGuest;
+	}
 	public Integer getCountTracksCreated() {
 		return countTracksCreated;
 	}
 	public void setCountTracksCreated(Integer countTracksCreated) {
 		this.countTracksCreated = countTracksCreated;
+	}
+	public Integer getCountTracksDeleted() {
+		return countTracksDeleted;
+	}
+	public void setCountTracksDeleted(Integer countTracksDeleted) {
+		this.countTracksDeleted = countTracksDeleted;
 	}
 	public Integer getCountPositionsReceived() {
 		return countPositionsReceived;
@@ -154,15 +150,19 @@ public class UserOperationsCounterVo implements Serializable {
 	public void setCountClientInfosReceived(Integer countClientInfosReceived) {
 		this.countClientInfosReceived = countClientInfosReceived;
 	}
+
 	@Override
 	public String toString() {
 		return "UserOperationsCounterVo [userId=" + userId + ", versionId="
 			+ versionId + ", lastUpdated=" + lastUpdated
-			+ ", countTracksCreated=" + countTracksCreated
-			+ ", countPositionsReceived=" + countPositionsReceived
-			+ ", countMessagesReceived=" + countMessagesReceived
-			+ ", countMobNwCellsReceived=" + countMobNwCellsReceived
-			+ ", countSenderStatesReceived=" + countSenderStatesReceived
+			+ ", countLoginUser=" + countLoginUser + ", countLoginGuest="
+			+ countLoginGuest + ", countTracksCreated="
+			+ countTracksCreated + ", countTracksDeleted="
+			+ countTracksDeleted + ", countPositionsReceived="
+			+ countPositionsReceived + ", countMessagesReceived="
+			+ countMessagesReceived + ", countMobNwCellsReceived="
+			+ countMobNwCellsReceived + ", countSenderStatesReceived="
+			+ countSenderStatesReceived
 			+ ", countCardiacFunctionsReceived="
 			+ countCardiacFunctionsReceived
 			+ ", countEmergencySignalsReceived="

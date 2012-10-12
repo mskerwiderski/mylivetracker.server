@@ -171,49 +171,49 @@
 					<property name="id" value="mlt" />
 					<property name="name" value="MyLiveTracker for Android" />
 					<property name="version" value="1.00" />						
-					<property name="senderService" ref="senderService" />          				
+					<property name="services" ref="services" />          				
 				</bean>	
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.aspicore.gsmtracker.TcpInterpreter">
 					<property name="id" value="agt" />
 					<property name="name" value="Aspicore GsmTracker for Symbian" />
 					<property name="version" value="1.00" />
-					<property name="senderService" ref="senderService" />
+					<property name="services" ref="services" />
 				</bean>
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.meitrack.gtvt.TcpInterpreter">
 					<property name="id" value="mei" />
 					<property name="name" value="Meitrack GT/VT" />
 					<property name="version" value="1.00" />
-					<property name="senderService" ref="senderService" />
+					<property name="services" ref="services" />
 				</bean>
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.TcpInterpreter">
 					<property name="id" value="xtk" />
 					<property name="name" value="Xexun Tk102" />
 					<property name="version" value="1.00" />	
-					<property name="senderService" ref="senderService" />				
+					<property name="services" ref="services" />				
 				</bean>				
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.coban.gps103a.TcpInterpreter">
 					<property name="id" value="cob" />
 					<property name="name" value="Coban GPS 103a" />
 					<property name="version" value="1.00" />	
-					<property name="senderService" ref="senderService" />				
+					<property name="services" ref="services" />				
 				</bean>
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.incutex.tk5000.TcpInterpreter">
 					<property name="id" value="tk5" />
 					<property name="name" value="Incutex Tk5000" />
 					<property name="version" value="1.10" />
-					<property name="senderService" ref="senderService" />
+					<property name="services" ref="services" />
 				</bean>
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.brandsemotion.begps.TcpInterpreter">
 					<property name="id" value="beg" />
 					<property name="name" value="Brandsemotion beGPS for BlackBerry" />
 					<property name="version" value="1.00" />
-					<property name="senderService" ref="senderService" />
+					<property name="services" ref="services" />
 				</bean>			
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.ecotec.yourtracks.TcpInterpreter">
 					<property name="id" value="eyt" />
 					<property name="name" value="Ecotec YourTracks for iOS" />
 					<property name="version" value="1.00" />
-					<property name="senderService" ref="senderService" />
+					<property name="services" ref="services" />
 				</bean>					
 			</util:list>
 		</constructor-arg>  		
@@ -251,7 +251,7 @@
 					<property name="id" value="agt" />
 					<property name="name" value="Aspicore GsmTracker for Symbian" />
 					<property name="version" value="1.00" />
-					<property name="senderService" ref="senderService" />
+					<property name="services" ref="services" />
 				</bean>									
 			</util:list>
 		</constructor-arg>  		
@@ -266,43 +266,43 @@
 					<property name="id" value="spl" />
 					<property name="name" value="Simple" />
 					<property name="version" value="1.00" />		
-					<property name="senderService" ref="senderService" />								
+					<property name="services" ref="services" />								
 				</bean>	
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.msk.mylivetracker.HttpInterpreter">
 					<property name="id" value="mlt" />
 					<property name="name" value="MyLiveTracker for Android" />
 					<property name="version" value="1.00" />		
-					<property name="senderService" ref="senderService" />								
+					<property name="services" ref="services" />								
 				</bean>			
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.aspicore.gsmtracker.HttpInterpreter">
 					<property name="id" value="agt" />
 					<property name="name" value="Aspicore GsmTracker for Symbian" />
 					<property name="version" value="1.00" />	
-					<property name="senderService" ref="senderService" />									
+					<property name="services" ref="services" />									
 				</bean>
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.jounierola.sendlocation.HttpInterpreter">
 					<property name="id" value="isl" />
 					<property name="name" value="Jouni Erola SendLocation for iOS" />
 					<property name="version" value="1.00" />	
-					<property name="senderService" ref="senderService" />				
+					<property name="services" ref="services" />				
 				</bean>
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.afischer.aftrack.HttpInterpreter">
 					<property name="id" value="aft" />
 					<property name="name" value="Axel Fischer AFTrack for Symbian" />
 					<property name="version" value="1.00" />
-					<property name="senderService" ref="senderService" />					
+					<property name="services" ref="services" />					
 				</bean>
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.brandsemotion.begps.HttpInterpreter">
 					<property name="id" value="beg" />
 					<property name="name" value="Brandsemotion beGPS for BlackBerry" />
 					<property name="version" value="1.00" />
-					<property name="senderService" ref="senderService" />
+					<property name="services" ref="services" />
 				</bean>	
 				<bean class="de.msk.mylivetracker.web.uploader.interpreter.wiebej.gps2opengts.HttpInterpreter">
 					<property name="id" value="gts" />
 					<property name="name" value="Wiebej GPS2OpenGTS for Android" />
 					<property name="version" value="1.00" />
-					<property name="senderService" ref="senderService" />
+					<property name="services" ref="services" />
 				</bean>				
 			</util:list>
 		</constructor-arg>  		

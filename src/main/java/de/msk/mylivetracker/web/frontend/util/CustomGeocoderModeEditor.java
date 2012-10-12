@@ -2,7 +2,7 @@ package de.msk.mylivetracker.web.frontend.util;
 
 import java.beans.PropertyEditorSupport;
 
-import de.msk.mylivetracker.domain.user.GeocoderModeVo;
+import de.msk.mylivetracker.domain.user.GeocoderMode;
 
 /**
  * CustomGeocoderModeEditor.
@@ -22,11 +22,11 @@ public class CustomGeocoderModeEditor extends PropertyEditorSupport {
 	
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		setValue(GeocoderModeVo.valueOf(text));				
+		setValue(GeocoderMode.valueOf(text));				
 	}
 
 	@Override
 	public String getAsText() {
-		return ((GeocoderModeVo)getValue()).name();
+		return ((GeocoderMode)getValue()).name();
 	}
 }

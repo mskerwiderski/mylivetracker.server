@@ -2,7 +2,7 @@ package de.msk.mylivetracker.web.frontend.options;
 
 import javax.servlet.http.HttpServletRequest;
 
-import de.msk.mylivetracker.domain.sender.SenderSymbolVo;
+import de.msk.mylivetracker.domain.sender.SenderSymbol;
 import de.msk.mylivetracker.web.util.WebUtils;
 
 /**
@@ -18,10 +18,10 @@ import de.msk.mylivetracker.web.util.WebUtils;
  */
 public class SymbolEntry {
 
-	private SenderSymbolVo symbol;
+	private SenderSymbol symbol;
 	private String label;
 	
-	public SymbolEntry(HttpServletRequest request, SenderSymbolVo symbol) {
+	public SymbolEntry(HttpServletRequest request, SenderSymbol symbol) {
 		this.symbol = symbol;
 		this.label =  WebUtils.getMessage(
 			request, symbol.getMsgCode());
@@ -30,7 +30,7 @@ public class SymbolEntry {
 	/**
 	 * @return the symbol
 	 */
-	public SenderSymbolVo getSymbol() {
+	public SenderSymbol getSymbol() {
 		return symbol;
 	}
 	/**

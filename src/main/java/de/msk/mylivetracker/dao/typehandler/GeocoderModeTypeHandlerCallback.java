@@ -8,7 +8,7 @@ import com.ibatis.sqlmap.client.extensions.ParameterSetter;
 import com.ibatis.sqlmap.client.extensions.ResultGetter;
 import com.ibatis.sqlmap.client.extensions.TypeHandlerCallback;
 
-import de.msk.mylivetracker.domain.user.GeocoderModeVo;
+import de.msk.mylivetracker.domain.user.GeocoderMode;
 
 /**
  * GeocoderModeTypeHandlerCallback.
@@ -26,9 +26,9 @@ public class GeocoderModeTypeHandlerCallback implements TypeHandlerCallback {
 	@Override
 	public void setParameter(ParameterSetter setter, Object parameter) throws SQLException {
 		if (parameter == null) {
-			setter.setString(GeocoderModeVo.disabled.name());
+			setter.setString(GeocoderMode.disabled.name());
 		} else {
-			setter.setString(((GeocoderModeVo)parameter).name());
+			setter.setString(((GeocoderMode)parameter).name());
 		}
 	}
 
@@ -36,7 +36,7 @@ public class GeocoderModeTypeHandlerCallback implements TypeHandlerCallback {
 	public Object getResult(ResultGetter getter) throws SQLException {
 		String str = getter.getString();
 		if (StringUtils.isEmpty(str)) return null;
-		return GeocoderModeVo.valueOf(str);
+		return GeocoderMode.valueOf(str);
 	}
 
 	@Override

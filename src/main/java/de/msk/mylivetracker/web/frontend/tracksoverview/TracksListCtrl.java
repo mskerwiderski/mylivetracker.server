@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.msk.mylivetracker.web.frontend.tracksoverview;
 
 import java.util.HashMap;
@@ -21,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.track.TrackFilterVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
+import de.msk.mylivetracker.domain.user.UserOperationsCounterVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.service.track.ITrackService.TrackListResult;
@@ -79,19 +77,17 @@ public class TracksListCtrl extends AbstractController {
 	}
 	
 	private TrackFilterVo createTrackFilter(UserWithRoleVo user, 
-		Long versionId, String senderId, DateTime dateFrom, 
+		String senderId, DateTime dateFrom, 
 		String searchStr, boolean onlyActiveTracks, int maxCountOfRecords) {
 		TrackFilterVo trackFilter = new TrackFilterVo();
 		
 		log.debug("userId=" + user.getUserId());
-		log.debug("versionId=" + versionId);
 		log.debug("senderId=" + senderId);
 		log.debug("dateFrom=" + ((dateFrom != null) ? dateFrom.toString() : "null"));
 		log.debug("searchStr=" + searchStr);
 		log.debug("onlyActiveTracks=" + onlyActiveTracks);
 		log.debug("maxCountOfRecords=" + maxCountOfRecords);
 		
-		trackFilter.setVersionId(versionId);
 		trackFilter.setMaxCountOfRecords(maxCountOfRecords);
 		trackFilter.setUserId(user.getUserId());
 		trackFilter.setUserRole(user.getRole());
@@ -124,21 +120,20 @@ public class TracksListCtrl extends AbstractController {
 	 */
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+		HttpServletResponse response) throws Exception {
+		log.debug("characterEncoding=" + response.getCharacterEncoding());
 		Map<String, Object> model = new HashMap<String, Object>();
 		
 		UserWithRoleVo user = WebUtils.getCurrentUserWithRole();
-		
+
+		// read request parameters.
 		Long versionId = PARAM_VERSION_ID.getValueFromReq(request, null);
 		String senderId = PARAM_SENDER_ID.getValueFromReq(request, null);
 		String searchStr = PARAM_SEARCH_STR.getValueFromReq(request, null);
-		
 		Integer datePeriod = PARAM_DATE_PERIOD.getValueFromReq(request, null);
-		
 		if (datePeriod == null) {
 			throw new IllegalArgumentException("datePeriod must not be null.");
 		}
-		
 		DateTime dateFrom = null;
 		if (datePeriod != DATE_PERIOD_OPT_ALL_TRACKS) {
 			long daysAgo = (new DateTime().getAsMSecs()) -
@@ -146,20 +141,27 @@ public class TracksListCtrl extends AbstractController {
 			log.debug("daysAgo=" + daysAgo);
 			dateFrom = new DateTime(daysAgo);	
 		}
-
 		boolean onlyActiveTracks = PARAM_ONLY_ACTIVE.getValueFromReq(request, Boolean.FALSE);
 
-		TrackListResult trackListResult = 
-			this.services.getTrackService().getTracksAsRecent(
-				createTrackFilter(user, 
-					versionId, senderId, 
-					dateFrom, searchStr, 
-					onlyActiveTracks, MAX_SIZE_RESULT_SET));
+		// read tracks only if there is an update.
+		TrackListResult trackListResult = null;
+		UserOperationsCounterVo userOperationsCounter = 
+			this.services.getUserOperationsCounterService().
+			getUserOperationsCounter(user.getUserId());
+		
+		if (userOperationsCounter.isMoreRecentThan(versionId)) {
+			trackListResult = 
+				this.services.getTrackService().getTracksAsRecent(
+					createTrackFilter(user, 
+						senderId, 
+						dateFrom, searchStr, 
+						onlyActiveTracks, MAX_SIZE_RESULT_SET));
+		}
 		
 		model.put("jsonCommons",	
 			new JsonCommonsDsc(
 				new DateTime(),	
-				trackListResult.getVersionId(),
+				userOperationsCounter.getVersionId(),
 				trackListResult.isMaxCountOfRecordsExceeded(),
 				trackListResult.getCountFoundTracks(),
 				MAX_SIZE_RESULT_SET));

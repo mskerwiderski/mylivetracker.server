@@ -6,18 +6,21 @@
     <settings useStatementNamespaces="true" />
     <typeHandler
 		javaType="de.msk.mylivetracker.commons.util.datetime.DateTime"
-		callback="de.msk.mylivetracker.dao.typehandler.DateTimeTypeHandlerCallback" />
+		callback="de.msk.mylivetracker.dao.typehandler.DateTimeAsInternalDateTimeFormatTypeHandlerCallback" />
 	<typeHandler
-		javaType="de.msk.mylivetracker.domain.sender.SenderSymbolVo"
-		callback="de.msk.mylivetracker.dao.typehandler.SenderSymbolTypeHandlerCallback" />	
+		javaType="de.msk.mylivetracker.domain.sender.SenderSymbol"
+		callback="de.msk.mylivetracker.dao.typehandler.SenderSymbolTypeHandlerCallback" />
+	<typeHandler
+		javaType="de.msk.mylivetracker.domain.sender.SenderRadiusUnit"
+		callback="de.msk.mylivetracker.dao.typehandler.SenderRadiusUnitTypeHandlerCallback" />		
 	<typeHandler
 		javaType="de.msk.mylivetracker.domain.user.MapsUsedVo"
 		callback="de.msk.mylivetracker.dao.typehandler.MapsUsedTypeHandlerCallback" />	
 	<typeHandler
-		javaType="de.msk.mylivetracker.domain.user.GeocoderModeVo"
+		javaType="de.msk.mylivetracker.domain.user.GeocoderMode"
 		callback="de.msk.mylivetracker.dao.typehandler.GeocoderModeTypeHandlerCallback" />	
 	<typeHandler
-		javaType="de.msk.mylivetracker.domain.TrackingFlyToModeVo"
+		javaType="de.msk.mylivetracker.domain.TrackingFlyToMode"
 		callback="de.msk.mylivetracker.dao.typehandler.TrackingFlyToModeTypeHandlerCallback" />	
     <sqlMap resource="ibatis-sql-maps/Application.xml"/>
     <sqlMap resource="ibatis-sql-maps/StatusParams.xml"/>

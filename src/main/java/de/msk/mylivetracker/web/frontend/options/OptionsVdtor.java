@@ -3,16 +3,22 @@ package de.msk.mylivetracker.web.frontend.options;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import de.msk.mylivetracker.domain.sender.SenderRadiusUnit;
+import de.msk.mylivetracker.domain.sender.SenderRadiusUnit.LocalizedRange;
 import de.msk.mylivetracker.domain.sender.SenderSwitchesVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
+import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.web.frontend.options.actionexecutor.ActionExecutor;
+import de.msk.mylivetracker.web.util.WebUtils;
 
 /**
  * OptionsVdtor.
@@ -82,11 +88,13 @@ public class OptionsVdtor implements Validator {
 		return matcher.matches();  
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.springframework.validation.Validator#validate(java.lang.Object, org.springframework.validation.Errors)
-	 */
 	@Override
 	public void validate(Object target, Errors errors) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void validate(HttpServletRequest request, Object target, Errors errors) {
 		OptionsCmd cmd = (OptionsCmd)target;
 		
 		if (cmd.getActionExecutor().equals(ActionExecutor.SaveAllMasterData)) {
@@ -181,6 +189,24 @@ public class OptionsVdtor implements Validator {
 			if (!SenderSwitchesVo.isValid(cmd.getSenderDetails().getSwitches())) {
 				errors.rejectValue("senderDetails.switches", 
 					"sendermaintenance.error.sender.details.switches.invalid");
+			}
+			if (cmd.getSenderDetails().isWithinRadiusCheckEnabled()) {
+				if (!SenderRadiusUnit.isInRange(
+					cmd.getSenderDetails().getRadius(), 
+					cmd.getSenderDetails().getRadiusUnit())) {
+					UserWithRoleVo user = WebUtils.getCurrentUserWithRole();
+					LocalizedRange range = SenderRadiusUnit.getLocalizedRange(user);
+					String[] values = new String[] {
+						range.getMin(),
+						WebUtils.getMessage(request, "sender.opts.radiusunit." + range.getUnitMin().name()),
+						range.getMax(),
+						WebUtils.getMessage(request, "sender.opts.radiusunit." + range.getUnitMax().name())
+					};
+					errors.rejectValue("senderDetails.radius", 
+						"sendermaintenance.error.sender.details.radius.size.invalid",
+						values,
+						"INVALID RADIUS");
+				}
 			}
 		} else if (cmd.getActionExecutor().equals(ActionExecutor.SaveAllStatusPage)) {
 			Integer width = cmd.getUserStatusPage().getWindowWidth();

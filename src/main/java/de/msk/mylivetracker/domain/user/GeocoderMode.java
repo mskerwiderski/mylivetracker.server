@@ -1,7 +1,7 @@
 package de.msk.mylivetracker.domain.user;
 
 /**
- * GeocoderModeVo.
+ * GeocoderMode.
  * 
  * @author michael skerwiderski, (c)2012
  * 
@@ -11,6 +11,6 @@ package de.msk.mylivetracker.domain.user;
  * 000 2012-09-23 initial 
  * 
  */
-public enum GeocoderModeVo {
+public enum GeocoderMode {
 	disabled, emergencySignals, emergencySignalsAndMessages 
 }

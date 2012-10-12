@@ -111,6 +111,86 @@
 	</c:forEach>	
 </table>
 </div>
+<h3><a href="#">Database Information</a></h3>
+<div>
+<table>
+	<tr>
+		<th style="text-align: left">
+			&nbsp;<c:out value="${databaseInfo.tableSchema}" />&nbsp;
+		</th>
+		<th style="text-align:left;white-space: nowrap;">	
+			&nbsp;&nbsp;		
+		</th>
+		<th style="width:100%;">
+			&nbsp;&nbsp;							
+		</th>
+	</tr>
+	<tr>
+		<td style="width:200px;text-align:left;white-space: nowrap;">
+			&nbsp;Data Size&nbsp;						
+		</td>
+		<td style="width:200px;text-align:right;white-space: nowrap;">
+			&nbsp;<fmt:formatNumber type="number" 
+				minFractionDigits="4"
+				maxFractionDigits="4" 
+				minIntegerDigits="1"
+				maxIntegerDigits="10" 
+				groupingUsed="true"  value="${databaseInfo.sizeDataInMb}" />&nbsp;MB&nbsp;
+		</td>
+		<td style="width:100%;">
+			&nbsp;&nbsp;							
+		</td>
+	</tr>
+	<tr>
+		<td style="width:200px;text-align:left;white-space: nowrap;">
+			&nbsp;Index Size&nbsp;						
+		</td>
+		<td style="width:200px;text-align:right;white-space: nowrap;">
+			&nbsp;<fmt:formatNumber type="number" 
+				minFractionDigits="4"
+				maxFractionDigits="4" 
+				minIntegerDigits="1"
+				maxIntegerDigits="10" 
+				groupingUsed="true"  value="${databaseInfo.sizeIndexInMb}" />&nbsp;MB&nbsp;
+		</td>
+		<td style="width:100%;">
+			&nbsp;&nbsp;							
+		</td>
+	</tr>	
+	<tr>
+		<td style="width:200px;text-align:left;white-space: nowrap;">
+			&nbsp;Overall Size&nbsp;						
+		</td>
+		<td style="width:200px;text-align:right;white-space: nowrap;">
+			&nbsp;<fmt:formatNumber type="number" 
+				minFractionDigits="4"
+				maxFractionDigits="4" 
+				minIntegerDigits="1"
+				maxIntegerDigits="10" 
+				groupingUsed="true"  value="${databaseInfo.sizeOverallInMb}" />&nbsp;MB&nbsp;
+		</td>
+		<td style="width:100%;">
+			&nbsp;&nbsp;							
+		</td>
+	</tr>
+	<tr>
+		<td style="width:200px;text-align:left;white-space: nowrap;">
+			&nbsp;Free Size&nbsp;						
+		</td>
+		<td style="width:200px;text-align:right;white-space: nowrap;">
+			&nbsp;<fmt:formatNumber type="number" 
+				minFractionDigits="4"
+				maxFractionDigits="4" 
+				minIntegerDigits="1"
+				maxIntegerDigits="10" 
+				groupingUsed="true"  value="${databaseInfo.sizeFreeInMb}" />&nbsp;MB&nbsp;
+		</td>
+		<td style="width:100%;">
+			&nbsp;&nbsp;							
+		</td>
+	</tr>
+</table>
+</div>
 <h3><a href="#">User objects in cache</a></h3>
 <div>
 <table id="users">
@@ -139,12 +219,6 @@
 		<th style="width:100px;text-align:left;white-space: nowrap;">
 			&nbsp;Name&nbsp;						
 		</th>
-		<th style="width:100px;text-align:left;white-space: nowrap;">
-			&nbsp;Login Count&nbsp;						
-		</th>
-		<th style="width:100px;text-align:left;white-space: nowrap;">
-			&nbsp;Last Login&nbsp;						
-		</th>		
 		<th style="width:100%;">
 			&nbsp;&nbsp;							
 		</th>
@@ -159,19 +233,6 @@
 		<td style="text-align:left;white-space: nowrap;">
 			&nbsp;<c:out value="${user.value.masterData.lastName}"/>,&nbsp;
 			<c:out value="${user.value.masterData.firstName}"/>&nbsp;						
-		</td>
-		<td style="text-align:left;white-space: nowrap;">
-			&nbsp;<c:out value="${user.value.loginCount}"/>&nbsp;						
-		</td>
-		<td style="text-align:left;white-space: nowrap;">
-			<c:choose>
-				<c:when test="${!empty user.value.lastLogin}">
-					&nbsp;<mlt:dateTime dateTime="${user.value.lastLogin}" />&nbsp;
-				</c:when>
-				<c:otherwise>
-					&nbsp;not yet used&nbsp;												
-				</c:otherwise>
-			</c:choose>										
 		</td>
 		<td>
 			&nbsp;&nbsp;							

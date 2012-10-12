@@ -29,6 +29,7 @@ public interface IApplicationService {
 		SmsCreatorDePassword, // password of sms service smscreator.de.
 		SmsCreatorDeUsername, // username of sms service smscreator.de.
 		SupportEmail, // email address for contact MyLiveTracker support.
+		TableSchema, // name of schema, where all MyLiveTracker tables are located.
 		TrackLifeTimeInMSecs, // lifetime of track records in milliseconds.
 	};
 				

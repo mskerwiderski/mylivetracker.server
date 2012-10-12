@@ -2,8 +2,6 @@ package de.msk.mylivetracker.domain.user;
 
 import java.io.Serializable;
 
-import de.msk.mylivetracker.commons.util.datetime.DateTime;
-
 /**
  * UserWithoutRoleVo.
  * 
@@ -28,9 +26,6 @@ public class UserWithoutRoleVo implements Serializable {
 	protected String userId;
 	protected String realm;
 	protected Integer senderLimit;
-	
-	protected DateTime lastLogin;
-	protected Integer loginCount;
 	
 	protected boolean enabled;
 	protected boolean accountNonExpired = true;
@@ -85,34 +80,6 @@ public class UserWithoutRoleVo implements Serializable {
 		this.senderLimit = senderLimit;
 	}
 	
-	/**
-	 * @return the lastLogin
-	 */
-	public DateTime getLastLogin() {
-		return lastLogin;
-	}
-
-	/**
-	 * @param lastLogin the lastLogin to set
-	 */
-	public void setLastLogin(DateTime lastLogin) {
-		this.lastLogin = lastLogin;
-	}
-
-	/**
-	 * @return the loginCount
-	 */
-	public Integer getLoginCount() {
-		return loginCount;
-	}
-
-	/**
-	 * @param loginCount the loginCount to set
-	 */
-	public void setLoginCount(Integer loginCount) {
-		this.loginCount = loginCount;
-	}
-
 	/**
 	 * @return the enabled
 	 */

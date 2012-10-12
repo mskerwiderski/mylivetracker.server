@@ -136,9 +136,13 @@ table.display tr.even.emergency {
 	var mlt_versionId = null;
 	
 	function mlt_refreshTracksOverview() {
+		mlt_log("mlt_refreshTracksOverview");
    		var senderId = document.forms["tracksOverviewForm"].elements["selectedSenderFilter"].value;
    		var datePeriod = document.forms["tracksOverviewForm"].elements["selectedDatePeriodFilter"].value;
    		var searchStr = document.forms["tracksOverviewForm"].elements["selectedSearchStrFilter"].value;
+   		mlt_log("senderId=" + senderId);
+   		mlt_log("mlt_versionId=" + mlt_versionId);
+   		mlt_log("mlt_getOnlyActiveTracks=" + mlt_getOnlyActiveTracks);
 		$.getJSON('tracks_list.do', {
 			versionId:mlt_versionId,
 			senderId:senderId,
@@ -151,6 +155,7 @@ table.display tr.even.emergency {
    	}
 	
 	function mlt_processData(mlt_data) {
+		mlt_log("mlt_processData");
 		if (mlt_data == null) return;
 		if ((mlt_versionId != null) && (mlt_versionId == mlt_data.jsonCommons.versionId)) {
 			mlt_log("versionId unchanged = " + mlt_versionId);
@@ -204,7 +209,7 @@ window.onload=startAutoRefresh;
 </div>
 
 <form:form id="tracksOverviewForm" name="tracksOverviewForm" 
-	commandName="tracksOverviewCmd">
+	commandName="tracksOverviewCmd" acceptCharset="UTF-8">
 
 	<form:hidden path="actionExecutor"/>
 	<form:hidden path="selectedTracksView"/>

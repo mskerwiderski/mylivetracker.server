@@ -26,6 +26,8 @@ public class ActionRenameTrack extends AbstractActionEditTrack {
 		if (StringUtils.isEmpty(trackName) || StringUtils.isWhitespace(trackName)) {
 			trackName = user.getOptions().getDefTrackName();
 		}
-		services.getTrackService().renameTrack(cmd.getSelectedTrackId(), trackName);
+		services.getTrackService().renameTrack(
+			user.getUserId(),	
+			cmd.getSelectedTrackId(), trackName);
 	}
 }

@@ -2,7 +2,6 @@ package de.msk.mylivetracker.service.track;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.DataReceivedVo;
@@ -42,7 +41,7 @@ public interface ITrackService {
 	 * @param trackName - name of track.
 	 * @param trackReleased - Indicates whether to create the track as public or not.
 	 */
-	public TrackVo createTrack(SenderVo sender, String trackName, boolean trackReleased);
+	public TrackVo createTrack(String userId, SenderVo sender, String trackName, boolean trackReleased);
 	
 	public void updateTrackHeartbeat(DateTime heartbeat,
 		SenderVo sender, String trackName, boolean trackReleased);
@@ -110,26 +109,14 @@ public interface ITrackService {
 	public TrackVo getActiveTrackAsRecent(String senderId);
 	
 	public static final class TrackListResult {
-		private long versionId;
 		private int countFoundTracks;
 		private List<TrackVo> tracks;		
 		private boolean maxCountOfRecordsExceeded;
-		public static TrackListResult createResultUnchanged(long versionId) {
-			TrackListResult trackListResult = new TrackListResult(0, null, false);
-			trackListResult.versionId = versionId;
-			return trackListResult;
-		}
 		public TrackListResult(int countFoundTracks, List<TrackVo> tracks,
 			boolean maxCountOfRecordsExceeded) {
 			this.countFoundTracks = countFoundTracks;
 			this.tracks = tracks;
 			this.maxCountOfRecordsExceeded = maxCountOfRecordsExceeded;
-		}
-		public void setVersionId(long versionId) {
-			this.versionId = versionId;
-		}
-		public long getVersionId() {
-			return versionId;
 		}
 		public int getCountFoundTracks() {
 			return countFoundTracks;
@@ -168,38 +155,10 @@ public interface ITrackService {
 	 */
 	public void removeAllTracksOfUsers(String userId);
 	
-	public static class DeleteTrackResult {
-		private String trackId;
-		private int deletedRecords;
-		public DeleteTrackResult(String trackId, int deletedRecords) {
-			this.trackId = trackId;
-			this.deletedRecords = deletedRecords;
-		}
-		public String getTrackId() {
-			return trackId;
-		}
-		public int getDeletedRecords() {
-			return deletedRecords;
-		}
-		/* (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
-		@Override
-		public String toString() {
-			String res = "no track for deletion found.";
-			if (!StringUtils.isEmpty(trackId)) {
-				res = "track with trackId='" + trackId +
-					"' and " + deletedRecords + 
-					" records permanently deleted.";
-			}
-			return res;
-		}
-	}
-
 	/**
 	 * delete one removed track.
 	 */
-	public DeleteTrackResult deleteOneRemovedTrack();
+	public DeletedTrackInfoVo deleteOneRemovedTrack();
 	
 	/**
 	 * open track.
@@ -224,7 +183,7 @@ public interface ITrackService {
 	 * @param trackId - id of track.
 	 * @param trackName - name of track.
 	 */
-	public void renameTrack(String trackId, String trackName);
+	public void renameTrack(String userId, String trackId, String trackName);
 	
 	/**
 	 * reset track.

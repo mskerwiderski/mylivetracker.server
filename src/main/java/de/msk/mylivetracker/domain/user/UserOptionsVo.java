@@ -35,7 +35,7 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	private Boolean recTrAccPrivTrEnabled;
 	private String trackRouteColor;
 	private Integer trackRouteWidth;
-	private GeocoderModeVo geocoderMode;
+	private GeocoderMode geocoderMode;
 	private MapsUsedVo mapsUsed;
 	
 	private static final String DELIMITER = "#";
@@ -70,6 +70,12 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	private String homeLocAddress;
 	private Double homeLocLatitude;
 	private Double homeLocLongitude;
+	
+	public boolean hasValidHomePosition() {
+		return 
+			(this.homeLocLatitude != null) &&
+			(this.homeLocLongitude != null);
+	}
 	
 	public String getHomeLocCountry() {
 		return homeLocCountry;
@@ -358,13 +364,13 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	/**
 	 * @return the geocoderMode
 	 */
-	public GeocoderModeVo getGeocoderMode() {
+	public GeocoderMode getGeocoderMode() {
 		return geocoderMode;
 	}
 	/**
 	 * @param geocoderMode the geocoderMode to set
 	 */
-	public void setGeocoderMode(GeocoderModeVo geocoderMode) {
+	public void setGeocoderMode(GeocoderMode geocoderMode) {
 		this.geocoderMode = geocoderMode;
 	}
 	/**

@@ -6,6 +6,8 @@
     
 <sqlMap namespace="Statistics">  	
 	<typeAlias alias="dateTime" type="de.msk.mylivetracker.commons.util.datetime.DateTime"/>
+	<typeAlias alias="databaseInfoVo" 
+		type="de.msk.mylivetracker.domain.statistics.DatabaseInfoVo"/>
 	<typeAlias alias="applicationStartUpVo" 
 		type="de.msk.mylivetracker.domain.statistics.ApplicationStartUpVo"/>
 	<typeAlias alias="uploaderServerStatusVo" 
@@ -21,6 +23,14 @@
     <typeAlias alias="smsTransportVo" 
 		type="de.msk.mylivetracker.domain.statistics.SmsTransportVo"/>
 		
+	<resultMap id="databaseInfoResult" class="databaseInfoVo" >
+		<result property="tableSchema" column="TABLE_SCHEMA" />
+		<result property="sizeDataInMb" column="SIZE_DATA_IN_MB" />
+		<result property="sizeIndexInMb" column="SIZE_INDEX_IN_MB" />
+		<result property="sizeOverallInMb" column="SIZE_OVERALL_IN_MB" />
+		<result property="sizeFreeInMb" column="SIZE_FREE_IN_MB" />										
+    </resultMap>
+    	  
 	<resultMap id="applicationStartUpResult" class="applicationStartUpVo" >
 		<result property="logId" column="LOG_ID" />
 		<result property="logTimestamp" column="LOG_TIMESTAMP" />
@@ -119,7 +129,20 @@
 		<result property="exception" column="EXCEPTION" />   
 		<result property="success" column="SUCCESS" />             
     </resultMap>
-    	
+    
+    <!-- ****************************************************************** -->
+    
+    <select id="selectDatabaseInfo" parameterClass="string" resultMap="databaseInfoResult">	
+    	select 
+    		table_schema as 'TABLE_SCHEMA',
+		  	round(sum(data_length) / 1024 / 1024, 3) AS 'SIZE_DATA_IN_MB',
+		  	round(sum(index_length) / 1024 / 1024, 3) AS 'SIZE_INDEX_IN_MB',
+		  	round(sum(data_length + index_length) / 1024 / 1024, 3) AS 'SIZE_OVERALL_IN_MB',
+		  	round(sum(data_free) / 1024 / 1024, 3) AS 'SIZE_FREE_IN_MB'
+		from information_schema.tables
+		where table_schema = #?#
+	</select>
+	
     <!-- ****************************************************************** -->	
 	
     <select id="selectLastLogIdFromApplicationStartUp" resultClass="integer">

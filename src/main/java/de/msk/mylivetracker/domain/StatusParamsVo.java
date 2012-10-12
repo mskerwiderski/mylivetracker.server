@@ -26,7 +26,7 @@ public class StatusParamsVo implements Serializable {
 	private Boolean trackingLive;
 	private Integer trackingKeepRecentPositions;
 	private Integer trackingUpdateIntervalInSecs;
-	private TrackingFlyToModeVo trackingFlyToMode;
+	private TrackingFlyToMode trackingFlyToMode;
 	private Boolean windowFullscreen;
 	private Integer windowWidth;
 	private Integer windowHeight;
@@ -138,11 +138,11 @@ public class StatusParamsVo implements Serializable {
 		this.trackingUpdateIntervalInSecs = trackingUpdateIntervalInSecs;
 	}
 
-	public TrackingFlyToModeVo getTrackingFlyToMode() {
+	public TrackingFlyToMode getTrackingFlyToMode() {
 		return trackingFlyToMode;
 	}
 
-	public void setTrackingFlyToMode(TrackingFlyToModeVo trackingFlyToMode) {
+	public void setTrackingFlyToMode(TrackingFlyToMode trackingFlyToMode) {
 		this.trackingFlyToMode = trackingFlyToMode;
 	}
 

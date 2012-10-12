@@ -1,7 +1,7 @@
 package de.msk.mylivetracker.domain;
 
 /**
- * TrackingFlyToModeVo.
+ * TrackingFlyToMode.
  * 
  * @author michael skerwiderski, (c)2012
  * 
@@ -11,6 +11,6 @@ package de.msk.mylivetracker.domain;
  * 000 2012-10-03 initial 
  * 
  */
-public enum TrackingFlyToModeVo {
+public enum TrackingFlyToMode {
 	None, FlyToView, FlyToCurrentPosition
 }

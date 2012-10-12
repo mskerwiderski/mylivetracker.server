@@ -1,5 +1,6 @@
 package de.msk.mylivetracker.service.statistics;
 
+import de.msk.mylivetracker.domain.statistics.DatabaseInfoVo;
 import de.msk.mylivetracker.domain.statistics.ServiceCallVo;
 import de.msk.mylivetracker.domain.statistics.SmsTransportVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorErrorVo;
@@ -19,6 +20,7 @@ import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
  * 
  */
 public interface IStatisticsService {
+	public DatabaseInfoVo getDatabaseInfo();
 	public void logApplicationStartUp();	
 	public void logUploaderServerStatus(UploaderServerStatusVo uploaderServerStatusVo);	
 	public void logUploadedDataProcess(UploadedDataProcessVo uploadedDataProcess);

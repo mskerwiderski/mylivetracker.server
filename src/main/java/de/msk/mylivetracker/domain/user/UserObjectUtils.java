@@ -2,7 +2,7 @@ package de.msk.mylivetracker.domain.user;
 
 import java.util.UUID;
 
-import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
+import de.msk.mylivetracker.domain.TrackingFlyToMode;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
 import de.msk.mylivetracker.security.PasswordEncoder;
 import de.msk.mylivetracker.util.PwdUtils;
@@ -32,8 +32,6 @@ public class UserObjectUtils {
 		user.setRole(role);
 		user.setSenderLimit(3);
 		user.setEnabled(true);
-		user.setLastLogin(null);
-		user.setLoginCount(0);
 		user.setRealm(realm);
 		String plainPassword = PwdUtils.getPlainPassword();
 		String hashedPassword = 
@@ -63,7 +61,7 @@ public class UserObjectUtils {
 		userOptions.setTimeZone(timeZone);
 		userOptions.setMapsUsed(new MapsUsedVo(DEF_MAPS_USED_STR));
 		userOptions.setGeocoderLanguage(language);
-		userOptions.setGeocoderMode(GeocoderModeVo.emergencySignalsAndMessages);
+		userOptions.setGeocoderMode(GeocoderMode.emergencySignalsAndMessages);
 		userOptions.setTrackAutoClose(0);
 		userOptions.setTrackRouteColor("FF3300");
 		userOptions.setTrackRouteWidth(3);
@@ -131,7 +129,7 @@ public class UserObjectUtils {
 		userStatusPage.setTrackingLive(true);
 		userStatusPage.setTrackingUpdateIntervalInSecs(10);
 		userStatusPage.setTrackingKeepRecentPositions(-1);
-		userStatusPage.setTrackingFlyToMode(TrackingFlyToModeVo.FlyToView);
+		userStatusPage.setTrackingFlyToMode(TrackingFlyToMode.FlyToView);
 		userStatusPage.setShowTrackInfo(true);
 		userStatusPage.setFullScreen(false);
 		userStatusPage.setWindowHeight(600);

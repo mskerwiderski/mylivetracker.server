@@ -216,7 +216,8 @@
     </bean>
     
     <bean id="statisticsService"
-        class="de.msk.mylivetracker.service.statistics.StatisticsService">               
+        class="de.msk.mylivetracker.service.statistics.StatisticsService">  
+        <property name="applicationService" ref="applicationService" />
         <property name="statisticsDao" ref="statisticsDao" />
         <property name="statisticsLimits" ref="statisticsLimits" />
     </bean>    
@@ -279,10 +280,7 @@
 	<bean id="utilService" init-method="start"
         class="de.msk.mylivetracker.service.util.UtilService">        
         <property name="utilTaskExecutor" ref="utilTaskExecutor" />
-        <property name="applicationService" ref="applicationService" />
-        <property name="trackService" ref="trackService" />        
-        <property name="statisticsService" ref="statisticsService" />        
-        <property name="demoService" ref="demoService" />
+        <property name="services" ref="services" />
     </bean>
                 
     <bean id="storePositionTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">

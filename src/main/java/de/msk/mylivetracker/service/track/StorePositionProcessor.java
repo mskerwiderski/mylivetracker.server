@@ -21,7 +21,7 @@ import de.msk.mylivetracker.domain.SenderStateVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorErrorVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorInfoVo;
-import de.msk.mylivetracker.domain.user.GeocoderModeVo;
+import de.msk.mylivetracker.domain.user.GeocoderMode;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService;
 import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService.LatLonPos;
@@ -519,14 +519,14 @@ public class StorePositionProcessor extends Thread {
 		if (!dataReceived.hasValidData()) {
 			storeInDbResult = new StoreInDbResult(false, 0, "no valid data found.");
 		} else {
-			GeocoderModeVo geocoderMode = storePositionDsc.getUser().getOptions().getGeocoderMode(); 
-			if (!geocoderMode.equals(GeocoderModeVo.disabled) &&
+			GeocoderMode geocoderMode = storePositionDsc.getUser().getOptions().getGeocoderMode(); 
+			if (!geocoderMode.equals(GeocoderMode.disabled) &&
 				dataReceived.hasValidPosition() && 
 				StringUtils.isEmpty(dataReceived.getPosition().getAddress())) {
 				boolean hasEmergencySignal = dataReceived.hasValidEmergencySignal();
 				boolean hasMessage = dataReceived.hasValidMessage();
 				if (hasEmergencySignal || 
-					(hasMessage && geocoderMode.equals(GeocoderModeVo.emergencySignalsAndMessages))) {
+					(hasMessage && geocoderMode.equals(GeocoderMode.emergencySignalsAndMessages))) {
 					dataReceived.getPosition().setAddress(
 						geocodingService.getAddressOfPosition(
 							new LatLonPos(

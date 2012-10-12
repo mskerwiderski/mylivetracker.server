@@ -155,15 +155,6 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.IUserDao#updateLoginInfo(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
-	 */
-	@Override
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void updateLoginInfo(UserWithoutRoleVo user) {
-		this.getSqlMapClientTemplate().update("UserVo.updateLoginInfoByUserId", user);		
-	}
-
-	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.dao.IUserDao#updateUserOptions(de.msk.mylivetracker.domain.UserWithoutRoleVo)
 	 */
 	@Override

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 
-import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
+import de.msk.mylivetracker.domain.TrackingFlyToMode;
 import de.msk.mylivetracker.domain.TracksOverviewMapFlyToModeVo;
 import de.msk.mylivetracker.domain.TracksViewVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
@@ -81,7 +81,7 @@ public class TracksOverviewCmd {
 		userSessionStatus.setToSelLiveTrackingOpt(this.selectedLiveTrackingOpt);
 		userSessionStatus.setToSelLiveTrackingOptKeepRecentPos(this.selectedLiveTrackingOptKeepRecentPos);
 		userSessionStatus.setToSelLiveTrackingOptUpdateInterval(this.selectedLiveTrackingOptUpdateInterval);
-		userSessionStatus.setToSelLiveTrackingOptFlyToMode(TrackingFlyToModeVo.valueOf(this.selectedLiveTrackingOptFlyToMode));
+		userSessionStatus.setToSelLiveTrackingOptFlyToMode(TrackingFlyToMode.valueOf(this.selectedLiveTrackingOptFlyToMode));
 		userSessionStatus.setToSelSenderFilter(this.selectedSenderFilter);
 		userSessionStatus.setToSelDatePeriodFilter(this.selectedDatePeriodFilter);
 		userSessionStatus.setToSelSearchStrFilter(this.selectedSearchStrFilter);

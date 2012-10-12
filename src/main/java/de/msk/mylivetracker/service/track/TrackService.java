@@ -9,7 +9,6 @@ import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.track.TrackFilterVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
-import de.msk.mylivetracker.domain.user.UserOperationsCounterVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.user.IUserOperationsCounterService;
 
@@ -33,14 +32,11 @@ public class TrackService implements ITrackService {
 	private UserStorePositionQueues userStorePositionQueues;
 	private IUserOperationsCounterService userOperationsCounterService;
 	
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.ITrackService#createTrack(de.msk.mylivetracker.domain.SenderVo, java.lang.String, boolean)
-	 */
 	@Override
-	public TrackVo createTrack(SenderVo sender, 
+	public TrackVo createTrack(String userId, SenderVo sender, 
 		String trackName, boolean trackReleased) {
 			TrackVo track = trackDao.createTrack(sender, trackName, trackReleased);
-			this.userOperationsCounterService.incCountTracksCreated(sender.getUserId());
+			this.userOperationsCounterService.incCountTracksCreated(userId);
 			return track;
 	}
 
@@ -139,18 +135,7 @@ public class TrackService implements ITrackService {
 	 */
 	@Override
 	public TrackListResult getTracksAsRecent(TrackFilterVo trackFilter) {
-		UserOperationsCounterVo userOperationsCounter = 
-			userOperationsCounterService.getUserOperationsCounter(trackFilter.getUserId());
-		TrackListResult trackListResult = null;
-		if ((trackFilter.getVersionId() != null) && 
-			(userOperationsCounter.getVersionId().longValue() == trackFilter.getVersionId().longValue())) {
-			trackListResult = TrackListResult.createResultUnchanged(
-				userOperationsCounter.getVersionId().longValue());
-		} else {
-			trackListResult = trackDao.getTracksAsRecent(trackFilter);
-			trackListResult.setVersionId(userOperationsCounter.getVersionId().longValue());
-		}
-		return trackListResult;
+		return this.trackDao.getTracksAsRecent(trackFilter);
 	}
 	
 	/* (non-Javadoc)
@@ -177,15 +162,19 @@ public class TrackService implements ITrackService {
 	 * @see de.msk.mylivetracker.service.ITrackService#deleteOneRemovedTrack()
 	 */
 	@Override
-	public DeleteTrackResult deleteOneRemovedTrack() {
-		return trackDao.deleteOneRemovedTrack();
+	public DeletedTrackInfoVo deleteOneRemovedTrack() {
+		DeletedTrackInfoVo deletedTrackInfo = 
+			this.trackDao.deleteOneRemovedTrack();
+		if ((deletedTrackInfo != null) && deletedTrackInfo.isValid()) {
+			this.userOperationsCounterService.incCountTracksDeleted(
+				deletedTrackInfo.getUserId());
+		}
+		return deletedTrackInfo;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.ITrackService#renameTrack(java.lang.String, java.lang.String)
-	 */
-	public void renameTrack(String trackId, String trackName) {
-		trackDao.renameTrack(trackId, trackName);
+	public void renameTrack(String userId, String trackId, String trackName) {
+		this.trackDao.renameTrack(trackId, trackName);
+		this.userOperationsCounterService.incVersion(userId);
 	}
 
 	/* (non-Javadoc)

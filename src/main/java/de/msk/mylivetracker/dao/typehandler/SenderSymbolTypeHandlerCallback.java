@@ -8,7 +8,7 @@ import com.ibatis.sqlmap.client.extensions.ParameterSetter;
 import com.ibatis.sqlmap.client.extensions.ResultGetter;
 import com.ibatis.sqlmap.client.extensions.TypeHandlerCallback;
 
-import de.msk.mylivetracker.domain.sender.SenderSymbolVo;
+import de.msk.mylivetracker.domain.sender.SenderSymbol;
 
 /**
  * SenderSymbolTypeHandlerCallback.
@@ -28,7 +28,7 @@ public class SenderSymbolTypeHandlerCallback implements TypeHandlerCallback {
 		if (parameter == null) {
 			setter.setString("");
 		} else {
-			setter.setString(((SenderSymbolVo)parameter).getId());
+			setter.setString(((SenderSymbol)parameter).getId());
 		}
 	}
 
@@ -36,7 +36,7 @@ public class SenderSymbolTypeHandlerCallback implements TypeHandlerCallback {
 	public Object getResult(ResultGetter getter) throws SQLException {
 		String str = getter.getString();
 		if (StringUtils.isEmpty(str)) return null;
-		return SenderSymbolVo.getById(str);
+		return SenderSymbol.getById(str);
 	}
 
 	@Override

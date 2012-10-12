@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * SenderSymbolVo.
+ * SenderSymbol.
  * 
  * @author michael skerwiderski, (c)2012
  * 
@@ -16,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
  * 000 initial 2012-09-02
  * 
  */
-public enum SenderSymbolVo {
+public enum SenderSymbol {
 	Phone("sender.symbol.phone"),
 	PersonMale("sender.symbol.person.male"),
 	PersonFemale("sender.symbol.person.female"),
@@ -34,20 +34,20 @@ public enum SenderSymbolVo {
 	private String id;
 	private String msgCode;
 	
-	private static Map<String, SenderSymbolVo> INSTANCES =
-		new HashMap<String, SenderSymbolVo>();
+	private static Map<String, SenderSymbol> INSTANCES =
+		new HashMap<String, SenderSymbol>();
 	
 	static {
-		for (SenderSymbolVo symbol : SenderSymbolVo.values()) {
+		for (SenderSymbol symbol : SenderSymbol.values()) {
 			INSTANCES.put(symbol.getId(), symbol);
 		}
 	}
 	
-	public static SenderSymbolVo getById(String id) {
+	public static SenderSymbol getById(String id) {
 		return INSTANCES.get(id);
 	}
 	
-	private SenderSymbolVo(String msgCode) {
+	private SenderSymbol(String msgCode) {
 		this.id = StringUtils.lowerCase(this.name());
 		this.msgCode = msgCode;
 	}

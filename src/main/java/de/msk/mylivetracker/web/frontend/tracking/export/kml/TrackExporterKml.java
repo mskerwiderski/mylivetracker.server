@@ -29,7 +29,7 @@ import de.micromata.opengis.kml.v_2_2_0.Style;
 import de.msk.mylivetracker.domain.MessageVo;
 import de.msk.mylivetracker.domain.PositionVo;
 import de.msk.mylivetracker.domain.TicketVo;
-import de.msk.mylivetracker.domain.TrackingFlyToModeVo;
+import de.msk.mylivetracker.domain.TrackingFlyToMode;
 import de.msk.mylivetracker.domain.track.TrackVo;
 import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
@@ -160,7 +160,7 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 					WebUtils.getMessage(request, "kml.livetracking"))				
 				.withRefreshVisibility(true);
 			boolean flyToView = false;
-			if (flyToMode == TrackingFlyToModeVo.FlyToView.name()) {
+			if (flyToMode == TrackingFlyToMode.FlyToView.name()) {
 				flyToView = true;
 			}
 			networklink.setFlyToView(flyToView);	

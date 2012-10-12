@@ -1,5 +1,6 @@
 package de.msk.mylivetracker.dao.statistics;
 
+import de.msk.mylivetracker.domain.statistics.DatabaseInfoVo;
 import de.msk.mylivetracker.domain.statistics.ServiceCallVo;
 import de.msk.mylivetracker.domain.statistics.SmsTransportVo;
 import de.msk.mylivetracker.domain.statistics.StorePositionProcessorErrorVo;
@@ -19,6 +20,7 @@ import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
  * 
  */
 public interface IStatisticsDao {
+	public DatabaseInfoVo getDatabaseInfo(String tableSchema);
 	public void logApplicationStartUp(Integer maxStatAppStartUp);	
 	public void logUploaderServerStatus(Integer maxStatUploaderServerStatus, UploaderServerStatusVo uploaderServerStatusVo);	
 	public void logUploadedDataProcess(Integer maxStatUplDataProc, UploadedDataProcessVo uploadedDataProcess);

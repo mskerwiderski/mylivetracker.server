@@ -49,6 +49,19 @@ function removeSender() {
 	$dlgRemoveSender.dialog('open');
 }
 
+var radiusCheck = "<c:out value='${optionsCmd.senderDetails.withinRadiusCheckEnabled}' />";
+function switchSenderRadiusCheckOnOff() {
+	if (radiusCheck == 'true') {
+		$("#radiusCheck").show();
+		radiusCheck = 'false';
+	} else {
+		$("#radiusCheck").hide();
+		radiusCheck = 'true';
+	}
+}	
+$(document).ready(function() {
+	switchSenderRadiusCheckOnOff();
+});
 </script>
 
 <table>	
@@ -255,6 +268,55 @@ function removeSender() {
 			&nbsp;<form:errors cssClass="ui-state-error"  
 				path="senderDetails.authPlainPassword" />&nbsp;
 		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;<spring:message code="sendermaintenance.sender.details.radiuscheck" />&nbsp;</td>
+		<td>
+			<table>
+				<tr>
+					<td colspan="2" style="border:none;">
+						&nbsp;<form:checkbox 
+							path="senderDetails.withinRadiusCheckEnabled"
+							cssClass="text ui-widget-content ui-corner-all"
+							onclick="javascript:switchSenderRadiusCheckOnOff();"
+						/>&nbsp;
+						<spring:message code="sendermaintenance.sender.details.radiuscheck.enabled" />
+					</td>
+				</tr>
+				<tr id="radiusCheck" style="white-space: nowrap;">	
+					<td style="border:none;width:100px;">
+						<form:input cssClass="text ui-widget-content ui-corner-all"
+							path="senderDetails.radius"	
+							size="10"
+						/>
+					</td>	
+					<td style="border:none;">
+						<c:set var="selSenderRadiusUnit">${optionsCmd.senderDetails.radiusUnit}</c:set>
+						<select id="senderDetails.radiusUnit" name="senderDetails.radiusUnit" 
+							class="text ui-widget-content ui-corner-all" > 
+								<c:forEach var="senderOptRadiusUnit" items="${optionsCmd.senderOptsRadiusUnit}">
+			  						<c:choose>
+			    						<c:when test="${senderOptRadiusUnit.value == selSenderRadiusUnit}">
+									    	<option value="${senderOptRadiusUnit.value}" selected>
+									        	<spring:message code="${senderOptRadiusUnit.label}" />
+									      	</option>
+									    </c:when> 
+								    	<c:otherwise>
+								      		<option value="${senderOptRadiusUnit.value}" >
+									        	<spring:message code="${senderOptRadiusUnit.label}" />
+									      	</option>
+									    </c:otherwise>
+									</c:choose>
+								</c:forEach>
+						</select>&nbsp;
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			&nbsp;<form:errors cssClass="ui-state-error"  
+				path="senderDetails.radius" />&nbsp;
+		</td>
 	</tr>				
 	<tr>
 		<td>&nbsp;<spring:message code="sendermaintenance.sender.details.redirect.to" />&nbsp;</td>
@@ -286,7 +348,7 @@ function removeSender() {
 		<td>&nbsp;<spring:message code="sendermaintenance.sender.details.symbol" />&nbsp;</td>
 		<td>
 			<table><tr>
-			<td style="border:none;width:50%;">
+			<td style="border:none;width:150px;">
 			<script>
 				function setSenderSymbolImage(symbol) {
 					if (symbol == null) {
@@ -315,7 +377,7 @@ function removeSender() {
 						</c:choose>
 					</c:forEach>
 			</select></td>
-			<td style="border:none;width:50%;"><img id="senderSymbolImg"/></td>
+			<td style="border:none;"><img id="senderSymbolImg"/></td>
 			</tr></table>
 		</td>
 		<td>

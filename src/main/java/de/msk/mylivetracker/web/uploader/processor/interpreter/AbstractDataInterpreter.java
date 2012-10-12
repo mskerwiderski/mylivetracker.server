@@ -10,10 +10,13 @@ import org.apache.commons.logging.LogFactory;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.DataReceivedVo;
+import de.msk.mylivetracker.domain.PositionVo;
+import de.msk.mylivetracker.domain.sender.SenderRadiusUnit;
 import de.msk.mylivetracker.domain.sender.SenderSwitchesVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
+import de.msk.mylivetracker.domain.user.UserOptionsVo;
 import de.msk.mylivetracker.service.Services;
-import de.msk.mylivetracker.service.sender.ISenderService;
+import de.msk.mylivetracker.util.GpsUtils;
 import de.msk.mylivetracker.web.uploader.deviceactionexecutor.DeviceActionExecutor;
 import de.msk.mylivetracker.web.uploader.processor.DataPacket;
 import de.msk.mylivetracker.web.uploader.processor.IDataCtx;
@@ -36,7 +39,7 @@ public abstract class AbstractDataInterpreter implements IDataInterpreter {
 
 	private static final Log log = LogFactory.getLog(AbstractDataInterpreter.class);
 	
-	private ISenderService senderService;
+	private Services services;
 	private String id;
 	private String name;
 	private String version;	
@@ -172,20 +175,38 @@ public abstract class AbstractDataInterpreter implements IDataInterpreter {
 				log.debug("time recorded (converted to " + sender.getTimeZone() + "): " + converted);
 			}
 		}
-	}
-	
-	/**
-	 * @return the senderService
-	 */
-	public ISenderService getSenderService() {
-		return senderService;
+		
+		// mark position as invalid if radius check fails.
+		if (sender.isWithinRadiusCheckEnabled() && 
+			dataReceived.hasValidPosition()) {
+			log.debug("check radius of position ... ");
+			UserOptionsVo userOptions = 
+				services.getUserService().getUserWithoutRole(
+					sender.getUserId()).getOptions();
+			if (userOptions.hasValidHomePosition()) {
+				Double distanceFromHomePositionInMtr =
+					GpsUtils.distanceInMtr(dataReceived.getPosition(), 
+					new PositionVo(
+						userOptions.getHomeLocLatitude(),
+						userOptions.getHomeLocLongitude()));
+				log.debug("distance to home position: " + distanceFromHomePositionInMtr + " mtr");
+				if (distanceFromHomePositionInMtr.doubleValue() > 
+					SenderRadiusUnit.convertToMeter(sender.getRadius(), sender.getRadiusUnit())) {
+					dataReceived.getPosition().setValid(false);
+					log.debug("position radius check failed, distance to home position: " + 
+						distanceFromHomePositionInMtr + " mtr");
+				}
+			}
+			log.debug("check radius of position ... done");
+		}
 	}
 
-	/**
-	 * @param senderService the senderService to set
-	 */
-	public void setSenderService(ISenderService senderService) {
-		this.senderService = senderService;
+	public Services getServices() {
+		return services;
+	}
+
+	public void setServices(Services services) {
+		this.services = services;
 	}
 
 	/* (non-Javadoc)
