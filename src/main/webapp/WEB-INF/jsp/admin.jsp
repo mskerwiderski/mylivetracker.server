@@ -196,20 +196,14 @@
 <table id="users">
 	<tr>
 		<th style="text-align: left;white-space: nowrap;" colspan="2">
-			&nbsp;User objects in cache&nbsp;
+			&nbsp;<c:out value="${userCacheSize}"/>&nbsp;user object(s) in cache&nbsp;
 		</th>
-		<th style="text-align: left;white-space: nowrap;">
-			&nbsp;Items in cache:&nbsp;<c:out value="${userCacheSize}"/>&nbsp;
-		</th>
-		<th style="text-align:left;white-space: nowrap;">	
+		<th style="text-align:left;white-space: nowrap;width:100%">	
 			<div class="mlt-button">
 				&nbsp;<a onclick="javascript:execAction('clearUserCache');" >
 					Clear user cache
 				</a>&nbsp;														
 			</div>		
-		</th>
-		<th style="width:100%;">
-			&nbsp;&nbsp;							
 		</th>
 	</tr>
 	<tr>

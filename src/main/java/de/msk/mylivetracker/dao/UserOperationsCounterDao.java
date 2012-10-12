@@ -49,7 +49,8 @@ public class UserOperationsCounterDao extends SqlMapClientDaoSupport implements 
 			throw new IllegalArgumentException("user must not be null.");
 		}
 		Map<String, Object> updateParamsMap = null;
-		if (user.getRole().equals(UserRole.User) && 
+		if ((user.getRole().equals(UserRole.User) ||
+			user.getRole().equals(UserRole.Admin)) && 
 			StringUtils.isEmpty(user.getAdminUsername())) {
 			updateParamsMap =
 				this.getUpdateParamsMap(user.getUserId(), 
