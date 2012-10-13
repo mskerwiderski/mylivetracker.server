@@ -6,7 +6,6 @@ import java.net.Socket;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.statistics.UploaderServerStatusVo;
@@ -37,7 +36,7 @@ public class TcpServer extends Thread {
 	private TcpServerConfig tcpServerConfig;
 	private SocketProcessorConfig socketProcessorConfig;	
 	private Services services;
-	private ThreadPoolTaskExecutor taskExecutorForProcessors;
+	private TcpServerTaskExecutor taskExecutorForProcessors;
 	private DataPacketCreator dataPacketCreator;
 		
 	private ServerSocket serverSocket = null;		
@@ -142,7 +141,7 @@ public class TcpServer extends Thread {
 				this.dataPacketCreator,
 				this.socketProcessorConfig,
 				socket);				
-		this.taskExecutorForProcessors.execute(processor);		
+		this.taskExecutorForProcessors.executeProcessor(processor);		
 		return processor;
 	}	
 		
@@ -157,7 +156,8 @@ public class TcpServer extends Thread {
 				if (socketProcessorConfig.getMaxDataStringLengthInBytes() > 0) {
 					socket.setReceiveBufferSize(socketProcessorConfig.getMaxDataStringLengthInBytes());
 				}
-				socket.setKeepAlive(true);
+				//socket.setKeepAlive(true);
+				//socket.setReuseAddress(true);
 				log.info(this.getName() + 
 					": connection to a client established, inetAddess: " + 
 					socket.getInetAddress().toString());
@@ -168,10 +168,10 @@ public class TcpServer extends Thread {
 				} else {					
 					log.info(this.getName() + 
 						": processor " + processor.getName() + 
-						"started.");
+						" started.");
 				}
 			} catch (Exception e) {
-				log.fatal(e);	
+				log.info(e);	
 			}
 		}		
 	}
@@ -212,7 +212,7 @@ public class TcpServer extends Thread {
 	/**
 	 * @return the taskExecutorForProcessors
 	 */
-	public ThreadPoolTaskExecutor getTaskExecutorForProcessors() {
+	public TcpServerTaskExecutor getTaskExecutorForProcessors() {
 		return taskExecutorForProcessors;
 	}
 
@@ -220,7 +220,7 @@ public class TcpServer extends Thread {
 	 * @param taskExecutorForProcessors the taskExecutorForProcessors to set
 	 */
 	public void setTaskExecutorForProcessors(
-			ThreadPoolTaskExecutor taskExecutorForProcessors) {
+			TcpServerTaskExecutor taskExecutorForProcessors) {
 		this.taskExecutorForProcessors = taskExecutorForProcessors;
 	}
 

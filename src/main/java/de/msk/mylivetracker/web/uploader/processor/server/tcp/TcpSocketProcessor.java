@@ -189,7 +189,7 @@ public class TcpSocketProcessor extends UploadProcessor implements Runnable {
 				connectionStatus = PreProcessResultDsc.ConnectionStatus.Lost;
 				doRead = false;
 				log.debug(this.getProcessorInfo() + ": connection lost.");
-			}			
+			}	
 		}				
 		
 		log.debug(this.getProcessorInfo() + 

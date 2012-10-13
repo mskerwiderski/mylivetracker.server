@@ -43,6 +43,7 @@ public enum ActionExecutor {
 	ResetAllEmergency(new ResetAllEmergency()),
 	SaveAllEmergency(new SaveAllEmergency()),
 	SaveAndSendTestSms(new SaveAndSendTestSms()),
+	DeleteAllTracks(new DeleteAllTracks()),
 	DeleteAccount(new DeleteAccount());
 		
 	private IAction action;

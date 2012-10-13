@@ -112,7 +112,7 @@ public abstract class AbstractDataInterpreter implements IDataInterpreter {
 				}
 				dataPacket.setResponseStr(
 					this.postProcess(dataReceived, deviceSpecific));
-				postProcessDataReceived(dataReceived);
+				postProcessDataReceived(dataPacket);
 			} catch (InterpreterException e) {
 				dataPacket.setException(e);				
 			} finally {
@@ -128,7 +128,11 @@ public abstract class AbstractDataInterpreter implements IDataInterpreter {
 		return dataPacket;
 	}	
 
-	private void postProcessDataReceived(DataReceivedVo dataReceived) {
+	private void postProcessDataReceived(DataPacket dataPacket) {
+		if (dataPacket == null) return;
+		DataReceivedVo dataReceived = dataPacket.getDataReceived();
+		if (dataReceived == null) return;
+		
 		SenderVo sender = dataReceived.getSenderFromRequest().getSender();
 		if (sender == null) return;
 		
@@ -145,6 +149,9 @@ public abstract class AbstractDataInterpreter implements IDataInterpreter {
 		}
 		if (senderSwitches.ignoreLocationValidFlag()) {
 			dataReceived.getPosition().setValid(true);			
+		}
+		if (senderSwitches.sendNoResponse()) {
+			dataPacket.setResponseStr(null);			
 		}
 		
 		// process senders timezone.

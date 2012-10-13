@@ -5,6 +5,12 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 
+<div id="dlgDeleteAllTracksCheck1" 
+	title="<spring:message code="masterdata.delete.alltracks.confirm.title" />">
+</div>
+<div id="dlgDeleteAllTracksCheck2"
+	title="<spring:message code="masterdata.delete.alltracks.confirm.title" />">
+</div>
 <div id="dlgDeleteAccountCheck1" 
 	title="<spring:message code="masterdata.delete.account.confirm.title" />">
 </div>
@@ -25,7 +31,6 @@
 					$(this).dialog('close');
 				},
 				'<spring:message code="masterdata.delete.account.confirm.yes" />': function() {
-					//actionExecute("DeleteAccount");
 					$(this).dialog('close');
 					$dlgDeleteAccountCheck2.dialog('open');
 				}														
@@ -54,6 +59,46 @@
 		});
 	});
 
+	var $dlgDeleteAllTracks;
+
+	$(document).ready(function(e) {		
+		$dlgDeleteAllTracksCheck1 = $('#dlgDeleteAllTracksCheck1').dialog({
+			modal: true,				
+			autoOpen: false,
+			closeOnEscape: true,		
+			buttons: {
+				'<spring:message code="masterdata.delete.alltracks.confirm.no" />': function() {
+					$(this).dialog('close');
+				},
+				'<spring:message code="masterdata.delete.alltracks.confirm.yes" />': function() {
+					$(this).dialog('close');
+					$dlgDeleteAllTracksCheck2.dialog('open');
+				}														
+			},
+			open: function(event, ui) {			
+				$(this).html("<spring:message code='masterdata.delete.alltracks.confirm.check1' />");			 
+			}					
+		});
+		$dlgDeleteAllTracksCheck2 = $('#dlgDeleteAllTracksCheck2').dialog({
+			modal: true,				
+			autoOpen: false,
+			closeOnEscape: true,		
+			buttons: {
+				'<spring:message code="masterdata.delete.alltracks.confirm.no" />': function() {
+					$(this).dialog('close');
+				},
+				'<spring:message code="masterdata.delete.alltracks.confirm.yes" />': function() {
+					actionExecute("DeleteAllTracks");
+					$(this).dialog('close');
+				}														
+			},
+			open: function(event, ui) {
+				$(this).css("color", "f5454d");
+				$(this).html("<spring:message code='masterdata.delete.alltracks.confirm.check2' />");			 
+			}					
+		});
+	});
+
 	function saveAllMasterData() {
 		actionExecute('SaveAllMasterData');
 	}
@@ -64,10 +109,13 @@
 		actionExecute('ResetAllMasterData');
 	}
 	
+	function deleteAllTracks() {
+		$dlgDeleteAllTracksCheck1.dialog('open');
+	}
+	
 	function deleteAccount() {
 		$dlgDeleteAccountCheck1.dialog('open');
 	}
-	
 </script>
 
 <table>
@@ -284,6 +332,19 @@
 				<td>&nbsp;</td>
 			</c:otherwise>
 		</c:choose>								
+	</tr>
+	<tr>
+		<td style="width:30%;">
+			&nbsp;<spring:message code="masterdata.delete.alltracks" />&nbsp;
+		</td>
+		<td style="width:30%;white-space: nowrap;">
+			<div class="mlt-button" >
+				&nbsp;<a href="#" style="border-width:3px;border-color:f5454d;" onclick="javascript:deleteAllTracks();">
+					<spring:message code='masterdata.delete.alltracks.button' />
+				</a>												
+			</div>				
+		</td>
+		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<td style="width:30%;">

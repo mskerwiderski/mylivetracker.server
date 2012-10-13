@@ -69,7 +69,8 @@ public class TrackVoJsonSerializer extends AbstractVoJsonSerializer<TrackVo> {
 		 
 		jsonTrack.addProperty("trackId", track.getTrackId());
 		jsonTrack.addProperty("versionMajor", track.getVersionMajor());
-		jsonTrack.addProperty("nameNotAbbr", track.getName());
+		jsonTrack.addProperty("nameNotAbbr", 
+			StringEscapeUtils.escapeHtml(track.getName()));
 		jsonTrack.addProperty("name",
 			StringEscapeUtils.escapeHtml(	
 				StringUtils.abbreviate(track.getName(), 30)));

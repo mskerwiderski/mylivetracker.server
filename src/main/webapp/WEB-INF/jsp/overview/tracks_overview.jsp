@@ -143,14 +143,29 @@ table.display tr.even.emergency {
    		mlt_log("senderId=" + senderId);
    		mlt_log("mlt_versionId=" + mlt_versionId);
    		mlt_log("mlt_getOnlyActiveTracks=" + mlt_getOnlyActiveTracks);
-		$.getJSON('tracks_list.do', {
-			versionId:mlt_versionId,
-			senderId:senderId,
-			datePeriod:datePeriod,
-			searchStr:searchStr,
-			onlyActive:mlt_getOnlyActiveTracks},
-			mlt_processData
-		);
+// 		$.getJSON('tracks_list.do', {
+// 			versionId:mlt_versionId,
+// 			senderId:senderId,
+// 			datePeriod:datePeriod,
+// 			searchStr:searchStr,
+// 			onlyActive:mlt_getOnlyActiveTracks},
+// 			mlt_processData
+// 		);
+		$.ajax({
+			url:'tracks_list.do',
+			//type:"POST",
+			data:{
+				versionId:mlt_versionId,
+				senderId:senderId,
+				datePeriod:datePeriod,
+				searchStr:searchStr,
+				onlyActive:mlt_getOnlyActiveTracks
+			},
+			contentType:"application/json; charset=utf-8",
+			dataType:"json",
+			success:mlt_processData
+		});
+		mlt_log("ajax call done.");
 		$("#refreshIcon").attr("src", "img/led/arrow_refresh.png");
    	}
 	

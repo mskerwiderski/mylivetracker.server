@@ -23,7 +23,9 @@ public class SenderSwitchesVo {
 	public enum Switch {
 		IgnoreSenderMileage("IgnoreSenderMileage"),
 		IgnoreLocationValidFlag("IgnoreLocationValidFlag"),
-		UseTimestampAsReceived("UseTimestampAsReceived");
+		UseTimestampAsReceived("UseTimestampAsReceived"),
+		SendNoResponse("SendNoResponse");
+		
 		private String name;
 		
 		private Switch(String name) {
@@ -97,5 +99,9 @@ public class SenderSwitchesVo {
 	
 	public boolean ignoreLocationValidFlag() {
 		return this.switchesSet.contains(Switch.IgnoreLocationValidFlag);
+	}
+	
+	public boolean sendNoResponse() {
+		return this.switchesSet.contains(Switch.SendNoResponse);
 	}
 }

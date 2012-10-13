@@ -367,7 +367,7 @@ body.loading .modal {
 	}
 	
 	// fit map or not.
-	function mlt_fitMapOrNot(fitMap) {	
+	function mlt_fitMapOrNot(fitMap, isHome) {	
 		var flyToMode = "<c:out value='${flyToMode}' />";
 		if (fitMap) {
 			if (flyToMode != "FlyToCurrentPosition") {
@@ -377,6 +377,10 @@ body.loading .modal {
 			}
 			return;
 		}	
+		if (isHome) {
+			mlt_flyToCurrentPosition(false);
+			return;
+		}
 		if (flyToMode == "None") {
 			return;
 		}
@@ -399,9 +403,10 @@ body.loading .modal {
 		mlt_circleMarkers = new Array();
  	}
 
- 	function mlt_UpdateStatus(fitMap, reset) {		
+ 	function mlt_UpdateStatus(fitMap, reset, isHome) {		
 		this.fitMap = fitMap;	  	
 		this.reset = reset;	  		  		  	
+		this.isHome = isHome;
 	}
  	
 	// update positions, bounds and markers of current track, home location or 'nothing'.
@@ -409,6 +414,7 @@ body.loading .modal {
 	function mlt_updatePositionsBoundsAndMarkers() {
 		var fitMap = false;
 		var reset = false;
+		var isHome = false;
 		if ((mlt_lastView == null) || (0 < <c:out value='${keepRecPos}'/>)) {
 			mlt_resetPositionsBoundsAndMarkers();			
 			fitMap = true && (0 == <c:out value='${keepRecPos}'/>);
@@ -551,18 +557,19 @@ body.loading .modal {
 				mlt_data.user.homeLat,
 				mlt_data.user.homeLon));		
 			mlt_bounds_empty = false;
-			fitMap = true;
+			fitMap = (mlt_lastView != "home");
 			reset = true;
+			isHome = true;
 		} else {
 			mlt_resetPositionsBoundsAndMarkers();
 		}
-		return new mlt_UpdateStatus(fitMap, reset);
+		return new mlt_UpdateStatus(fitMap, reset, isHome);
 	}
 
 	// update view.
    	function mlt_updateView() {
    	   	var updateStatus = mlt_updatePositionsBoundsAndMarkers();
-   	   	mlt_fitMapOrNot(updateStatus.fitMap);
+   	   	mlt_fitMapOrNot(updateStatus.fitMap, updateStatus.isHome);
    	   	mlt_drawPolylineAndMarkers(updateStatus.reset);
    	   	mlt_updateInfoDisplay();
 		mlt_updateViewState();

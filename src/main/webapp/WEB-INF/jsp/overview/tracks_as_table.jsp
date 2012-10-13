@@ -57,6 +57,14 @@
 		});
 	}
 	
+	function mlt_htmlDecode(value){ 
+	    if (value) {
+	        return jQuery('<div/>').html(value).text(); 
+	    } else {
+	        return '';
+	    }
+	}
+	
 	function mlt_renderTrackTableRow(idx, track, refresh) {
 		var row = $('#trackTableRow').clone(true);
 		var className = (track.active ? "active" : "");
@@ -64,7 +72,6 @@
 		$("#googleMapsButton", row).attr("onclick", "javascript:startTracking('RedirectToTrackAsMapCtrl', '" + track.trackId + "');");
 		$("#removeTrackButton", row).attr("onclick", "javascript:removeTrack('" + track.trackId + "','" + track.name + "');");
 		$("#googleEarthButton", row).attr("onclick", "javascript:startTracking('RedirectToTrackAsGoogleEarthCtrl', '" + track.trackId + "');");
-		//$("#", row).attr("onclick", "");
 		$("#resetTrackButton", row).attr("onclick", "javascript:resetTrack('" + track.trackId + "','" + track.name + "');");
 		$("#kmlExportButton", row).attr("onclick", "javascript:startTracking('RedirectToTrackAsKmlFileCtrl', '" + track.trackId + "');");
 		$("#gpxExportButton", row).attr("onclick", "javascript:startTracking('RedirectToTrackAsGpxFileCtrl', '" + track.trackId + "');");
@@ -81,7 +88,7 @@
 		if (!track.active) {
 			$("#trackIsActive", row).html("&nbsp;&nbsp;");
 		}
-		$("#trackNames", row).attr("value", track.nameNotAbbr);
+		$("#trackNames", row).attr("value", mlt_htmlDecode(track.nameNotAbbr));
 		if (!track.editable) {
 			$("#trackNames", row).attr("readonly", "readonly");
 		}
