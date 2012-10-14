@@ -24,10 +24,6 @@
 			<a href="credits.sec"><spring:message code="layout.credits"/></a>
 			&nbsp;&#8226;&nbsp;
 			<a href="impressum.sec"><spring:message code="layout.impressum"/></a>
-			<security:authorize ifAnyGranted="Admin,User">
-			&nbsp;&#8226;&nbsp;
-			<a href="changes.do">Changes</a>
-			</security:authorize>
 			&nbsp;				
 		</td>				
 	</tr>

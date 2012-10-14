@@ -33,8 +33,6 @@ public class DemoTrackRunner extends Thread {
 	private ISenderService senderService;
 	private ITrackService trackService;
 	
-	private static final int DELAY_IN_MSECS = 10000;
-	
 	public DemoTrackRunner(
 		DemoCase demoCase,
 		DemoTrackVo demoTrack,
@@ -67,14 +65,26 @@ public class DemoTrackRunner extends Thread {
 		while (statusOk) {
 			long timeSecs = 0;
 			try {
-				log.debug("start demo case: " + demoCase.getTrackId());
-				Thread.sleep(demoCase.getStartInSeconds() * 1000);				
-				trackService.createTrack(demoCase.getUserId(),
-					this.senderService.getSender(demoCase.getSenderId()), 
-					demoTrack.getTrackName(), 
-					this.userService.getUserWithoutRole(demoCase.getUserId()).getOptions().getDefTrackReleaseStatus());		
-				log.debug("demo track created: " + demoTrack.getTrackName());
-				Thread.sleep(DELAY_IN_MSECS);				
+				// sleep 'startInSeconds'.
+				Thread.sleep(this.demoCase.getStartInSeconds() * 1000);
+				log.debug("start demo case: " + this.demoCase.getTrackId());
+				
+				// reset active track of sender if exists otherwise create a new track.
+				boolean activeTrackExists = 
+					this.trackService.resetActiveTrack(this.demoCase.getSenderId());
+				log.debug("demo active track resetted: " + activeTrackExists);
+				if (!activeTrackExists) {
+					this.trackService.createTrack(
+						demoCase.getUserId(),
+						this.senderService.getSender(demoCase.getSenderId()), 
+						demoTrack.getTrackName(), 
+						this.userService.getUserWithoutRole(
+							demoCase.getUserId()).getOptions().getDefTrackReleaseStatus());		
+					log.debug("demo track created: " + demoTrack.getTrackName());
+				}
+				
+				// run track ('send' positions).
+				Thread.sleep(3000);				
 				for (DemoPositionVo pos : demoTrack.getPositions()) {						
 					Thread.sleep((pos.getOffsetInSeconds() - timeSecs) * 1000);
 					timeSecs = pos.getOffsetInSeconds();					
@@ -106,7 +116,6 @@ public class DemoTrackRunner extends Thread {
 				statusOk = false;
 			} catch (Exception e) {
 				log.info("demo track runner stopped: " + e.getMessage());
-				e.printStackTrace();
 				statusOk = false;
 			}
 		}			

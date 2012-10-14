@@ -156,8 +156,6 @@ public class TcpServer extends Thread {
 				if (socketProcessorConfig.getMaxDataStringLengthInBytes() > 0) {
 					socket.setReceiveBufferSize(socketProcessorConfig.getMaxDataStringLengthInBytes());
 				}
-				//socket.setKeepAlive(true);
-				//socket.setReuseAddress(true);
 				log.info(this.getName() + 
 					": connection to a client established, inetAddess: " + 
 					socket.getInetAddress().toString());

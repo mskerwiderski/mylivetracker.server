@@ -73,25 +73,36 @@ public class DemoRunner extends Thread {
 	public void run() {	
 		try {
 			Thread.sleep(20000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		Set<String> userIds = new HashSet<String>();
-		for (int i=0; i < demoCases.size(); i++) {
-			DemoCase demoCase = demoCases.get(i);
-			userIds.add(demoCase.getUserId());
-			DemoTrackVo demoTrack = 
-				this.demoDao.getDemoTrack(demoCase.getTrackId());
-			if (demoTrack != null) {
-				this.demoTaskExecutor.execute(
-					new DemoTrackRunner(
-						demoCase, demoTrack, 
-						userService, senderService, 
-						trackService));
-				log.info("demo track '" + demoCase.getName() + "' found and started.");
-			} else {
-				log.info("demo track '" + demoCase.getName() + "' not found.");
+			// collect all demo user ids and remove all tracks of all demo user ids.
+			Set<String> demoUserIds = new HashSet<String>();
+			for (DemoCase demoCase : demoCases) {
+				demoUserIds.add(demoCase.getUserId());
 			}
+			for (String demoUserId : demoUserIds) {
+				this.trackService.removeAllTracksOfUsers(demoUserId);
+				log.debug("removed all tracks of demo user with demoUserId=" + demoUserId);
+			}
+			Thread.sleep(10000);
+			// start all demo cases.
+			for (int i=0; i < demoCases.size(); i++) {
+				DemoCase demoCase = demoCases.get(i);
+				DemoTrackVo demoTrack = 
+					this.demoDao.getDemoTrack(demoCase.getTrackId());
+				if (demoTrack != null) {
+					this.demoTaskExecutor.execute(
+						new DemoTrackRunner(
+							demoCase, demoTrack, 
+							userService, senderService, 
+							trackService));
+					log.info("demo track '" + demoCase.getName() + "' found and started.");
+				} else {
+					log.info("demo track '" + demoCase.getName() + "' not found.");
+				}
+			}
+		} catch (InterruptedException e) {
+			log.info("demo runner stopped: " + e.getMessage());
+		} catch (Exception e) {
+			log.info("demo runner stopped: " + e.getMessage());
 		}
 	}	
 }

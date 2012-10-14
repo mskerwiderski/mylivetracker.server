@@ -77,7 +77,6 @@
         <intercept-url pattern="/admin.do" access="hasRole('Admin')" />
         <intercept-url pattern="/options.do" access="hasRole('Admin') or hasRole('User')" />
         <intercept-url pattern="/demo.do" access="hasRole('Admin')" />
-        <intercept-url pattern="/changes.do" access="hasRole('Admin') or hasRole('User')" />
         <intercept-url pattern="/doc/*" access="hasRole('Admin') or hasRole('User')" />
         <custom-filter position="FORM_LOGIN_FILTER" ref="authProcessingFilter" />
         <custom-filter position="LOGOUT_FILTER" ref="logoutProcessingFilter" />                       			

@@ -13,7 +13,7 @@
     </resultMap>	
         
   	<select id="getAllParameters" resultMap="parameterResult">
-  		select * from T_APPLICATION t  		  		
+  		select * from T_APPLICATION t order by t.PARAMETER desc 		  		
   	</select>
   	  	   	
 </sqlMap>

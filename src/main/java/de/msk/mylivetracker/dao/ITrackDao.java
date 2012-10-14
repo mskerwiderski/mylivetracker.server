@@ -144,7 +144,7 @@ public interface ITrackDao {
 	 * reset active track.
 	 * @param senderId - id of sender.
 	 */
-	public void resetActiveTrack(String senderId);
+	public boolean resetActiveTrack(String senderId);
 	
 	/**
 	 * remove track (positions included).

@@ -195,7 +195,7 @@ public interface ITrackService {
 	 * reset active track.
 	 * @param senderId - id of sender.
 	 */
-	public void resetActiveTrack(String senderId);
+	public boolean resetActiveTrack(String senderId);
 	
 	/**
 	 * publish track.

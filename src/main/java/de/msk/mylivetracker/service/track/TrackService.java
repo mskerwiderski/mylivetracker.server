@@ -185,12 +185,9 @@ public class TrackService implements ITrackService {
 		trackDao.resetTrack(trackId);		
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.ITrackService#resetActiveTrack(java.lang.String)
-	 */
 	@Override
-	public void resetActiveTrack(String senderId) {
-		trackDao.resetActiveTrack(senderId);
+	public boolean resetActiveTrack(String senderId) {
+		return trackDao.resetActiveTrack(senderId);
 	}
 
 	/* (non-Javadoc)

@@ -42,7 +42,6 @@
             	-->
             	<prop key="/credits.sec">creditsCtrl</prop>
             	<prop key="/impressum.sec">impressumCtrl</prop>
-            	<prop key="/changes.do">changesCtrl</prop>
             	<prop key="/admin.do">adminCtrl</prop>
             	<prop key="/login.sec">loginCtrl</prop>
             	<prop key="/tracks_overview.do">tracksOverviewCtrl</prop>
@@ -82,11 +81,6 @@
         p:viewName="impressum" >                	
     </bean>   
            
-    <bean name="changesCtrl"
-		class="de.msk.mylivetracker.web.frontend.changes.ChangesCtrl"
-        p:viewName="changes" >                	
-    </bean>
-    
     <bean name="adminCtrl"
 		class="de.msk.mylivetracker.web.frontend.admin.AdminCtrl"
         p:viewName="admin" >

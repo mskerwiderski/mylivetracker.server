@@ -67,17 +67,6 @@ $(document).ready(function() {
 <table>	
 	<tr>
 		<td style="width:30%;">
-			&nbsp;<spring:message code="sendermaintenance.documentation" />&nbsp;
-		</td>
-		<td style="width:30%;">
-			&nbsp;<a href="doc/MyLiveTracker.pdf" target="_blank"><b><i>MyLiveTracker Dokumentation (im PDF Format)</i></b></a>&nbsp;												
-		</td>					
-		<td>
-			&nbsp;
-		</td>
-	</tr>
-	<tr>
-		<td style="width:30%;">
 			&nbsp;<spring:message code="sendermaintenance.senders.select" 
 				arguments="${fn:length(optionsCmd.senderEntries)-1},${optionsCmd.senderLimit}" />&nbsp;
 		</td>

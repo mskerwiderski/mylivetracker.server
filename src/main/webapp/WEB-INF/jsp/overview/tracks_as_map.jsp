@@ -128,7 +128,6 @@
 	
 	function mlt_adaptZoomLevel() {
 		var flyToMode = "<c:out value='${tracksOverviewCmd.selectedTracksOverviewOptFlyToMode}' />";
-		mlt_log("flyToMode=" + flyToMode);		
 		if (flyToMode == "None") { 
 			// zoom mode is off.
 			if (mlt_adaptZoomLevelIsFirstCall) {

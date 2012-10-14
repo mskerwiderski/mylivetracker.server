@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,6 +19,8 @@ import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
 
 public class UserOperationsCounterDao extends SqlMapClientDaoSupport implements IUserOperationsCounterDao {
+
+	private static final Log log = LogFactory.getLog(UserOperationsCounterDao.class);
 
 	private static final String SQL_SELECT_USER_OPERATIONS_COUNTER_BY_USERID = "UserOperationsCounterVo.selectUserOperationsCounterByUserId";
 	private static final String SQL_INSERT_USER_OPERATIONS_COUNTER = "UserOperationsCounterVo.insertUserOperationsCounter";
@@ -124,18 +129,6 @@ public class UserOperationsCounterDao extends SqlMapClientDaoSupport implements 
 		return userOperationsCounter;
 	}
 	
-	private void insertUserOperationsCounterAux(UserOperationsCounterVo userOperationsCounter) {
-		this.getSqlMapClientTemplate().update(
-			SQL_INSERT_USER_OPERATIONS_COUNTER, userOperationsCounter);
-	}
-	
-	private void updateUserOperationsCounterAux(String userId, 
-		Map<String, Object> updateParamsMap) {
-		this.getUserOperationsCounterAux(userId);
-		this.getSqlMapClientTemplate().update(
-			SQL_UPDATE_USER_OPERATIONS_COUNTER, updateParamsMap);
-	}
-	
 	public Map<String, Object> getUpdateParamsMap(String userId, String...properties) {
 		if (StringUtils.isEmpty(userId)) return null;
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -173,5 +166,42 @@ public class UserOperationsCounterDao extends SqlMapClientDaoSupport implements 
 			params.put("countClientInfosReceived", Boolean.TRUE);
 		}
 		return params;
+	}
+	
+	/*************************************************************************/
+
+	private void insertUserOperationsCounterAux(UserOperationsCounterVo userOperationsCounter) {
+		this.updateAux(
+			SQL_INSERT_USER_OPERATIONS_COUNTER, 
+			userOperationsCounter);
+	}
+	
+	private void updateUserOperationsCounterAux(String userId, 
+		Map<String, Object> updateParamsMap) {
+		this.getUserOperationsCounterAux(userId);
+		this.updateAux(
+			SQL_UPDATE_USER_OPERATIONS_COUNTER, 
+			updateParamsMap);
+	}
+	
+	private void updateAux(String statement, Object parameterObject) {
+		final int MAX_RETRY_COUNT = 5;
+		int retryCnt = 0;
+		boolean done = false;
+		boolean skip = false;
+		while (!done && !skip && (retryCnt < MAX_RETRY_COUNT)) {
+			retryCnt++;
+			try {
+				this.getSqlMapClientTemplate().update(
+					statement, parameterObject);
+				done = true;
+			} catch (DataAccessException e) {
+				log.info("call of '" + statement + "' failed: DataAccessException");
+				log.info("retry transaction = " + (retryCnt < MAX_RETRY_COUNT));
+			} catch (Exception e) {
+				log.fatal("call of '" + statement + "' failed: " + e.toString());
+				skip = true;
+			}
+		}
 	}
 }

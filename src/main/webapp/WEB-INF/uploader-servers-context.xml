@@ -149,7 +149,7 @@
 		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.SocketProcessorConfig">
 	 	<property name="doReadLine" value="false" /> 
 	 	<property name="supportsMultipleRecordsPerReception" value="false" />       
-		<property name="socketReadTimeoutInMSecs" value="500" />
+		<property name="socketReadTimeoutInMSecs" value="1000" />
 		<property name="maxDataStringLengthInBytes" value="2048" />
 		<property name="connectionTimeoutInMSecs" value="900000" />	
 	</bean>      
@@ -158,7 +158,7 @@
 		class="de.msk.mylivetracker.web.uploader.processor.server.tcp.SocketProcessorConfig">
 	 	<property name="doReadLine" value="false" /> 
 	 	<property name="supportsMultipleRecordsPerReception" value="true" />       
-		<property name="socketReadTimeoutInMSecs" value="500" />
+		<property name="socketReadTimeoutInMSecs" value="1000" />
 		<property name="maxDataStringLengthInBytes" value="16384" />
 		<property name="connectionTimeoutInMSecs" value="900000" />	
 	</bean>

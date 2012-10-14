@@ -598,14 +598,16 @@ public class TrackDao extends SqlMapClientDaoSupport implements ITrackDao {
 		this.resetTrackAux(trackId);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.ITrackDao#resetActiveTrack(java.lang.String)
-	 */
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void resetActiveTrack(String senderId) {
+	public boolean resetActiveTrack(String senderId) {
+		boolean res = false;
 		TrackVo track = this.getActiveTrackAsMinAux(senderId);
-		this.resetTrack(track.getTrackId());	
+		if (track != null) {
+			this.resetTrack(track.getTrackId());
+			res = true;
+		} 
+		return res;
 	}
 
 	/* (non-Javadoc)
