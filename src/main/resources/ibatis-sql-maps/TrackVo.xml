@@ -276,10 +276,10 @@
   			t.SENDER_ID = #bySenderId#
   		</isNotNull>
   		<isNotNull prepend="and" property="byDateFrom">
-  			t.TRACK_CREATED &gt;= #byDateFrom#
+  			t.TRACK_UPDATED &gt;= #byDateFrom#
   		</isNotNull>
   		<isNotNull prepend="and" property="byDateTo">
-  			t.TRACK_CREATED &lt;= #byDateTo#
+  			t.TRACK_UPDATED &lt;= #byDateTo#
   		</isNotNull>
   		<isNotEmpty prepend="and" property="bySearchStr">
   			t.NAME like #bySearchStr#
@@ -306,10 +306,10 @@
   			t.SENDER_ID = #bySenderId#
   		</isNotNull>
   		<isNotNull prepend="and" property="byDateFrom">
-  			t.TRACK_CREATED &gt;= #byDateFrom#
+  			t.TRACK_UPDATED &gt;= #byDateFrom#
   		</isNotNull>
   		<isNotNull prepend="and" property="byDateTo">
-  			t.TRACK_CREATED &lt;= #byDateTo#
+  			t.TRACK_UPDATED &lt;= #byDateTo#
   		</isNotNull>
   		<isNotEmpty prepend="and" property="bySearchStr">
   			t.NAME like #bySearchStr#
@@ -330,10 +330,10 @@
   			t.SENDER_ID = #bySenderId#
   		</isNotNull>
   		<isNotNull prepend="and" property="byDateFrom">
-  			t.TRACK_CREATED &gt;= #byDateFrom#
+  			t.TRACK_UPDATED &gt;= #byDateFrom#
   		</isNotNull>
   		<isNotNull prepend="and" property="byDateTo">
-  			t.TRACK_CREATED &lt;= #byDateTo#
+  			t.TRACK_UPDATED &lt;= #byDateTo#
   		</isNotNull>
   		<isNotEmpty prepend="and" property="bySearchStr">
   			t.NAME like #bySearchStr#
@@ -354,10 +354,10 @@
   			t.SENDER_ID = #bySenderId#
   		</isNotNull>
   		<isNotNull prepend="and" property="byDateFrom">
-  			t.TRACK_CREATED &gt;= #byDateFrom#
+  			t.TRACK_UPDATED &gt;= #byDateFrom#
   		</isNotNull>
   		<isNotNull prepend="and" property="byDateTo">
-  			t.TRACK_CREATED &lt;= #byDateTo#
+  			t.TRACK_UPDATED &lt;= #byDateTo#
   		</isNotNull>
   		<isNotEmpty prepend="and" property="bySearchStr">
   			t.NAME like #bySearchStr#
@@ -373,8 +373,8 @@
   	<select id="getTracksCountOverallAsRecentTrack" parameterClass="trackFilter" resultClass="integer">
   		select count(*) 
   		from T_TRACK t
-  		where t.LAST_HEARTBEAT_SENT &gt;= #byDateFrom#
-  		and t.LAST_HEARTBEAT_SENT &lt;= #byDateTo#
+  		where t.TRACK_UPDATED &gt;= #byDateFrom#
+  		and t.TRACK_UPDATED &lt;= #byDateTo#
   		and t.IS_ACTIVE = #byActive#
   		and t.REMOVE = false  		
   	</select>
@@ -384,8 +384,8 @@
   			<include refid="columnsForRecentDetails"/> 
   		from T_TRACK t
   			<include refid="joinsForRecentDetails"/>
-  		where t.LAST_HEARTBEAT_SENT &gt;= #byDateFrom#
-  		and t.LAST_HEARTBEAT_SENT &lt;= #byDateTo#
+  		where t.TRACK_UPDATED &gt;= #byDateFrom#
+  		and t.TRACK_UPDATED &lt;= #byDateTo#
   		and t.IS_ACTIVE = #byActive#
   		and t.REMOVE = false 
   		order by t.COUNT_EMERGENCY_SIGNALS desc, t.LAST_HEARTBEAT_SENT desc

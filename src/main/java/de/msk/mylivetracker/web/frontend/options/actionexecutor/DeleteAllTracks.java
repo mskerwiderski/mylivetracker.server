@@ -29,6 +29,8 @@ public class DeleteAllTracks implements IAction {
 		throws ActionExecutionException {
 		String userId = user.getUserId();
 		services.getTrackService().removeAllTracksOfUsers(userId);
+		cmd.setInfoMessage(messageSource.getMessage(
+			"masterdata.success.all.tracks.deleted", null, locale));
 		return null;
 	}
 }

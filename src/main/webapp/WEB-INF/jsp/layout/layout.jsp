@@ -82,7 +82,7 @@
 	request.setAttribute("userOptsLanguage", userOptsLanguage);	
 %>
 <div id="layout-header" style="position: relative;z-index: 0;" class="mlt-header" >
-	<tiles:insertAttribute name="header" />
+	<tiles:insertAttribute name="header" defaultValue="" />
 </div>
 <hr/>
 <div id="layout-content" style="position: relative;z-index: 1;height:85%;width:100%" class="mlt-content" >

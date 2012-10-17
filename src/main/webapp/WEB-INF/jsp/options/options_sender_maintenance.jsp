@@ -49,7 +49,7 @@ function removeSender() {
 	$dlgRemoveSender.dialog('open');
 }
 
-var radiusCheck = "<c:out value='${optionsCmd.senderDetails.withinRadiusCheckEnabled}' />";
+
 function switchSenderRadiusCheckOnOff() {
 	if (radiusCheck == 'true') {
 		$("#radiusCheck").show();
@@ -59,7 +59,9 @@ function switchSenderRadiusCheckOnOff() {
 		radiusCheck = 'true';
 	}
 }	
+var radiusCheck = null;
 $(document).ready(function() {
+	radiusCheck = "<c:out value='${optionsCmd.senderDetails.withinRadiusCheckEnabled}' />";
 	switchSenderRadiusCheckOnOff();
 });
 </script>
@@ -343,8 +345,8 @@ $(document).ready(function() {
 					if (symbol == null) {
 						symbol = document.forms['optionsForm'].elements['senderDetails.symbol'].value;
 					}
-					var imgUrl = "<c:url value='img/map/'/>" + symbol + ".png";
-					document.forms['optionsForm'].elements['senderSymbolImg'].src=imgUrl;
+					var imgUrl = "img/map/" + symbol + ".png";
+					$("#senderSymbolImg").attr("src", imgUrl);
 				}
 			</script>
 			<c:set var="selSymbol">${optionsCmd.senderDetails.symbol}</c:set>

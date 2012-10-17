@@ -32,7 +32,9 @@ public class ApplicationService implements IApplicationService {
 	private IApplicationDao applicationDao;
 	private Cache applicationCache;	
 		
-	public void init() {
+	private void init() {
+		if (applicationCache.getSize() > 0) return;
+		log.info("initialize application parameter cache.");
 		List<ParameterVo> parameters = applicationDao.getAllParameters();
 		log.info("MyLiveTracker is running with following parameters:");
 		for (ParameterVo parameter : parameters) {
@@ -109,6 +111,7 @@ public class ApplicationService implements IApplicationService {
 	 */
 	@Override
 	public String getParameterValueAsString(Parameter parameter) {
+		init();
 		if (!applicationCache.isKeyInCache(parameter.name())) {
 			throw new IllegalArgumentException("parameter '" + 
 				parameter.name() + "' does not exist.");

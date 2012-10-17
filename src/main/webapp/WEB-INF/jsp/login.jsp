@@ -43,8 +43,30 @@
     	<td style="border:none;">&nbsp;<img style="vertical-align: middle;" 
     		src="img/logomaker/logo_150_73.png" height="50px" 
     		/>&nbsp;&nbsp;</td>
-    	<td style="border:none;" class="ui-widget-content">
+    	<td rowspan="2" style="border:none;" class="ui-widget-content">
     		<spring:message code="login.intro" />    		
+    	</td>
+    </tr>
+    <tr>
+    	<td style="border:none;text-align:center;">
+    		<c:set var="selLanguage">${locale}</c:set>
+			<select id="locale" name="locale" class="ui-state-default" 
+				style="vertical-align: middle" onchange="javascript:changeLanguage();"> 
+				<c:forEach var="language" items="${userOptsLanguage}">
+					<c:choose>
+   						<c:when test="${language.value == selLanguage}">
+					    	<option value="${language.value}" selected>
+					        	<spring:message code="${language.label}" />
+					      	</option>
+					    </c:when>
+				    	<c:otherwise>
+				      		<option value="${language.value}">
+					        	<spring:message code="${language.label}" />
+					      	</option>
+					    </c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</select>
     	</td>
     </tr>
 </table>

@@ -34,7 +34,13 @@ public class SenderService implements ISenderService {
 	 */
 	public SenderVo getAuthorizedSender(SenderFromRequestVo senderFromRequest) {
 		SenderVo senderInRepo = null; 
-			
+	
+		// if sender is already authorized --> just return current sender object from repo.
+		if ((senderFromRequest != null) && senderFromRequest.isAuthorized()) {
+			senderInRepo = this.getSender(senderFromRequest.getSenderId());
+			return senderInRepo;
+		}
+		
 		if ((senderFromRequest != null) && (!StringUtils.isEmpty(senderFromRequest.getSenderId()))) {
 			senderInRepo = this.getSender(senderFromRequest.getSenderId());
 		}

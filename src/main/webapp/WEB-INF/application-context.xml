@@ -193,8 +193,7 @@
     </bean>  
      	       
     <bean id="applicationService"
-        class="de.msk.mylivetracker.service.application.ApplicationService"
-        init-method="init">
+        class="de.msk.mylivetracker.service.application.ApplicationService">
         <property name="applicationDao" ref="applicationDao" />
         <property name="applicationCache" ref="applicationCache" />        
     </bean>

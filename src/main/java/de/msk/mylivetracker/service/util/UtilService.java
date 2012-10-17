@@ -32,35 +32,41 @@ public class UtilService implements IUtilService {
 	@Override
 	public void start() {
 		log.debug("util-service started.");
-		utilTaskExecutor.initialize();
-		boolean runDemo = 
-			this.services.getApplicationService().
-			getParameterValueAsBoolean(
-				Parameter.RunDemoAfterStartup);
-		if (runDemo) {
-			this.services.getDemoService().runDemo();
-			log.debug("demo started.");
-		} else {
-			log.debug("demo NOT started.");
-		}
+		try {
+			Thread.sleep(10000);
 		
-		boolean runCleanTasks =
-			this.services.getApplicationService().
-			getParameterValueAsBoolean(
-				Parameter.RunCleanTasksAfterStartup);
-		if (runCleanTasks) {
-			utilTaskExecutor.execute(
-				new TrackCleaner(
-					this.services.getApplicationService().
-						getParameterValueAsLong(
-							Parameter.TrackLifeTimeInMSecs), 
-					this.services));
-			log.debug("clean tasks started.");
-		} else {
-			log.debug("clean tasks NOT started.");
+			utilTaskExecutor.initialize();
+			boolean runDemo = 
+				this.services.getApplicationService().
+				getParameterValueAsBoolean(
+					Parameter.RunDemoAfterStartup);
+			if (runDemo) {
+				this.services.getDemoService().runDemo();
+				log.debug("demo started.");
+			} else {
+				log.debug("demo NOT started.");
+			}
+			
+			boolean runCleanTasks =
+				this.services.getApplicationService().
+				getParameterValueAsBoolean(
+					Parameter.RunCleanTasksAfterStartup);
+			if (runCleanTasks) {
+				utilTaskExecutor.execute(
+					new TrackCleaner(
+						this.services.getApplicationService().
+							getParameterValueAsLong(
+								Parameter.TrackLifeTimeInMSecs), 
+						this.services));
+				log.debug("clean tasks started.");
+			} else {
+				log.debug("clean tasks NOT started.");
+			}
+			
+			this.services.getStatisticsService().logApplicationStartUp();
+		} catch (InterruptedException e) {
+			log.info(e);
 		}
-		
-		this.services.getStatisticsService().logApplicationStartUp();
 	}
 
 	/**

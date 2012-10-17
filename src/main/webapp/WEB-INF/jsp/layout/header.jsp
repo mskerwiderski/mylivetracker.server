@@ -16,60 +16,35 @@
 
 <table>	
 	<tr>
-		<td style="white-space: nowrap">
-			<div id="myLiveTracker" class="mlt-button">
-				<input type="radio" 
-						id="myLiveTrackerBtn" 
-						name="radio"
-						onclick="javascript:window.location.href='tracks_overview.do';" 
-				/>
-				<label for="myLiveTrackerBtn" style="width:130px;">
-					<c:out value="${applicationName}" />
-				</label>														
-			</div>	
-		</td>
 		<td style="white-space: nowrap; text-align:left">
-			<c:choose>				
-				<c:when test="${!empty currentUser}">
-					<div style="font-weight: bold;margin-left: 10px;">					
-					- <spring:message code="layout.userinfo" /> 
+			<table>
+				<tr>
+					<td style="font-weight: bold; white-space:nowrap;">
+						<spring:message code="layout.loggedin.user"
+							argumentSeparator="," 
+							arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
+						/>
+					</td>
+				</tr>
+				<tr>	
+					<td style="white-space:nowrap;font-size: small;">
 						<c:choose>
 							<c:when test="${isGuest}">
-								<spring:message code="layout.userinfo.guest" />
-							</c:when>
-							<c:when test="${isAdmin}">
-								<spring:message code="layout.userinfo.admin" />
+								<spring:message code="layout.loggedin.as.guest" />
 							</c:when>
 							<c:when test="${isLoggedInAsAdmin}">
-								<spring:message code="layout.userinfo.loggedInAsAdmin" />
+								<spring:message 
+									code="layout.loggedin.as.admin" 
+									arguments="${currentUser.adminUsername}" 
+								/>
 							</c:when>
 							<c:otherwise>
+								&nbsp;
 							</c:otherwise>
 						</c:choose>
-						<c:out value="${currentUser.username}" /> &nbsp;
-					</div>									
-				</c:when>									
-				<c:otherwise>
-					<c:set var="selLanguage">${locale}</c:set>
-					&nbsp;&nbsp;<select id="locale" name="locale" class="ui-state-default" 
-						style="vertical-align: middle" onchange="javascript:changeLanguage();"> 
-						<c:forEach var="language" items="${userOptsLanguage}">
-							<c:choose>
-		   						<c:when test="${language.value == selLanguage}">
-							    	<option value="${language.value}" selected>
-							        	<spring:message code="${language.label}" />
-							      	</option>
-							    </c:when>
-						    	<c:otherwise>
-						      		<option value="${language.value}">
-							        	<spring:message code="${language.label}" />
-							      	</option>
-							    </c:otherwise>
-							</c:choose>
-						</c:forEach>
-					</select>
-				</c:otherwise>
-			</c:choose>				
+					</td>
+				</tr>
+			</table>			
 		</td>
 		<td style="width:100%;">			
 		</td>
