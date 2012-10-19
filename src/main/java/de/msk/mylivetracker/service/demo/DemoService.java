@@ -5,9 +5,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import de.msk.mylivetracker.dao.IDemoDao;
+import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
 import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.service.track.ITrackService;
 import de.msk.mylivetracker.service.user.IUserService;
@@ -24,8 +28,11 @@ import de.msk.mylivetracker.service.user.IUserService;
  * 
  */
 public class DemoService implements IDemoService {
+	private static final Log log = LogFactory.getLog(DemoService.class);
+	
 	private List<DemoCase> demoCases;
 	private IDemoDao demoDao;
+	private IApplicationService applicationService;
 	private IUserService userService;
 	private ISenderService senderService;
 	private ITrackService trackService;
@@ -33,6 +40,19 @@ public class DemoService implements IDemoService {
 	
 	private static final String STATUS_RUNNING = "RUNNING";
 	private ConcurrentMap<String, String> status = new ConcurrentHashMap<String, String>();
+	
+	public void runIfAutostart() {
+		boolean runDemo = 
+			this.applicationService.
+			getParameterValueAsBoolean(
+				Parameter.RunDemoAfterStartup);
+		if (runDemo) {
+			this.runDemo();
+			log.debug("demo started.");
+		} else {
+			log.debug("demo NOT started.");
+		}
+	}
 	
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.IDemoService#runDemo()
@@ -111,6 +131,14 @@ public class DemoService implements IDemoService {
 	 */
 	public void setDemoDao(IDemoDao demoDao) {
 		this.demoDao = demoDao;
+	}
+
+	public IApplicationService getApplicationService() {
+		return applicationService;
+	}
+
+	public void setApplicationService(IApplicationService applicationService) {
+		this.applicationService = applicationService;
 	}
 
 	/**

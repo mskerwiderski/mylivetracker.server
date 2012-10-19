@@ -3,8 +3,6 @@ package de.msk.mylivetracker.service.track;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.msk.mylivetracker.service.Services;
-
 
 /**
  * TrackCleaner.
@@ -22,12 +20,12 @@ public class TrackCleaner implements Runnable {
 	private static final Log log = LogFactory.getLog(TrackCleaner.class);
 	
 	private long olderThanInMSecs;
-	private Services services;
+	private ITrackService trackService;
 			
 	public TrackCleaner(
-		long olderThanInMSecs, Services services) {
+		long olderThanInMSecs, ITrackService trackService) {
 		this.olderThanInMSecs = olderThanInMSecs;
-		this.services = services;		
+		this.trackService = trackService;		
 	}
 	
 	/* (non-Javadoc)
@@ -44,12 +42,12 @@ public class TrackCleaner implements Runnable {
 		boolean statusOk = true;
 		while (statusOk) {
 			try {
-				services.getTrackService().
+				this.trackService.
 					removeOldTracks(this.olderThanInMSecs);
 				log.debug("trackcleaner: old tracks removed.");
 				Thread.sleep(1000 * 10);
 				DeletedTrackInfoVo deletedTrackInfo = 
-					services.getTrackService().deleteOneRemovedTrack();
+					this.trackService.deleteOneRemovedTrack();
 				log.debug("trackcleaner: " + deletedTrackInfo);
 				Thread.sleep(1000 * 10);
 			} catch (InterruptedException e) {

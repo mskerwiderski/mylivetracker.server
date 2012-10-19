@@ -171,7 +171,7 @@
 	 	mlt_map.setView(center, zoom);
 	}
 </script> 
-<table id="map_complete" style="width:100%;height:80%;">
+<table id="map_complete" style="width:100%;height:81%;">
 	<tr>
 		<td>
 			<div id="map_canvas"></div>

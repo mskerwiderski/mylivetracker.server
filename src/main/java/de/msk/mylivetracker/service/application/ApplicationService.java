@@ -32,8 +32,9 @@ public class ApplicationService implements IApplicationService {
 	private IApplicationDao applicationDao;
 	private Cache applicationCache;	
 		
-	private void init() {
-		if (applicationCache.getSize() > 0) return;
+	public void loadParameters() {
+		if ((this.applicationCache != null) && 
+			this.applicationCache.getSize() > 0) return;
 		log.info("initialize application parameter cache.");
 		List<ParameterVo> parameters = applicationDao.getAllParameters();
 		log.info("MyLiveTracker is running with following parameters:");
@@ -54,7 +55,7 @@ public class ApplicationService implements IApplicationService {
 	@Override
 	public void reloadParameters() {
 		applicationCache.removeAll();
-		init();
+		loadParameters();
 	}	
 		
 	private boolean isPortUsed(String ports, int port) {
@@ -111,7 +112,6 @@ public class ApplicationService implements IApplicationService {
 	 */
 	@Override
 	public String getParameterValueAsString(Parameter parameter) {
-		init();
 		if (!applicationCache.isKeyInCache(parameter.name())) {
 			throw new IllegalArgumentException("parameter '" + 
 				parameter.name() + "' does not exist.");

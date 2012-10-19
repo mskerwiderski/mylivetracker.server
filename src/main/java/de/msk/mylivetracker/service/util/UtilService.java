@@ -4,8 +4,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import de.msk.mylivetracker.service.Services;
+import de.msk.mylivetracker.service.application.IApplicationService;
 import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
+import de.msk.mylivetracker.service.statistics.IStatisticsService;
+import de.msk.mylivetracker.service.track.ITrackService;
 import de.msk.mylivetracker.service.track.TrackCleaner;
 
 /**
@@ -24,7 +26,9 @@ public class UtilService implements IUtilService {
 	private static final Log log = LogFactory.getLog(UtilService.class);
 	
 	private ThreadPoolTaskExecutor utilTaskExecutor;
-	private Services services;
+	private IApplicationService applicationService;
+	private ITrackService trackService;
+	private IStatisticsService statisticsService;
 		
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.service.IUtilService#start()
@@ -32,41 +36,24 @@ public class UtilService implements IUtilService {
 	@Override
 	public void start() {
 		log.debug("util-service started.");
-		try {
-			Thread.sleep(10000);
-		
-			utilTaskExecutor.initialize();
-			boolean runDemo = 
-				this.services.getApplicationService().
-				getParameterValueAsBoolean(
-					Parameter.RunDemoAfterStartup);
-			if (runDemo) {
-				this.services.getDemoService().runDemo();
-				log.debug("demo started.");
-			} else {
-				log.debug("demo NOT started.");
-			}
-			
-			boolean runCleanTasks =
-				this.services.getApplicationService().
-				getParameterValueAsBoolean(
-					Parameter.RunCleanTasksAfterStartup);
-			if (runCleanTasks) {
-				utilTaskExecutor.execute(
-					new TrackCleaner(
-						this.services.getApplicationService().
-							getParameterValueAsLong(
-								Parameter.TrackLifeTimeInMSecs), 
-						this.services));
-				log.debug("clean tasks started.");
-			} else {
-				log.debug("clean tasks NOT started.");
-			}
-			
-			this.services.getStatisticsService().logApplicationStartUp();
-		} catch (InterruptedException e) {
-			log.info(e);
+		utilTaskExecutor.initialize();
+		boolean runCleanTasks =
+			this.applicationService.
+			getParameterValueAsBoolean(
+				Parameter.RunCleanTasksAfterStartup);
+		if (runCleanTasks) {
+			utilTaskExecutor.execute(
+				new TrackCleaner(
+					this.applicationService.
+						getParameterValueAsLong(
+							Parameter.TrackLifeTimeInMSecs), 
+							trackService));
+			log.debug("clean tasks started.");
+		} else {
+			log.debug("clean tasks NOT started.");
 		}
+		
+		this.statisticsService.logApplicationStartUp();
 	}
 
 	/**
@@ -83,11 +70,27 @@ public class UtilService implements IUtilService {
 		this.utilTaskExecutor = utilTaskExecutor;
 	}
 
-	public Services getServices() {
-		return services;
+	public IApplicationService getApplicationService() {
+		return applicationService;
 	}
 
-	public void setServices(Services services) {
-		this.services = services;
+	public void setApplicationService(IApplicationService applicationService) {
+		this.applicationService = applicationService;
+	}
+
+	public ITrackService getTrackService() {
+		return trackService;
+	}
+
+	public void setTrackService(ITrackService trackService) {
+		this.trackService = trackService;
+	}
+
+	public IStatisticsService getStatisticsService() {
+		return statisticsService;
+	}
+
+	public void setStatisticsService(IStatisticsService statisticsService) {
+		this.statisticsService = statisticsService;
 	}
 }

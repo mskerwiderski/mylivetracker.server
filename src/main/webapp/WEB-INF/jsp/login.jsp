@@ -38,7 +38,7 @@
 </script>
 
 <div id="divLogin" style="height:100%;overflow:auto;">
-<table>   	
+<table>
     <tr style="text-align:left">
     	<td style="border:none;">&nbsp;<img style="vertical-align: middle;" 
     		src="img/logomaker/logo_150_73.png" height="50px" 

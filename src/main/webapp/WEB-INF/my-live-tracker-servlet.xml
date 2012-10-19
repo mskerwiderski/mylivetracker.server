@@ -52,7 +52,7 @@
             	<prop key="/track_as_kml_export.sec">trackAsKmlExportCtrl</prop>
             	<prop key="/track_as_gpx_export.sec">trackAsGpxExportCtrl</prop>
             	<prop key="/options.do">optionsCtrl</prop>
-            	<prop key="/upl*.sec">uploaderCtrl</prop>
+            	<prop key="/upl*.sec">httpServerAtApplicationPort</prop>
             	<prop key="/demo.do">demoCtrl</prop>            	
             </props>
         </property>
@@ -199,6 +199,14 @@
     	<property name="senderService" ref="senderService" />
    	</bean>
    	 	
+  	<bean name="serverInfo" class="de.msk.mylivetracker.web.frontend.options.ServerInfo">
+		<property name="tcpServers" ref="tcpServers" />
+		<property name="udpServers" ref="udpServers" />
+		<property name="httpServers" ref="httpServers" />
+		<property name="httpUrlTemplate" value="/upl*.sec" />
+		<property name="applicationService" ref="applicationService" />
+	</bean>
+	
     <bean name="optionsCtrl"
         class="de.msk.mylivetracker.web.frontend.options.OptionsCtrl">
         <property name="services" ref="services" />
@@ -217,6 +225,7 @@
         <property name="stPgTrOptsKeepRecentPos" ref="liveTrackingOptsKeepRecentPos" />
 		<property name="stPgTrOptsUpdateInterval" ref="liveTrackingOptsUpdateInterval" />
 		<property name="supportedMaps" ref="supportedMaps" />
+		<property name="serverInfo" ref="serverInfo" />
 		<property name="commandClass" 
         	value="de.msk.mylivetracker.web.frontend.options.OptionsCmd"/>
         <property name="commandName" value="optionsCmd" />
@@ -224,11 +233,4 @@
         <property name="formView" value="options"/>
         <property name="successView" value="options"/>  
     </bean>    
-     
-    <bean name="uploaderCtrl"
-        class="de.msk.mylivetracker.web.uploader.processor.server.http.HttpServletCtrl">
-        <property name="services" ref="services" />
-        <property name="dataPacketCreator" ref="httpServerDataPacketCreator" />        
-    </bean>
-              
 </beans>

@@ -78,6 +78,7 @@
 	  	<put-attribute name="status-page" value="/WEB-INF/jsp/options/options_status_page.jsp" />
 	  	<put-attribute name="maps" value="/WEB-INF/jsp/options/options_maps.jsp" />
 	  	<put-attribute name="emergency" value="/WEB-INF/jsp/options/options_emergency.jsp" />
+	  	<put-attribute name="server-info" value="/WEB-INF/jsp/options/options_server_info.jsp" />
 	</definition>		
 		
 </tiles-definitions>

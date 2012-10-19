@@ -27,10 +27,8 @@ public class SenderFromRequestVo {
 	}
 	
 	public void authorize(ISenderService senderService) {
-		if (sender == null) {
-			this.sender = 
-				senderService.getAuthorizedSender(this);
-		}
+		this.sender = 
+			senderService.getAuthorizedSender(this);
 	}
 	
 	/**

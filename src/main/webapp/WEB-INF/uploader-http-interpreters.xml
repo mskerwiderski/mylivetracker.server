@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util 
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/aop 
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/context 
+        				   http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+                           >
+    <!--
+    	supported http interpreters:
+    	o HttpInterpreter_MyLiveTrackerSimple
+    	o HttpInterpreter_MyLiveTrackerForAndroid
+    	o HttpInterpreter_AspicoreGsmTrackerForSymbian
+    	o HttpInterpreter_JouniErolaSendLocationForIos
+    	o HttpInterpreter_AxelFischerAfTrackForSymbian
+    	o HttpInterpreter_BrandsemotionBeGpsForBlackBerry
+    	o HttpInterpreter_WiebejGps2OpenGtsForAndroid
+    -->                       
+	<bean id="HttpInterpreter_MyLiveTrackerSimple" class="de.msk.mylivetracker.web.uploader.interpreter.msk.simple.HttpInterpreter">
+		<property name="id" value="spl" />
+		<property name="name" value="MyLiveTracker Simple" />
+		<property name="version" value="1.00" />		
+		<property name="services" ref="services" />								
+	</bean>	
+	<bean id="HttpInterpreter_MyLiveTrackerForAndroid" class="de.msk.mylivetracker.web.uploader.interpreter.msk.mylivetracker.HttpInterpreter">
+		<property name="id" value="mlt" />
+		<property name="name" value="MyLiveTracker for Android" />
+		<property name="version" value="1.00" />		
+		<property name="services" ref="services" />								
+	</bean>			
+	<bean id="HttpInterpreter_AspicoreGsmTrackerForSymbian" class="de.msk.mylivetracker.web.uploader.interpreter.aspicore.gsmtracker.HttpInterpreter">
+		<property name="id" value="agt" />
+		<property name="name" value="Aspicore GsmTracker for Symbian" />
+		<property name="version" value="1.00" />	
+		<property name="services" ref="services" />									
+	</bean>
+	<bean id="HttpInterpreter_JouniErolaSendLocationForIos" class="de.msk.mylivetracker.web.uploader.interpreter.jounierola.sendlocation.HttpInterpreter">
+		<property name="id" value="isl" />
+		<property name="name" value="Jouni Erola SendLocation for iOS" />
+		<property name="version" value="1.00" />	
+		<property name="services" ref="services" />				
+	</bean>
+	<bean id="HttpInterpreter_AxelFischerAfTrackForSymbian" class="de.msk.mylivetracker.web.uploader.interpreter.afischer.aftrack.HttpInterpreter">
+		<property name="id" value="aft" />
+		<property name="name" value="Axel Fischer AFTrack for Symbian" />
+		<property name="version" value="1.00" />
+		<property name="services" ref="services" />					
+	</bean>
+	<bean id="HttpInterpreter_BrandsemotionBeGpsForBlackBerry" class="de.msk.mylivetracker.web.uploader.interpreter.brandsemotion.begps.HttpInterpreter">
+		<property name="id" value="beg" />
+		<property name="name" value="Brandsemotion beGPS for BlackBerry" />
+		<property name="version" value="1.00" />
+		<property name="services" ref="services" />
+	</bean>	
+	<bean id="HttpInterpreter_WiebejGps2OpenGtsForAndroid" class="de.msk.mylivetracker.web.uploader.interpreter.wiebej.gps2opengts.HttpInterpreter">
+		<property name="id" value="gts" />
+		<property name="name" value="Wiebej GPS2OpenGTS for Android" />
+		<property name="version" value="1.00" />
+		<property name="services" ref="services" />
+	</bean>	
+</beans>

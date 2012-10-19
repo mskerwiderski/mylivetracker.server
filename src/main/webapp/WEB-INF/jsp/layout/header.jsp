@@ -14,12 +14,12 @@
 	});	
 </script>
 
-<table>	
+<table style="padding: 0px;border-spacing: 0px;">	
 	<tr>
 		<td style="white-space: nowrap; text-align:left">
-			<table>
+			<table style="padding: 0px;border-spacing: 0px;">
 				<tr>
-					<td style="font-weight: bold; white-space:nowrap;">
+					<td style="padding: 0px;border-spacing: 0px;font-weight: bold; white-space:nowrap;">
 						<spring:message code="layout.loggedin.user"
 							argumentSeparator="," 
 							arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
@@ -27,7 +27,7 @@
 					</td>
 				</tr>
 				<tr>	
-					<td style="white-space:nowrap;font-size: small;">
+					<td style="padding: 0px;border-spacing: 0px;white-space:nowrap;font-size: small;">
 						<c:choose>
 							<c:when test="${isGuest}">
 								<spring:message code="layout.loggedin.as.guest" />
@@ -49,7 +49,7 @@
 		<td style="width:100%;">			
 		</td>
 		<td style="text-align:right; white-space: nowrap;">								
-			<div id="headerNav" class="mlt-button">								
+			<div id="headerNav" class="mlt-button" >								
 				<security:authorize ifAnyGranted="Admin,User,Guest">
 					<input type="radio" 
 						id="tracksOverview" 

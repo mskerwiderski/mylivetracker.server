@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util 
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/aop 
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/context 
+        				   http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+                           >
+	<bean id="udpServerAt41395" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.udp.UdpServer"
+		init-method="start" destroy-method="interrupt">
+		<constructor-arg name="name" value="UdpServerAt41395" />
+		<property name="udpServerConfig" ref="udpServerAt41395Config" />
+		<property name="services" ref="services" />
+        <property name="dataPacketCreator" ref="udpServerDataPacketCreator" />
+        <property name="applicationService" ref="applicationService" />
+        <property name="statisticsService" ref="statisticsService" />        	
+	</bean>
+	 
+	<bean id="udpServerAt41395Config" 
+		class="de.msk.mylivetracker.web.uploader.processor.server.udp.UdpServerConfig">
+	 	<property name="listenPort" value="41395" />        		
+	</bean>
+	 			
+	<bean id="udpServerDataPacketCreator" 
+		class="de.msk.mylivetracker.web.uploader.processor.DataPacketCreator">
+		<constructor-arg>
+			<util:list>				
+				<ref bean="UdpInterpreter_AspicoreGsmTrackerForSymbian" />								
+			</util:list>
+		</constructor-arg>  		
+	</bean>
+	
+	<util:list id="udpServers">
+		<ref bean="udpServerAt41395" />
+	</util:list>
+</beans>

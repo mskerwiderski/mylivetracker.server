@@ -117,7 +117,9 @@
    	</util:list> 	       
    	
     <bean id="demoService"
-        class="de.msk.mylivetracker.service.demo.DemoService">        
+        class="de.msk.mylivetracker.service.demo.DemoService"
+        init-method="runIfAutostart">
+        <property name="applicationService" ref="applicationService" />        
         <property name="demoCases" ref="demoCases" />
         <property name="demoDao" ref="demoDao" />
         <property name="userService" ref="userService" />

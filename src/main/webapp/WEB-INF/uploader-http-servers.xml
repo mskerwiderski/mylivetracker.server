@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util 
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/aop 
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/context 
+        				   http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+                           >
+	<bean id="httpServerDataPacketCreator" 
+		class="de.msk.mylivetracker.web.uploader.processor.DataPacketCreator">
+		<constructor-arg>
+			<util:list>
+				<ref bean="HttpInterpreter_MyLiveTrackerSimple" />
+		    	<ref bean="HttpInterpreter_MyLiveTrackerForAndroid" />
+		    	<ref bean="HttpInterpreter_AspicoreGsmTrackerForSymbian" />
+		    	<ref bean="HttpInterpreter_JouniErolaSendLocationForIos" />
+		    	<ref bean="HttpInterpreter_AxelFischerAfTrackForSymbian" />
+		    	<ref bean="HttpInterpreter_BrandsemotionBeGpsForBlackBerry" />
+		    	<ref bean="HttpInterpreter_WiebejGps2OpenGtsForAndroid" />
+			</util:list>
+		</constructor-arg>  		
+	</bean>
+	
+	<bean name="httpServerAtApplicationPort"
+        class="de.msk.mylivetracker.web.uploader.processor.server.http.HttpServer">
+        <property name="name" value="HttpServerAtApplicationPort" />
+        <property name="services" ref="services" />
+        <property name="dataPacketCreator" ref="httpServerDataPacketCreator" />        
+    </bean>
+    
+    <util:list id="httpServers">
+		<ref bean="httpServerAtApplicationPort" />
+	</util:list>
+</beans>

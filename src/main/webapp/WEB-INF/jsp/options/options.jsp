@@ -39,6 +39,7 @@
 		<li><a href="#tabStatusPage"><spring:message code="statuspage.tab" /></a></li>
 		<li><a href="#tabMaps"><spring:message code="maps.tab" /></a></li>
 		<li><a href="#tabEmergency"><spring:message code="emergency.tab" /></a></li>
+		<li><a href="#tabServerInfo"><spring:message code="serverinfo.tab" /></a></li>
 	</ul>
 
 	<div id="tabUserMasterData" >
@@ -59,7 +60,9 @@
 	<div id="tabEmergency">
 		<tiles:insertAttribute name="emergency" />
 	</div>
-	
+	<div id="tabServerInfo">
+		<tiles:insertAttribute name="server-info" />
+	</div>	
 	</form:form>
 </div>
 

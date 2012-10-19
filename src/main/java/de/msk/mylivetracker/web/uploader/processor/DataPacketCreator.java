@@ -27,14 +27,9 @@ public class DataPacketCreator {
 		
 	private List<IDataInterpreter> dataInterpreters;
 		
-	/**
-	 * @param dataInterpreters
-	 */
 	private DataPacketCreator(List<IDataInterpreter> dataInterpreters) {
 		this.dataInterpreters = dataInterpreters;
 	}
-
-	
 	public DataPacket create(IDataCtx data, Services supportedServices, 
 		IDataInterpreter interpreter, SenderFromRequestVo senderFromRequest,
 		Map<String, Object> uploadProcessContext) {
@@ -50,5 +45,8 @@ public class DataPacketCreator {
 			}
 		}
 		return dataPacket;
+	}
+	public List<IDataInterpreter> getDataInterpreters() {
+		return dataInterpreters;
 	}
 }

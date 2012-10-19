@@ -16,7 +16,12 @@
         	/WEB-INF/application-context.xml
         	/WEB-INF/application-context-rpc.xml
         	/WEB-INF/application-context-security.xml
-        	/WEB-INF/uploader-servers-context.xml
+        	/WEB-INF/uploader-tcp-interpreters.xml
+        	/WEB-INF/uploader-udp-interpreters.xml
+        	/WEB-INF/uploader-http-interpreters.xml
+        	/WEB-INF/uploader-tcp-servers.xml
+        	/WEB-INF/uploader-udp-servers.xml
+        	/WEB-INF/uploader-http-servers.xml
         	/WEB-INF/my-live-tracker-options.xml
         	/WEB-INF/demo-context.xml        	
         </param-value>

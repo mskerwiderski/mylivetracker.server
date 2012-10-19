@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util 
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/aop 
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/context 
+        				   http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+                           >
+    <!--
+    	supported tcp interpreters:
+    	o TcpInterpreter_MyLiveTrackerForAndroid
+    	o TcpInterpreter_AspicoreGsmTrackerForSymbian
+    	o TcpInterpreter_MeitrackGtVt
+    	o TcpInterpreter_XexunTk102
+    	o TcpInterpreter_CobanGps103a
+    	o TcpInterpreter_IncutexTk5000
+    	o TcpInterpreter_BrandsemotionBeGpsForBlackBerry
+    	o TcpInterpreter_EcotecYourTracksForIos
+    -->                       
+	<bean id="TcpInterpreter_MyLiveTrackerForAndroid" class="de.msk.mylivetracker.web.uploader.interpreter.msk.mylivetracker.TcpInterpreter">
+		<property name="id" value="mlt" />
+		<property name="name" value="MyLiveTracker for Android" />
+		<property name="version" value="1.00" />						
+		<property name="services" ref="services" />          				
+	</bean>	
+	<bean id="TcpInterpreter_AspicoreGsmTrackerForSymbian" class="de.msk.mylivetracker.web.uploader.interpreter.aspicore.gsmtracker.TcpInterpreter">
+		<property name="id" value="agt" />
+		<property name="name" value="Aspicore GsmTracker for Symbian" />
+		<property name="version" value="1.00" />
+		<property name="services" ref="services" />
+	</bean>
+	<bean id="TcpInterpreter_MeitrackGtVt" class="de.msk.mylivetracker.web.uploader.interpreter.meitrack.gtvt.TcpInterpreter">
+		<property name="id" value="mei" />
+		<property name="name" value="Meitrack GT/VT" />
+		<property name="version" value="1.00" />
+		<property name="services" ref="services" />
+	</bean>
+	<bean id="TcpInterpreter_XexunTk102" class="de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.TcpInterpreter">
+		<property name="id" value="xtk" />
+		<property name="name" value="Xexun Tk102" />
+		<property name="version" value="1.00" />	
+		<property name="services" ref="services" />				
+	</bean>				
+	<bean id="TcpInterpreter_CobanGps103a" class="de.msk.mylivetracker.web.uploader.interpreter.coban.gps103a.TcpInterpreter">
+		<property name="id" value="cob" />
+		<property name="name" value="Coban GPS 103a" />
+		<property name="version" value="1.00" />	
+		<property name="services" ref="services" />				
+	</bean>
+	<bean id="TcpInterpreter_IncutexTk5000" class="de.msk.mylivetracker.web.uploader.interpreter.incutex.tk5000.TcpInterpreter">
+		<property name="id" value="tk5" />
+		<property name="name" value="Incutex Tk5000" />
+		<property name="version" value="1.10" />
+		<property name="services" ref="services" />
+	</bean>
+	<bean id="TcpInterpreter_BrandsemotionBeGpsForBlackBerry" class="de.msk.mylivetracker.web.uploader.interpreter.brandsemotion.begps.TcpInterpreter">
+		<property name="id" value="beg" />
+		<property name="name" value="Brandsemotion beGPS for BlackBerry" />
+		<property name="version" value="1.00" />
+		<property name="services" ref="services" />
+	</bean>			
+	<bean id="TcpInterpreter_EcotecYourTracksForIos" class="de.msk.mylivetracker.web.uploader.interpreter.ecotec.yourtracks.TcpInterpreter">
+		<property name="id" value="eyt" />
+		<property name="name" value="Ecotec YourTracks for iOS" />
+		<property name="version" value="1.00" />
+		<property name="services" ref="services" />
+	</bean>					
+</beans>

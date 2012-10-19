@@ -56,6 +56,7 @@ public class OptionsCtrl extends SimpleFormController {
 	private List<IntOptionDsc> stPgTrOptsKeepRecentPos;
 	private List<IntOptionDsc> stPgTrOptsUpdateInterval;
 	private List<IntOptionDsc> supportedMaps;
+	private ServerInfo serverInfo;
 	
 	private Services services;
 	
@@ -112,6 +113,7 @@ public class OptionsCtrl extends SimpleFormController {
 			cmd.setStPgTrOptsKeepRecentPos(stPgTrOptsKeepRecentPos);
 			cmd.setStPgTrOptsUpdateInterval(stPgTrOptsUpdateInterval);
 			cmd.setSupportedMaps(supportedMaps);
+			cmd.setServerInfo(serverInfo);
 			request.getSession().setAttribute(this.getCommandName(), cmd);
 		}
 		cmd.setInfoMessage(null);
@@ -393,5 +395,11 @@ public class OptionsCtrl extends SimpleFormController {
 	 */
 	public void setSupportedMaps(List<IntOptionDsc> supportedMaps) {
 		this.supportedMaps = supportedMaps;
+	}
+	public ServerInfo getServerInfo() {
+		return serverInfo;
+	}
+	public void setServerInfo(ServerInfo serverInfo) {
+		this.serverInfo = serverInfo;
 	}
 }

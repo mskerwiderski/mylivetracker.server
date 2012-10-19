@@ -39,7 +39,8 @@ public class UdpServer extends Thread {
 		
 	private DatagramSocket serverSocket = null;		
 	private boolean shutdown;
-				
+	private boolean running;
+	
 	/**
 	 * @name name
 	 * @param listenPort
@@ -48,18 +49,20 @@ public class UdpServer extends Thread {
 		this.setName(name + " [" + this.getId() + "]");		
 	}
 	
-	/**
-	 * @return the shutdown
-	 */
 	private synchronized boolean isShutdown() {
 		return shutdown;
 	}
 
-	/**
-	 * @param shutdown the shutdown to set
-	 */
 	private synchronized void setShutdown(boolean shutdown) {
 		this.shutdown = shutdown;
+	}
+	
+	public synchronized boolean isRunning() {
+		return running;
+	}
+	
+	private synchronized void setRunning(boolean running) {
+		this.running = running;
 	}
 	
 	/* (non-Javadoc)
@@ -67,7 +70,7 @@ public class UdpServer extends Thread {
 	 */
 	@Override
 	public synchronized void start() {
-		boolean running = false;
+		this.setRunning(false);
 		if (!this.applicationService.isUdpPortUsed(
 			this.udpServerConfig.getListenPort())) {
 			log.info(getName() + 
@@ -82,7 +85,7 @@ public class UdpServer extends Thread {
 			super.start();
 			log.info(getName() + 
 				": server at port " + udpServerConfig.getListenPort() + " successfully started.");
-			running = true;
+			this.setRunning(true);
 		} catch (IOException e) {
 			setShutdown(true);
 			log.info(getName() + 
@@ -91,7 +94,7 @@ public class UdpServer extends Thread {
 			e.printStackTrace();
 			log.info(getName() + 
 				": server start aborted.");
-			running = false;
+			this.setRunning(false);
 		}		
 		
 		this.statisticsService.logUploaderServerStatus(
@@ -113,7 +116,8 @@ public class UdpServer extends Thread {
 	 */
 	@Override
 	public void interrupt() {
-		setShutdown(true);
+		this.setRunning(false);
+		this.setShutdown(true);
 		this.serverSocket.close();			
 		log.info(this.getName() + ": server at port " +
 			this.serverSocket.getLocalPort() + " stopped (server-socket closed).");
@@ -145,7 +149,8 @@ public class UdpServer extends Thread {
 			} catch (Exception e) {
 				log.fatal(e);	
 			}
-		}		
+		}	
+		this.setRunning(false);
 	}
 	
 	/**

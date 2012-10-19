@@ -377,5 +377,5 @@
       		<scope>test</scope>
     	</dependency>
 	</dependencies>	
-  	<version>1.4.0 (RC2)</version>
+  	<version>1.4.0 (RC3)</version>
 </project>

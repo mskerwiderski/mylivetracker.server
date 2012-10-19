@@ -52,6 +52,7 @@
     			<value>de.msk.mylivetracker.messages.sender-symbols</value>
     			<value>de.msk.mylivetracker.messages.status-page</value>
     			<value>de.msk.mylivetracker.messages.emergency</value>
+    			<value>de.msk.mylivetracker.messages.server-info</value>
     			<value>de.msk.mylivetracker.messages.google-kml</value>    			
     			<value>de.msk.mylivetracker.messages.sms-templates</value>
     			<value>de.msk.mylivetracker.messages.format-utils</value>
@@ -109,14 +110,14 @@
 	<bean id="dataSourceMyLiveTracker" 
 		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
-			<value>java:/comp/env/jdbc/MyLiveTrackerDb2</value>
+			<value>java:comp/env/jdbc/MyLiveTrackerDb2</value>
 		</property>
 	</bean>	
     
     <bean id="dataSourceMyLiveTrackerStatistics" 
 		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
-			<value>java:/comp/env/jdbc/MyLiveTrackerDb2</value>
+			<value>java:comp/env/jdbc/MyLiveTrackerDb2</value>
 		</property>
 	</bean>
 	
@@ -193,7 +194,8 @@
     </bean>  
      	       
     <bean id="applicationService"
-        class="de.msk.mylivetracker.service.application.ApplicationService">
+        class="de.msk.mylivetracker.service.application.ApplicationService"
+        init-method="loadParameters">
         <property name="applicationDao" ref="applicationDao" />
         <property name="applicationCache" ref="applicationCache" />        
     </bean>
@@ -277,9 +279,11 @@
 	</bean>
 	
 	<bean id="utilService" init-method="start"
-        class="de.msk.mylivetracker.service.util.UtilService">        
-        <property name="utilTaskExecutor" ref="utilTaskExecutor" />
-        <property name="services" ref="services" />
+        class="de.msk.mylivetracker.service.util.UtilService">     
+        <property name="utilTaskExecutor" ref="utilTaskExecutor" />   
+        <property name="applicationService" ref="applicationService" />
+	 	<property name="statisticsService" ref="statisticsService" />
+	 	<property name="trackService" ref="trackService" />
     </bean>
                 
     <bean id="storePositionTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
@@ -316,7 +320,7 @@
     </bean>  
     
     <bean id="services" 
-		class="de.msk.mylivetracker.service.Services">
+		class="de.msk.mylivetracker.service.Services" lazy-init="false">
 		<property name="applicationService" ref="applicationService" />
 		<property name="demoService" ref="demoService" />
 		<property name="geocodingService" ref="geocodingService" />	

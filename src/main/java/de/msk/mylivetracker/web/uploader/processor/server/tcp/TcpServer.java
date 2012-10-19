@@ -39,7 +39,8 @@ public class TcpServer extends Thread {
 	private TcpServerTaskExecutor taskExecutorForProcessors;
 	private DataPacketCreator dataPacketCreator;
 		
-	private ServerSocket serverSocket = null;		
+	private ServerSocket serverSocket = null;
+	private boolean running;
 	private boolean shutdown;
 				
 	/**
@@ -50,18 +51,20 @@ public class TcpServer extends Thread {
 		this.setName(name + " [" + this.getId() + "]");		
 	}
 	
-	/**
-	 * @return the shutdown
-	 */
 	private synchronized boolean isShutdown() {
 		return shutdown;
 	}
 
-	/**
-	 * @param shutdown the shutdown to set
-	 */
 	private synchronized void setShutdown(boolean shutdown) {
 		this.shutdown = shutdown;
+	}
+	
+	public synchronized boolean isRunning() {
+		return running;
+	}
+	
+	private synchronized void setRunning(boolean running) {
+		this.running = running;
 	}
 	
 	/* (non-Javadoc)
@@ -69,7 +72,7 @@ public class TcpServer extends Thread {
 	 */
 	@Override
 	public synchronized void start() {
-		boolean running = false;
+		this.setRunning(false);
 		if (!this.applicationService.isTcpPortUsed(
 			this.tcpServerConfig.getListenPort())) {
 			log.info(getName() + 
@@ -87,7 +90,7 @@ public class TcpServer extends Thread {
 				"socketReadTimeoutInMSecs=" + socketProcessorConfig.getSocketReadTimeoutInMSecs() + "," +
 				"maxDataStringLengthInBytes=" + socketProcessorConfig.getMaxDataStringLengthInBytes() + "," +
 				"connectionTimeoutInMSecs=" + socketProcessorConfig.getConnectionTimeoutInMSecs() + "].");
-			running = true;
+			this.setRunning(true);
 		} catch (IOException e) {
 			setShutdown(true);
 			log.info(getName() + 
@@ -96,7 +99,7 @@ public class TcpServer extends Thread {
 			e.printStackTrace();
 			log.info(getName() + 
 				": server start aborted.");
-			running = false;
+			this.setRunning(false);
 		}
 		
 		this.statisticsService.logUploaderServerStatus(
@@ -104,7 +107,7 @@ public class TcpServer extends Thread {
 				getName(),
 				tcpServerConfig.getListenPort(), 
 				ProcessorType.Tcp.getProtocol(), 
-				running ? UploaderServerStatusVo.Status.Running : UploaderServerStatusVo.Status.NotRunning, 
+				this.isRunning() ? UploaderServerStatusVo.Status.Running : UploaderServerStatusVo.Status.NotRunning, 
 				new DateTime(), 
 				socketProcessorConfig.isDoReadLine(), 
 				socketProcessorConfig.isSupportsMultipleRecordsPerReception(), 
@@ -118,6 +121,7 @@ public class TcpServer extends Thread {
 	 */
 	@Override
 	public void interrupt() {
+		this.setRunning(false);
 		try {			
 			setShutdown(true);
 			this.serverSocket.close();			
@@ -172,6 +176,7 @@ public class TcpServer extends Thread {
 				log.info(e);	
 			}
 		}		
+		this.setRunning(false);
 	}
 
 	/**

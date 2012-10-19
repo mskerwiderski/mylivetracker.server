@@ -59,6 +59,7 @@ public class OptionsCmd {
 	private List<IntOptionDsc> stPgTrOptsUpdateInterval;
 	
 	private List<IntOptionDsc> supportedMaps;
+	private ServerInfo serverInfo;
 	
 	private UserMasterDataVo userMasterData;	
 	private UserAutoLoginVo userAutoLogin;
@@ -313,6 +314,14 @@ public class OptionsCmd {
 	 */
 	public void setSupportedMaps(List<IntOptionDsc> supportedMaps) {
 		this.supportedMaps = supportedMaps;
+	}
+
+	public ServerInfo getServerInfo() {
+		return serverInfo;
+	}
+
+	public void setServerInfo(ServerInfo serverInfo) {
+		this.serverInfo = serverInfo;
 	}
 
 	/**

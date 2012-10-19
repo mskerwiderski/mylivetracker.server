@@ -96,8 +96,7 @@ public abstract class AbstractDataInterpreter implements IDataInterpreter {
 				}				
 				dataPacket.setException(null);
 				dataPacket.setDataReceived(dataReceived);
-				if (dataReceived.hasValidSenderFromRequest() &&
-					!dataReceived.getSenderFromRequest().isAuthorized()) {
+				if (dataReceived.hasValidSenderFromRequest()) {
 					dataPacket.authorize(supportedServices.getSenderService());
 				}
 				dataPacket.setCheckMsg(dataReceived.checkIfValid());				

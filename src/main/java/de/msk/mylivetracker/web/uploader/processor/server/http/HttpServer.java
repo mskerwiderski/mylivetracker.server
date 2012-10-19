@@ -15,7 +15,7 @@ import de.msk.mylivetracker.web.uploader.processor.DataPacketCreator;
 import de.msk.mylivetracker.web.uploader.processor.ProcessorType;
 
 /**
- * HttpServletCtrl.
+ * HttpServer.
  * 
  * @author michael skerwiderski, (c)2011
  * 
@@ -25,16 +25,20 @@ import de.msk.mylivetracker.web.uploader.processor.ProcessorType;
  * 000 initial 2011-08-11
  * 
  */
-public class HttpServletCtrl extends AbstractController {
+public class HttpServer extends AbstractController {
 	
 	private Services services;
 	private DataPacketCreator dataPacketCreator;
+	private String name;
+	private boolean running;
+	private int listenPort;
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.web.context.support.WebApplicationObjectSupport#initServletContext(javax.servlet.ServletContext)
 	 */
 	@Override
 	protected void initServletContext(ServletContext servletContext) {
+		this.listenPort = this.services.getApplicationService().getApplicationPort();
 		this.services.getStatisticsService().logUploaderServerStatus(
 			new UploaderServerStatusVo(
 				"HttpServerAt" + this.services.getApplicationService().getApplicationPort(),
@@ -47,6 +51,7 @@ public class HttpServletCtrl extends AbstractController {
 				-1, 
 				-1, 
 				-1));
+		this.running = true;
 	}
 
 	/* (non-Javadoc)
@@ -56,13 +61,14 @@ public class HttpServletCtrl extends AbstractController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		HttpServletProcessor httpServletProcessor =
-			new HttpServletProcessor("HttpServletAt80",
+			new HttpServletProcessor("HttpServerAt80",
 				ProcessorType.Http,
 				services,
 				dataPacketCreator,
 				request,
 				response);
 		httpServletProcessor.process();
+		this.running = true;
 		return null;
 	}
 	public Services getServices() {
@@ -84,5 +90,17 @@ public class HttpServletCtrl extends AbstractController {
 	public void setDataPacketCreator(
 			DataPacketCreator dataPacketCreator) {
 		this.dataPacketCreator = dataPacketCreator;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public boolean isRunning() {
+		return running;
+	}
+	public int getListenPort() {
+		return listenPort;
 	}
 }
