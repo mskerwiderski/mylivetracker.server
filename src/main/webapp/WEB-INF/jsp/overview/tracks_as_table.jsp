@@ -44,7 +44,7 @@
 			"bSort" : false,	
 			"bAutoWidth": false,	
 			"bJQueryUI": true,
-			"sScrollY": "75%",							
+			"sScrollY": "100%",							
 			"bPaginate": false,		
 			"oLanguage": {
 				"sSearch": "&nbsp;<spring:message code="overview.track.table.search" />&nbsp;",
@@ -198,7 +198,7 @@
 		<div style="visibility: hidden;height:0px;"> 		
 		<table>
 			<tr id="trackTableRow" class="trackRow">
-				<td  class="trackRowCol">
+				<td class="trackRowCol">
 					<table>
 						<tr>
 							<td style="text-align: center; border: none; white-space: nowrap;">
@@ -268,7 +268,8 @@
 					<table style="border-spacing: 0px;">
 						<tr>
 							<td style="width:20px;height:20px;white-space: nowrap; border: none;">
-								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;" title="<spring:message code="overview.track.table.title.sender" />" 
+								&nbsp;<img style="height:16px;width:16px;vertical-align: middle;" 
+									title="<spring:message code="overview.track.table.title.sender" />" 
 									src="img/led/mobile_phone.png" style="border: none;" />&nbsp;
 							</td>				
 							<td id="senderInfo" title="Sender Id: SenderId"
@@ -468,7 +469,7 @@
 		<table style="border:0px;border-collapse:collapse; border-spacing:0px;" 
 			class="display" id="tableTracks"> 
 			<thead> 
-				<tr>
+				<tr class="ui-widget-header">
 					<th style="font-weight: bold;white-space: nowrap;">&nbsp;</th> 
 					<th style="font-weight: bold;white-space: nowrap;">&nbsp;<spring:message code="overview.table.header.status" />&nbsp;</th>
 					<th style="font-weight: bold;white-space: nowrap;">&nbsp;<spring:message code="overview.table.header.timestamps" />&nbsp;</th>

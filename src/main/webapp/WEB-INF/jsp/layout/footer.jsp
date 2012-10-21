@@ -6,13 +6,10 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 
-<table class="mlt-footer">
+<table style="padding: 0px;border-spacing: 0px;" class="mlt-footer">
 	<tr>
-		<td class="ui-widget-content">
-			&nbsp;
-			<img style="vertical-align: middle;width: 50px;" 
-				src="img/logomaker/logo_150_73.png" />
-			&copy; 2009 by 			
+		<td>
+			&nbsp;&copy; 2009 by 			
 			<a href="mailto:support@mylivetracker.de">MyLiveTracker.de</a> 
 			&nbsp;&#8226;&nbsp;
 			<c:out value="${version}" />

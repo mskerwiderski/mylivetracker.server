@@ -568,7 +568,6 @@ window.onload=startAutoRefresh;
 		</td>
 	</tr>
 </table>		
-<hr/>	
 	<div id="divTracks" >
 		<c:choose>
 			<c:when test="${tracksOverviewCmd.selectedTracksView eq 'Table'}">

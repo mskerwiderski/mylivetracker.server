@@ -11,39 +11,82 @@
 	$(document).ready(function () {
 		$("#myLiveTracker").buttonset();
 		$("#headerNav").buttonset();
+		$("#headerBack").buttonset();
 	});	
 </script>
 
 <table style="padding: 0px;border-spacing: 0px;">	
 	<tr>
-		<td style="white-space: nowrap; text-align:left">
+		<td style="white-space: nowrap; text-align:left;height:40px;">
 			<table style="padding: 0px;border-spacing: 0px;">
-				<tr>
-					<td style="padding: 0px;border-spacing: 0px;font-weight: bold; white-space:nowrap;">
-						<spring:message code="layout.loggedin.user"
-							argumentSeparator="," 
-							arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
-						/>
-					</td>
-				</tr>
-				<tr>	
-					<td style="padding: 0px;border-spacing: 0px;white-space:nowrap;font-size: small;">
-						<c:choose>
-							<c:when test="${isGuest}">
-								<spring:message code="layout.loggedin.as.guest" />
-							</c:when>
-							<c:when test="${isLoggedInAsAdmin}">
-								<spring:message 
-									code="layout.loggedin.as.admin" 
-									arguments="${currentUser.adminUsername}" 
+				<c:choose>
+					<c:when test="${empty currentUser}">
+						<div id = "headerBack" class="mlt-button">					
+							&nbsp;<input type="radio" 
+								id="tracksOverview" 
+								name="radio"						
+								onclick="javascript:window.location.href='tracks_overview.do';" 
+							/>
+							<label for="tracksOverview" style="width: 125px;" >
+								<spring:message code="layout.back" text="Back" />
+							</label>
+						</div>
+					</c:when>
+					<c:when test="${isGuest}">
+						<tr>
+							<td rowspan="2">
+								&nbsp;<img style="vertical-align: middle;width: 50px;" 
+									src="img/logomaker/logo_150_73.png" />&nbsp;
+							</td>
+							<td style="padding: 0px;border-spacing: 0px;font-weight: bold; white-space:nowrap;">
+								&nbsp;<spring:message code="layout.loggedin.user"
+									argumentSeparator="," 
+									arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
 								/>
-							</c:when>
-							<c:otherwise>
-								&nbsp;
-							</c:otherwise>
-						</c:choose>
-					</td>
-				</tr>
+							</td>
+						</tr>
+						<tr>	
+							<td style="padding: 0px;border-spacing: 0px;white-space:nowrap;font-size: small;">
+								&nbsp;<spring:message code="layout.loggedin.as.guest" />
+							</td>
+						</tr>		
+					</c:when>
+					<c:when test="${isLoggedInAsAdmin}">
+						<tr>
+							<td rowspan="2">
+								&nbsp;<img style="vertical-align: middle;width: 50px;" 
+									src="img/logomaker/logo_150_73.png" />&nbsp;
+							</td>
+							<td style="padding: 0px;border-spacing: 0px;font-weight: bold; white-space:nowrap;">
+								&nbsp;<spring:message code="layout.loggedin.user"
+									argumentSeparator="," 
+									arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
+								/>
+							</td>
+						</tr>
+						<tr>	
+							<td style="padding: 0px;border-spacing: 0px;white-space:nowrap;font-size: small;">
+								&nbsp;<spring:message 
+									code="layout.loggedin.as.admin" 
+									arguments="${currentUser.adminUsername}" />
+							</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td>
+								&nbsp;<img style="vertical-align: middle;width: 50px;" 
+									src="img/logomaker/logo_150_73.png" />&nbsp;
+							</td>
+							<td style="padding: 0px;border-spacing: 0px;font-weight: bold; white-space:nowrap;">
+								&nbsp;<spring:message code="layout.loggedin.user"
+									argumentSeparator="," 
+									arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
+								/>
+							</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
 			</table>			
 		</td>
 		<td style="width:100%;">			

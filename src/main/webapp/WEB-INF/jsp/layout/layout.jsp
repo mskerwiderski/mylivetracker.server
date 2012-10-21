@@ -29,7 +29,43 @@
 		.mlt-content td { border:1px solid #E6E6E6; }
 		.mlt-content th { border:1px solid #E6E6E6; }
 		.mlt-footer td { border:0px; font-size: x-small; font-family: Tahoma,Arial,sans-serif; }
-	</style>			
+	
+		/* Angaben für alle standardkonformen Browser */
+		body
+		{
+			margin:0;
+			padding:0;
+		}
+		#layout-content
+		{
+			padding-top:42px;
+			padding-bottom:1em;
+			padding-left:0;
+		}
+		#layout-header
+		{
+			position:fixed;
+			top:0px; left:0px; right:0px;
+			background: #f2f2f2;
+			text-align:center;
+		}
+		#layout-footer
+		{
+			position:fixed;
+			bottom:0px; left:0px; right:0px;
+			text-align:center;
+			background: #f2f2f2;
+			padding:3px;
+		}
+		#layout-push
+		{
+			position:fixed;
+			bottom:0px; left:0px; right:0px;
+			text-align:center;
+			background: #f2f2f2;
+			padding:3px;
+		}
+	</style>	
 </head>
 
 <body>
@@ -81,15 +117,15 @@
 		WebUtils.getUserOptsLanguage(request);
 	request.setAttribute("userOptsLanguage", userOptsLanguage);	
 %>
-<div id="layout-header" style="position: relative;z-index: 0;height:4.5%;" class="mlt-header" >
-	<tiles:insertAttribute name="header" defaultValue="" />
+<div id="layout-header" class="mlt-header" >
+	<tiles:insertAttribute name="header" />
 </div>
-<hr/>
-<div id="layout-content" style="position: relative;z-index: 1;height:85%;width:100%" class="mlt-content" >
-	<tiles:insertAttribute name="content" />	
+<div id="layout-content" style="width:100%" class="mlt-content" >
+	<tiles:insertAttribute name="content" />
 </div>
-<hr/>
-<div id="layout-footer" style="position: relative;z-index: 0;height:10.5%;" class="mlt-footer">
+<div id="layout-push">
+</div>
+<div id="layout-footer" class="mlt-footer">
 	<tiles:insertAttribute name="footer" />
 </div>
 </body>

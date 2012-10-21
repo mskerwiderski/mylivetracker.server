@@ -660,17 +660,8 @@ body.loading .modal {
 </script>
 	
 <body>
-	<div id="divTrack" style="height:98%;">
-	<table
-		<c:choose>
-			<c:when test="${fullscreen}">
-			style="width:100%;height:100%" 			
-			</c:when>
-			<c:otherwise>
-			style="width:<c:out value="${width}"/>px;height:<c:out value="${height}"/>px;"
-			</c:otherwise>
-		</c:choose>
-	>
+	<div id="divTrack">
+	<table>
 	<c:if test='${showTrackInfo}' >	
 		<tr style="height:10px;">			
 			<td style="border:none;">
@@ -781,33 +772,44 @@ body.loading .modal {
 			</td>
 		</tr>
 	</c:if>	
-		<tr>
-			<td>
-				<div id="map_canvas" style="width:100%;height:100%"></div>					
-			</td>
-		</tr>
-	<c:if test='${showTrackInfo}' >	
-		<tr style="height:10px;">
-			<td style="border:none;">
-				<table>
-					<tr>			
-						<td id="updateStatusPos" 
-							style="font-size: xx-small;text-align: left;vertical-align: middle;white-space: nowrap">							
-						</td>
-						<td id="updateStatusDevice" 
-							style="width:100%;font-size: xx-small;text-align: left;vertical-align: middle;white-space: nowrap">							
-						</td>
-						<td id="updateStatusTimestamp" 
-							style="font-size: xx-small;text-align: right;vertical-align: middle;white-space: nowrap">
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</c:if>		
-	</table>
-    </div>
-    <div class="modal"><!-- Place at bottom of page --></div>
+</table>	
+<table id="map_complete"
+	<c:choose>
+		<c:when test="${fullscreen}">
+		style="width:100%;height:75%" 			
+		</c:when>
+		<c:otherwise>
+		style="width:<c:out value="${width}"/>px;height:<c:out value="${height}"/>px;"
+		</c:otherwise>
+	</c:choose>
+>
+	<tr>
+		<td>
+			<div id="map_canvas"></div>
+		</td>
+	</tr>
+	<c:if test='${showTrackInfo}' >
+	<tr style="height:10px;">
+		<td style="border:none;">
+			<table>
+				<tr>			
+					<td id="updateStatusPos" 
+						style="font-size: xx-small;text-align: left;vertical-align: middle;white-space: nowrap">							
+					</td>
+					<td id="updateStatusDevice" 
+						style="width:100%;font-size: xx-small;text-align: left;vertical-align: middle;white-space: nowrap">							
+					</td>
+					<td id="updateStatusTimestamp" 
+						style="font-size: xx-small;text-align: right;vertical-align: middle;white-space: nowrap">
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</c:if>
+</table>
+</div>
+<div class="modal"><!-- Place at bottom of page --></div>
 </body>
 
 <script type="text/javascript" >		

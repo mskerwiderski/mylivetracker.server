@@ -276,20 +276,23 @@
 				<tr>
 					<td style="border:none;">
 						&nbsp;<form:checkbox path="userOptions.guestAccEnabled"
+							cssClass="text ui-widget-content ui-corner-all"
 						/>&nbsp;
 						<spring:message code="options.guest.access.enabled" />
 					</td>
 				</tr>
 				<tr>
 					<td style="border:none;">
-						&nbsp;<form:checkbox path="userOptions.guestAccClosedTrEnabled"					
+						&nbsp;<form:checkbox path="userOptions.guestAccClosedTrEnabled"
+							cssClass="text ui-widget-content ui-corner-all"					
 						/>&nbsp;
 						<spring:message code="options.guest.access.closed.tracks.accessable" />
 					</td>
 				</tr>
 				<tr>
 					<td style="border:none;">
-						&nbsp;<form:checkbox path="userOptions.guestAccPrivTrEnabled"					
+						&nbsp;<form:checkbox path="userOptions.guestAccPrivTrEnabled"
+							cssClass="text ui-widget-content ui-corner-all"					
 						/>&nbsp;
 						<spring:message code="options.guest.access.private.tracks.accessable" />
 					</td>

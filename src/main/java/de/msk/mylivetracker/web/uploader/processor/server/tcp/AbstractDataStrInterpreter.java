@@ -2,6 +2,8 @@ package de.msk.mylivetracker.web.uploader.processor.server.tcp;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.web.uploader.processor.IDataCtx;
 import de.msk.mylivetracker.web.uploader.processor.IDeviceSpecific;
@@ -21,6 +23,7 @@ import de.msk.mylivetracker.web.uploader.processor.interpreter.util.InterpreterE
  */
 public abstract class AbstractDataStrInterpreter extends AbstractDataInterpreter {
 	
+	private DataStrOpt dataStrOpt = DataStrOpt.None;
 	
 	/* (non-Javadoc)
 	 * @see de.msk.mylivetracker.web.uploader.processor.interpreter.IDataInterpreter#isDeviceCompliant(de.msk.mylivetracker.domain.DataReceivedVo, de.msk.mylivetracker.web.uploader.processor.IDataCtx)
@@ -28,7 +31,12 @@ public abstract class AbstractDataStrInterpreter extends AbstractDataInterpreter
 	@Override
 	public boolean isDeviceCompliant(DataReceivedVo dataReceived, IDataCtx data)
 		throws InterpreterException {
-		return this.isDeviceCompliant(((DataStrCtx)data).getDataStr());
+		String dataStr = ((DataStrCtx)data).getDataStr();
+		if (!this.dataStrOpt.equals(DataStrOpt.None)) {
+			dataStr = this.getSingleDataStr(dataStr, 
+				this.dataStrOpt.equals(DataStrOpt.GetFirstSingleDataStr));
+		}
+		return this.isDeviceCompliant(dataStr);
 	}
 
 	/* (non-Javadoc)
@@ -38,7 +46,12 @@ public abstract class AbstractDataStrInterpreter extends AbstractDataInterpreter
 	public IDeviceSpecific process(DataReceivedVo dataReceived, IDataCtx data,
 		Map<String, Object> uploadProcessContext)
 		throws InterpreterException {
-		return this.process(dataReceived, ((DataStrCtx)data).getDataStr(),
+		String dataStr = ((DataStrCtx)data).getDataStr();
+		if (!this.dataStrOpt.equals(DataStrOpt.None)) {
+			dataStr = this.getSingleDataStr(dataStr, 
+				this.dataStrOpt.equals(DataStrOpt.GetFirstSingleDataStr));
+		}
+		return this.process(dataReceived, dataStr,
 			uploadProcessContext);
 	}
 	
@@ -65,4 +78,26 @@ public abstract class AbstractDataStrInterpreter extends AbstractDataInterpreter
 		String dataStr, Map<String, Object> uploadProcessContext) throws InterpreterException;
 	
 	protected abstract boolean isDeviceCompliant(String dataStr) throws InterpreterException;
+	
+	protected String getSingleDataStr(String dataStr, boolean first) throws InterpreterException {
+		String singleDataString = dataStr;
+		if (!StringUtils.isEmpty(dataStr)) {
+			dataStr = StringUtils.replace(dataStr, "\r\n", "\n");
+			dataStr = StringUtils.replace(dataStr, "\r", "\n");
+			String[] dataStrArr = StringUtils.split(dataStr, "\n");
+			if ((dataStrArr != null) && (dataStrArr.length > 0)) {
+				singleDataString = (first ? 
+					dataStrArr[0] : dataStrArr[dataStrArr.length-1]);
+			}
+		}
+		return singleDataString;
+	}
+
+	public DataStrOpt getDataStrOpt() {
+		return dataStrOpt;
+	}
+
+	public void setDataStrOpt(DataStrOpt dataStrOpt) {
+		this.dataStrOpt = dataStrOpt;
+	}
 }

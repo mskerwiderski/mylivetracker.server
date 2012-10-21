@@ -222,11 +222,11 @@ public abstract class UploadProcessor {
 				} else {
 					successfullyProcessed = true;
 					resultMsg = result.toString();
+					this.supportedServices.getSenderService().updateSenderType(
+						dataPacket.getDataReceived().getSenderFromRequest().getSenderId(),	
+						dataPacket.getDetectedSenderType());
 				}
 			}				
-			this.supportedServices.getSenderService().updateSenderType(
-				dataPacket.getDataReceived().getSenderFromRequest().getSenderId(),	
-				dataPacket.getDetectedSenderType());
 		}				
 		return new ProcessResult(successfullyProcessed, resultMsg, responseStr);
 	}

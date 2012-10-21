@@ -32,7 +32,8 @@
 		<property name="id" value="mlt" />
 		<property name="name" value="MyLiveTracker for Android" />
 		<property name="version" value="1.00" />						
-		<property name="services" ref="services" />          				
+		<property name="services" ref="services" /> 
+		<property name="dataStrOpt" value="GetLastSingleDataStr"/>
 	</bean>	
 	<bean id="TcpInterpreter_AspicoreGsmTrackerForSymbian" class="de.msk.mylivetracker.web.uploader.interpreter.aspicore.gsmtracker.TcpInterpreter">
 		<property name="id" value="agt" />

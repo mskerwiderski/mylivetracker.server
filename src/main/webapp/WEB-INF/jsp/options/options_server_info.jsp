@@ -49,97 +49,108 @@
 		<th style="white-space: nowrap;text-align:left;" class="ui-widget-header">&nbsp;Supported Devices&nbsp;</th>
 		<th style="width:100%;border:none;">&nbsp;</th>
 	</tr>	
-	<c:forEach items="${optionsCmd.serverInfo.tcpServers}" var="tcpServer">
-		<tr>
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${tcpServer.name}" />&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${tcpServer.running}" />&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>		
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>	
-						<td style="white-space: nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${tcpServer.tcpServerConfig.listenPort}" />&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>			
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;supportsMultipleRecordsPerReception&nbsp;
-						</td>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							=
-						</td>	
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${tcpServer.socketProcessorConfig.supportsMultipleRecordsPerReception}" />&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;socketReadTimeoutInMSecs&nbsp;
-						</td>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							=
-						</td>	
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${tcpServer.socketProcessorConfig.socketReadTimeoutInMSecs}" />&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;maxDataStringLengthInBytes&nbsp;
-						</td>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							=
-						</td>	
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${tcpServer.socketProcessorConfig.maxDataStringLengthInBytes}" />&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;connectionTimeoutInMSecs&nbsp;
-						</td>	
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							=
-						</td>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${tcpServer.socketProcessorConfig.connectionTimeoutInMSecs}" />&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>
-			<td style="white-space: nowrap;vertical-align:top;" class="ui-widget-content">
-				<table>
-					<c:forEach items="${tcpServer.dataPacketCreator.dataInterpreters}" var="tcpInterpreter">
-						<tr><td style="white-space:nowrap;;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${tcpInterpreter.name}" />&nbsp;
-						</td></tr>
-					</c:forEach>
-				</table>
-			</td>
-			<td style="border:none;">
-				&nbsp;
-			</td>
-		</tr>	
-	</c:forEach>
+	<c:choose>
+		<c:when test="${empty optionsCmd.serverInfo.tcpServers}">
+			<tr>
+				<td colspan="5">
+					&nbsp;No TCP Servers active.&nbsp;
+				</td>
+			</tr>
+		</c:when>
+		<c:otherwise>	
+			<c:forEach items="${optionsCmd.serverInfo.tcpServers}" var="tcpServer">
+				<tr>
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${tcpServer.name}" />&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${tcpServer.running}" />&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>		
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>	
+								<td style="white-space: nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${tcpServer.tcpServerConfig.listenPort}" />&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>			
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;supportsMultipleRecordsPerReception&nbsp;
+								</td>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									=
+								</td>	
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${tcpServer.socketProcessorConfig.supportsMultipleRecordsPerReception}" />&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;socketReadTimeoutInMSecs&nbsp;
+								</td>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									=
+								</td>	
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${tcpServer.socketProcessorConfig.socketReadTimeoutInMSecs}" />&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;maxDataStringLengthInBytes&nbsp;
+								</td>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									=
+								</td>	
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${tcpServer.socketProcessorConfig.maxDataStringLengthInBytes}" />&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;connectionTimeoutInMSecs&nbsp;
+								</td>	
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									=
+								</td>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${tcpServer.socketProcessorConfig.connectionTimeoutInMSecs}" />&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td style="white-space: nowrap;vertical-align:top;" class="ui-widget-content">
+						<table>
+							<c:forEach items="${tcpServer.dataPacketCreator.dataInterpreters}" var="tcpInterpreter">
+								<tr><td style="white-space:nowrap;;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${tcpInterpreter.name}" />&nbsp;
+								</td></tr>
+							</c:forEach>
+						</table>
+					</td>
+					<td style="border:none;">
+						&nbsp;
+					</td>
+				</tr>	
+			</c:forEach>
+		</c:otherwise>	
+	</c:choose>
 </table>	
 </td></tr>
 <tr><td style="border:none;"><hr/>
@@ -158,58 +169,69 @@
 		<th style="white-space: nowrap;text-align:left;" class="ui-widget-header">&nbsp;Supported Devices&nbsp;</th>
 		<th style="width:100%;border:none;">&nbsp;</th>
 	</tr>	
-	<c:forEach items="${optionsCmd.serverInfo.udpServers}" var="udpServer">
-		<tr>
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${udpServer.name}" />&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${udpServer.running}" />&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>		
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>	
-						<td style="white-space: nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${udpServer.udpServerConfig.listenPort}" />&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>	
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>	
-						<td style="white-space: nowrap;border:none;" class="ui-widget-content">
-							&nbsp;./.&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>		
-			<td style="white-space: nowrap;vertical-align:top;" class="ui-widget-content">
-				<table>
-					<c:forEach items="${udpServer.dataPacketCreator.dataInterpreters}" var="udpInterpreter">
-						<tr><td style="white-space:nowrap;;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${udpInterpreter.name}" />&nbsp;
-						</td></tr>
-					</c:forEach>
-				</table>
-			</td>
-			<td style="border:none;">
-				&nbsp;
-			</td>
-		</tr>	
-	</c:forEach>
+	<c:choose>
+		<c:when test="${empty optionsCmd.serverInfo.udpServers}">
+			<tr>
+				<td colspan="5">
+					&nbsp;No UDP Servers active.&nbsp;
+				</td>
+			</tr>
+		</c:when>
+		<c:otherwise>
+			<c:forEach items="${optionsCmd.serverInfo.udpServers}" var="udpServer">
+				<tr>
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${udpServer.name}" />&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${udpServer.running}" />&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>		
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>	
+								<td style="white-space: nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${udpServer.udpServerConfig.listenPort}" />&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>	
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>	
+								<td style="white-space: nowrap;border:none;" class="ui-widget-content">
+									&nbsp;./.&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>		
+					<td style="white-space: nowrap;vertical-align:top;" class="ui-widget-content">
+						<table>
+							<c:forEach items="${udpServer.dataPacketCreator.dataInterpreters}" var="udpInterpreter">
+								<tr><td style="white-space:nowrap;;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${udpInterpreter.name}" />&nbsp;
+								</td></tr>
+							</c:forEach>
+						</table>
+					</td>
+					<td style="border:none;">
+						&nbsp;
+					</td>
+				</tr>	
+			</c:forEach>
+		</c:otherwise>
+	</c:choose>		
 </table>	
 </td></tr>
 <tr><td style="border:none;"><hr/>
@@ -228,66 +250,77 @@
 		<th style="white-space: nowrap;text-align:left;" class="ui-widget-header">&nbsp;Supported Devices&nbsp;</th>
 		<th style="width:100%;border:none;">&nbsp;</th>
 	</tr>	
-	<c:forEach items="${optionsCmd.serverInfo.httpServerDscs}" var="httpServerDsc">
-		<tr>
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${httpServerDsc.server.name}" />&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>
-						<td style="white-space:nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${httpServerDsc.server.running}" />&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>		
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>	
-						<td style="white-space: nowrap;border:none;" class="ui-widget-content">
-							&nbsp;<c:out value="${httpServerDsc.server.listenPort}" />&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>	
-			<td style="white-space: nowrap;vertical-align:top;">
-				<table>
-					<tr>	
-						<td style="white-space: nowrap;border:none;" class="ui-widget-content">
-							&nbsp;./.&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>		
-			<td style="white-space: nowrap;vertical-align:top;" class="ui-widget-content">
-				<table>
-					<c:forEach items="${httpServerDsc.dscs}" var="httpInterpreterDsc">
-						<tr>
-							<td style="white-space:nowrap;;border:none;" class="ui-widget-content">
-								&nbsp;<c:out value="${httpInterpreterDsc.interpreter.name}" />&nbsp;
-							</td>
-							<td style="white-space:nowrap;;border:none;" class="ui-widget-content">
-								&rarr;
-							</td>
-							<td style="white-space:nowrap;;border:none;" class="ui-widget-content">
-								&nbsp;<c:out value="${httpInterpreterDsc.url}" />&nbsp;
-							</td>
-						</tr>
-					</c:forEach>
-				</table>
-			</td>
-			<td style="border:none;">
-				&nbsp;
-			</td>
-		</tr>	
-	</c:forEach>
+	<c:choose>
+		<c:when test="${empty optionsCmd.serverInfo.httpServerDscs}">
+			<tr>
+				<td colspan="5">
+					&nbsp;No HTTP Servers active.&nbsp;
+				</td>
+			</tr>
+		</c:when>
+		<c:otherwise>
+			<c:forEach items="${optionsCmd.serverInfo.httpServerDscs}" var="httpServerDsc">
+				<tr>
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${httpServerDsc.server.name}" />&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>
+								<td style="white-space:nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${httpServerDsc.server.running}" />&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>		
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>	
+								<td style="white-space: nowrap;border:none;" class="ui-widget-content">
+									&nbsp;<c:out value="${httpServerDsc.server.listenPort}" />&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>	
+					<td style="white-space: nowrap;vertical-align:top;">
+						<table>
+							<tr>	
+								<td style="white-space: nowrap;border:none;" class="ui-widget-content">
+									&nbsp;./.&nbsp;
+								</td>
+							</tr>
+						</table>
+					</td>		
+					<td style="white-space: nowrap;vertical-align:top;" class="ui-widget-content">
+						<table>
+							<c:forEach items="${httpServerDsc.dscs}" var="httpInterpreterDsc">
+								<tr>
+									<td style="white-space:nowrap;;border:none;" class="ui-widget-content">
+										&nbsp;<c:out value="${httpInterpreterDsc.interpreter.name}" />&nbsp;
+									</td>
+									<td style="white-space:nowrap;;border:none;" class="ui-widget-content">
+										&rarr;
+									</td>
+									<td style="white-space:nowrap;;border:none;" class="ui-widget-content">
+										&nbsp;<c:out value="${httpInterpreterDsc.url}" />&nbsp;
+									</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</td>
+					<td style="border:none;">
+						&nbsp;
+					</td>
+				</tr>	
+			</c:forEach>
+		</c:otherwise>	
+	</c:choose>
 </table>	
 </td></tr>
 </table>

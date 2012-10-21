@@ -73,6 +73,12 @@ function mlt_initMap(anker, mapsUsedStr, defMapId, defCenter, defZoom, supported
     	mlt_markersVisible = false;
       	mlt_removeMarkersFromLayer();
     });
+    map.on('enterFullscreen', function(){
+    	$("#layout-footer").hide();	
+    });
+    map.on('exitFullscreen', function(){
+    	$("#layout-footer").show();	
+    });
 	return map;
 }
 

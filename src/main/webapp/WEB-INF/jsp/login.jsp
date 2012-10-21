@@ -37,7 +37,8 @@
 	});		
 </script>
 
-<div id="divLogin" style="height:100%;overflow:auto;">
+<div id="divLogin">
+<hr/>
 <table>
     <tr style="text-align:left">
     	<td style="border:none;">&nbsp;<img style="vertical-align: middle;" 

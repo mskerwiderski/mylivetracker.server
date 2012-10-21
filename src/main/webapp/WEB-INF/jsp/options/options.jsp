@@ -25,7 +25,7 @@
 	
 </script>
 	
-<div id="divOptions" style="height:98%;overflow:auto;" >
+<div id="divOptions">
 	<form:form id="optionsForm" name="optionsForm" 
 		commandName="optionsCmd">
 	
@@ -42,25 +42,25 @@
 		<li><a href="#tabServerInfo"><spring:message code="serverinfo.tab" /></a></li>
 	</ul>
 
-	<div id="tabUserMasterData" >
+	<div id="tabUserMasterData" style="overflow:scroll;height:80%;border-bottom: none;">
 		<tiles:insertAttribute name="user-master-data" />
 	</div>
-	<div id="tabUserOptions" >	
+	<div id="tabUserOptions" style="overflow:scroll;height:80%;border-bottom: none;">	
 		<tiles:insertAttribute name="user-options" />
 	</div>	
-	<div id="tabSenderMaintenance">
+	<div id="tabSenderMaintenance" style="overflow:scroll;height:80%;border-bottom: none;">
 		<tiles:insertAttribute name="sender-maintenance" />
 	</div>
-	<div id="tabStatusPage">
+	<div id="tabStatusPage" style="overflow:scroll;height:80%;border-bottom: none;">
 		<tiles:insertAttribute name="status-page" />
 	</div>
-	<div id="tabMaps">
+	<div id="tabMaps" style="overflow:scroll;height:80%;border-bottom: none;">
 		<tiles:insertAttribute name="maps" />
 	</div>
-	<div id="tabEmergency">
+	<div id="tabEmergency" style="overflow:scroll;height:80%;border-bottom: none;">
 		<tiles:insertAttribute name="emergency" />
 	</div>
-	<div id="tabServerInfo">
+	<div id="tabServerInfo" style="overflow:scroll;height:80%;border-bottom: none;">
 		<tiles:insertAttribute name="server-info" />
 	</div>	
 	</form:form>
