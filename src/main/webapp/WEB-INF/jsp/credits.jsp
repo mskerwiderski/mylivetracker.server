@@ -132,6 +132,28 @@
 					<td class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>&nbsp;</td>
 					<td class="ui-widget-content" style="border: none;"></td>
 				</tr>
+				<tr>
+					<td class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;Apache Commons&nbsp;</td>
+					<td class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;<a href="http://commons.apache.org">The Apache Software Foundation</a>&nbsp;</td>
+					<td class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>&nbsp;</td>
+					<td class="ui-widget-content" style="border: none;"></td>
+				</tr>
+				<tr>
+					<td class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;Apache Tiles&nbsp;</td>
+					<td class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;<a href="http://tiles.apache.org">The Apache Software Foundation</a>&nbsp;</td>
+					<td class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>&nbsp;</td>
+					<td class="ui-widget-content" style="border: none;"></td>
+				</tr>
+				<tr>
+					<td class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;CloudMade Leaflet&nbsp;</td>
+					<td class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;<a href="http://leaflet.cloudmade.com">CloudMade (Vladimir Agafonkin)</a>&nbsp;</td>
+					<td class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;<a href="https://github.com/CloudMade/Leaflet/blob/master/LICENSE">Leaflet License (Vladimir Agafonkin)</a>&nbsp;</td>
+					<td class="ui-widget-content" style="border: none;"></td>
+				</tr>
+				<tr>
+					<td colspan="3" class="ui-widget-content" style="border: none;white-space:nowrap;text-align:left;">&nbsp;and many more...&nbsp;</td>
+					<td class="ui-widget-content" style="border: none;"></td>
+				</tr>
 			</table>	
 		</td>
 	</tr>	

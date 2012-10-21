@@ -31,7 +31,7 @@
 	}
 </script>
 
-<div id="divAdmin" style="height:98%;overflow:auto;">
+<div id="divAdmin" style="overflow:scroll;height:80%;border-bottom: none;">
 <form id="formAdmin" name="formAdmin" action="admin.do" method="POST" >
 <input type='hidden' id='accordionId' name='accordionId' value='0' >	
 <input type='hidden' id='action' name='action' value='refreshPage' >

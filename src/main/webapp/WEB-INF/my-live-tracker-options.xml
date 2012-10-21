@@ -2734,10 +2734,10 @@
     	 	<constructor-arg index="0" value="-1"/>
     	 	<constructor-arg index="1" value="tracksoverview.opts.refresh.disabled"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="1"/>
-    	 	<constructor-arg index="1" value="tracksoverview.opts.refresh.everysec"/>
-   	 	</bean>
+<!--    	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc"> -->
+<!--     	 	<constructor-arg index="0" value="1"/> -->
+<!--     	 	<constructor-arg index="1" value="tracksoverview.opts.refresh.everysec"/> -->
+<!--    	 	</bean> -->
    	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
     	 	<constructor-arg index="0" value="5"/>
     	 	<constructor-arg index="1" value="tracksoverview.opts.refresh.every5secs"/>

@@ -29,6 +29,11 @@ table.display tr.even.emergency {
 </style>
 
 <script type="text/javascript">
+	function calcTableAndMapHeight(offset) {
+		var wnd = $(window).height();
+		return wnd-offset;	
+	}
+	
 	function refreshTrackOverview(selectedTracksView) {
 		document.forms["tracksOverviewForm"].elements["actionExecutor"].value = "RefreshTrackOverview";
 		if (selectedTracksView != null) {
@@ -220,6 +225,7 @@ window.onload=startAutoRefresh;
 	<form:hidden path="selectedTrackName"/>
 	<form:hidden path="selectedTrackActivityStatus"/>
 	<form:hidden path="selectedTrackReleaseStatus"/>
+<div id="divTracksOverviewHeader">	
 <table> 
 	<tr style="padding: 0px;border-spacing: 0px;">
 		<security:authorize ifAnyGranted="Admin,User">
@@ -567,15 +573,16 @@ window.onload=startAutoRefresh;
 			</table>
 		</td>
 	</tr>
-</table>		
-	<div id="divTracks" >
-		<c:choose>
-			<c:when test="${tracksOverviewCmd.selectedTracksView eq 'Table'}">
-				<tiles:insertAttribute name="tracks-as-table" />
-			</c:when>
-			<c:otherwise>
-				<tiles:insertAttribute name="tracks-as-map" />
-			</c:otherwise>
-		</c:choose>
-	</div>
+</table>
+</div>		
+<div id="divTracks" >
+	<c:choose>
+		<c:when test="${tracksOverviewCmd.selectedTracksView eq 'Table'}">
+			<tiles:insertAttribute name="tracks-as-table" />
+		</c:when>
+		<c:otherwise>
+			<tiles:insertAttribute name="tracks-as-map" />
+		</c:otherwise>
+	</c:choose>
+</div>
 </form:form>

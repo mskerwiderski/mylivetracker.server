@@ -74,10 +74,15 @@ function mlt_initMap(anker, mapsUsedStr, defMapId, defCenter, defZoom, supported
       	mlt_removeMarkersFromLayer();
     });
     map.on('enterFullscreen', function(){
-    	$("#layout-footer").hide();	
+    	if ($("#divFooter").length > 0) {
+    		$(divFooter).hide();
+    	}
     });
     map.on('exitFullscreen', function(){
-    	$("#layout-footer").show();	
+    	if ($("#divFooter").length > 0) {
+    		$(divFooter).show();	
+    	}
+    	$(window).resize();
     });
 	return map;
 }

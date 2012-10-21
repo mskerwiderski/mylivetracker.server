@@ -110,14 +110,14 @@
 	<bean id="dataSourceMyLiveTracker" 
 		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
-			<value>java:comp/env/jdbc/MyLiveTrackerDb2</value>
+			<value>java:comp/env/jdbc/MyLiveTrackerDb</value>
 		</property>
 	</bean>	
     
     <bean id="dataSourceMyLiveTrackerStatistics" 
 		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
-			<value>java:comp/env/jdbc/MyLiveTrackerDb2</value>
+			<value>java:comp/env/jdbc/MyLiveTrackerDb</value>
 		</property>
 	</bean>
 	

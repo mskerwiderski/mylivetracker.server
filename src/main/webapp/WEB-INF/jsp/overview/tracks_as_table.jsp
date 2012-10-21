@@ -11,17 +11,18 @@
 <script type="text/javascript"> 
 	mlt_getOnlyActiveTracks = false;	 
 	var mlt_tableTracks = null;
-			
-	function mlt_renderTracksOverview(mlt_data) {
+	$(window).resize(function() {
+		mlt_tableTracks.fnAdjustColumnSizing();
+	});
+	function mlt_renderTracksOverview(data) {
 		if (mlt_tableTracks != null) {
 			mlt_tableTracks.fnClearTable();
 		}
-		mlt_renderTrackTable(mlt_data.jsonCommons);
-		for (var i=0; i < mlt_data.tracks.length; i++) {
-			mlt_renderTrackTableRow(i, mlt_data.tracks[i], i==mlt_data.tracks.length-1);
+		mlt_renderTrackTable(data.jsonCommons);
+		for (var i=0; i < data.tracks.length; i++) {
+			mlt_renderTrackTableRow(i, data.tracks[i], i==data.tracks.length-1);
    		}			
 	}
-	
 	function mlt_renderTrackTable(commons) {
 		var msg = '<spring:message code="overview.track.table.info" />';
 		if (commons.maxCountOfRecordsExceeded) {
@@ -31,7 +32,6 @@
 		}
 		var sInfoTxt = commons.statusUpdated + "&nbsp;&#8226;&nbsp;" + msg;
 		var sInfoEmptyTxt = commons.statusUpdated + "&nbsp;&#8226;&nbsp;" + "<spring:message code="overview.track.table.info.empty" />";
-		
 		mlt_tableTracks = $('#tableTracks').dataTable( {
 			"aoColumns": [
 					{ "bSortable": false, "bSearchable": false },
@@ -44,7 +44,7 @@
 			"bSort" : false,	
 			"bAutoWidth": false,	
 			"bJQueryUI": true,
-			"sScrollY": "100%",							
+			"sScrollY": calcTableAndMapHeight(200),							
 			"bPaginate": false,		
 			"oLanguage": {
 				"sSearch": "&nbsp;<spring:message code="overview.track.table.search" />&nbsp;",
@@ -55,6 +55,7 @@
 				"sZeroRecords": "&nbsp;<spring:message code="overview.track.table.zero.records" />&nbsp;"					
 			}
 		});
+		
 	}
 	
 	function mlt_htmlDecode(value){ 

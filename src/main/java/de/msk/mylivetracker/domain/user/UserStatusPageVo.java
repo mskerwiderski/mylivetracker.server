@@ -2,10 +2,7 @@ package de.msk.mylivetracker.domain.user;
 
 import java.io.Serializable;
 
-import de.msk.mylivetracker.domain.StatusParamsVo;
 import de.msk.mylivetracker.domain.TrackingFlyToMode;
-import de.msk.mylivetracker.service.application.IApplicationService;
-import de.msk.mylivetracker.service.statusparams.IStatusParamsService;
 import de.msk.mylivetracker.web.frontend.tracking.AbstractTrackingCtrl;
 import de.msk.mylivetracker.web.util.UrlUtils;
 import de.msk.mylivetracker.web.util.request.ReqUrlStr;
@@ -37,40 +34,24 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 	private Integer windowHeight;	
 	private Boolean showTrackInfo;
 	private String cssStyle;
-	private String linkTrackAsStatusInfo;
-	private String linkTrackAsMap;
-				
-	public void generateLinks(IStatusParamsService statusParamsService, 
-		IApplicationService applicationService, UserWithoutRoleVo user) {
-		StatusParamsVo statusParams = StatusParamsVo.createInstance();
-		statusParams.setUserId(user.getUserId());
-		statusParams.setTicketId(user.getOptions().getRecTrAccCode());
-		statusParams.setSenderId(this.getSenderId());
-		statusParams.setTrackingLive(this.getTrackingLive());
-		statusParams.setTrackingKeepRecentPositions(this.getTrackingKeepRecentPositions());
-		statusParams.setTrackingUpdateIntervalInSecs(this.getTrackingUpdateIntervalInSecs());
-		statusParams.setTrackingFlyToMode(this.getTrackingFlyToMode());
-		statusParams.setWindowFullscreen(this.getFullScreen());
-		statusParams.setShowTrackInfo(this.getShowTrackInfo());
-		statusParams.setCssStyle(this.getCssStyle());
-		statusParams.setWindowWidth(this.getWindowWidth());
-		statusParams.setWindowHeight(this.getWindowHeight());
+	private String lastParamsId;
 		
-		statusParamsService.saveStatusParams(statusParams);
-		
-		String appBaseUrl = applicationService.getApplicationBaseUrl();
-		this.setLinkTrackAsStatusInfo( 				
-			ReqUrlStr.create(appBaseUrl, UrlUtils.URL_TRACK_AS_STATUS_INFO_CTRL)
-				.addParamValue(AbstractTrackingCtrl.PARAM_PARAMS_ID, 
-					statusParams.getStatusParamsId())
-				.toString());
-		this.setLinkTrackAsMap(
-			ReqUrlStr.create(appBaseUrl, UrlUtils.URL_TRACK_AS_MAP_CTRL)
-				.addParamValue(AbstractTrackingCtrl.PARAM_PARAMS_ID, 
-					statusParams.getStatusParamsId())
-				.toString());				
+	public static String createStatusPageUrlForStatusInfo(
+		String applicationBaseUrl, String statusParamsId) {
+		return ReqUrlStr.
+			create(applicationBaseUrl, UrlUtils.URL_TRACK_AS_STATUS_INFO_CTRL).
+			addParamValue(AbstractTrackingCtrl.PARAM_PARAMS_ID, statusParamsId).
+			toString();
 	}
 	
+	public static String createStatusPageUrlForMap(
+		String applicationBaseUrl, String statusParamsId) {
+		return ReqUrlStr.
+			create(applicationBaseUrl, UrlUtils.URL_TRACK_AS_MAP_CTRL).
+			addParamValue(AbstractTrackingCtrl.PARAM_PARAMS_ID, statusParamsId).
+			toString();
+	}
+		
 	public UserStatusPageVo copy() {
 		UserStatusPageVo statusPage = null;
 		try {
@@ -229,26 +210,10 @@ public class UserStatusPageVo implements Cloneable, Serializable {
 	public void setCssStyle(String cssStyle) {
 		this.cssStyle = cssStyle;
 	}
-
-	/**
-	 * @return the linkTrackAsStatusInfo
-	 */
-	public String getLinkTrackAsStatusInfo() {
-		return linkTrackAsStatusInfo;
+	public String getLastParamsId() {
+		return lastParamsId;
 	}
-
-	/**
-	 * @param linkTrackAsStatusInfo the linkTrackAsStatusInfo to set
-	 */
-	public void setLinkTrackAsStatusInfo(String linkTrackAsStatusInfo) {
-		this.linkTrackAsStatusInfo = linkTrackAsStatusInfo;
-	}
-
-	public String getLinkTrackAsMap() {
-		return linkTrackAsMap;
-	}
-
-	public void setLinkTrackAsMap(String linkTrackAsMap) {
-		this.linkTrackAsMap = linkTrackAsMap;
+	public void setLastParamsId(String lastParamsId) {
+		this.lastParamsId = lastParamsId;
 	}
 }

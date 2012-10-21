@@ -372,12 +372,12 @@
 		<td>
 			<textarea rows="2" readonly="readonly"
 				style="background: #ebebeb;font-family:Courier;margin-left: 4px;width:98%"
-			><c:out value="${optionsCmd.userStatusPage.linkTrackAsStatusInfo}" /></textarea>			
+			><c:out value="${optionsCmd.urlTrackAsStatusInfo}" /></textarea>			
 		</td>
 		<td>
 			<textarea rows="2" readonly="readonly"
 				style="background: #ebebeb;font-family:Courier;margin-left: 4px;width:98%"
-			><c:out value="${optionsCmd.userStatusPage.linkTrackAsMap}" /></textarea>
+			><c:out value="${optionsCmd.urlTrackAsMap}" /></textarea>
 		</td>
 		<td>
 			&nbsp;
@@ -386,14 +386,28 @@
 	<tr>
 		<td>
 			<div style="height:33px;margin-left:4px;margin-top:4px;" class="mlt-button">
-				<a href="<c:out value="${optionsCmd.userStatusPage.linkTrackAsStatusInfo}" />"
-					target="_blank"><spring:message code='statuspage.preview.status.info' /></a>
+				<c:choose>
+					<c:when test="${optionsCmd.statusParamsIdExists}">
+						<a href="<c:out value="${optionsCmd.urlTrackAsStatusInfo}" />"
+							target="_blank"><spring:message code='statuspage.preview.status.info' /></a>
+					</c:when>
+					<c:otherwise>
+						<input readonly="readonly" type="button" value="<spring:message code='statuspage.preview.status.info' />"/>
+					</c:otherwise>
+				</c:choose>
 			</div>				
 		</td>
 		<td> 
 			<div style="height:33px;margin-left:4px;margin-top:4px;" class="mlt-button">
-				<a href="<c:out value="${optionsCmd.userStatusPage.linkTrackAsMap}" />"
-					target="_blank"><spring:message code='statuspage.preview.maps' /></a>
+				<c:choose>
+					<c:when test="${optionsCmd.statusParamsIdExists}">
+						<a href="<c:out value="${optionsCmd.urlTrackAsMap}" />"
+							target="_blank"><spring:message code='statuspage.preview.maps' /></a>
+					</c:when>
+					<c:otherwise>
+						<input readonly="readonly" type="button" value="<spring:message code='statuspage.preview.maps' />"/>
+					</c:otherwise>
+				</c:choose>
 			</div>		
 		</td>
 		<td>

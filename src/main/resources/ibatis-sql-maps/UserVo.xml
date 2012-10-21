@@ -55,8 +55,7 @@
 		<result property="statusPage.windowHeight" column="STATUS_PAGE_WINDOW_HEIGHT" />            
 		<result property="statusPage.showTrackInfo" column="STATUS_PAGE_SHOW_TRACK_INFO" />                        
 		<result property="statusPage.cssStyle" column="STATUS_PAGE_CSS_STYLE" />  
-		<result property="statusPage.linkTrackAsStatusInfo" column="STATUS_PAGE_LINK_TRACK_AS_STATUS_INFO" />
-		<result property="statusPage.linkTrackAsMap" column="STATUS_PAGE_LINK_TRACK_AS_MAP" />
+		<result property="statusPage.lastParamsId" column="STATUS_PAGE_LAST_PARAMS_ID" />
 		<result property="emergency.smsUnlocked" column="EMERGENCY_SMS_UNLOCKED" />
 		<result property="emergency.smsEnabled" column="EMERGENCY_SMS_ENABLED" />
 	    <result property="emergency.smsSender" column="EMERGENCY_SMS_SENDER" /> 
@@ -142,8 +141,7 @@
 			t.STATUS_PAGE_WINDOW_HEIGHT = #statusPage.windowHeight#, 
 			t.STATUS_PAGE_SHOW_TRACK_INFO = #statusPage.showTrackInfo#,				
 			t.STATUS_PAGE_CSS_STYLE = #statusPage.cssStyle#, 
-			t.STATUS_PAGE_LINK_TRACK_AS_STATUS_INFO = #statusPage.linkTrackAsStatusInfo#,
-			t.STATUS_PAGE_LINK_TRACK_AS_MAP = #statusPage.linkTrackAsMap#											 
+			t.STATUS_PAGE_LAST_PARAMS_ID = #statusPage.lastParamsId#											 
   		where (t.USER_ID = #userId#)  
   	</update> 	
   	
@@ -237,8 +235,7 @@
 			STATUS_PAGE_WINDOW_HEIGHT,            
 			STATUS_PAGE_SHOW_TRACK_INFO,                        
 			STATUS_PAGE_CSS_STYLE,  
-			STATUS_PAGE_LINK_TRACK_AS_STATUS_INFO,
-			STATUS_PAGE_LINK_TRACK_AS_MAP,
+			STATUS_PAGE_LAST_PARAMS_ID,
 			EMERGENCY_SMS_UNLOCKED,
 			EMERGENCY_SMS_ENABLED,
 		    EMERGENCY_SMS_SENDER, 
@@ -291,8 +288,7 @@
 			#statusPage.windowHeight#,
 			#statusPage.showTrackInfo#,
 			#statusPage.cssStyle#,
-			#statusPage.linkTrackAsStatusInfo#,
-			#statusPage.linkTrackAsMap#,
+			#statusPage.lastParamsId#,
 			#emergency.smsUnlocked#,
 			#emergency.smsEnabled#,
 			#emergency.smsSender#,

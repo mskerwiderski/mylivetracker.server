@@ -40,6 +40,40 @@ body.loading .modal {
 
 <div style="font-size: small;background-color: "></div>
 <script type="text/javascript">
+	function calcTableAndMapHeight() {
+		var height = 0;
+		<c:choose>
+			<c:when test="${!fullscreen}" >
+				height = <c:out value="${height}" />;
+			</c:when>
+			<c:otherwise>
+				var offset = 0;
+				<c:if test='${showTrackInfo}' >
+					offset = offset + 120;
+				</c:if>
+				if ($("#divHeader").length > 0) {
+					offset += 75;
+				} else {
+					offset += 25;
+				}
+				var wnd = $(window).height();
+				height = wnd - offset;
+			</c:otherwise>
+		</c:choose>
+		return height;	
+	}
+	function calcTableAndMapWidth() {
+		var width = 0;
+		<c:choose>
+			<c:when test="${!fullscreen}" >
+				width = <c:out value="${width}" />;
+			</c:when>
+			<c:otherwise>
+				width = "100%";
+			</c:otherwise>
+		</c:choose>
+		return width;	
+	}
 	var loadingWindow = true;
 	function showLoadingWindow() {
 		$('body').addClass("loading"); 
@@ -183,8 +217,8 @@ body.loading .modal {
 	}
 	function mlt_removeCircleMarkersFromLayer() {
 		if (mlt_circleMarkers != null) {
-			for (var i in mlt_markers) {
-				mlt_map.removeLayer(mlt_markers[i]);
+			for (var i in mlt_circleMarkers) {
+				mlt_map.removeLayer(mlt_circleMarkers[i]);
 			}
 		}
 	}
@@ -211,24 +245,31 @@ body.loading .modal {
 	function mlt_clearAllLayers() {
 		if (mlt_polyline != null) {
 			mlt_map.removeLayer(mlt_polyline);
+			mlt_polyline = null;
 		}
 		if (mlt_startMarker != null) {
 			mlt_map.removeLayer(mlt_startMarker);
+			mlt_startMarker = null;
 		}
 		if (mlt_startCircleMarker != null) {
 			mlt_map.removeLayer(mlt_startCircleMarker);
+			mlt_startCircleMarker = null;
 		}
 		if (mlt_recentMarker != null) {
 			mlt_map.removeLayer(mlt_recentMarker);
+			mlt_recentMarker = null;
 		}
 		if (mlt_recentCircleMarker != null) {
 			mlt_map.removeLayer(mlt_recentCircleMarker);
+			mlt_recentCircleMarker = null;
 		}
 		if (mlt_homeMarker != null) {
 			mlt_map.removeLayer(mlt_homeMarker);
+			mlt_homeMarker = null;
 		}
 		if (mlt_homeCircleMarker != null) {
 			mlt_map.removeLayer(mlt_homeCircleMarker);
+			mlt_homeCircleMarker = null;
 		}
 		mlt_removeMarkersFromLayer();
 		mlt_removeCircleMarkersFromLayer();
@@ -585,19 +626,28 @@ body.loading .modal {
    	 	hideLoadingWindow();
    	}
    	
-   	function mlt_refreshTracksOverview() {
-   		if (mlt_map == null) {
-   			var mlt_supportedLayerNames = [
+   	$(document).ready(
+		function initMap() {
+			$(window).resize(function() {
+				$(divMapCanvas).css("height", calcTableAndMapHeight());
+				$(divMapCanvas).css("width", calcTableAndMapWidth());
+				mlt_map.invalidateSize(true);
+			});
+			var mlt_supportedLayerNames = [
              	<c:forEach var="supportedMap" items="${supportedMaps}">
                  	"<spring:message code='${supportedMap.label}' />",
              	</c:forEach>
             ];
-   			mlt_map = mlt_initMap("map_canvas",
+   			mlt_map = mlt_initMap("divMapCanvas",
    				"<c:out value='${mapsUsedStr}' />",
    				"<c:out value='${defMapId}' />",
    				mlt_DEFAULT_CENTER, mlt_DEFAULT_ZOOM,
    				mlt_supportedLayerNames);
-   		}   			
+           	$(window).resize();
+	   	}
+    );
+
+   	function mlt_refreshTracksOverview() {
    		if (mlt_reqId != null) {   	   	   		
    	   		var reqType = "json";   			
   			var userId = "<c:out value='${userId}'/>";
@@ -661,7 +711,15 @@ body.loading .modal {
 	
 <body>
 	<div id="divTrack">
-	<table>
+	<table 
+	<c:choose>
+		<c:when test="${fullscreen}">
+		style="width:100%;" 			
+		</c:when>
+		<c:otherwise>
+		style="width:<c:out value="${width}"/>px;"
+		</c:otherwise>
+	</c:choose>>
 	<c:if test='${showTrackInfo}' >	
 		<tr style="height:10px;">			
 			<td style="border:none;">
@@ -773,10 +831,10 @@ body.loading .modal {
 		</tr>
 	</c:if>	
 </table>	
-<table id="map_complete"
+<table
 	<c:choose>
 		<c:when test="${fullscreen}">
-		style="width:100%;height:75%" 			
+		style="width:100%;" 			
 		</c:when>
 		<c:otherwise>
 		style="width:<c:out value="${width}"/>px;height:<c:out value="${height}"/>px;"
@@ -785,7 +843,16 @@ body.loading .modal {
 >
 	<tr>
 		<td>
-			<div id="map_canvas"></div>
+			<div id="divMapCanvas"
+				<c:choose>
+					<c:when test="${fullscreen}">
+					style="width:100%;" 			
+					</c:when>
+					<c:otherwise>
+					style="width:<c:out value="${width}"/>px;height:<c:out value="${height}"/>px;"
+					</c:otherwise>
+				</c:choose>
+			></div>
 		</td>
 	</tr>
 	<c:if test='${showTrackInfo}' >

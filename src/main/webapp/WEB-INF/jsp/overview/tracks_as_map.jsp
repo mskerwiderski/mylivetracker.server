@@ -171,10 +171,10 @@
 	 	mlt_map.setView(center, zoom);
 	}
 </script> 
-<table id="map_complete" style="width:100%;height:75%;">
+<table style="width:100%;">
 	<tr>
 		<td>
-			<div id="map_canvas"></div>
+			<div id="divMapCanvas"></div>
 		</td>
 	</tr>
 	<tr style="height:10px;">
@@ -190,17 +190,25 @@
 	</tr>
 </table>
 <script>
-	var mlt_supportedLayerNames = [
-		<c:forEach var="supportedMap" items="${tracksOverviewCmd.supportedMaps}">
-	    	"<spring:message code='${supportedMap.label}' />",
-		</c:forEach>
-	];
-	
-	mlt_map = mlt_initMap("map_canvas",
-		"<c:out value='${tracksOverviewCmd.mapsUsedStr}' />",
-		"<c:out value='${tracksOverviewCmd.defMapId}' />",
-		mlt_DEFAULT_CENTER, mlt_DEFAULT_ZOOM,
-		mlt_supportedLayerNames);
+	$(document).ready(
+		function initMap() {
+			$(window).resize(function() {
+				$(divMapCanvas).css("height", calcTableAndMapHeight(192));
+				mlt_map.invalidateSize(true);
+			});
+			var mlt_supportedLayerNames = [
+           		<c:forEach var="supportedMap" items="${tracksOverviewCmd.supportedMaps}">
+           	    	"<spring:message code='${supportedMap.label}' />",
+           		</c:forEach>
+           	];
+           	mlt_map = mlt_initMap("divMapCanvas",
+           		"<c:out value='${tracksOverviewCmd.mapsUsedStr}' />",
+           		"<c:out value='${tracksOverviewCmd.defMapId}' />",
+           		mlt_DEFAULT_CENTER, mlt_DEFAULT_ZOOM,
+           		mlt_supportedLayerNames);
+           	$(window).resize();
+	   	}
+    );
 	
 	function mlt_createAndSetSenderMarker(name, symbolId, lat, lon, posStr, rcvd, 
 		trackId, trackName, hasMsg, hasEmSi, recEmSiIsActive, info) {

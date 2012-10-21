@@ -83,9 +83,12 @@ public class OptionsCmd {
 	
 	private String autoLoginUrlForUser;
 	private String autoLoginUrlForGuest;
-	
+
+	private boolean statusParamsIdExists;
 	private String iframeTrackAsStatusInfo;
 	private String iframeTrackAsMap;
+	private String urlTrackAsStatusInfo;
+	private String urlTrackAsMap;
 	
 	private static final String IFRAME_TEMPLATE =
 		"<iframe style=\"width:$WIDTH$;height:$HEIGHT$\" " +
@@ -101,9 +104,24 @@ public class OptionsCmd {
 		autoLoginUrlForGuest = UserAutoLoginVo.createAutoLoginUrl(
 			applicationBaseUrl, userAutoLogin.getAutoLoginTicketForGuest());
 		
-		if (StringUtils.isEmpty(user.getStatusPage().getLinkTrackAsStatusInfo())) {
-			this.iframeTrackAsStatusInfo = null;
+		if (StringUtils.isEmpty(user.getStatusPage().getLastParamsId())) {
+			this.statusParamsIdExists = false;
+			String infoMsg = 
+				WebUtils.getMessage(request, "statuspage.no.paramsid.exists");
+			this.iframeTrackAsStatusInfo = infoMsg;
+			this.iframeTrackAsMap = infoMsg;
+			this.urlTrackAsStatusInfo = infoMsg;
+			this.urlTrackAsMap = infoMsg;
 		} else {
+			this.statusParamsIdExists = true;
+			this.urlTrackAsStatusInfo = 
+				UserStatusPageVo.createStatusPageUrlForStatusInfo(
+					applicationBaseUrl, 
+					user.getStatusPage().getLastParamsId());
+			this.urlTrackAsMap = 
+				UserStatusPageVo.createStatusPageUrlForMap(
+					applicationBaseUrl, 
+					user.getStatusPage().getLastParamsId());	
 			String width = (user.getStatusPage().getWindowWidth() == null ? 
 				"null" : user.getStatusPage().getWindowWidth().toString() + "px");
 			String height = (user.getStatusPage().getWindowHeight() == null ?
@@ -112,39 +130,15 @@ public class OptionsCmd {
 				width = "100%";
 				height = "100%";
 			}
-			this.iframeTrackAsStatusInfo = StringUtils.replace(
+			String snippet = StringUtils.replace(
 				IFRAME_TEMPLATE, "$WIDTH$", width);
-			this.iframeTrackAsStatusInfo = StringUtils.replace(
-				this.iframeTrackAsStatusInfo, "$HEIGHT$", height);
-			this.iframeTrackAsStatusInfo = StringUtils.replace(
-				this.iframeTrackAsStatusInfo, "$SRC$", 
-				user.getStatusPage().getLinkTrackAsStatusInfo());
-			this.iframeTrackAsStatusInfo = StringUtils.replace(
-				this.iframeTrackAsStatusInfo, "$NOTSUPPORTED$", 
+			snippet = StringUtils.replace(snippet, "$HEIGHT$", height);
+			snippet = StringUtils.replace(snippet, "$NOTSUPPORTED$", 
 				WebUtils.getMessage(request, "statuspage.iframe.not.supported"));
-		}
-		
-		if (StringUtils.isEmpty(user.getStatusPage().getLinkTrackAsMap())) {
-			this.iframeTrackAsMap = null;
-		} else {
-			String width = (user.getStatusPage().getWindowWidth() == null ? 
-				"null" : user.getStatusPage().getWindowWidth().toString() + "px");
-			String height = (user.getStatusPage().getWindowHeight() == null ?
-				"null" : user.getStatusPage().getWindowHeight().toString() + "px");
-			if (user.getStatusPage().getFullScreen()) {
-				width = "100%";
-				height = "100%";
-			}
+			this.iframeTrackAsStatusInfo = StringUtils.replace(
+				snippet, "$SRC$", this.urlTrackAsStatusInfo);
 			this.iframeTrackAsMap = StringUtils.replace(
-				IFRAME_TEMPLATE, "$WIDTH$", width);
-			this.iframeTrackAsMap = StringUtils.replace(
-				this.iframeTrackAsMap, "$HEIGHT$", height);
-			this.iframeTrackAsMap = StringUtils.replace(
-				this.iframeTrackAsMap, "$SRC$", 
-				user.getStatusPage().getLinkTrackAsMap());
-			this.iframeTrackAsMap = StringUtils.replace(
-				this.iframeTrackAsMap, "$NOTSUPPORTED$", 
-				WebUtils.getMessage(request, "statuspage.iframe.not.supported"));
+				snippet, "$SRC$", this.urlTrackAsMap);
 		}
 	}
 	
@@ -571,43 +565,26 @@ public class OptionsCmd {
 	public void setActionExecutor(ActionExecutor actionExecutor) {
 		this.actionExecutor = actionExecutor;
 	}	
-
-	/**
-	 * @return the iframeTrackAsStatusInfo
-	 */
+	public boolean isStatusParamsIdExists() {
+		return statusParamsIdExists;
+	}
 	public String getIframeTrackAsStatusInfo() {
 		return iframeTrackAsStatusInfo;
 	}
-
-	/**
-	 * @param iframeTrackAsStatusInfo the iframeTrackAsStatusInfo to set
-	 */
-	public void setIframeTrackAsStatusInfo(String iframeTrackAsStatusInfo) {
-		this.iframeTrackAsStatusInfo = iframeTrackAsStatusInfo;
-	}
-
 	public String getIframeTrackAsMap() {
 		return iframeTrackAsMap;
 	}
-
-	public void setIframeTrackAsMap(String iframeTrackAsMap) {
-		this.iframeTrackAsMap = iframeTrackAsMap;
+	public String getUrlTrackAsStatusInfo() {
+		return urlTrackAsStatusInfo;
 	}
-
+	public String getUrlTrackAsMap() {
+		return urlTrackAsMap;
+	}
 	public String getAutoLoginUrlForUser() {
 		return autoLoginUrlForUser;
 	}
-
-	public void setAutoLoginUrlForUser(String autoLoginUrlForUser) {
-		this.autoLoginUrlForUser = autoLoginUrlForUser;
-	}
-
 	public String getAutoLoginUrlForGuest() {
 		return autoLoginUrlForGuest;
-	}
-
-	public void setAutoLoginUrlForGuest(String autoLoginUrlForGuest) {
-		this.autoLoginUrlForGuest = autoLoginUrlForGuest;
 	}
 
 	/**

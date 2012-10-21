@@ -36,28 +36,20 @@
 			margin:0;
 			padding:0;
 		}
-		#layout-content
+		#divContent
 		{
 			padding-top:42px;
 			padding-bottom:1em;
 			padding-left:0;
 		}
-		#layout-header
+		#divHeader
 		{
 			position:fixed;
 			top:0px; left:0px; right:0px;
 			background: #f2f2f2;
 			text-align:center;
 		}
-		#layout-footer
-		{
-			position:fixed;
-			bottom:0px; left:0px; right:0px;
-			text-align:center;
-			background: #f2f2f2;
-			padding:3px;
-		}
-		#layout-push
+		#divFooter
 		{
 			position:fixed;
 			bottom:0px; left:0px; right:0px;
@@ -117,15 +109,13 @@
 		WebUtils.getUserOptsLanguage(request);
 	request.setAttribute("userOptsLanguage", userOptsLanguage);	
 %>
-<div id="layout-header" class="mlt-header" >
+<div id="divHeader" class="mlt-header" >
 	<tiles:insertAttribute name="header" />
 </div>
-<div id="layout-content" style="width:100%" class="mlt-content" >
+<div id="divContent" style="width:100%" class="mlt-content" >
 	<tiles:insertAttribute name="content" />
 </div>
-<div id="layout-push">
-</div>
-<div id="layout-footer" class="mlt-footer">
+<div id="divFooter" class="mlt-footer">
 	<tiles:insertAttribute name="footer" />
 </div>
 </body>

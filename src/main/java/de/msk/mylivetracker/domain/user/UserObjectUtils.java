@@ -134,8 +134,7 @@ public class UserObjectUtils {
 		userStatusPage.setFullScreen(false);
 		userStatusPage.setWindowHeight(600);
 		userStatusPage.setWindowWidth(800);
-		userStatusPage.setLinkTrackAsStatusInfo("");
-		userStatusPage.setLinkTrackAsMap("");
+		userStatusPage.setLastParamsId("");
 		return userStatusPage;
 	}
 	

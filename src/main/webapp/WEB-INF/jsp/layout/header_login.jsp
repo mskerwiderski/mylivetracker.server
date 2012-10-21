@@ -17,7 +17,8 @@
 
 <table style="padding: 0px;border-spacing: 0px;">	
 	<tr>
-		<td style="white-space: nowrap; text-align:left;height:40px;">
+		<td style="white-space: nowrap; text-align:left;height:40px;font-size: large;">
+			&nbsp;<spring:message code="login.headline" />&nbsp;
 		</td>								
 	</tr>	
 </table>
