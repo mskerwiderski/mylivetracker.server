@@ -56,7 +56,7 @@ body.loading .modal {
 				} else {
 					offset += 25;
 				}
-				var wnd = $(window).height();
+				var wnd = $(document).height();
 				height = wnd - offset;
 			</c:otherwise>
 		</c:choose>

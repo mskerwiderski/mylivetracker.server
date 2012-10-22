@@ -98,7 +98,6 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 				StringUtils.substring(dateStr, 0, 2);
 			gprmcStr += "," + dateStr + ",,,A";
 			gprmcStr += "*" + CommonUtils.calcHexChecksum(gprmcStr, 2);
-			System.out.println(gprmcStr);
 			CommonUtils.setPositionFromGprmcStrInDataStr(dataReceived.getPosition(), gprmcStr, true);
 	
 			// gps signal indicator.

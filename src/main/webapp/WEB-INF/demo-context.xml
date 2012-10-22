@@ -32,88 +32,60 @@
    	<util:list id="demoCases">
    		<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
    			<constructor-arg index="0" value="Going by bus to Munich Ramersdorf"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid01"/>
+    	 	<constructor-arg index="1" value="j.doe"/>
+    	 	<constructor-arg index="2" value="j.doe-sid01"/>
     	 	<constructor-arg index="3" value="2f5f795e-32a3-498f-8842-15fc751ef250"/>
     	 	<constructor-arg index="4" value="10"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
    			<constructor-arg index="0" value="Running in the south of Munich"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid02"/>
+    	 	<constructor-arg index="1" value="j.doe"/>
+    	 	<constructor-arg index="2" value="j.doe-sid02"/>
     	 	<constructor-arg index="3" value="78b214f4-d5d5-4bb5-a0b1-093cd90030fb"/>
     	 	<constructor-arg index="4" value="10"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
    			<constructor-arg index="0" value="Going by bus to Munich Schwabing"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid03"/>
+    	 	<constructor-arg index="1" value="j.doe"/>
+    	 	<constructor-arg index="2" value="j.doe-sid03"/>
     	 	<constructor-arg index="3" value="ef87bd87-4a92-4068-aa81-3211ce580a0d"/>
     	 	<constructor-arg index="4" value="10"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
    			<constructor-arg index="0" value="On the way from home to the office"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid04"/>
+    	 	<constructor-arg index="1" value="j.doe"/>
+    	 	<constructor-arg index="2" value="j.doe-sid04"/>
     	 	<constructor-arg index="3" value="16cf7474-c70b-4e69-82ec-c56fc6b93630"/>
     	 	<constructor-arg index="4" value="10"/>
    	 	</bean>
-   	 	<!-- bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="Going by bus to Munich Ramersdorf"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid05"/>
+   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
+   			<constructor-arg index="0" value="Mit dem Bus nach München Ramersdorf"/>
+    	 	<constructor-arg index="1" value="m.mustermann"/>
+    	 	<constructor-arg index="2" value="m.mustermann-sid01"/>
     	 	<constructor-arg index="3" value="2f5f795e-32a3-498f-8842-15fc751ef250"/>
-    	 	<constructor-arg index="4" value="20"/>
+    	 	<constructor-arg index="4" value="10"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="Running in the south of Munich"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid06"/>
+   			<constructor-arg index="0" value="Lauftraining im Münchner Süden"/>
+    	 	<constructor-arg index="1" value="m.mustermann"/>
+    	 	<constructor-arg index="2" value="m.mustermann-sid02"/>
     	 	<constructor-arg index="3" value="78b214f4-d5d5-4bb5-a0b1-093cd90030fb"/>
-    	 	<constructor-arg index="4" value="20"/>
+    	 	<constructor-arg index="4" value="10"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="Going by bus to Munich Schwabing"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid07"/>
+   			<constructor-arg index="0" value="Mit dem Bus nach München Schwabing"/>
+    	 	<constructor-arg index="1" value="m.mustermann"/>
+    	 	<constructor-arg index="2" value="m.mustermann-sid03"/>
     	 	<constructor-arg index="3" value="ef87bd87-4a92-4068-aa81-3211ce580a0d"/>
-    	 	<constructor-arg index="4" value="20"/>
+    	 	<constructor-arg index="4" value="10"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="On the way from home to the office"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid08"/>
+   			<constructor-arg index="0" value="Von zu Haus ins Büro"/>
+    	 	<constructor-arg index="1" value="m.mustermann"/>
+    	 	<constructor-arg index="2" value="m.mustermann-sid04"/>
     	 	<constructor-arg index="3" value="16cf7474-c70b-4e69-82ec-c56fc6b93630"/>
-    	 	<constructor-arg index="4" value="20"/>
+    	 	<constructor-arg index="4" value="10"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="Going by bus to Munich Ramersdorf"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid09"/>
-    	 	<constructor-arg index="3" value="2f5f795e-32a3-498f-8842-15fc751ef250"/>
-    	 	<constructor-arg index="4" value="30"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="Running in the south of Munich"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid10"/>
-    	 	<constructor-arg index="3" value="78b214f4-d5d5-4bb5-a0b1-093cd90030fb"/>
-    	 	<constructor-arg index="4" value="30"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="Going by bus to Munich Schwabing"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid11"/>
-    	 	<constructor-arg index="3" value="ef87bd87-4a92-4068-aa81-3211ce580a0d"/>
-    	 	<constructor-arg index="4" value="30"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.service.demo.DemoCase">   		
-   			<constructor-arg index="0" value="On the way from home to the office"/>
-    	 	<constructor-arg index="1" value="demo"/>
-    	 	<constructor-arg index="2" value="sid12"/>
-    	 	<constructor-arg index="3" value="16cf7474-c70b-4e69-82ec-c56fc6b93630"/>
-    	 	<constructor-arg index="4" value="30"/>
-   	 	</bean -->
    	</util:list> 	       
    	
     <bean id="demoService"

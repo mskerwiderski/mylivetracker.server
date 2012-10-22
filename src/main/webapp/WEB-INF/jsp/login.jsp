@@ -76,6 +76,7 @@
 <form id="formLogin" name="formLogin" action="login" method="POST" >
 	<input type='hidden' name='plainUserId' value='' >
 	<input type='hidden' name='plainPassword' value='' >
+	<input type='hidden' name='demoLoginUrl' value='' >
 </form>
 </div>
 <table> 

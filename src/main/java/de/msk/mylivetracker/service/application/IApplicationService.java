@@ -18,7 +18,8 @@ public interface IApplicationService {
 		ApplicationName, // application name.		
 		ApplicationPort, // application port.
 		ApplicationRealm, // application realm (used for user password encryption).
-		AutoLoginTicketForDemoGuest, // auto-login ticket for guests of demo.
+		AutoLoginTicketForDemoGuestDe, // auto-login ticket for guests of german demo.
+		AutoLoginTicketForDemoGuestEn, // auto-login ticket for guests of english demo.
 		ClientTcpPorts, // open tcp ports for clients.
 		ClientUdpPorts, // open udp ports for clients.
 		EvaluationModeEnabled, // if yes: only one registered user is allowed.

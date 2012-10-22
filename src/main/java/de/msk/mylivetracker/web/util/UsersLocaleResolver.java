@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.LocaleResolver;
 
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
@@ -24,6 +26,11 @@ import de.msk.mylivetracker.web.util.request.ReqParam;
  */
 public class UsersLocaleResolver implements LocaleResolver {
 	
+	private static final Log log = LogFactory.getLog(UsersLocaleResolver.class);
+	
+	public static final String SUPPORTED_LOCALE_ENGLISH_STR = "en";	
+	public static final String SUPPORTED_LOCALE_GERMAN_STR = "de";
+	
 	public static final Locale SUPPORTED_LOCALE_ENGLISH = Locale.ENGLISH;	
 	public static final Locale SUPPORTED_LOCALE_GERMAN = Locale.GERMAN;
 	public static final Locale DEFAULT_LOCALE = SUPPORTED_LOCALE_ENGLISH;
@@ -41,8 +48,8 @@ public class UsersLocaleResolver implements LocaleResolver {
 	}
 	
 	public static final LocaleDsc[] SUPPORTED_LOCALES = {
-		new LocaleDsc("en", SUPPORTED_LOCALE_ENGLISH),
-		new LocaleDsc("de", SUPPORTED_LOCALE_GERMAN)
+		new LocaleDsc(SUPPORTED_LOCALE_ENGLISH_STR, SUPPORTED_LOCALE_ENGLISH),
+		new LocaleDsc(SUPPORTED_LOCALE_GERMAN_STR, SUPPORTED_LOCALE_GERMAN)
 	};
 	
 	public static Locale getScaleUnit(UserWithoutRoleVo user) {
@@ -71,6 +78,22 @@ public class UsersLocaleResolver implements LocaleResolver {
 			}
 		}
 		return locale;
+	}
+	
+	public static boolean hasLocaleGerman(UserWithoutRoleVo user) {
+		if ((user == null) || (user.getOptions() == null)) {
+			return false;
+		}
+		return StringUtils.equalsIgnoreCase(
+			user.getOptions().getLanguage(), 
+			SUPPORTED_LOCALE_GERMAN_STR);
+	}
+	
+	public boolean isLocaleGerman(HttpServletRequest request) {
+		Locale locale = this.resolveLocale(request);
+		return StringUtils.equals(
+			locale.getLanguage(), 
+			SUPPORTED_LOCALE_GERMAN.getLanguage());
 	}
 	
 	/* (non-Javadoc)
@@ -121,6 +144,7 @@ public class UsersLocaleResolver implements LocaleResolver {
 		if (locale == null) {
 			locale = DEFAULT_LOCALE;
 		}
+		log.debug("resolvedLocale=" + locale);
 		return locale;
 	}
 

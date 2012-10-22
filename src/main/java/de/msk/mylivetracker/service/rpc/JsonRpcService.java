@@ -5,6 +5,8 @@ import org.apache.commons.lang.StringUtils;
 import de.msk.mylivetracker.commons.rpc.LinkSenderRequest;
 import de.msk.mylivetracker.commons.rpc.LinkSenderResponse;
 import de.msk.mylivetracker.commons.rpc.RpcResponse.ResultCode;
+import de.msk.mylivetracker.domain.sender.SenderRadiusUnit;
+import de.msk.mylivetracker.domain.sender.SenderSymbol;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.application.IApplicationService;
@@ -12,6 +14,7 @@ import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.service.user.IUserService;
 import de.msk.mylivetracker.util.PwdUtils;
 import de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig;
+import de.msk.mylivetracker.web.util.UsersLocaleResolver;
 
 /**
  * SenderLinkService.
@@ -36,7 +39,7 @@ public class JsonRpcService implements IRpcService {
 	 */
 	@Override
 	public String about() {
-		return "MyLiveTracker RPC Service v1.0.0";
+		return "MyLiveTracker RPC Service v1.0.1";
 	}
 
 	/* (non-Javadoc)
@@ -104,6 +107,11 @@ public class JsonRpcService implements IRpcService {
 			sender.setAuthPlainPassword(PwdUtils.getPlainPassword());			
 			sender.setRedirectTo(null);
 			sender.setSwitches(null);
+			sender.setWithinRadiusCheckEnabled(false);
+			sender.setRadius(0);
+			sender.setRadiusUnit(UsersLocaleResolver.hasLocaleGerman(user) ? 
+				SenderRadiusUnit.kilometer : SenderRadiusUnit.miles);
+			sender.setSymbol(SenderSymbol.Phone);
 			this.senderService.storeSender(sender);
 		}
 		

@@ -30,7 +30,9 @@ table.display tr.even.emergency {
 
 <script type="text/javascript">
 	function calcTableAndMapHeight(offset) {
-		var wnd = $(window).height();
+		var wnd = $(document).height();
+		mlt_log("window-height: " + wnd);
+		mlt_log("offset: " + offset);
 		return wnd-offset;	
 	}
 	

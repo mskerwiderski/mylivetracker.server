@@ -154,6 +154,11 @@ public final class WebUtils {
 			getBean(request, BEAN_LOCALE_RESOLVER)).resolveLocale(request);
 	}
 	
+	public static boolean isLocaleGerman(HttpServletRequest request) {
+		return ((UsersLocaleResolver)
+			getBean(request, BEAN_LOCALE_RESOLVER)).isLocaleGerman(request);
+	}
+	
 	public static MessageSource getMessageSource(HttpServletRequest request) {
 		return (MessageSource)
 			getBean(request, BEAN_MESSAGE_SOURCE);

@@ -42,6 +42,28 @@ public class LoginCtrl extends SimpleFormController {
 
 	private Services services;
 
+	private void updateCommandObject(HttpServletRequest request, LoginCmd cmd) {
+		String msgcode = request.getParameter(REQUEST_PARAM_MESSAGE_CODE);
+		String loginResultMessage = "";
+		if (!StringUtils.isEmpty(msgcode)) {
+			loginResultMessage = WebUtils.getMessage(request, msgcode);
+		}
+		cmd.setLoginResultMessage(loginResultMessage);
+		log.info("isLocaleGerman=" + WebUtils.isLocaleGerman(request));
+		String autoLoginTicketForDemoGuest =
+			WebUtils.isLocaleGerman(request) ? 
+				this.services.getApplicationService().getParameterValueAsString(
+					Parameter.AutoLoginTicketForDemoGuestDe) :
+				this.services.getApplicationService().getParameterValueAsString(
+					Parameter.AutoLoginTicketForDemoGuestEn);	
+		log.info("autoLoginTicketForDemoGuest=" + autoLoginTicketForDemoGuest);			
+		cmd.setAutoLoginUrlForDemoGuest(
+			UserAutoLoginVo.createAutoLoginUrl(
+				this.services.getApplicationService().getApplicationBaseUrl(), 
+				autoLoginTicketForDemoGuest));
+		cmd.setTwitterMessages(TwitterUtils.getTwitterMessages(3, 120));		
+	}
+	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)
 		throws Exception {
@@ -49,13 +71,7 @@ public class LoginCtrl extends SimpleFormController {
 			request.getSession().getAttribute(this.getCommandName());
 		if (cmd == null) {
 			cmd = new LoginCmd();	
-			cmd.setLoginResultMessage("");
-			cmd.setAutoLoginUrlForDemoGuest(
-				UserAutoLoginVo.createAutoLoginUrl(
-					this.services.getApplicationService().getApplicationBaseUrl(), 
-					this.services.getApplicationService().getParameterValueAsString(
-						Parameter.AutoLoginTicketForDemoGuest)));
-			cmd.setTwitterMessages(TwitterUtils.getTwitterMessages(3, 120));
+			this.updateCommandObject(request, cmd);
 			request.getSession().setAttribute(this.getCommandName(), cmd);
 		}
 		log.debug(cmd);
@@ -68,12 +84,7 @@ public class LoginCtrl extends SimpleFormController {
 		HttpServletRequest request, Object command,
 		Errors errors) throws Exception {
 		LoginCmd cmd = (LoginCmd)command;
-		String msgcode = request.getParameter(REQUEST_PARAM_MESSAGE_CODE);
-		String loginResultMessage = "";
-		if (!StringUtils.isEmpty(msgcode)) {
-			loginResultMessage = WebUtils.getMessage(request, msgcode);
-		}
-		cmd.setLoginResultMessage(loginResultMessage);
+		this.updateCommandObject(request, cmd);
 		log.debug(cmd);
 		return super.referenceData(request, command, errors);
 	}
