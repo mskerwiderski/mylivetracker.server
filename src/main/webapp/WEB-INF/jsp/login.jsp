@@ -185,12 +185,12 @@
     	<td style="border:none;width:100%;">&nbsp;</td>    	
     </tr>  
     <tr style="text-align:left">
-    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
-    		&nbsp;&bull;&nbsp;Android Smartphone <a target="_blank" href="https://play.google.com/store/apps/details?id=com.wiebej.gps2opengts">GPS2OpenGTS Pro</a>
+    	<td colspan="2" style="border:none;white-space: nowrap;" class="ui-widget-content">
+    		&nbsp;&bull;&nbsp;Android Smartphone via
+    		<a target="_blank" href="https://play.google.com/store/apps/details?id=de.msk.mylivetracker.client.android">MyLiveTracker</a>,
+    		<a target="_blank" href="https://play.google.com/store/apps/details?id=de.afischer.aftrack">A. Fischers AFTrack</a>,
+    		<a target="_blank" href="https://play.google.com/store/apps/details?id=com.wiebej.gps2opengts">GPS2OpenGTS Pro</a>
     		&nbsp;&nbsp;
-    	</td>
-    	<td style="border:none;white-space: nowrap;" class="ui-widget-content">
-    		&nbsp;&bull;&nbsp;Android Smartphone <a target="_blank" href="https://play.google.com/store/apps/details?id=de.msk.mylivetracker.client.android">MyLiveTracker</a>
     	</td>
     	<td style="border:none;width:100%;">&nbsp;</td>    	
     </tr>      

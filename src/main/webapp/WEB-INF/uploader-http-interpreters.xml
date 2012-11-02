@@ -51,9 +51,15 @@
 		<property name="version" value="1.00" />	
 		<property name="services" ref="services" />				
 	</bean>
-	<bean id="HttpInterpreter_AxelFischerAfTrackForSymbian" class="de.msk.mylivetracker.web.uploader.interpreter.afischer.aftrack.HttpInterpreter">
+	<bean id="HttpInterpreter_AxelFischerAfTrackForSymbian" class="de.msk.mylivetracker.web.uploader.interpreter.afischer.aftrack.symbian.HttpInterpreter">
 		<property name="id" value="aft" />
 		<property name="name" value="Axel Fischer AFTrack for Symbian" />
+		<property name="version" value="1.00" />
+		<property name="services" ref="services" />					
+	</bean>
+	<bean id="HttpInterpreter_AxelFischerAfTrackForAndroid" class="de.msk.mylivetracker.web.uploader.interpreter.afischer.aftrack.android.HttpInterpreter">
+		<property name="id" value="aft2" />
+		<property name="name" value="Axel Fischer AFTrack for Android" />
 		<property name="version" value="1.00" />
 		<property name="services" ref="services" />					
 	</bean>

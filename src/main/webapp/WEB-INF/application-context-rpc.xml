@@ -18,6 +18,7 @@
         <property name="senderService" ref="senderService" />
         <property name="userService" ref="userService" />  
         <property name="tcpServerConfig" ref="tcpServerAt51395Config" /> 
+        <property name="statusParamsService" ref="statusParamsService" />
     </bean>
        
 </beans>

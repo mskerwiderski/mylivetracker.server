@@ -26,6 +26,7 @@
 		    	<ref bean="HttpInterpreter_AspicoreGsmTrackerForSymbian" />
 		    	<ref bean="HttpInterpreter_JouniErolaSendLocationForIos" />
 		    	<ref bean="HttpInterpreter_AxelFischerAfTrackForSymbian" />
+		    	<ref bean="HttpInterpreter_AxelFischerAfTrackForAndroid" />
 		    	<ref bean="HttpInterpreter_BrandsemotionBeGpsForBlackBerry" />
 		    	<ref bean="HttpInterpreter_WiebejGps2OpenGtsForAndroid" />
 			</util:list>

@@ -52,7 +52,7 @@
             	<prop key="/track_as_kml_export.sec">trackAsKmlExportCtrl</prop>
             	<prop key="/track_as_gpx_export.sec">trackAsGpxExportCtrl</prop>
             	<prop key="/options.do">optionsCtrl</prop>
-            	<prop key="/upl*.sec">httpServerAtApplicationPort</prop>
+            	<prop key="/upl_*.sec">httpServerAtApplicationPort</prop>
             	<prop key="/demo.do">demoCtrl</prop>            	
             </props>
         </property>
@@ -203,7 +203,7 @@
 		<property name="tcpServers" ref="tcpServers" />
 		<property name="udpServers" ref="udpServers" />
 		<property name="httpServers" ref="httpServers" />
-		<property name="httpUrlTemplate" value="/upl*.sec" />
+		<property name="httpUrlTemplate" value="/upl_*.sec" />
 		<property name="applicationService" ref="applicationService" />
 	</bean>
 	

@@ -19,7 +19,8 @@ import de.msk.mylivetracker.web.uploader.processor.server.tcp.AbstractDataStrWoD
  * @version 000
  * 
  * history
- * 000 initial 2011-08-11
+ * 001 2012-11-02 support for itakka-firmware added.
+ * 000 2011-08-11 initial.
  * 
  */
 public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
@@ -53,6 +54,7 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 	// 25: 01					: optional: mobile network code.
 	// 26: 8707					: optional: local area code (as hex value).
 	// 27: 27B7					: optional: cell id (as hex value).
+	// 28: itakka_fw492         : optional: firmware info.
 	//
 	
 	/* (non-Javadoc)
@@ -128,7 +130,7 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 			dataReceived.getSenderState().addState("battery voltage = " + batteryItems[1]);			
 		}
 		
-		// altitude, mobile network infos.
+		// number of satellites, altitude, mobile network, firmware infos.
 		String optionalParams = 
 			RegExUtils.getDataItemIfRegExFind(PATTERN_OPTIONAL_PARAMS, dataStr, false);
 		String[] optionalItems = StringUtils.splitPreserveAllTokens(optionalParams, ",");
@@ -136,11 +138,16 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 			// only altitude is avaiable
 			dataReceived.getPosition().setAltitudeInMtr(
 				CommonUtils.string2double(optionalItems[0], null));				
-		} else if (optionalItems.length == 10) {
+		} else if (optionalItems.length >= 10) {
+			// number of satellites.
+			Integer numberOfSatellites = CommonUtils.string2int(optionalItems[0], null);
+			if (numberOfSatellites != null) {
+				dataReceived.getSenderState().addState(
+					"satellites=" + numberOfSatellites);
+			}
 			// altitude.
 			dataReceived.getPosition().setAltitudeInMtr(
 				CommonUtils.string2double(optionalItems[1], null));
-			
 			// mobile network cell.
 			dataReceived.getMobNwCell().setMobileCountryCode(optionalItems[6]);
 			dataReceived.getMobNwCell().setMobileNetworkCode(optionalItems[7]);
@@ -153,7 +160,15 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 			if (!StringUtils.isEmpty(cellIdStr)) {
 				dataReceived.getMobNwCell().setCellId(
 					Integer.parseInt(cellIdStr, 16));
-			}										
+			}
+			// firmware info.
+			if (optionalItems.length == 11) {
+				String firmwareInfoStr = optionalItems[10];
+				if (!StringUtils.isEmpty(firmwareInfoStr)) {
+					dataReceived.getSenderState().addState(
+						"firmware=" + firmwareInfoStr);
+				}
+			}
 		}
 	}
 }

@@ -50,7 +50,7 @@
 	<bean id="TcpInterpreter_XexunTk102" class="de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.TcpInterpreter">
 		<property name="id" value="xtk" />
 		<property name="name" value="Xexun Tk102" />
-		<property name="version" value="1.00" />	
+		<property name="version" value="1.01" />	
 		<property name="services" ref="services" />				
 	</bean>				
 	<bean id="TcpInterpreter_CobanGps103a" class="de.msk.mylivetracker.web.uploader.interpreter.coban.gps103a.TcpInterpreter">
