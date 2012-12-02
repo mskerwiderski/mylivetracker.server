@@ -16,5 +16,5 @@ import de.msk.mylivetracker.commons.rpc.LinkSenderResponse;
  */
 public interface IRpcService {
 	public String about();
-	public LinkSenderResponse linkSender(LinkSenderRequest request);		
+	public LinkSenderResponse linkSender(LinkSenderRequest request);	
 }

@@ -20,7 +20,7 @@ import de.msk.mylivetracker.web.uploader.processor.SenderFromRequestVo;
  * 000 initial 2011-09-27
  * 
  */
-public class AbstractTestTcpInterpreter extends TestCase {
+public class AbstractTestInterpreter extends TestCase {
 	
 	protected void checkSenderFromRequest(
 		DataReceivedVo dataReceived, String expSenderId,

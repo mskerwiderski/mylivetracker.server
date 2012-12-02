@@ -436,12 +436,15 @@ body.loading .modal {
 	}
 	
 	function mlt_resetPositionsBoundsAndMarkers() {
+		mlt_log("mlt_resetPositionsBoundsAndMarkers...");
+		mlt_clearAllLayers();
  		mlt_positions = [];
  		mlt_posAndInfo = [];
 		mlt_bounds = new L.LatLngBounds();
 		mlt_bounds_empty = true;
 		mlt_markers = new Array();
 		mlt_circleMarkers = new Array();
+		mlt_log("mlt_resetPositionsBoundsAndMarkers...done.");
  	}
 
  	function mlt_UpdateStatus(fitMap, reset, isHome) {		
@@ -898,7 +901,8 @@ body.loading .modal {
 	}
 	
 	function mlt_createRecentIcon(senderSymbolId) {
-		var senderSymbolImageUrl = "<c:url value='img/map/'/>" + senderSymbolId + ".png";
+		var pathPrefix = "<c:url value="img/map/"/>";
+		var senderSymbolImageUrl = pathPrefix + senderSymbolId + ".png";
 		mlt_recentIcon = mlt_createIcon(senderSymbolImageUrl, new L.Point(32, 37));
 	}
 	

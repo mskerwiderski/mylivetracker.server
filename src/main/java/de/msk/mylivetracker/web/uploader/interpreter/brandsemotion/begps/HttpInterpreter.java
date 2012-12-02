@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.CommonUtils;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.InterpreterException;
-import de.msk.mylivetracker.web.uploader.processor.server.http.AbstractHttpServletRequestInterpreter;
+import de.msk.mylivetracker.web.uploader.processor.server.http.AbstractHttpServletRequestWoDeviceSpecificInterpreter;
 
 /**
  * HttpInterpreter.
@@ -20,7 +20,7 @@ import de.msk.mylivetracker.web.uploader.processor.server.http.AbstractHttpServl
  * 000 initial 2011-08-11
  * 
  */
-public class HttpInterpreter extends AbstractHttpServletRequestInterpreter {
+public class HttpInterpreter extends AbstractHttpServletRequestWoDeviceSpecificInterpreter {
 
 	//
 	// PIN=2268A60F&gpgga1=$GPGGA,114906,,,,,0,,,,M,,M,,*6D&gprmc1=$GPRMC,114906,V,,,,,,,060211,,,N*5C

@@ -5,16 +5,14 @@ import org.apache.commons.lang.StringUtils;
 import de.msk.mylivetracker.commons.rpc.LinkSenderRequest;
 import de.msk.mylivetracker.commons.rpc.LinkSenderResponse;
 import de.msk.mylivetracker.commons.rpc.RpcResponse.ResultCode;
-import de.msk.mylivetracker.domain.StatusParamsVo;
-import de.msk.mylivetracker.domain.TrackingFlyToMode;
 import de.msk.mylivetracker.domain.sender.SenderRadiusUnit;
 import de.msk.mylivetracker.domain.sender.SenderSymbol;
 import de.msk.mylivetracker.domain.sender.SenderVo;
-import de.msk.mylivetracker.domain.user.UserObjectUtils;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.application.IApplicationService;
 import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.service.statusparams.IStatusParamsService;
+import de.msk.mylivetracker.service.track.ITrackService;
 import de.msk.mylivetracker.service.user.IUserService;
 import de.msk.mylivetracker.util.PwdUtils;
 import de.msk.mylivetracker.web.uploader.processor.server.tcp.TcpServerConfig;
@@ -36,6 +34,7 @@ public class JsonRpcService implements IRpcService {
 	private IApplicationService applicationService;
 	private IUserService userService;
 	private ISenderService senderService;
+	private ITrackService trackService;
 	private TcpServerConfig tcpServerConfig;
 	private IStatusParamsService statusParamsService;
 	
@@ -44,7 +43,7 @@ public class JsonRpcService implements IRpcService {
 	 */
 	@Override
 	public String about() {
-		return "MyLiveTracker RPC Service v1.0.2";
+		return "MyLiveTracker RPC Service v1.1.0";
 	}
 
 	/* (non-Javadoc)
@@ -120,23 +119,6 @@ public class JsonRpcService implements IRpcService {
 			this.senderService.storeSender(sender);
 		}
 		
-		StatusParamsVo statusParams = StatusParamsVo.createInstance();
-		if (resultCode.isSuccess()) {
-			statusParams.setUserId(user.getUserId());
-			statusParams.setTicketId(user.getOptions().getRecTrAccCode());
-			statusParams.setSenderId(senderId);
-			statusParams.setTrackingLive(true);
-			statusParams.setTrackingKeepRecentPositions(-1);
-			statusParams.setTrackingUpdateIntervalInSecs(10);
-			statusParams.setTrackingFlyToMode(TrackingFlyToMode.None);
-			statusParams.setWindowFullscreen(true);
-			statusParams.setShowTrackInfo(false);
-			statusParams.setCssStyle(UserObjectUtils.DEF_USER_STATUS_PAGE_CSS_STYLE);
-			statusParams.setWindowWidth(0);
-			statusParams.setWindowHeight(0);
-			this.statusParamsService.saveStatusParams(statusParams);
-		}
-		
 		LinkSenderResponse response = null;
 		
 		if (resultCode.isSuccess()) {
@@ -144,7 +126,7 @@ public class JsonRpcService implements IRpcService {
 			response = new LinkSenderResponse(request.getLocale(), resultCode,
 				serverAddress, tcpServerConfig.getListenPort(), 
 				senderId, senderName, sender.getAuthUsername(), sender.getAuthPlainPassword(), 
-				user.getOptions().getDefTrackName(), statusParams.getStatusParamsId());
+				user.getOptions().getDefTrackName());
 		} else {
 			response = new LinkSenderResponse(request.getLocale(), resultCode);			
 		}
@@ -186,32 +168,24 @@ public class JsonRpcService implements IRpcService {
 	public ISenderService getSenderService() {
 		return senderService;
 	}
-
-	/**
-	 * @param senderService the senderService to set
-	 */
 	public void setSenderService(ISenderService senderService) {
 		this.senderService = senderService;
 	}
-
-	/**
-	 * @return the tcpServerConfig
-	 */
+	public ITrackService getTrackService() {
+		return trackService;
+	}
+	public void setTrackService(ITrackService trackService) {
+		this.trackService = trackService;
+	}
 	public TcpServerConfig getTcpServerConfig() {
 		return tcpServerConfig;
 	}
-
-	/**
-	 * @param tcpServerConfig the tcpServerConfig to set
-	 */
 	public void setTcpServerConfig(TcpServerConfig tcpServerConfig) {
 		this.tcpServerConfig = tcpServerConfig;
 	}
-
 	public IStatusParamsService getStatusParamsService() {
 		return statusParamsService;
 	}
-
 	public void setStatusParamsService(IStatusParamsService statusParamsService) {
 		this.statusParamsService = statusParamsService;
 	}	

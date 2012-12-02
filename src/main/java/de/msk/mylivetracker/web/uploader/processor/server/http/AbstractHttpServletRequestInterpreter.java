@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.web.uploader.processor.IDataCtx;
 import de.msk.mylivetracker.web.uploader.processor.IDeviceSpecific;
-import de.msk.mylivetracker.web.uploader.processor.VoidDeviceSpecific;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.AbstractDataInterpreter;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.InterpreterException;
 
@@ -50,8 +49,10 @@ public abstract class AbstractHttpServletRequestInterpreter	extends AbstractData
 	public IDeviceSpecific process(DataReceivedVo dataReceived, IDataCtx data,
 		Map<String, Object> uploadProcessContext)
 		throws InterpreterException {
-		this.process(dataReceived, ((HttpServletRequestCtx)data).getParameterMap());
-		return VoidDeviceSpecific.VOID;
+		IDeviceSpecific deviceSpecific = this.process(dataReceived, 
+			((HttpServletRequestCtx)data).getParameterMap(),
+			uploadProcessContext);
+		return deviceSpecific;
 	}
 	
 	/* (non-Javadoc)
@@ -73,6 +74,6 @@ public abstract class AbstractHttpServletRequestInterpreter	extends AbstractData
 		return null;
 	}
 
-	protected abstract void	process(DataReceivedVo dataReceived,
-		Map<String, String> parameterMap) throws InterpreterException;	
+	protected abstract IDeviceSpecific process(DataReceivedVo dataReceived,
+		Map<String, String> parameterMap, Map<String, Object> uploadProcessContext) throws InterpreterException;	
 }

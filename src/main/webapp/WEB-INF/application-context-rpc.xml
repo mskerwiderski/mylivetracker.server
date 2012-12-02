@@ -17,6 +17,7 @@
     	<property name="applicationService" ref="applicationService" />
         <property name="senderService" ref="senderService" />
         <property name="userService" ref="userService" />  
+        <property name="trackService" ref="trackService" />
         <property name="tcpServerConfig" ref="tcpServerAt51395Config" /> 
         <property name="statusParamsService" ref="statusParamsService" />
     </bean>

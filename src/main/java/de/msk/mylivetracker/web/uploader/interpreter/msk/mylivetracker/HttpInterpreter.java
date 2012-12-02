@@ -14,7 +14,7 @@ import de.msk.mylivetracker.web.uploader.deviceactionexecutor.DeviceActionExecut
 import de.msk.mylivetracker.web.uploader.processor.IDeviceSpecific;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.CommonUtils;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.InterpreterException;
-import de.msk.mylivetracker.web.uploader.processor.server.http.AbstractHttpServletRequestInterpreter;
+import de.msk.mylivetracker.web.uploader.processor.server.http.AbstractHttpServletRequestWoDeviceSpecificInterpreter;
 import de.msk.mylivetracker.web.util.FmtUtils;
 
 /**
@@ -29,7 +29,7 @@ import de.msk.mylivetracker.web.util.FmtUtils;
  * 
  */
 public class HttpInterpreter extends
-		AbstractHttpServletRequestInterpreter {
+		AbstractHttpServletRequestWoDeviceSpecificInterpreter {
 
 	private static final String REQUEST_PARAM_VERSION_CODE = "vco";
 	private static final String REQUEST_PARAM_VERSION_NAME = "vna";

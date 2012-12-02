@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.CommonUtils;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.InterpreterException;
-import de.msk.mylivetracker.web.uploader.processor.server.http.AbstractHttpServletRequestInterpreter;
+import de.msk.mylivetracker.web.uploader.processor.server.http.AbstractHttpServletRequestWoDeviceSpecificInterpreter;
 
 /**
  * HttpInterpreter.
@@ -22,7 +22,7 @@ import de.msk.mylivetracker.web.uploader.processor.server.http.AbstractHttpServl
  * 
  */
 public class HttpInterpreter extends
-		AbstractHttpServletRequestInterpreter {
+		AbstractHttpServletRequestWoDeviceSpecificInterpreter {
 
 	private static final String REQUEST_PARAM_DEVICEID = "deviceid";
 	private static final String REQUEST_PARAM_USER_NAME = "usr";

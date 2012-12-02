@@ -2,7 +2,7 @@ package de.msk.mylivetracker.web.uploader.interpreter.aspicore.gsmtracker;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.DataReceivedVo;
-import de.msk.mylivetracker.web.uploader.interpreter.AbstractTestTcpInterpreter;
+import de.msk.mylivetracker.web.uploader.interpreter.AbstractTestInterpreter;
 
 /**
  * TestTcpInterpreter (GSMTracker).
@@ -15,7 +15,7 @@ import de.msk.mylivetracker.web.uploader.interpreter.AbstractTestTcpInterpreter;
  * 000 initial 2011-09-27
  * 
  */
-public class TestTcpInterpreter extends AbstractTestTcpInterpreter {
+public class TestTcpInterpreter extends AbstractTestInterpreter {
 	
 	protected static final DateTime RECEIVED = new DateTime();
 	
