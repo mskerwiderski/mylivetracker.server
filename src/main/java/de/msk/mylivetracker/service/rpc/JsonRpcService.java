@@ -10,6 +10,7 @@ import de.msk.mylivetracker.domain.sender.SenderSymbol;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.application.IApplicationService;
+import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
 import de.msk.mylivetracker.service.sender.ISenderService;
 import de.msk.mylivetracker.service.statusparams.IStatusParamsService;
 import de.msk.mylivetracker.service.track.ITrackService;
@@ -122,9 +123,12 @@ public class JsonRpcService implements IRpcService {
 		LinkSenderResponse response = null;
 		
 		if (resultCode.isSuccess()) {
-			String serverAddress = this.applicationService.getServerAddress();
+			String serverAddress = 
+				this.applicationService.getServerAddress();
+			Integer serverPort = 
+				this.applicationService.getParameterValueAsInteger(Parameter.ServerPortMltApp);
 			response = new LinkSenderResponse(request.getLocale(), resultCode,
-				serverAddress, tcpServerConfig.getListenPort(), 
+				serverAddress, serverPort, 
 				senderId, senderName, sender.getAuthUsername(), sender.getAuthPlainPassword(), 
 				user.getOptions().getDefTrackName());
 		} else {

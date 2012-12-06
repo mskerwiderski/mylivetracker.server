@@ -27,6 +27,7 @@ public interface IApplicationService {
 		RunCleanTasksAfterStartup, // if yes: clean tasks are started after application startup.
 		RunDemoAfterStartup, // if yes: demo tracks are started after application startup.
 		ServerAddress, // server address (dns or ip).
+		ServerPortMltApp, // server port for MyLiveTracker app linking.
 		SmsCreatorDePassword, // password of sms service smscreator.de.
 		SmsCreatorDeUsername, // username of sms service smscreator.de.
 		SupportEmail, // email address for contact MyLiveTracker support.
@@ -49,6 +50,13 @@ public interface IApplicationService {
 	 * @return Returns parameter value.
 	 */
 	public String getParameterValueAsString(Parameter parameter);		
+	
+	/**
+	 * get parameter value as integer.
+	 * @param parameter - the parameter.
+	 * @return Returns parameter value.
+	 */
+	public Integer getParameterValueAsInteger(Parameter parameter);
 	
 	/**
 	 * get parameter value as long.

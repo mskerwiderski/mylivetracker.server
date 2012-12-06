@@ -49,9 +49,6 @@ public class ApplicationService implements IApplicationService {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IApplicationService#reloadParameters()
-	 */
 	@Override
 	public void reloadParameters() {
 		applicationCache.removeAll();
@@ -83,33 +80,21 @@ public class ApplicationService implements IApplicationService {
 			port);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IApplicationService#getServerAddress()
-	 */
 	@Override
 	public String getServerAddress() {
 		return this.getParameterValueAsString(Parameter.ServerAddress);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IApplicationService#getApplicationBaseUrl()
-	 */
 	@Override
 	public String getApplicationBaseUrl() {
 		return this.getParameterValueAsString(Parameter.ApplicationBaseUrl);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IApplicationService#getApplicationPort()
-	 */
 	@Override
 	public Integer getApplicationPort() {
 		return Integer.valueOf(this.getParameterValueAsString(Parameter.ApplicationPort));		
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IApplicationService#getParameterValueAsString(de.msk.mylivetracker.service.IApplicationService.Parameter)
-	 */
 	@Override
 	public String getParameterValueAsString(Parameter parameter) {
 		if (!applicationCache.isKeyInCache(parameter.name())) {
@@ -119,48 +104,33 @@ public class ApplicationService implements IApplicationService {
 		return (String)applicationCache.get(parameter.name()).getObjectValue();										
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IApplicationService#getParameterValueAsLong(de.msk.mylivetracker.service.IApplicationService.Parameter)
-	 */
+	@Override
+	public Integer getParameterValueAsInteger(Parameter parameter) {
+		return NumberUtils.toInt(
+			getParameterValueAsString(parameter));
+	}
+	
 	@Override
 	public Long getParameterValueAsLong(Parameter parameter) {
 		return NumberUtils.toLong(
 			getParameterValueAsString(parameter));		
 	}
-
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IApplicationService#getParameterValueAsBoolean(de.msk.mylivetracker.service.IApplicationService.Parameter)
-	 */
+	
 	@Override
 	public Boolean getParameterValueAsBoolean(Parameter parameter) {
 		return BooleanUtils.toBoolean(
 			getParameterValueAsString(parameter));		
 	}
-
-	/**
-	 * @return the applicationDao
-	 */
+	
 	public IApplicationDao getApplicationDao() {
 		return applicationDao;
 	}
-
-	/**
-	 * @param applicationDao the applicationDao to set
-	 */
 	public void setApplicationDao(IApplicationDao applicationDao) {
 		this.applicationDao = applicationDao;
 	}
-
-	/**
-	 * @return the applicationCache
-	 */
 	public Cache getApplicationCache() {
 		return applicationCache;
 	}
-
-	/**
-	 * @param applicationCache the applicationCache to set
-	 */
 	public void setApplicationCache(Cache applicationCache) {
 		this.applicationCache = applicationCache;
 	}	
