@@ -2,8 +2,8 @@ package de.msk.mylivetracker.service.rpc;
 
 import org.apache.commons.lang.StringUtils;
 
-import de.msk.mylivetracker.commons.rpc.LinkSenderRequest;
-import de.msk.mylivetracker.commons.rpc.LinkSenderResponse;
+import de.msk.mylivetracker.commons.rpc.ConnectToMyLiveTrackerPortalRequest;
+import de.msk.mylivetracker.commons.rpc.ConnectToMyLiveTrackerPortalResponse;
 import de.msk.mylivetracker.commons.rpc.RpcResponse.ResultCode;
 import de.msk.mylivetracker.domain.sender.SenderRadiusUnit;
 import de.msk.mylivetracker.domain.sender.SenderSymbol;
@@ -47,11 +47,9 @@ public class JsonRpcService implements IRpcService {
 		return "MyLiveTracker RPC Service v1.1.0";
 	}
 
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.rpc.IRpcService#linkSender(de.msk.mylivetracker.commons.rpc.LinkSenderRequest)
-	 */
 	@Override
-	public LinkSenderResponse linkSender(LinkSenderRequest request) {
+	public ConnectToMyLiveTrackerPortalResponse connectToMyLiveTrackerPortal(
+		ConnectToMyLiveTrackerPortalRequest request) {
 		if (request == null) {
 			throw new IllegalArgumentException("request must not be null");
 		}
@@ -120,19 +118,19 @@ public class JsonRpcService implements IRpcService {
 			this.senderService.storeSender(sender);
 		}
 		
-		LinkSenderResponse response = null;
+		ConnectToMyLiveTrackerPortalResponse response = null;
 		
 		if (resultCode.isSuccess()) {
 			String serverAddress = 
 				this.applicationService.getServerAddress();
 			Integer serverPort = 
 				this.applicationService.getParameterValueAsInteger(Parameter.ServerPortMltApp);
-			response = new LinkSenderResponse(request.getLocale(), resultCode,
+			response = new ConnectToMyLiveTrackerPortalResponse(request.getLocale(), resultCode,
 				serverAddress, serverPort, 
 				senderId, senderName, sender.getAuthUsername(), sender.getAuthPlainPassword(), 
 				user.getOptions().getDefTrackName());
 		} else {
-			response = new LinkSenderResponse(request.getLocale(), resultCode);			
+			response = new ConnectToMyLiveTrackerPortalResponse(request.getLocale(), resultCode);			
 		}
 		
 		return response;

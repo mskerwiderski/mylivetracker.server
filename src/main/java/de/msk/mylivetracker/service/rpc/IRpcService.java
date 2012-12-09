@@ -1,7 +1,8 @@
 package de.msk.mylivetracker.service.rpc;
 
-import de.msk.mylivetracker.commons.rpc.LinkSenderRequest;
-import de.msk.mylivetracker.commons.rpc.LinkSenderResponse;
+import de.msk.mylivetracker.commons.rpc.ConnectToMyLiveTrackerPortalRequest;
+import de.msk.mylivetracker.commons.rpc.ConnectToMyLiveTrackerPortalResponse;
+
 
 /**
  * ISenderLinkService.
@@ -16,5 +17,5 @@ import de.msk.mylivetracker.commons.rpc.LinkSenderResponse;
  */
 public interface IRpcService {
 	public String about();
-	public LinkSenderResponse linkSender(LinkSenderRequest request);	
+	public ConnectToMyLiveTrackerPortalResponse connectToMyLiveTrackerPortal(ConnectToMyLiveTrackerPortalRequest request);	
 }
