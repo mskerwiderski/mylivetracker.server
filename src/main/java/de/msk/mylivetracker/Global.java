@@ -20,7 +20,7 @@ public class Global {
 	}
 
 	public static String getVersion() {
-		return "v1.5.0 beta 1";
+		return "v1.5.0 beta 3";
 	}
 	
 	public static String getAppId() {
@@ -32,6 +32,6 @@ public class Global {
 	}
 	
 	public static String getLink() {
-		return "http://www.mylivetracker.de";
+		return "http://portal.mylivetracker.de";
 	}
 }

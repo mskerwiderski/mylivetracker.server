@@ -29,6 +29,8 @@ public enum SenderSymbol {
 	Train("sender.symbol.train"),
 	Bus("sender.symbol.bus"),
 	Truck("sender.symbol.truck"),
+	AircraftSmall("sender.symbol.aircraftsmall"),
+	AircraftBig("sender.symbol.aircraftbig"),
 	Pet("sender.symbol.pet");
 	
 	private String id;

@@ -360,13 +360,13 @@
       	</dependency>
       	<!-- de.msk stuff -->
       	<dependency>
-	        <groupId>de.msk.mylivetracker</groupId>
-	        <artifactId>commons</artifactId>
+	        <groupId>de.msk</groupId>
+	        <artifactId>mylivetracker.commons</artifactId>
 	        <version>1.5.0</version>
 	    </dependency>
 	    <dependency>
-	        <groupId>de.msk.mylivetracker</groupId>
-	        <artifactId>smscreator</artifactId>
+	        <groupId>de.msk</groupId>
+	        <artifactId>mylivetracker.smscreator</artifactId>
 	        <version>1.0</version>
 	    </dependency>
 		<!-- testing -->
@@ -377,5 +377,5 @@
       		<scope>test</scope>
     	</dependency>
 	</dependencies>	
-  	<version>1.5.0 beta 2</version>
+  	<version>1.5.0 beta 4</version>
 </project>

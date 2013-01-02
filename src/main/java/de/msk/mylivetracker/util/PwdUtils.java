@@ -41,7 +41,8 @@ public class PwdUtils {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) throws Exception {		
+	public static void main(String[] args) throws Exception {
+		System.out.println(PwdUtils.getPlainPassword());
 		System.out.println(UUID.randomUUID().toString());
 		String hashedPassword = DigestUtils.md5Hex(
 			USERNAME + ":" + REALM + ":" + PASSWORD);
