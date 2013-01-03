@@ -2,8 +2,8 @@ package de.msk.mylivetracker.service.rpc;
 
 import org.apache.commons.lang.StringUtils;
 
-import de.msk.mylivetracker.commons.rpc.ConnectToMyLiveTrackerPortalRequest;
-import de.msk.mylivetracker.commons.rpc.ConnectToMyLiveTrackerPortalResponse;
+import de.msk.mylivetracker.commons.rpc.RegisterSenderRequest;
+import de.msk.mylivetracker.commons.rpc.RegisterSenderResponse;
 import de.msk.mylivetracker.commons.rpc.RpcResponse.ResultCode;
 import de.msk.mylivetracker.domain.sender.SenderRadiusUnit;
 import de.msk.mylivetracker.domain.sender.SenderSymbol;
@@ -39,17 +39,14 @@ public class JsonRpcService implements IRpcService {
 	private TcpServerConfig tcpServerConfig;
 	private IStatusParamsService statusParamsService;
 	
-	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.rpc.IRpcService#about()
-	 */
 	@Override
 	public String about() {
 		return "MyLiveTracker RPC Service v1.1.0";
 	}
 
 	@Override
-	public ConnectToMyLiveTrackerPortalResponse connectToMyLiveTrackerPortal(
-		ConnectToMyLiveTrackerPortalRequest request) {
+	public RegisterSenderResponse registerSender(
+		RegisterSenderRequest request) {
 		if (request == null) {
 			throw new IllegalArgumentException("request must not be null");
 		}
@@ -118,19 +115,19 @@ public class JsonRpcService implements IRpcService {
 			this.senderService.storeSender(sender);
 		}
 		
-		ConnectToMyLiveTrackerPortalResponse response = null;
+		RegisterSenderResponse response = null;
 		
 		if (resultCode.isSuccess()) {
 			String serverAddress = 
 				this.applicationService.getServerAddress();
 			Integer serverPort = 
 				this.applicationService.getParameterValueAsInteger(Parameter.ServerPortMltApp);
-			response = new ConnectToMyLiveTrackerPortalResponse(request.getLocale(), resultCode,
+			response = new RegisterSenderResponse(request.getLocale(), resultCode,
 				serverAddress, serverPort, 
 				senderId, senderName, sender.getAuthUsername(), sender.getAuthPlainPassword(), 
 				user.getOptions().getDefTrackName());
 		} else {
-			response = new ConnectToMyLiveTrackerPortalResponse(request.getLocale(), resultCode);			
+			response = new RegisterSenderResponse(request.getLocale(), resultCode);			
 		}
 		
 		return response;
