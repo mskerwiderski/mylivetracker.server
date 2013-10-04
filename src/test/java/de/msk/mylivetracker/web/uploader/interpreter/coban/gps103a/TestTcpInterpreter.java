@@ -40,7 +40,10 @@ public class TestTcpInterpreter extends AbstractTestInterpreter {
 	public void testValidPositionSent() throws Exception {
 		String dataStr = 
 			"imei:353451044755393,tracker,1111092255,,F,145548.000,A,5014.6008,N,00838.7714,E,7.14,,;";
+		//String dataStr2 = 
+		//	"imei:353451044755393,tracker,1111092255,,F,145548.000,A,5014.6008,N,00838.7714,E,7.14,0;";
 		DataReceivedVo dataReceived = interpret(dataStr);
+		
 		checkSenderFromRequest(dataReceived, "353451044755393", null, null);
 		System.out.println(dataReceived.getPosition().toString());
 		checkPosition(dataReceived, RECEIVED,

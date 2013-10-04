@@ -25,6 +25,7 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 	//
 	// two types of data strings are possible:
 	// o imei:353451044755393,tracker,1111170401,,F,200154.000,A,5014.6126,N,00838.7954,E,0.00,,;
+	// o imei:359710040951866,tracker,1306210838,+491633792586,F,083801.000,A,4902.5013,N,01121.2885,E,0.00,0;
 	// o ##,imei:353451044755393,A;
 	//
 	// 00: imei:353451044755393	: imei.
@@ -40,7 +41,7 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 	// 10: E					: longitude indicator.
 	// 11: 0.64					: speed in km/h.
 	// 12: 64.91				: course (DEG).
-	// 13: ?					: ?
+	// 13: ?					: optional: ?
 	// 14: ;					: end of data string.
 	//
 	
@@ -67,7 +68,7 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 		String[] dataItems = 
 			StringUtils.splitPreserveAllTokens(dataStr, ",");
 		
-		if ((dataItems.length != 14) && (dataItems.length != 3)) {
+		if ((dataItems.length != 13) && (dataItems.length != 14) && (dataItems.length != 3)) {
 			throw new InterpreterException("invalid count of data items: " + dataStr);
 		}				
 				

@@ -57,7 +57,7 @@
     />   
     
     <cache name="de.msk.mylivetracker.USER_WITHOUT_ROLE_CACHE"
-        maxElementsInMemory="100"
+        maxElementsInMemory="200"
         eternal="true"
         timeToIdleSeconds="0"
         timeToLiveSeconds="0"
@@ -66,7 +66,7 @@
     /> 	 	    	
     
     <cache name="de.msk.mylivetracker.SENDER_CACHE"
-        maxElementsInMemory="100"
+        maxElementsInMemory="200"
         eternal="true"
         timeToIdleSeconds="0"
         timeToLiveSeconds="0"

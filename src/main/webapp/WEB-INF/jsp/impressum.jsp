@@ -21,11 +21,7 @@
 	<tr>
 		<td style="width:5px;border:none;" class="ui-widget-content">&nbsp;</td>
 		<td style="border:none;" class="ui-widget-content">
-			Michael Skerwiderski<br>
-			Sandgrubenweg 33<br>
-			81737 M&uuml;nchen / Munich<br>
-			Deutschland / Germany<br>
-			Email: support@mylivetracker.de
+			&nbsp;<img style="vertical-align: middle;" height="75%" src="img/others/impressum-address.jpg" />&nbsp;
 		</td>
 	</tr>
 	<tr>
