@@ -26,6 +26,7 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 	// two types of data strings are possible:
 	// o imei:353451044755393,tracker,1111170401,,F,200154.000,A,5014.6126,N,00838.7954,E,0.00,,;
 	// o imei:359710040951866,tracker,1306210838,+491633792586,F,083801.000,A,4902.5013,N,01121.2885,E,0.00,0;
+	// o imei:359587010124900,tracker,0809231929,13554900601,F,112909.397,A,2234.4669,N,11354.3287,E,0.11,; 
 	// o ##,imei:353451044755393,A;
 	//
 	// 00: imei:353451044755393	: imei.

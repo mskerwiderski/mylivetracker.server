@@ -36,7 +36,21 @@ public class AbstractTestInterpreter extends TestCase {
 		assertEquals(expAuthPlainPassword, 
 			senderFromRequestVo.getAuthPlainPassword());		
 	}
-		
+	
+	protected void checkPosition(DataReceivedVo dataReceived,
+		Double expLatitude, Double expLongitude, 
+		DateTime expTimeReceived, DateTime expTimeRecorded,	
+		boolean isValid) {
+		assertNotNull(dataReceived);
+		PositionVo position = dataReceived.getPosition();
+		assertNotNull(position);
+		assertEquals(expTimeReceived.toString(), position.getTimeReceived().toString());
+		assertEquals(expTimeRecorded.toString(), position.getTimeRecorded().toString());
+		assertEquals(expLatitude, position.getLatitudeInDecimal());
+		assertEquals(expLongitude, position.getLongitudeInDecimal());
+		assertEquals(isValid, position.isValid());
+	}
+	
 	protected void checkPosition(DataReceivedVo dataReceived,
 		DateTime expTimeReceived, DateTime expTimeRecorded,	
 		Double expLatitude, Double expLongitude, 

@@ -359,11 +359,11 @@
          	<version>[2.1,)</version>
       	</dependency>
       	<!-- de.msk stuff -->
-      	<!-- dependency>
+      	<dependency>
 	        <groupId>de.msk</groupId>
 	        <artifactId>mylivetracker.commons</artifactId>
 	        <version>1.5.0</version>
-	    </dependency -->
+	    </dependency>
 	    <dependency>
 	        <groupId>de.msk</groupId>
 	        <artifactId>mylivetracker.smscreator</artifactId>
@@ -377,5 +377,5 @@
       		<scope>test</scope>
     	</dependency>
 	</dependencies>	
-  	<version>1.4.5</version>
+  	<version>1.4.6</version>
 </project>
