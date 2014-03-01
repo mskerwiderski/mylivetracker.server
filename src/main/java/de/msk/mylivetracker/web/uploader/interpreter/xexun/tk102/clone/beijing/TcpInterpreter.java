@@ -1,4 +1,4 @@
-package de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.clone;
+package de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.clone.beijing;
 
 import java.util.Map;
 

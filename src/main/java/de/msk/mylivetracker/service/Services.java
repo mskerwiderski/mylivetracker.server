@@ -1,5 +1,6 @@
 package de.msk.mylivetracker.service;
 
+import de.msk.mylivetracker.service.admin.IAdminService;
 import de.msk.mylivetracker.service.application.IApplicationService;
 import de.msk.mylivetracker.service.demo.IDemoService;
 import de.msk.mylivetracker.service.geocoding.AbstractGeocodingService;
@@ -28,6 +29,7 @@ import de.msk.mylivetracker.service.util.IUtilService;
  * 
  */
 public class Services {
+	private IAdminService adminService;
 	private IApplicationService applicationService;
 	private IDemoService demoService;
 	private AbstractGeocodingService geocodingService;
@@ -43,6 +45,12 @@ public class Services {
 	private IUserSessionStatusService userSessionStatusService;
 	private IUserOperationsCounterService userOperationsCounterService;
 	private IUtilService utilService;
+	public IAdminService getAdminService() {
+		return adminService;
+	}
+	public void setAdminService(IAdminService adminService) {
+		this.adminService = adminService;
+	}
 	public IApplicationService getApplicationService() {
 		return applicationService;
 	}

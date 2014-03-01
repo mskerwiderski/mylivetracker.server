@@ -116,25 +116,25 @@ public final class CommonUtils {
 	// $GPGGA,191410,4735.5634,N,00739.3538,E,1,04,4.4,351.5,M,48.0,M,,*45
 	// 	      ^      ^           ^            ^ ^  ^   ^       ^     
 	// 	      |      |           |            | |  |   |       |    
-	// 	      |      |           |            | |  |   |       Höhe Geoid minus 
-	// 	      |      |           |            | |  |   |       Höhe Ellipsoid (WGS84)
-	// 	      |      |           |            | |  |   |       in Metern (48.0,M)
+	// 	      |      |           |            | |  |   |       Hoehe Geoid minus 
+	// 	      |      |           |            | |  |   |       Hoehe Ellipsoid (WGS84)
+	// 	      |      |           |            | |  |   |       in Metern (48.0hm)
 	// 	      |      |           |            | |  |   |        
-	//        |      |           |            | |  |   Höhe über Meer (über Geoid)
-	// 	      |      |           |            | |  |   in Metern (351.5,M)
+	//        |      |           |            | |  |   Hoehe ueber Meer (ueber Geoid)
+	// 	      |      |           |            | |  |   in Metern (351.5hm)
 	// 	      |      |           |            | |  |
 	// 	      |      |           |            | |  HDOP (horizontal dilution
 	// 	      |      |           |            | |  of precision) Genauigkeit
 	// 	      |      |           |            | |
 	// 	      |      |           |            | Anzahl der erfassten Satelliten
 	// 	      |      |           |            | 
-	// 	      |      |           |            Qualität der Messung
-	// 	      |      |           |            (0 = ungültig)
+	// 	      |      |           |            Qualitaet der Messung
+	// 	      |      |           |            (0 = ungueltig)
 	// 	      |      |           |            (1 = GPS)
 	// 	      |      |           |            (2 = DGPS)
-	// 	      |      |           |            (6 = geschätzt nur NMEA-0183 2.3)
+	// 	      |      |           |            (6 = geschaetzt nur NMEA-0183 2.3)
 	// 	      |      |           | 
-	// 	      |      |           Längengrad
+	// 	      |      |           Laengengrad
 	// 	      |      |
 	// 	      |      Breitengrad 
 	// 	      |

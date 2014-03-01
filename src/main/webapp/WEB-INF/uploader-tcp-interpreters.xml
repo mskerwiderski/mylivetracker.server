@@ -53,9 +53,17 @@
 		<property name="version" value="1.01" />	
 		<property name="services" ref="services" />				
 	</bean>
-	<bean id="TcpInterpreter_XexunTk102_Clone" class="de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.clone.TcpInterpreter">
-		<property name="id" value="xtc" />
-		<property name="name" value="Xexun Tk102 Clone" />
+	<bean id="TcpInterpreter_XexunTk102_Clone_Beijing" 
+	    class="de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.clone.beijing.TcpInterpreter">
+		<property name="id" value="xtb" />
+		<property name="name" value="Xexun Tk102 Clone (Beijing)" />
+		<property name="version" value="1.00" />	
+		<property name="services" ref="services" />				
+	</bean>
+	<bean id="TcpInterpreter_XexunTk102_Clone_Xaiox" 
+	    class="de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.clone.xaiox.TcpInterpreter">
+		<property name="id" value="xtx" />
+		<property name="name" value="Xexun Tk102 Clone (Xaiox)" />
 		<property name="version" value="1.00" />	
 		<property name="services" ref="services" />				
 	</bean>				

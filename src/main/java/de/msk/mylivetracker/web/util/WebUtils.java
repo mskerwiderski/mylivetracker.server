@@ -208,6 +208,10 @@ public final class WebUtils {
 		return getBean(request.getSession().getServletContext(), beanId);		
 	}
 	
+	public static Double miles2kilometer(Double distInMiles) {
+		return distInMiles / 0.62137d;
+	}
+	
 	public static Double miles2meter(Double distInMiles) {
 		return distInMiles * 1000d / 0.62137d;
 	}

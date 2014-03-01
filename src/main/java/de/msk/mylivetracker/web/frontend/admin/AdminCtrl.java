@@ -141,8 +141,13 @@ public class AdminCtrl extends ParameterizableViewController {
 						language, DateTime.TIME_ZONE_UTC, 
 						lastName, firstName, emailAddress, 
 						3);
-				boolean success = 
-					this.services.getUserService().insertUser(createUserWithRoleResult.getUser());
+				UserWithRoleVo user = createUserWithRoleResult.getUser();
+				boolean success = this.services.getUserService().insertUser(user);
+				if (success) {
+					this.services.getAdminService().sendRegistrationEmailToUser(
+						WebUtils.getCurrentUserWithRole(), user);
+				}
+				
 				if (success) {
 					result = "New user successfully registered: " +
 						"[userId=" + userId + ", password=" + 

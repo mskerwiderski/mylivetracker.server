@@ -72,7 +72,8 @@
     			<ref bean="TcpInterpreter_AspicoreGsmTrackerForSymbian" />
     			<ref bean="TcpInterpreter_MeitrackGtVt" />
 		    	<ref bean="TcpInterpreter_XexunTk102" />
-		    	<ref bean="TcpInterpreter_XexunTk102_Clone" />
+		    	<ref bean="TcpInterpreter_XexunTk102_Clone_Beijing" />
+		    	<ref bean="TcpInterpreter_XexunTk102_Clone_Xaiox" />
 		    	<ref bean="TcpInterpreter_CobanGps103a" />
 		    	<ref bean="TcpInterpreter_IncutexTk5000" />
 		    	<ref bean="TcpInterpreter_BrandsemotionBeGpsForBlackBerry" />
@@ -134,7 +135,8 @@
     			<ref bean="TcpInterpreter_AspicoreGsmTrackerForSymbian" />
     			<ref bean="TcpInterpreter_MeitrackGtVt" />
 		    	<ref bean="TcpInterpreter_XexunTk102" />
-		    	<ref bean="TcpInterpreter_XexunTk102_Clone" />
+		    	<ref bean="TcpInterpreter_XexunTk102_Clone_Beijing" />
+		    	<ref bean="TcpInterpreter_XexunTk102_Clone_Xaiox" />
 		    	<ref bean="TcpInterpreter_CobanGps103a" />
 		    	<ref bean="TcpInterpreter_IncutexTk5000" />
 		    	<ref bean="TcpInterpreter_BrandsemotionBeGpsForBlackBerry" />
@@ -197,7 +199,8 @@
     			<ref bean="TcpInterpreter_AspicoreGsmTrackerForSymbian" />
     			<ref bean="TcpInterpreter_MeitrackGtVt" />
 		    	<ref bean="TcpInterpreter_XexunTk102" />
-		    	<ref bean="TcpInterpreter_XexunTk102_Clone" />
+		    	<ref bean="TcpInterpreter_XexunTk102_Clone_Beijing" />
+		    	<ref bean="TcpInterpreter_XexunTk102_Clone_Xaiox" />
 		    	<ref bean="TcpInterpreter_CobanGps103a" />
 		    	<ref bean="TcpInterpreter_IncutexTk5000" />
 		    	<ref bean="TcpInterpreter_BrandsemotionBeGpsForBlackBerry" />
@@ -232,7 +235,8 @@
 				<ref bean="TcpInterpreter_AspicoreGsmTrackerForSymbian" />
     			<ref bean="TcpInterpreter_MeitrackGtVt" />
 		    	<ref bean="TcpInterpreter_XexunTk102" />
-		    	<ref bean="TcpInterpreter_XexunTk102_Clone" />
+		    	<ref bean="TcpInterpreter_XexunTk102_Clone_Beijing" />
+		    	<ref bean="TcpInterpreter_XexunTk102_Clone_Xaiox" />
 		    	<ref bean="TcpInterpreter_CobanGps103a" />
 		    	<ref bean="TcpInterpreter_IncutexTk5000" />
 		    	<ref bean="TcpInterpreter_BrandsemotionBeGpsForBlackBerry" />

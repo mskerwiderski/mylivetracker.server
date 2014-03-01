@@ -1,10 +1,11 @@
-package de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.clone;
+package de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.clone.beijing;
 
 import java.util.TimeZone;
 
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.web.uploader.interpreter.AbstractTestInterpreter;
+import de.msk.mylivetracker.web.uploader.interpreter.xexun.tk102.clone.beijing.TcpInterpreter;
 
 /**
  * TestTcpInterpreter (Tk102 Clone).

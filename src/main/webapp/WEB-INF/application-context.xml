@@ -192,7 +192,29 @@
         class="de.msk.mylivetracker.dao.StatusParamsDao">
         <property name="sqlMapClient" ref="sqlMapMyLiveTracker" />
     </bean>  
-     	       
+
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+      	<property name="host" value="smtp.inetmx.de"/>
+   	</bean>
+   	       
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+      	<property name="velocityProperties">
+        	<value>
+            	resource.loader=class
+            	class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+         	</value>
+      	</property>
+   	</bean>
+   
+	<bean id="adminService"
+        class="de.msk.mylivetracker.service.application.AdminService">
+        <property name="javaMailSender" ref="javaMailSender" />
+        <property name="velocityEngine" ref="velocityEngine" />
+        <property name="emailAddressFrom" value="support@mylivetracker.de" />
+        <property name="registrationEmailTemplateDe" value="email-templates/registration-email-template-de.vm" />
+        <property name="registrationEmailTemplateEn" value="email-templates/registration-email-template-en.vm" />        
+    </bean>
+    
     <bean id="applicationService"
         class="de.msk.mylivetracker.service.application.ApplicationService"
         init-method="loadParameters">
@@ -321,6 +343,7 @@
     
     <bean id="services" 
 		class="de.msk.mylivetracker.service.Services" lazy-init="false">
+        <property name="adminService" ref="adminService" />
 		<property name="applicationService" ref="applicationService" />
 		<property name="demoService" ref="demoService" />
 		<property name="geocodingService" ref="geocodingService" />	
