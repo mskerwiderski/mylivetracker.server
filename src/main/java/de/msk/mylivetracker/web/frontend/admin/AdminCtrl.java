@@ -26,11 +26,8 @@ import de.msk.mylivetracker.domain.TrackingFlyToMode;
 import de.msk.mylivetracker.domain.statistics.DatabaseInfoVo;
 import de.msk.mylivetracker.domain.track.TrackFilterVo;
 import de.msk.mylivetracker.domain.track.TrackVo;
-import de.msk.mylivetracker.domain.user.UserObjectUtils;
-import de.msk.mylivetracker.domain.user.UserObjectUtils.CreateUserWithRoleResult;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.Services;
-import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
 import de.msk.mylivetracker.service.demo.IDemoService.DemoStatus;
 import de.msk.mylivetracker.service.track.ITrackService.TrackListResult;
 import de.msk.mylivetracker.service.track.StorePositionProcessor;
@@ -133,29 +130,15 @@ public class AdminCtrl extends ParameterizableViewController {
 			} else if (UsersLocaleResolver.getLocale(language) == null) {
 				result = "Register user failed: Only the languages 'en' and 'de' are supported.";
 			} else {
-				CreateUserWithRoleResult createUserWithRoleResult =
-					UserObjectUtils.createUserWithRole(
-						userId, 
-						this.services.getApplicationService().getParameterValueAsString(Parameter.ApplicationRealm), 
-						UserWithRoleVo.UserRole.User, 
-						language, DateTime.TIME_ZONE_UTC, 
-						lastName, firstName, emailAddress, 
-						3);
-				UserWithRoleVo user = createUserWithRoleResult.getUser();
-				boolean success = this.services.getUserService().insertUser(user);
-				if (success) {
-					this.services.getAdminService().sendRegistrationEmailToUser(
-						WebUtils.getCurrentUserWithRole(), user);
-				}
+				boolean success = this.services.getAdminService().registerNewUser(
+					WebUtils.getCurrentUserWithRole(), 
+					userId, firstName, lastName, emailAddress, 
+					language);
 				
 				if (success) {
-					result = "New user successfully registered: " +
-						"[userId=" + userId + ", password=" + 
-						createUserWithRoleResult.getPlainPassword() + 
-						"]";
+					result = "New user successfully registered: " + userId;
 				} else {
-					result = "New user registration failed: " +
-						"[userId=" + userId + "]";
+					result = "UserId already registered: " + userId;
 				}
 			}
 		}

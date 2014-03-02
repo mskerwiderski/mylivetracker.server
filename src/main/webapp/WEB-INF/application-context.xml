@@ -207,12 +207,14 @@
    	</bean>
    
 	<bean id="adminService"
-        class="de.msk.mylivetracker.service.application.AdminService">
+        class="de.msk.mylivetracker.service.admin.AdminService">
+      	<property name="applicationService" ref="applicationService" />
+      	<property name="userService" ref="userService" />
         <property name="javaMailSender" ref="javaMailSender" />
         <property name="velocityEngine" ref="velocityEngine" />
         <property name="emailAddressFrom" value="support@mylivetracker.de" />
-        <property name="registrationEmailTemplateDe" value="email-templates/registration-email-template-de.vm" />
-        <property name="registrationEmailTemplateEn" value="email-templates/registration-email-template-en.vm" />        
+        <property name="registrationEmailTemplateDe" value="de/msk/mylivetracker/service/admin/email/templates/registration-email-template-de.vm" />
+        <property name="registrationEmailTemplateEn" value="de/msk/mylivetracker/service/admin/email/templates/registration-email-template-en.vm" />        
     </bean>
     
     <bean id="applicationService"

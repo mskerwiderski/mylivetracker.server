@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1"
+http-equiv="content-type">
+<title></title>
+</head>
+<body>
+Hallo ${firstname},<br>
+<br>
+Ich habe Dir einen Zugang zu MyLiveTracker eingerichtet:<br>
+<br>
+<span style="font-weight: bold;">Portal:</span>
+http://portal.mylivetracker.de<br>
+<span style="font-weight: bold;">Dein Benutzername:</span> ${username}<br>
+<span style="font-weight: bold;">Dein Passwort:</span> ${password}<br>
+<br>
+Das Passwort kannst und solltest Du in den MyLiveTracker
+Portal-Einstellungen &auml;ndern. Sch&ouml;n w&auml;re es auch, wenn Du Deine
+Stammdaten wie Name, Adresse und Emailadresse &uuml;berpr&uuml;fst und ggf.
+aktualisierst.<br>
+<br>
+Es sind noch zwei Dinge zu tun, bevor Du mit dem Live-Tracking loslegen
+kannst:<br>
+<ul>
+<li>Dein Tracker muss in den MyLiveTracker Portal-Einstellungen als
+Sender eingetragen werden, damit die eingehenden Positionsdaten Deinem
+Account zugeordnet werden k&ouml;nnen.</li>
+<li>Der Tracker selbst muss mit den MyLiveTracker
+Server-Verbindungsdaten konfiguriert werden.<br>
+</li>
+</ul>
+Am besten registrierst Du Dich in unserem <a
+href="http://forum.mylivetracker.info" target="_blank">MyLiveTracker-Forum</a>.
+Dort findest Du alle notwendigen Informationen rund um MyLiveTracker:<br>
+<ul>
+<li><a href="http://forum.mylivetracker.info/viewforum.php?f=5"
+target="_blank">Anleitungen zur Konfiguration der unterst&uuml;tzen
+Trackerger&auml;te</a></li>
+<li><a href="http://forum.mylivetracker.info/viewtopic.php?f=5&amp;t=67"
+target="_blank">MyLiveTracker Server-Verbindungsdaten</a><br>
+</li>
+</ul>
+Solltest Du noch Fragen haben oder nicht gleich zurechtkommen, helfen
+wir Dir im Forum gerne weiter. &Uuml;ber Feedback (wie
+Verbesserungsvorschl&auml;ge oder Fehlermeldungen) w&uuml;rden wir uns ebenfalls
+sehr freuen.<br>
+<br>
+Noch 2 Anliegen:<br>
+<ul>
+<li>MyLiveTracker ist ein Non-Profit-Projekt und wird von uns in
+Eigenregie neben der eigentlichen Berufst&auml;tigkeit (sozusagen als Hobby)
+betrieben. Non-Profit bedeutet, dass wir versuchen die Entwicklungs-
+und Unterhaltskosten durch Spenden zu decken. Daher w&uuml;rden wir uns &uuml;ber
+(auch kleine) Spenden von Dir via PayPal sehr freuen, da Du damit den
+Fortbestand der Plattform mit m&ouml;glich machst.</li>
+<li>Wenn Du die MyLiveTracker Android App verwendest, w&uuml;rde wir uns
+&uuml;ber eine positive Bewertung im Android Market sehr freuen.<br>
+</li>
+</ul>
+Viele Gr&uuml;&szlig;e,<br>
+<br>
+Dein MyLiveTracker-Team<br>
+__________________<br>
+<br>
+Portal: http://portal.mylivetracker.de<br>
+Forum: http://forum.mylivetracker.info<br>
+Email: support@mylivetracker.de<br>
+<br>
+</body>
+</html>

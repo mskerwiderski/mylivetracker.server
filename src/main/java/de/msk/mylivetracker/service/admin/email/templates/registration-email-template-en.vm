@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1"
+http-equiv="content-type">
+<title></title>
+</head>
+<body>
+Dear ${firstname},<br>
+<br>
+I have created an account for you:<br>
+<br>
+<span style="font-weight: bold;">Portal:</span>
+http://portal.mylivetracker.de<br>
+<span style="font-weight: bold;">Your username:</span> ${username}<br>
+<span style="font-weight: bold;">Your password:</span> ${password}<br>
+<br>
+Please change your password in the settings. It would be nice too, if
+you check and update your master data such as name, address and email
+address, if needed.<br>
+<br>
+There are two more things to do before you can start with the live
+tracking:<br>
+<ul>
+<li>Your tracking device must be registered in the MyLiveTracker
+settings as a sender, so that the incoming position data of your
+tracking device can be automatically assigned to your account.</li>
+<li>The tracking device itself must be configured with the server
+data of the MyLiveTracker platform.<br>
+</li>
+</ul>
+For this: Please register to our <a
+href="http://forum.mylivetracker.info" target="_blank">MyLiveTracker-Forum</a>.
+There you will find a lot of information about the portal itself -
+among others the <a
+href="http://forum.mylivetracker.info/viewforum.php?f=5"
+target="_blank">configuration instructions</a> for the most popular
+tracking devices and the <a
+href="http://forum.mylivetracker.info/viewtopic.php?f=5&amp;t=67"
+target="_blank">server connect information</a>.<br>
+<br>
+If you have any questions, or not immediately get along, donÕt hesitate
+to contact us in the forum. We are also glad about any feedback, such
+as suggestions for improvements or error messages.<br>
+<br>
+Two more things:<br>
+<ul>
+<li>MyLiveTracker is a privately run, non-profit project, which is
+funded exclusively by donations. So feel free, if you like to support
+the further development of MyLiveTracker via a PayPal donation.</li>
+<li>If you use the MyLiveTracker Android App, we would be also happy
+about every positive review.<br>
+</li>
+</ul>
+Kind regards,<br>
+<br>
+Your MyLiveTracker Team<br>
+__________________<br>
+<br>
+Portal: http://www.mylivetracker.de<br>
+Forum: http://forum.mylivetracker.info<br>
+Email: support@mylivetracker.de<br>
+</body>
+</html>

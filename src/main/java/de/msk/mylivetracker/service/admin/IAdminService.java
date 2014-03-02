@@ -15,5 +15,7 @@ import de.msk.mylivetracker.domain.user.UserWithRoleVo;
  */
 public interface IAdminService {
 
-	public void sendRegistrationEmailToUser(UserWithRoleVo admin, UserWithRoleVo user);
+	public boolean registerNewUser(UserWithRoleVo admin,
+		String userId, String firstName, String lastName, 
+		String emailAddress, String languageCode);
 }
