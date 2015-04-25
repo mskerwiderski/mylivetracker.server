@@ -43,6 +43,7 @@
             	<prop key="/credits.sec">creditsCtrl</prop>
             	<prop key="/impressum.sec">impressumCtrl</prop>
             	<prop key="/admin.do">adminCtrl</prop>
+            	<prop key="/registration.do">registrationCtrl</prop>
             	<prop key="/login.sec">loginCtrl</prop>
             	<prop key="/tracks_overview.do">tracksOverviewCtrl</prop>
             	<prop key="/tracks_list.do">tracksListCtrl</prop>
@@ -91,7 +92,13 @@
         <property name="ticketCache" ref="ticketCache" />
         <property name="userStorePositionQueues" ref="userStorePositionQueues" />                       
     </bean>
-            
+    
+    <bean name="registrationCtrl"
+		class="de.msk.mylivetracker.web.frontend.admin.RegistrationCtrl"
+        p:viewName="registration" >
+        <property name="services" ref="services" />
+    </bean>
+    
     <bean name="loginCtrl" class="de.msk.mylivetracker.web.frontend.login.LoginCtrl">
     	<property name="services" ref="services" />
     	<property name="commandClass" value="de.msk.mylivetracker.web.frontend.login.LoginCmd"/>

@@ -123,6 +123,16 @@
 						<spring:message code="layout.admin" text="Admin" />
 					</label>
 				</security:authorize>
+				<security:authorize ifAnyGranted="Admin">
+					<input type="radio" 
+						id="registration" 
+						name="radio"
+						onclick="javascript:window.location.href='registration.do';" 
+						/>
+					<label for="registration" style="width: 125px;" >
+						<spring:message code="layout.registration" text="Registration" />
+					</label>
+				</security:authorize>
 				<security:authorize ifAnyGranted="Admin,User,Guest">
 					<input type="radio" 
 						id="logout" 

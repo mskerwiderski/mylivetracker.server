@@ -37,6 +37,10 @@
 	  	<put-attribute name="content" value="/WEB-INF/jsp/admin.jsp" />
 	</definition>
 	
+	<definition name="registration" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/registration.jsp" />
+	</definition>
+	
 	<definition name="login" extends="layout_login">
 		<put-attribute name="content" value="/WEB-INF/jsp/login.jsp" />
 	</definition>
