@@ -5,9 +5,10 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import de.msk.mylivetracker.domain.DataReceivedVo;
+import de.msk.mylivetracker.web.uploader.processor.IDeviceSpecific;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.CommonUtils;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.InterpreterException;
-import de.msk.mylivetracker.web.uploader.processor.server.tcp.AbstractDataStrWoDeviceSpecificInterpreter;
+import de.msk.mylivetracker.web.uploader.processor.server.tcp.AbstractDataStrInterpreter;
 
 /**
  * TcpInterpreter.
@@ -17,10 +18,11 @@ import de.msk.mylivetracker.web.uploader.processor.server.tcp.AbstractDataStrWoD
  * @version 000
  * 
  * history
+ * 001 return values correctly implemented 2015-04-26
  * 000 initial 2011-11-11
  * 
  */
-public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
+public class TcpInterpreter extends AbstractDataStrInterpreter {
 
 	//
 	// two types of data strings are possible:
@@ -57,23 +59,45 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 			 StringUtils.startsWith(dataStr, "##,imei:")) &&
 			StringUtils.endsWith(dataStr, ";");
 	}		
+	
+	private static final class CobanSpecific implements IDeviceSpecific {
+		public final static CobanSpecific LOGON = new CobanSpecific(RecordType.LogOn);
+		public final static CobanSpecific HEARTBEAT = new CobanSpecific(RecordType.Hearbeat);
+		public final static CobanSpecific DATA = new CobanSpecific(RecordType.Data);
 		
-    /* (non-Javadoc)
-	 * @see de.msk.mylivetracker.web.uploader.processor.server.tcp.AbstractDataStrWoDeviceSpecificInterpreter#processWoDeviceSpecific(de.msk.mylivetracker.domain.DataReceivedVo, java.lang.String, java.util.Map)
-	 */
-	@Override
-	protected void processWoDeviceSpecific(DataReceivedVo dataReceived,
+		public enum RecordType {
+			LogOn, Hearbeat, Data
+		};
+		private RecordType recordType;
+		private CobanSpecific(RecordType recordType) {
+			this.recordType = recordType;
+		}
+		public RecordType getRecordType() {
+			return recordType;
+		}
+	}
+	
+    @Override
+	protected IDeviceSpecific process(DataReceivedVo dataReceived,
 		String dataStr, Map<String, Object> uploadProcessContext)
 		throws InterpreterException {
-		
+
+    	CobanSpecific cobanSpecific = null;
+    	
 		String[] dataItems = 
 			StringUtils.splitPreserveAllTokens(dataStr, ",");
 		
-		if ((dataItems.length != 13) && (dataItems.length != 14) && (dataItems.length != 3)) {
+		if ((dataItems.length != 1) && 
+			(dataItems.length != 13) && 
+			(dataItems.length != 14) && 
+			(dataItems.length != 3)) {
 			throw new InterpreterException("invalid count of data items: " + dataStr);
 		}				
-				
-		if (dataItems.length == 3) {
+			
+		if (dataItems.length == 1) {
+			cobanSpecific = CobanSpecific.HEARTBEAT;
+		} else if (dataItems.length == 3) {
+			cobanSpecific = CobanSpecific.LOGON;
 			// sender id
 			String senderId = StringUtils.substringAfter(dataItems[1], ":");
 			if (StringUtils.isEmpty(senderId)) {
@@ -82,6 +106,7 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 			dataReceived.getSenderFromRequest().setSenderId(senderId);
 			dataReceived.getPosition().setValid(false);
 		} else {
+			cobanSpecific = CobanSpecific.DATA;
 			// sender id
 			String senderId = StringUtils.substringAfter(dataItems[0], ":");
 			if (StringUtils.isEmpty(senderId)) {
@@ -106,5 +131,24 @@ public class TcpInterpreter extends AbstractDataStrWoDeviceSpecificInterpreter {
 			boolean locValid = StringUtils.equals(dataItems[4], "F");		
 			dataReceived.getPosition().setValid(locValid);
 		}
+		
+		return cobanSpecific;
+	}
+
+	@Override
+	public String postProcess(DataReceivedVo dataReceived,
+		IDeviceSpecific deviceSpecific) throws InterpreterException {
+		String res = null;
+		CobanSpecific cobanSpecific = (CobanSpecific)deviceSpecific;
+		if (cobanSpecific.getRecordType().equals(CobanSpecific.RecordType.LogOn)) {
+			res = "LOAD";
+		} else if (cobanSpecific.getRecordType().equals(CobanSpecific.RecordType.Hearbeat)) {
+			res = "ON";
+		} else if (cobanSpecific.getRecordType().equals(CobanSpecific.RecordType.Data)) {
+			res = null;
+		} else {
+			// noop.
+		}
+		return res;
 	}
 }

@@ -28,7 +28,7 @@ public class TestTcpInterpreter extends AbstractTestInterpreter {
 			if (!interpreter.isDeviceCompliant(dataStr)) {
 				dataReceived = null;
 			} else {
-				interpreter.processWoDeviceSpecific(dataReceived, dataStr, null);
+				interpreter.process(dataReceived, dataStr, null);
 			}
 		} catch (Exception e) {
 			System.out.println(e);
