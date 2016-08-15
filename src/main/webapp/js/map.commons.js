@@ -25,29 +25,28 @@ var mlt_EMERGENCY_SIGNAL_DEACTIVATED_POS_zIndexOffset = "950";
 
 function mlt_initMap(anker, mapsUsedStr, defMapId, defCenter, defZoom, supportedLayerNames) {
    	var supportedLayers = [
-   		new L.TileLayer.OpenStreetMap.Mapnik,
-   		new L.TileLayer.OpenStreetMap.DE,
-   		new L.TileLayer.OpenStreetMap.BlackAndWhite,
-   		new L.TileLayer.Thunderforest.OpenCycleMap,
-   		new L.TileLayer.Thunderforest.Transport,
-   		new L.TileLayer.Thunderforest.Landscape,
-   		new L.TileLayer.MapQuestOpen.OSM,
-   		new L.TileLayer.MapQuestOpen.Aerial,
-   		new L.TileLayer.MapBox.Simple,
-   		new L.TileLayer.MapBox.Streets,
-   		new L.TileLayer.MapBox.Light,
-   		new L.TileLayer.MapBox.Lacquer,
-   		new L.TileLayer.MapBox.Warden,
-   		new L.TileLayer.Stamen.Toner,
-   		new L.TileLayer.Stamen.Terrain,
-   		new L.TileLayer.Stamen.Watercolor,
-   		new L.TileLayer.Esri.WorldStreetMap,
-   		new L.TileLayer.Esri.DeLorme,
-   		new L.TileLayer.Esri.WorldTopoMap,
-   		new L.TileLayer.Esri.WorldImagery,
-   		new L.TileLayer.Esri.OceanBasemap,
-   		new L.TileLayer.Esri.NatGeoWorldMap
+   	    new L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'), // OpenStreetMap.Mapnik
+   	    new L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'), // OpenStreetMap.BlackAndWhite
+   	    new L.tileLayer('http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'), // OpenStreetMap.DE
+   	    new L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'), // OpenTopoMap 
+   	    new L.tileLayer('http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png'), // Thunderforest.OpenCycleMap
+   	    new L.tileLayer('http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png'), // Thunderforest.Transport
+   	    new L.tileLayer('http://{s}.tile.thunderforest.com/transport-dark/{z}/{x}/{y}.png'), // Thunderforest.TransportDark
+   	    new L.tileLayer('http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png'), // Thunderforest.Landscape
+   	    new L.tileLayer('http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png'), // Thunderforest.Outdoors
+   	    new L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'), // Esri.WorldStreetMap
+   	    new L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}'), // Esri.DeLorme
+   	    new L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'), // Esri.WorldTopoMap
+   	    new L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'), // Esri.WorldImagery
+   	    new L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}'), // Esri.WorldTerrain
+   	    new L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}'), // Esri.WorldShadedRelief
+   	    new L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}'), // Esri.WorldPhysical
+   	    new L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}'), // Esri.OceanBaseMap
+   	    new L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}'), // Esri.NatGeoWorldMap
+   	    new L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'), // Esri.WorldGrayCanvas
+   	    new L.tileLayer('http://tile.mtbmap.cz/mtbmap_tiles/{z}/{x}/{y}.png') // MtbMap
    	];
+   	   	
 	var baseLayers = {};
 	for (var idx=0; idx < mapsUsedStr.length; idx++) {
 		if (mapsUsedStr[idx] == "1") {

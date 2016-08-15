@@ -79,7 +79,7 @@ public class TrackExporterGpx implements ITrackExporter<Object> {
 		person.setName(Global.getAppId());
 		
 		LinkType link = of.createLinkType();
-		link.setHref(Global.getLink());
+		link.setHref(Global.getPortalLink());
 		link.setText(Global.getAppId());
 		person.setLink(link);
 		

@@ -97,13 +97,13 @@
 		</c:choose>
 	</tr>	
     <tr>
-    	<td style="height:30px;width:100px;border:none;" class="ui-widget-content">&nbsp;<spring:message code="login.username" />&nbsp;</td>
+    	<td style="width:100px;border:none;" class="ui-widget-content">&nbsp;<spring:message code="login.username" />&nbsp;</td>
     	<td style="width:230px;border:none;text-align:center">
     		&nbsp;<input tabindex="1" style="width: 220px;" type='text'
     			class="text ui-widget-content ui-corner-all" 
     			id='inputPlainUserId' name='inputPlainUserId' value=''>&nbsp;
     	</td>
-    	<td style="width:150px;text-align:center;border:none;">
+    	<td style="width:160px;text-align:center;border:none;">
     		<div class="mlt-button">
 				&nbsp;<a href="#" style="width:120px;" 
 					onclick="javascript:submitLoginData();" >
@@ -112,17 +112,17 @@
 			</div>    			    				
     	</td>
     	<td rowspan="2" style="height:60px;border:none;" class="ui-widget-content">
-    		<spring:message code="login.paypal.button" />
+    		&nbsp;
     	</td>   	  	
     </tr>
     <tr>
-    	<td style="height:30px;width:100px;border:none;" class="ui-widget-content">&nbsp;<spring:message code="login.password" />&nbsp;</td>
+    	<td style="width:100px;border:none;" class="ui-widget-content">&nbsp;<spring:message code="login.password" />&nbsp;</td>
     	<td style="width:230px;border:none;text-align:center">
     		&nbsp;<input tabindex="2" style="width: 220px;" type='password'
     			class="text ui-widget-content ui-corner-all" 
     			id='inputPlainPassword' name='inputPlainPassword'/>&nbsp;
     	</td>
-    	<td style="width:140px;text-align:center;border:none;">
+    	<td style="width:160px;text-align:center;border:none;">
     		<div class="mlt-button">
 				&nbsp;<a href="#" style="width:120px;" 
 					onclick="javascript:resetLoginFields();" >

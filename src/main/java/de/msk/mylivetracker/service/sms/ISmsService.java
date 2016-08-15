@@ -16,43 +16,26 @@ import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
  */
 public interface ISmsService {
 
-	public static class SmsServiceException extends Exception {
-
-		private static final long serialVersionUID = 6109116070619730864L;
-
-		public SmsServiceException() {
+	public static final class SendingSmsResult {
+		private boolean success;
+		private String code;
+		protected SendingSmsResult(boolean success, String code) {
+			this.success = success;
+			this.code = code;
 		}
-
-		/**
-		 * @param message
-		 * @param cause
-		 */
-		public SmsServiceException(String message, Throwable cause) {
-			super(message, cause);
+		public boolean isSuccess() {
+			return success;
 		}
-
-		/**
-		 * @param message
-		 */
-		public SmsServiceException(String message) {
-			super(message);
-		}
-
-		/**
-		 * @param cause
-		 */
-		public SmsServiceException(Throwable cause) {
-			super(cause);
+		public String getCode() {
+			return code;
 		}
 	}
 	
-	public void sendTestSms(UserWithoutRoleVo user) throws SmsServiceException;
+	public SendingSmsResult sendTestSms(UserWithoutRoleVo user);
 	
-	public void sendEmergencyActivatedSms(
-		UserWithoutRoleVo user, DataReceivedVo dataReceived)
-		throws SmsServiceException;	
+	public SendingSmsResult sendEmergencyActivatedSms(
+		UserWithoutRoleVo user, DataReceivedVo dataReceived);	
 	
-	public void sendEmergencyDeactivatedSms(
-		UserWithoutRoleVo user, DataReceivedVo dataReceived)
-		throws SmsServiceException;
+	public SendingSmsResult sendEmergencyDeactivatedSms(
+		UserWithoutRoleVo user, DataReceivedVo dataReceived);
 }

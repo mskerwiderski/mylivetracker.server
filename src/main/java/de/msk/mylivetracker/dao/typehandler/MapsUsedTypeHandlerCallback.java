@@ -11,7 +11,7 @@ import com.ibatis.sqlmap.client.extensions.TypeHandlerCallback;
 import de.msk.mylivetracker.domain.user.MapsUsedVo;
 
 /**
- * SenderSymbolTypeHandlerCallback.
+ * MapsUsedTypeHandlerCallback.
  * 
  * @author michael skerwiderski, (c)2012
  * 

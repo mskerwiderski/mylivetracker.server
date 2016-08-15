@@ -20,7 +20,7 @@ public class Global {
 	}
 
 	public static String getVersion() {
-		return "v1.4.8";
+		return "v1.5.0";
 	}
 	
 	public static String getAppId() {
@@ -31,7 +31,11 @@ public class Global {
 		return getAppId() + " " + getVersion();
 	}
 	
-	public static String getLink() {
+	public static String getPortalLink() {
 		return "http://portal.mylivetracker.de";
+	}
+	
+	public static String getForumLink() {
+		return "http://forum.mylivetracker.info";
 	}
 }

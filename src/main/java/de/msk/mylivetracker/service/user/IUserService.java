@@ -20,7 +20,7 @@ public interface IUserService {
 	public UserWithoutRoleVo getUserWithoutRole(String userId);
 	public void updateUserOptions(UserWithoutRoleVo user);
 	public void updateUserOptionsMapsUsed(UserWithoutRoleVo user);
-	public void updateUserMasterData(UserWithoutRoleVo user);
+	public void updateUserMasterData(UserWithoutRoleVo user, boolean updatePassword);
 	public void updateUserAutoLogin(UserWithoutRoleVo user);
 	public void updateUserStatusPage(UserWithoutRoleVo user);
 	public void updateUserEmergency(UserWithoutRoleVo user);

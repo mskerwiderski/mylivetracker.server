@@ -14,18 +14,15 @@
    	padding: 0;
    	border: 0;
 }
-.leaflet-control-zoom-fullscreen {
+.leaflet-control-fullscreen {
    	background-image: url(../img/others/fullscreen.png);
 }
-.leaflet-control-zoom-fullscreen.last {
-	margin-top: 5px; 
-}
-.leaflet-control-zoom-symbols {
+.leaflet-control-symbols {
    	margin-top: 5px; 
 }
-.leaflet-control-zoom-symbols.on {
+.leaflet-control-symbolson {
    	background-image: url(../img/led/marker.png);
 }
-.leaflet-control-zoom-symbols.off {
+.leaflet-control-symbolsoff {
    	background-image: url(../img/led/marker_bw.png);
 }

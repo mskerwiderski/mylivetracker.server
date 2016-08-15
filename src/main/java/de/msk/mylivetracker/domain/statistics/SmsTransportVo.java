@@ -18,42 +18,24 @@ public class SmsTransportVo extends AbstractStatisticVo {
 	private static final long serialVersionUID = 6696389056380447292L;
 
 	private String userId;
-	private String smsType;
-	private String transportType;
-	private String caption;
+	private String smsProvider;
 	private String sender;
 	private String recipient;
 	private String message;
 	private String resultCode;
-	private String exception;
 	private boolean success;
 	
 	
 	public SmsTransportVo() {
 	}
 
-	/**
-	 * @param userId
-	 * @param smsType
-	 * @param transportType
-	 * @param caption
-	 * @param sender
-	 * @param recipient
-	 * @param message
-	 * @param resultCode
-	 * @param success
-	 */
-	public SmsTransportVo(String userId, String smsType, String transportType,
-			String caption, String sender, String recipient, String message,
-			String resultCode, String exception, boolean success) {
+	public SmsTransportVo(String userId, String smsProvider, 
+			String sender, String recipient, String message,
+			String resultCode, boolean success) {
 		this.userId = 
 			(StringUtils.isEmpty(userId) ? UNKNOWN : userId);
-		this.smsType = 
-			(StringUtils.isEmpty(smsType) ? UNKNOWN : smsType);
-		this.transportType = 
-			(StringUtils.isEmpty(transportType) ? UNKNOWN : transportType);
-		this.caption = 
-			(StringUtils.isEmpty(caption) ? UNKNOWN : caption);
+		this.smsProvider = 
+			(StringUtils.isEmpty(smsProvider) ? UNKNOWN : smsProvider);
 		this.sender = 
 			(StringUtils.isEmpty(sender) ? UNKNOWN : sender);
 		this.recipient = 
@@ -62,8 +44,6 @@ public class SmsTransportVo extends AbstractStatisticVo {
 			(StringUtils.isEmpty(message) ? EMPTY_STRING : message);
 		this.resultCode = 
 			(StringUtils.isEmpty(resultCode) ? EMPTY : resultCode);
-		this.exception = 
-			(StringUtils.isEmpty(exception) ? EMPTY : exception);
 		this.success = success;
 	}
 
@@ -82,45 +62,17 @@ public class SmsTransportVo extends AbstractStatisticVo {
 	}
 
 	/**
-	 * @return the smsType
+	 * @return the smsProvider
 	 */
-	public String getSmsType() {
-		return smsType;
+	public String getSmsProvider() {
+		return smsProvider;
 	}
 
 	/**
-	 * @param smsType the smsType to set
+	 * @param smsProvider the smsProvider to set
 	 */
-	public void setSmsType(String smsType) {
-		this.smsType = smsType;
-	}
-
-	/**
-	 * @return the transportType
-	 */
-	public String getTransportType() {
-		return transportType;
-	}
-
-	/**
-	 * @param transportType the transportType to set
-	 */
-	public void setTransportType(String transportType) {
-		this.transportType = transportType;
-	}
-
-	/**
-	 * @return the caption
-	 */
-	public String getCaption() {
-		return caption;
-	}
-
-	/**
-	 * @param caption the caption to set
-	 */
-	public void setCaption(String caption) {
-		this.caption = caption;
+	public void setSmsProvider(String smsProvider) {
+		this.smsProvider = smsProvider;
 	}
 
 	/**
@@ -177,20 +129,6 @@ public class SmsTransportVo extends AbstractStatisticVo {
 	 */
 	public void setResultCode(String resultCode) {
 		this.resultCode = resultCode;
-	}
-
-	/**
-	 * @return the exception
-	 */
-	public String getException() {
-		return exception;
-	}
-
-	/**
-	 * @param exception the exception to set
-	 */
-	public void setException(String exception) {
-		this.exception = exception;
 	}
 
 	/**

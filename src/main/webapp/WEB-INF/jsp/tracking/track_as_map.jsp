@@ -6,14 +6,15 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <%@ page import="de.msk.mylivetracker.web.util.WebUtils" %>
 
-<link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet-0.4.4.css'/>" />
+<link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet-0.7.7.css'/>" />
 <!--[if lte IE 8]>
      <link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet.ie-0.4.4.css'/>" />
 <![endif]-->
 <link rel="stylesheet" href="<c:url value='/style/map-and-controls.css'/>" />
-<script type="text/javascript" src="<c:url value='/js/leaflet/leaflet-0.4.4.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/leaflet/leaflet-0.7.7.min.js'/>"></script>
 <script src="<c:url value='/js/leaflet/leaflet.fullscreen-and-symbols.controls.js'/>"></script>
-<script src="<c:url value='/js/leaflet/leaflet.providers-0.0.1.js'/>"></script>
+<script src="<c:url value='/js/leaflet/leaflet.providers-1.1.14.js'/>"></script>
+<script src="<c:url value='/js/leaflet/leaflet.gpx-24.06.2016.js'/>"></script>
 <script src="<c:url value='/js/map.commons.js'/>"></script>
 
 <style>
@@ -646,7 +647,12 @@ body.loading .modal {
    				"<c:out value='${defMapId}' />",
    				mlt_DEFAULT_CENTER, mlt_DEFAULT_ZOOM,
    				mlt_supportedLayerNames);
-           	$(window).resize();
+   			<c:forEach var="routeUsed" items="${routesUsedArr}">
+   				new L.GPX('<c:out value="${routeUsed}"/>', {async: true}).on('loaded', function(e) {
+   			  		mlt_map.fitBounds(e.target.getBounds());
+   				}).addTo(mlt_map);
+   			</c:forEach>
+   			$(window).resize();
 	   	}
     );
 

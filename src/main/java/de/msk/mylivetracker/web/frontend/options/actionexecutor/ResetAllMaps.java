@@ -28,6 +28,7 @@ public class ResetAllMaps implements IAction {
 		MessageSource messageSource, Locale locale)
 		throws ActionExecutionException {
 		cmd.getUserOptions().setMapsUsed(user.getOptions().getMapsUsed());
+		cmd.getUserOptions().setRoutesUsed(user.getOptions().getRoutesUsed());
 		cmd.setInfoMessage(messageSource.getMessage(
 			"maps.success.resetted", null, locale));
 		return null;

@@ -21,7 +21,7 @@ import org.apache.commons.codec.net.URLCodec;
 public class PwdUtils {
 
 	public static final String USERNAME = "msk";
-	public static final String PASSWORD = "msk1968";
+	public static final String PASSWORD = "msk1968#+";
 	public static final String REALM = "SKERWIDERSKI";
 	
 	private static final URLCodec CODEC_UTF_8 = new URLCodec("UTF-8");

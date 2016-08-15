@@ -15,11 +15,14 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
+import de.msk.mylivetracker.Global;
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.user.MapsUsedVo;
+import de.msk.mylivetracker.domain.user.RoutesUsedVo;
 import de.msk.mylivetracker.domain.user.UserSessionStatusVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
+import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.Services;
 import de.msk.mylivetracker.web.frontend.tracksoverview.command.TracksOverviewCmd;
 import de.msk.mylivetracker.web.frontend.util.CustomDateTimeEditor;
@@ -90,6 +93,28 @@ public class TracksOverviewCtrl extends SimpleFormController {
 		}
 	}
 
+	private void checkIfVersionInfoMustBeDisplayed(TracksOverviewCmd cmd) {
+		boolean isUser = 
+			!WebUtils.getCurrentUserWithRole().getRole().equals(UserRole.Guest) && 
+			StringUtils.isEmpty(WebUtils.getCurrentUserWithRole().getAdminUsername());
+		if (isUser) {
+			UserWithoutRoleVo user = this.services.getUserService().
+				getUserWithoutRole(WebUtils.getCurrentUserWithRole().getUserId());
+			boolean showVersionInfo = !StringUtils.equals(
+				user.getMasterData().getLastVersionInfoDisplayed(), 
+				Global.getVersion());
+			cmd.setShowVersionInfo(showVersionInfo);
+			if (showVersionInfo) {
+				user.getMasterData().setLastVersionInfoDisplayed(Global.getVersion());
+				this.services.getUserService().updateUserMasterData(user, false);
+			}
+		} else {
+			cmd.setShowVersionInfo(false);
+		}
+		cmd.setVersionStr(Global.getVersion());
+		cmd.setForumLink(Global.getForumLink());
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
@@ -99,7 +124,7 @@ public class TracksOverviewCtrl extends SimpleFormController {
 		TracksOverviewCmd cmd = (TracksOverviewCmd)
 			request.getSession().getAttribute(this.getCommandName());
 		if (cmd == null) {
-			cmd = new TracksOverviewCmd();	
+			cmd = new TracksOverviewCmd();
 			cmd.setLiveTrackingOpts(this.getLiveTrackingOpts());
 			cmd.setLiveTrackingOptsKeepRecentPos(this.getLiveTrackingOptsKeepRecentPos());
 			cmd.setLiveTrackingOptsUpdateInterval(this.getLiveTrackingOptsUpdateInterval());
@@ -111,10 +136,13 @@ public class TracksOverviewCtrl extends SimpleFormController {
 			cmd.setTrackOptsActivityStatus(this.trackOptsActivityStatus);
 			cmd.setSupportedMaps(this.supportedMaps);
 			MapsUsedVo mapsUsed = WebUtils.getCurrentUserWithRole().getOptions().getMapsUsed();
-			cmd.setMapsUsedStr(mapsUsed.getMapsUsedStr());
+			cmd.setMapsUsedStr(mapsUsed.getMapsUsedStr(this.supportedMaps.size()));
 			cmd.setDefMapId(mapsUsed.getDefMapId());
+			RoutesUsedVo routesUsed = WebUtils.getCurrentUserWithRole().getOptions().getRoutesUsed();
+			cmd.setRoutesUsedArr(routesUsed.getRoutesUsedParsed());
 			request.getSession().setAttribute(this.getCommandName(), cmd);
 		}
+		checkIfVersionInfoMustBeDisplayed(cmd);
 		return cmd;
 	}
 

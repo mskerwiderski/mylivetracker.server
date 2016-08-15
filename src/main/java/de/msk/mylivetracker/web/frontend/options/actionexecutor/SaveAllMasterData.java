@@ -28,7 +28,7 @@ public class SaveAllMasterData implements IAction {
 		MessageSource messageSource, Locale locale)
 		throws ActionExecutionException {
 		user.setMasterData(cmd.getUserMasterData().copy());	
-		services.getUserService().updateUserMasterData(user);
+		services.getUserService().updateUserMasterData(user, true);
 		user.setAutoLogin(cmd.getUserAutoLogin().copy());	
 		services.getUserService().updateUserAutoLogin(user);
 		cmd.setInfoMessage(messageSource.getMessage(

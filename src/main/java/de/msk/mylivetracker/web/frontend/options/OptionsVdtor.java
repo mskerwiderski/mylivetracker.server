@@ -34,11 +34,14 @@ import de.msk.mylivetracker.web.util.WebUtils;
  */
 public class OptionsVdtor implements Validator {
 
-	private static int PASSWORD_MIN_LEN = 5;
-	private static int PASSWORD_MAX_LEN = 20;
-	private static int WINDOW_MIN_SIZE = 50;
-	private static int WINDOW_MAX_SIZE = 3000;
+	private static final int PASSWORD_MIN_LEN = 5;
+	private static final int PASSWORD_MAX_LEN = 20;
+	private static final int WINDOW_MIN_SIZE = 50;
+	private static final int WINDOW_MAX_SIZE = 3000;
 
+	private static final int MAX_COUNT_ROUTES_USED = 10;
+	private static final int MAX_COUNT_EMERGENCY_SMS_RECIPIENTS = 5;
+	
 	private ISenderService senderService;
 	
 	/* (non-Javadoc)
@@ -72,7 +75,7 @@ public class OptionsVdtor implements Validator {
 	
 	private static boolean isValidHomeAddressDetail(String detail) {
 		if (StringUtils.isEmpty(detail)) return true;
-		String  expression="^[ a-z0-9ŠšŸ§-]*$";
+		String  expression="^[ a-z0-9ï¿½ï¿½ï¿½ï¿½-]*$";
 		CharSequence inputStr = detail;  
 		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);  
 		Matcher matcher = pattern.matcher(inputStr);  
@@ -230,23 +233,39 @@ public class OptionsVdtor implements Validator {
 				errors.rejectValue("userOptions.mapsUsed.defMapId", 
 					"maps.error.defaultMap.invalid");
 			}
-		} else if (cmd.getActionExecutor().equals(ActionExecutor.SaveAllEmergency)) {
-			if (cmd.getUserEmergency().getSmsEnabled() &&
-				!isValidPhoneNumber(cmd.getUserEmergency().getSmsSender())) {
-				errors.rejectValue("userEmergency.smsSender", 
-					"emergency.error.number.invalid");
-			}			
-			if (cmd.getUserEmergency().getSmsEnabled() &&
-				!isValidPhoneNumber(cmd.getUserEmergency().getSmsRecipient())) {
-				errors.rejectValue("userEmergency.smsRecipient", 
-					"emergency.error.number.invalid");
+			if (cmd.getUserOptions().getRoutesUsed().getRoutesUsedCount() > MAX_COUNT_ROUTES_USED) {
+				errors.rejectValue("userOptions.routesUsed.routesUsedStr", 
+					"maps.error.routes.used.too.many.specified", 
+					new Object[] {MAX_COUNT_ROUTES_USED}, "INVALID MAX COUNT");
 			}
-		} else if (cmd.getActionExecutor().equals(ActionExecutor.SaveAndSendTestSms)) {
-			if (!cmd.getUserEmergency().getSmsEnabled()) {
+		} else if (cmd.getActionExecutor().equals(ActionExecutor.SaveAllEmergency) ||
+			 cmd.getActionExecutor().equals(ActionExecutor.SaveAndSendTestSms)) {
+			if (!cmd.getUserEmergency().getSmsEnabled() && 
+				cmd.getActionExecutor().equals(ActionExecutor.SaveAndSendTestSms)) {
 				errors.rejectValue("userEmergency.smsEnabled", 
 					"emergency.error.sms.not.enabled");
+			} else {
+				if (!isValidPhoneNumber(cmd.getUserEmergency().getSmsSender())) {
+					errors.rejectValue("userEmergency.smsSender", 
+						"emergency.error.number.sender.invalid");
+				}			
+				String[] recipientArr = cmd.getUserEmergency().getSmsRecipientArr();
+				if (recipientArr != null) {
+					if (recipientArr.length > MAX_COUNT_EMERGENCY_SMS_RECIPIENTS) {
+						errors.rejectValue("userEmergency.smsRecipient", 
+							"emergency.sms.recipient.too.many.specified", 
+							new Object[] {MAX_COUNT_EMERGENCY_SMS_RECIPIENTS}, "INVALID MAX COUNT");
+					}
+					for (int i=0; i < recipientArr.length; i++) {
+						if (!isValidPhoneNumber(recipientArr[i])) {
+							errors.rejectValue("userEmergency.smsRecipient", 
+								"emergency.error.number.recipient.invalid",
+								new Object[] {i}, "INVALID NUMBER");
+						}
+					}
+				}
 			}
-		}
+		} 
 	}
 
 	/**

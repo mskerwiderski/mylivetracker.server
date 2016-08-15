@@ -64,6 +64,80 @@
 	</tr>
 	<tr>
 		<td style="width:30%;">
+			&nbsp;<spring:message code="emergency.sms.service.provider" />&nbsp;
+		</td>
+		<td style="width:30%;">
+			<c:set var="selDefSmsServiceProvider">${optionsCmd.userEmergency.smsServiceProvider}</c:set>
+			&nbsp;<select id="userEmergency.smsServiceProvider" name="userEmergency.smsServiceProvider"
+				class="text ui-widget-content ui-corner-all" > 
+					<c:forEach var="smsServiceProviders" items="${optionsCmd.smsServiceProviders}">
+  						<c:choose>
+    						<c:when test="${smsServiceProviders.value eq selDefSmsServiceProvider}">
+						    	<option value="${smsServiceProviders.value}" selected>
+						        	<spring:message code="${smsServiceProviders.label}" />
+						      	</option>
+						    </c:when> 
+					    	<c:otherwise>
+						      	<option value="${smsServiceProviders.value}" >
+						        	<spring:message code="${smsServiceProviders.label}" />
+						      	</option>
+						    </c:otherwise>
+						</c:choose>
+					</c:forEach>
+			</select>&nbsp;											
+		</td>
+		<td>
+			&nbsp;<form:errors cssClass="ui-state-error"  
+				path="userEmergency.smsServiceProvider" />&nbsp;	
+		</td>			
+	</tr>
+	<tr>
+		<td style="width:30%;">
+			&nbsp;<spring:message code="emergency.sms.service.username" />&nbsp;
+		</td>
+		<td style="width:30%;">
+			&nbsp;<form:input cssClass="text ui-widget-content ui-corner-all" 
+				path="userEmergency.smsServiceUsername"	
+				size="30"
+			/>&nbsp;											
+		</td>
+		<td>
+			&nbsp;<form:errors cssClass="ui-state-error"  
+				path="userEmergency.smsServiceUsername" />&nbsp;	
+		</td>			
+	</tr>
+	<tr>
+		<td style="width:30%;">
+			&nbsp;<spring:message code="emergency.sms.service.password" />&nbsp;
+		</td>
+		<td style="width:30%;">
+			&nbsp;<form:input cssClass="text ui-widget-content ui-corner-all" 
+				path="userEmergency.smsServicePassword"	
+				size="30"
+			/>&nbsp;											
+		</td>
+		<td>
+			&nbsp;<form:errors cssClass="ui-state-error"  
+				path="userEmergency.smsServicePassword" />&nbsp;	
+		</td>			
+	</tr>
+	<tr>
+		<td style="width:30%;">
+			&nbsp;<spring:message code="emergency.sms.service.params" />&nbsp;
+		</td>
+		<td style="width:30%;">
+			&nbsp;<form:input cssClass="text ui-widget-content ui-corner-all" 
+				path="userEmergency.smsServiceParams"	
+				size="30"
+			/>&nbsp;											
+		</td>
+		<td>
+			&nbsp;<form:errors cssClass="ui-state-error"  
+				path="userEmergency.smsServiceParams" />&nbsp;	
+		</td>			
+	</tr>
+	<tr>
+		<td style="width:30%;">
 			&nbsp;<spring:message code="emergency.sms.sender" />&nbsp;
 		</td>
 		<td style="width:30%;">
@@ -82,14 +156,27 @@
 			&nbsp;<spring:message code="emergency.sms.recipient" />&nbsp;
 		</td>
 		<td>
-			&nbsp;<form:input cssClass="text ui-widget-content ui-corner-all" 
-				path="userEmergency.smsRecipient"	
-				size="30"
-			/>&nbsp;											
+			<form:textarea cssClass="text ui-widget-content ui-corner-all"
+				style="margin-left: 4px;width:98%" rows="3"
+				path="userEmergency.smsRecipient"/>
 		</td>
 		<td>
 			&nbsp;<form:errors cssClass="ui-state-error"  
 				path="userEmergency.smsRecipient" />&nbsp;	
+		</td>			
+	</tr>
+	<tr>
+		<td>
+			&nbsp;<spring:message code="emergency.sms.message.template" />&nbsp;
+		</td>
+		<td>
+			<form:textarea cssClass="text ui-widget-content ui-corner-all"
+				style="margin-left: 4px;width:98%" rows="4"
+				path="userEmergency.smsMessageTemplate"/>
+		</td>
+		<td>
+			&nbsp;<form:errors cssClass="ui-state-error"  
+				path="userEmergency.smsMessageTemplate" />&nbsp;	
 		</td>			
 	</tr>
 	<tr>

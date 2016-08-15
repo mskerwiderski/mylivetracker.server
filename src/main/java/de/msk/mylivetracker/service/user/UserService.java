@@ -71,12 +71,13 @@ public class UserService implements
 	}
 	
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IUserService#updateUserMasterData(de.msk.mylivetracker.domain.UserWithoutRoleVo)
+	 * @see de.msk.mylivetracker.service.user.IUserService#updateUserMasterData(de.msk.mylivetracker.domain.user.UserWithoutRoleVo, boolean)
 	 */
 	@Override
-	public void updateUserMasterData(UserWithoutRoleVo user) {
+	public void updateUserMasterData(UserWithoutRoleVo user,
+		boolean updatePassword) {
 		userWithoutRoleCache.remove(user.getUserId());
-		userDao.updateUserMasterData(user);
+		userDao.updateUserMasterData(user, updatePassword);
 	}
 	
 	@Override

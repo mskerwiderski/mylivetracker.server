@@ -12,6 +12,7 @@ import de.msk.mylivetracker.domain.TracksOverviewMapFlyToModeVo;
 import de.msk.mylivetracker.domain.TracksViewVo;
 import de.msk.mylivetracker.domain.sender.SenderVo;
 import de.msk.mylivetracker.domain.user.MapsUsedVo;
+import de.msk.mylivetracker.domain.user.RoutesUsedVo;
 import de.msk.mylivetracker.domain.user.UserSessionStatusVo;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo;
 import de.msk.mylivetracker.service.sender.ISenderService;
@@ -35,6 +36,10 @@ import de.msk.mylivetracker.web.util.WebUtils;
 public class TracksOverviewCmd {	
 	public static final String REQUEST_PARAM_ACTION_EXECUTOR = "actionExecutor";
 	
+	public boolean showVersionInfo;
+	public String versionStr;
+	public String forumLink;
+	
 	public String selectedTrackId = null;	
 	public String selectedTrackName = null;
 	public Boolean selectedTrackActivityStatus = null;
@@ -45,6 +50,7 @@ public class TracksOverviewCmd {
 	private TracksViewVo selectedTracksView = null;
 	private String mapsUsedStr = null;
 	private int defMapId = 0;
+	private String[] routesUsedArr = null;
 	
 	private List<SenderEntry> senderEntriesForCreateTrack = new ArrayList<SenderEntry>();
 	private String selectedSenderForCreateTrack = null;
@@ -91,12 +97,15 @@ public class TracksOverviewCmd {
 		return userSessionStatus;
 	}
 	
-	public void init(HttpServletRequest request, ISenderService senderService, UserSessionStatusVo userSessionStatus) {
+	public void init(HttpServletRequest request, ISenderService senderService, 
+		UserSessionStatusVo userSessionStatus) {
 		UserWithRoleVo user = WebUtils.getCurrentUserWithRole();
 		// maps.
 		MapsUsedVo mapsUsed = user.getOptions().getMapsUsed();
-		this.setMapsUsedStr(mapsUsed.getMapsUsedStr());
+		this.setMapsUsedStr(mapsUsed.getMapsUsedStr(this.supportedMaps.size()));
 		this.setDefMapId(mapsUsed.getDefMapId());
+		RoutesUsedVo routesUsed = user.getOptions().getRoutesUsed();
+		this.setRoutesUsedArr(routesUsed.getRoutesUsedParsed());
 		// sender entries (senders for create track, senders for filter).
 		List<SenderVo> senders = senderService.getSenders(user.getUsername());
 		this.senderEntriesForCreateTrack.clear();
@@ -271,6 +280,20 @@ public class TracksOverviewCmd {
 	 */
 	public void setDefMapId(int defMapId) {
 		this.defMapId = defMapId;
+	}
+
+	/**
+	 * @return the routesUsedArr
+	 */
+	public String[] getRoutesUsedArr() {
+		return routesUsedArr;
+	}
+
+	/**
+	 * @param routesUsedArr the routesUsedArr to set
+	 */
+	public void setRoutesUsedArr(String[] routesUsedArr) {
+		this.routesUsedArr = routesUsedArr;
 	}
 
 	public String getSelectedSenderForCreateTrack() {
@@ -498,6 +521,11 @@ public class TracksOverviewCmd {
 	 * @param selectedSearchStrFilter the selectedSearchStrFilter to set
 	 */
 	public void setSelectedSearchStrFilter(String selectedSearchStrFilter) {
+		if (!StringUtils.isEmpty(selectedSearchStrFilter)) {
+			if (StringUtils.containsOnly(selectedSearchStrFilter, " ")) {
+				selectedSearchStrFilter = "";
+			}
+		}
 		this.selectedSearchStrFilter = selectedSearchStrFilter;
 	}
 
@@ -507,5 +535,47 @@ public class TracksOverviewCmd {
 
 	public void setSupportedMaps(List<IntOptionDsc> supportedMaps) {
 		this.supportedMaps = supportedMaps;
-	}	
+	}
+
+	/**
+	 * @return the showVersionInfo
+	 */
+	public boolean isShowVersionInfo() {
+		return showVersionInfo;
+	}
+
+	/**
+	 * @param showVersionInfo the showVersionInfo to set
+	 */
+	public void setShowVersionInfo(boolean showVersionInfo) {
+		this.showVersionInfo = showVersionInfo;
+	}
+
+	/**
+	 * @return the versionStr
+	 */
+	public String getVersionStr() {
+		return versionStr;
+	}
+
+	/**
+	 * @param versionStr the versionStr to set
+	 */
+	public void setVersionStr(String versionStr) {
+		this.versionStr = versionStr;
+	}
+
+	/**
+	 * @return the forumLink
+	 */
+	public String getForumLink() {
+		return forumLink;
+	}
+
+	/**
+	 * @param forumLink the forumLink to set
+	 */
+	public void setForumLink(String forumLink) {
+		this.forumLink = forumLink;
+	}
 }

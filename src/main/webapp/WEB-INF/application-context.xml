@@ -57,6 +57,7 @@
     			<value>de.msk.mylivetracker.messages.sms-templates</value>
     			<value>de.msk.mylivetracker.messages.format-utils</value>
     			<value>de.msk.mylivetracker.messages.map</value>
+    			<value>de.msk.mylivetracker.messages.thank-you</value>
    			</list>
   		</property>
  	</bean>
@@ -289,7 +290,7 @@
     
     <bean id="smsService"
         class="de.msk.mylivetracker.service.sms.SmsService">        
-        <property name="minPauseInMSecsForUserBetweenTwoSmsSent" value="300000" />
+        <property name="minPauseInMSecsForUserBetweenTwoSmsSent" value="10000" />
         <property name="applicationService" ref="applicationService" />
         <property name="userService" ref="userService" />
         <property name="messageSource" ref="messageSource" />

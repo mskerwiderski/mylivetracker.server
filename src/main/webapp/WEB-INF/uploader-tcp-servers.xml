@@ -77,6 +77,7 @@
 		    	<ref bean="TcpInterpreter_CobanGps103a" />
 		    	<ref bean="TcpInterpreter_IncutexTk5000" />
 		    	<ref bean="TcpInterpreter_BrandsemotionBeGpsForBlackBerry" />
+		    	<ref bean="TcpInterpreter_SarMini" />
 			</util:list>
 		</constructor-arg>  		
 	</bean>
@@ -140,6 +141,7 @@
 		    	<ref bean="TcpInterpreter_CobanGps103a" />
 		    	<ref bean="TcpInterpreter_IncutexTk5000" />
 		    	<ref bean="TcpInterpreter_BrandsemotionBeGpsForBlackBerry" />
+		    	<ref bean="TcpInterpreter_SarMini" />
 			</util:list>
 		</constructor-arg>  		
 	</bean>
@@ -204,6 +206,7 @@
 		    	<ref bean="TcpInterpreter_CobanGps103a" />
 		    	<ref bean="TcpInterpreter_IncutexTk5000" />
 		    	<ref bean="TcpInterpreter_BrandsemotionBeGpsForBlackBerry" />
+		    	<ref bean="TcpInterpreter_SarMini" />
 			</util:list>
 		</constructor-arg>  		
 	</bean>
@@ -240,6 +243,7 @@
 		    	<ref bean="TcpInterpreter_CobanGps103a" />
 		    	<ref bean="TcpInterpreter_IncutexTk5000" />
 		    	<ref bean="TcpInterpreter_BrandsemotionBeGpsForBlackBerry" />
+		    	<ref bean="TcpInterpreter_SarMini" />
 			</util:list>
 		</constructor-arg>  		
 	</bean>

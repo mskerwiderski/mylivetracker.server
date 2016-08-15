@@ -2,6 +2,8 @@ package de.msk.mylivetracker.domain.user;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 
 /**
@@ -12,6 +14,7 @@ import de.msk.mylivetracker.commons.util.datetime.DateTime;
  * @version 000
  * 
  * history
+ * 001 smsServiceUsername / smsServicePassword added. 2016-08-07
  * 000 initial 2011-08-11
  * 
  */
@@ -25,6 +28,11 @@ public class UserEmergencyVo implements Cloneable, Serializable {
 	private String smsRecipient;
 	private DateTime smsLastSent;
 	private Integer smsSentCount;
+	private String smsServiceProvider;
+	private String smsServiceUsername;
+	private String smsServicePassword;
+	private String smsServiceParams;
+	private String smsMessageTemplate;
 	
 	public UserEmergencyVo copy() {
 		UserEmergencyVo emergency = null;
@@ -37,9 +45,9 @@ public class UserEmergencyVo implements Cloneable, Serializable {
 		return emergency;
 	}
 
-	public void incSmsSentCount() {
+	public void updateSmsSentCount(int sentSms) {
 		this.smsLastSent = new DateTime();
-		this.smsSentCount++;
+		this.smsSentCount += sentSms;
 	}
 		
 	/**
@@ -91,6 +99,10 @@ public class UserEmergencyVo implements Cloneable, Serializable {
 		return smsRecipient;
 	}
 
+	public String[] getSmsRecipientArr() {
+		return StringUtils.split(this.smsRecipient, ";");
+	}
+	
 	/**
 	 * @param smsRecipient the smsRecipient to set
 	 */
@@ -124,5 +136,75 @@ public class UserEmergencyVo implements Cloneable, Serializable {
 	 */
 	public void setSmsSentCount(Integer smsSentCount) {
 		this.smsSentCount = smsSentCount;
+	}
+
+	/**
+	 * @return the smsServiceProvider
+	 */
+	public String getSmsServiceProvider() {
+		return smsServiceProvider;
+	}
+
+	/**
+	 * @param smsServiceProvider the smsServiceProvider to set
+	 */
+	public void setSmsServiceProvider(String smsServiceProvider) {
+		this.smsServiceProvider = smsServiceProvider;
+	}
+
+	/**
+	 * @return the smsServiceUsername
+	 */
+	public String getSmsServiceUsername() {
+		return smsServiceUsername;
+	}
+
+	/**
+	 * @param smsServiceUsername the smsServiceUsername to set
+	 */
+	public void setSmsServiceUsername(String smsServiceUsername) {
+		this.smsServiceUsername = smsServiceUsername;
+	}
+
+	/**
+	 * @return the smsServicePassword
+	 */
+	public String getSmsServicePassword() {
+		return smsServicePassword;
+	}
+
+	/**
+	 * @param smsServicePassword the smsServicePassword to set
+	 */
+	public void setSmsServicePassword(String smsServicePassword) {
+		this.smsServicePassword = smsServicePassword;
+	}
+
+	/**
+	 * @return the smsServiceParams
+	 */
+	public String getSmsServiceParams() {
+		return smsServiceParams;
+	}
+
+	/**
+	 * @param smsServiceParams the smsServiceParams to set
+	 */
+	public void setSmsServiceParams(String smsServiceParams) {
+		this.smsServiceParams = smsServiceParams;
+	}
+
+	/**
+	 * @return the smsMessageTemplate
+	 */
+	public String getSmsMessageTemplate() {
+		return smsMessageTemplate;
+	}
+
+	/**
+	 * @param smsMessageTemplate the smsMessageTemplate to set
+	 */
+	public void setSmsMessageTemplate(String smsMessageTemplate) {
+		this.smsMessageTemplate = smsMessageTemplate;
 	}
 }

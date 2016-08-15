@@ -1,22 +1,14 @@
 package de.msk.mylivetracker.service.sms;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
-import de.cetix.SendSMS.Send;
-import de.cetix.SendSMS.SendLocator;
-import de.cetix.SendSMS.SendSoap;
 import de.msk.mylivetracker.commons.util.datetime.DateTime;
 import de.msk.mylivetracker.domain.DataReceivedVo;
 import de.msk.mylivetracker.domain.PositionVo;
 import de.msk.mylivetracker.domain.statistics.SmsTransportVo;
 import de.msk.mylivetracker.domain.user.UserWithoutRoleVo;
 import de.msk.mylivetracker.service.application.IApplicationService;
-import de.msk.mylivetracker.service.application.IApplicationService.Parameter;
 import de.msk.mylivetracker.service.statistics.IStatisticsService;
 import de.msk.mylivetracker.service.user.IUserService;
 import de.msk.mylivetracker.web.util.FmtUtils;
@@ -41,130 +33,92 @@ public class SmsService implements ISmsService {
 	private IStatisticsService statisticsService;	
 	private ResourceBundleMessageSource messageSource;
 	
-	// Versand mit variabler Absenderkennung.
-	private static final String TRANSPORT_TYPE = "19";
-	private static final String SMS_TYPE = "Emergency";
-	private static final String BACKMAIL = "backmail:";	
-	private static final String NUMBER_STRIP_CHARS = "()/-"; 
-		
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.ISmsService#sendTestSms(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
+	 * @see de.msk.mylivetracker.service.sms.ISmsService#sendTestSms(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
 	 */
 	@Override
-	public void sendTestSms(UserWithoutRoleVo user) throws SmsServiceException {
+	public SendingSmsResult sendTestSms(UserWithoutRoleVo user) {
 		PositionVo position = new PositionVo();
 		position.setTimeReceived(new DateTime());
-		position.setAddress("Hauptstrasse, 12345 Musterhausen");
-		position.setLatitudeInDecimal(44.4);
-		position.setLongitudeInDecimal(11.1);
+		position.setAddress("Marienplatz, 80331 München");
+		position.setLatitudeInDecimal(48.137601);
+		position.setLongitudeInDecimal(11.575438);
 		position.setValid(true);
-		this.sendSms(user, position, 
+		return this.sendSms(user, position, 
 			"sms.template.emergency.activated", true);		
 	}	
 	
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.ISmsService#sendEmergencyDeactivatedSms(de.msk.mylivetracker.domain.user.UserWithoutRoleVo, de.msk.mylivetracker.domain.DataReceivedVo)
+	 * @see de.msk.mylivetracker.service.sms.ISmsService#sendEmergencyDeactivatedSms(de.msk.mylivetracker.domain.user.UserWithoutRoleVo, de.msk.mylivetracker.domain.DataReceivedVo)
 	 */
 	@Override
-	public void sendEmergencyDeactivatedSms(UserWithoutRoleVo user,
-			DataReceivedVo dataReceived) throws SmsServiceException {
-		this.sendSms(user, dataReceived.getPosition(),
+	public SendingSmsResult sendEmergencyDeactivatedSms(UserWithoutRoleVo user,
+		DataReceivedVo dataReceived) {
+		return this.sendSms(user, dataReceived.getPosition(),
 			"sms.template.emergency.deactivated", false);		
 	}
 
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.ISmsService#sendEmergencyActivatedSms(de.msk.mylivetracker.domain.user.UserWithoutRoleVo, de.msk.mylivetracker.domain.DataReceivedVo)
+	 * @see de.msk.mylivetracker.service.sms.ISmsService#sendEmergencyActivatedSms(de.msk.mylivetracker.domain.user.UserWithoutRoleVo, de.msk.mylivetracker.domain.DataReceivedVo)
 	 */
 	@Override
-	public void sendEmergencyActivatedSms(UserWithoutRoleVo user,
-		DataReceivedVo dataReceived) throws SmsServiceException {				
-		this.sendSms(user, dataReceived.getPosition(),
+	public SendingSmsResult sendEmergencyActivatedSms(UserWithoutRoleVo user,
+		DataReceivedVo dataReceived) {
+		return this.sendSms(user, dataReceived.getPosition(),
 			"sms.template.emergency.activated", false);
 	}
 
-	private boolean checkMinPause(UserWithoutRoleVo user) {
-		if (user.getEmergency().getSmsLastSent() == null) {
-			return true;
+	private SendingSmsResult sendSms(UserWithoutRoleVo user, PositionVo position, 
+		String messageTemplate, boolean test) {
+		String text = user.getEmergency().getSmsMessageTemplate();
+		text = StringUtils.replace(text, "#MLT", 
+			this.applicationService.getApplicationBaseUrl());
+		text = StringUtils.replace(text, "#UID", 
+			user.getUserId());
+		text = StringUtils.replace(text, "#POS", 
+			FmtUtils.getPositionAsStr(position, UsersLocaleResolver.getLocale(user), false, false));
+		text = StringUtils.replace(text, "#PWD", 
+			user.getOptions().getGuestAccPassword());
+		String positionStr = "<unknown>";
+		if (position != null) {
+			positionStr = 
+				position.getLatitudeInDecimal() + "+" + 
+				position.getLongitudeInDecimal();
 		}
-		return (
-			((new DateTime()).getAsMSecs() -
-			user.getEmergency().getSmsLastSent().getAsMSecs()) > 
-			this.minPauseInMSecsForUserBetweenTwoSmsSent);
-	}
-	
-	private void sendSms(UserWithoutRoleVo user, PositionVo position, 
-		String messageTemplate, boolean test) throws SmsServiceException {
-		String text = messageSource.getMessage(messageTemplate, 
-			new Object[] {
-				user.getUserId(),
-				FmtUtils.getPositionAsStr(position, UsersLocaleResolver.getLocale(user), false, false),
-				this.applicationService.getApplicationBaseUrl(),
-				user.getUserId(),
-				user.getOptions().getGuestAccPassword()
-			}, 
-			UsersLocaleResolver.getLocale(user.getOptions().getLanguage()));
+		text = StringUtils.replace(text, "#GOO", 
+			"http://maps.google.com/maps?&t=m&q=" +
+			positionStr);
+		
 		if (test) {
 			text = "TEST! " + text; 
 		}
-		ByteBuffer textByteBuffer = Charset.forName("ISO-8859-1").encode(text);
-		CharBuffer textCharBuffer = Charset.forName("ISO-8859-1").decode(textByteBuffer);
-		text = textCharBuffer.toString();
 		    
-		String caption = BACKMAIL + user.getMasterData().getEmailAddress();
-		String sender = StringUtils.replaceChars(
-			user.getEmergency().getSmsSender(), NUMBER_STRIP_CHARS, null);
-		String recipient = StringUtils.replaceChars(
-			user.getEmergency().getSmsRecipient(), NUMBER_STRIP_CHARS, null);
-		String resultCode = "<unknown>";
-		boolean success = false;
-		Exception exception = null;
-		try {			
-			if (!user.getEmergency().getSmsEnabled()) {
-				throw new SmsServiceException("sending sms is not enabled for user.");
-			}
-			if (StringUtils.isEmpty(sender) || (StringUtils.isEmpty(recipient))) {
-				throw new SmsServiceException("sender and recipient must not be empty.");
-			}		
-			if (checkMinPause(user)) {
-				Send service = new SendLocator();
-				SendSoap sendSoap = service.getSendSoap();
-				resultCode = sendSoap.sendText(
-					this.applicationService.getParameterValueAsString(Parameter.SmsCreatorDeUsername), 
-					this.applicationService.getParameterValueAsString(Parameter.SmsCreatorDePassword), 
-					BACKMAIL + user.getMasterData().getEmailAddress(), 
-					sender, 
-					recipient,
-					text, 
-					TRANSPORT_TYPE,	// typ 
-					""); // date
-				success = StringUtils.startsWith(resultCode, "OK");
-			} else {
-				success = true;
-				resultCode = "OK, but not sent because checkMinPause returned false.";
-			}
-		} catch (Exception e) {
-			exception = e;
-			success = false;
+		String[] recipients = StringUtils.split(user.getEmergency().getSmsRecipient(), ";");
+		SendingSmsResult result = null;
+		boolean success = true;
+		for (int i=0; success && (i < recipients.length); i++) {
+			result = SmsServiceSpecific.sendSms(
+				user, recipients[i], text,
+				minPauseInMSecsForUserBetweenTwoSmsSent);
+			success = result.isSuccess();
 		}
+		
 		statisticsService.logSmsTransport(new SmsTransportVo(
 			user.getUserId(), 
-			SMS_TYPE, 
-			TRANSPORT_TYPE, 
-			caption, 
-			sender, 
-			recipient, 
+			user.getEmergency().getSmsServiceProvider(), 
+			user.getEmergency().getSmsSender(), 
+			user.getEmergency().getSmsRecipient(),
 			text, 
-			resultCode,
-			(exception != null) ? exception.getMessage() : null,
+			result.getCode(),
 			success));
-		if (exception != null) {
-			throw new SmsServiceException(exception);
+				
+		if (success) {
+			user.getEmergency().updateSmsSentCount(recipients.length);
 		}
-		if (!success) {
-			throw new SmsServiceException(resultCode);	
-		}		
-		user.getEmergency().incSmsSentCount();
+		
 		this.userService.updateUserEmergency(user);
+		
+		return result;
 	}	
 
 	/**

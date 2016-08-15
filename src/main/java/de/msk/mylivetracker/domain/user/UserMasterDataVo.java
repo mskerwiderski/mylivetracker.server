@@ -22,6 +22,7 @@ public class UserMasterDataVo implements Cloneable, Serializable {
 	private String emailAddress;
 	private String password;
 	private boolean newsletterEnabled;
+	private String lastVersionInfoDisplayed;
 			
 	public UserMasterDataVo copyWoPwd() {
 		UserMasterDataVo masterData = this.copy();
@@ -102,5 +103,19 @@ public class UserMasterDataVo implements Cloneable, Serializable {
 
 	public void setNewsletterEnabled(boolean newsletterEnabled) {
 		this.newsletterEnabled = newsletterEnabled;
+	}
+
+	/**
+	 * @return the lastVersionInfoDisplayed
+	 */
+	public String getLastVersionInfoDisplayed() {
+		return lastVersionInfoDisplayed;
+	}
+
+	/**
+	 * @param lastVersionInfoDisplayed the lastVersionInfoDisplayed to set
+	 */
+	public void setLastVersionInfoDisplayed(String lastVersionInfoDisplayed) {
+		this.lastVersionInfoDisplayed = lastVersionInfoDisplayed;
 	}	
 }

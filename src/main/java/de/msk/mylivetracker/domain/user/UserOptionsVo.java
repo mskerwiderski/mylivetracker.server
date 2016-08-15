@@ -37,6 +37,7 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	private Integer trackRouteWidth;
 	private GeocoderMode geocoderMode;
 	private MapsUsedVo mapsUsed;
+	private RoutesUsedVo routesUsed;
 	
 	private static final String DELIMITER = "#";
 	
@@ -411,5 +412,21 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	 */
 	public void setMapsUsed(MapsUsedVo mapsUsed) {
 		this.mapsUsed = mapsUsed;
+	}
+	/**
+	 * @return the routesUsed
+	 */
+	public RoutesUsedVo getRoutesUsed() {
+		return routesUsed;
+	}
+	public void setRoutesUsed(RoutesUsedVo routesUsed) {
+		this.routesUsed = routesUsed;
+	}
+	
+	public String getRoutesUsedStr() {
+		return this.routesUsed.getRoutesUsedStr();
+	}
+	public void setRoutesUsedStr(String routesUsedStr) {
+		this.routesUsed = new RoutesUsedVo(routesUsedStr);
 	}
 }

@@ -119,14 +119,11 @@
 		<result property="logId" column="LOG_ID" />          
 		<result property="logTimestamp" column="LOG_TIMESTAMP" />   
 		<result property="userId" column="USER_ID" />         
-		<result property="smsType" column="SMS_TYPE" />        
-		<result property="transportType" column="TRANSPORT_TYPE" />  
-		<result property="caption" column="CAPTION" />         
+		<result property="smsProvider" column="SMS_PROVIDER" />        
 		<result property="sender" column="SENDER" />          
 		<result property="recipient" column="RECIPIENT" />       
 		<result property="message" column="MESSAGE" />         
 		<result property="resultCode" column="RESULT_CODE" />  
-		<result property="exception" column="EXCEPTION" />   
 		<result property="success" column="SUCCESS" />             
     </resultMap>
     
@@ -432,39 +429,30 @@
   			LOG_ID,        
 			LOG_TIMESTAMP, 
 			USER_ID,       
-			SMS_TYPE,      
-			TRANSPORT_TYPE,
-			CAPTION,       
+			SMS_PROVIDER,      
 			SENDER,        
 			RECIPIENT,     
 			MESSAGE,      
 			RESULT_CODE,
-			EXCEPTION,   
 			SUCCESS                 	
   		) values (
   			#logId#,
   			#logTimestamp#,
   			#userId#, 			
-			#smsType#,			
-			#transportType#,
-			#caption#,			
+			#smsProvider#,			
 			#sender#, 			
 			#recipient#,		
 			#message#,			
 			#resultCode#,
-			#exception#,		
 			#success#				  			 						
   		) on duplicate key update
   			LOG_TIMESTAMP = #logTimestamp#,
   			USER_ID = #userId#,  
-			SMS_TYPE = #smsType#,      
-			TRANSPORT_TYPE = #transportType#,
-			CAPTION = #caption#,
+			SMS_PROVIDER = #smsProvider#,      
 			SENDER = #sender#,  
 			RECIPIENT = #recipient#,   
 			MESSAGE = #message#,
 			RESULT_CODE = #resultCode#,
-			EXCEPTION = #exception#,
 			SUCCESS = #success#
   	</insert>
 </sqlMap>

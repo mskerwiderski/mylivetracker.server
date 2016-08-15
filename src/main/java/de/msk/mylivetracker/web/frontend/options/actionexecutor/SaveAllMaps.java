@@ -28,6 +28,7 @@ public class SaveAllMaps implements IAction {
 		MessageSource messageSource, Locale locale)
 		throws ActionExecutionException {		
 		user.getOptions().setMapsUsed(cmd.getUserOptions().getMapsUsed().copy());
+		user.getOptions().setRoutesUsed(cmd.getUserOptions().getRoutesUsed().copy());
 		services.getUserService().updateUserOptionsMapsUsed(user);
 		cmd.setInfoMessage(messageSource.getMessage(
 			"maps.success.saved", null, locale));

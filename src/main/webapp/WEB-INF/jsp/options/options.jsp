@@ -14,15 +14,14 @@
 	}	
 	$(function() {
 		$("#divOptions").tabs();
-		$("#divOptions").tabs( 'select' , <c:out value='${optionsCmd.currentTabId}' />)
+		$("#divOptions").tabs('option', 'active', <c:out value='${optionsCmd.currentTabId}' />)
 
 		$('#divOptions').tabs({
-		   	select: function(event, ui) {			   						
-				document.forms["optionsForm"].elements["currentTabId"].value = ui.index; 
+			beforeActivate: function(event, ui) {	
+				document.forms["optionsForm"].elements["currentTabId"].value = ui.newTab.index(); 
 			}
 		});
 	});
-	
 </script>
 	
 <div id="divOptions">

@@ -90,5 +90,11 @@
 		<property name="name" value="Ecotec YourTracks for iOS" />
 		<property name="version" value="1.00" />
 		<property name="services" ref="services" />
+	</bean>
+	<bean id="TcpInterpreter_SarMini" class="de.msk.mylivetracker.web.uploader.interpreter.sarmini.TcpInterpreter">
+		<property name="id" value="sar" />
+		<property name="name" value="SaR Mini" />
+		<property name="version" value="1.00" />
+		<property name="services" ref="services" />
 	</bean>					
 </beans>

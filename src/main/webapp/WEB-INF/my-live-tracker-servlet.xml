@@ -42,6 +42,7 @@
             	-->
             	<prop key="/credits.sec">creditsCtrl</prop>
             	<prop key="/impressum.sec">impressumCtrl</prop>
+            	<prop key="/thankyou.sec">thankYouCtrl</prop>
             	<prop key="/admin.do">adminCtrl</prop>
             	<prop key="/registration.do">registrationCtrl</prop>
             	<prop key="/login.sec">loginCtrl</prop>
@@ -82,6 +83,13 @@
         p:viewName="impressum" >                	
     </bean>   
            
+	<bean name="thankYouCtrl" class="de.msk.mylivetracker.web.frontend.thankyou.ThankYouCtrl">
+    	<property name="commandClass" value="de.msk.mylivetracker.web.frontend.thankyou.ThankYouCmd"/>
+        <property name="commandName" value="thankYouCmd" />
+        <property name="formView" value="thank_you"/>
+        <property name="successView" value="thank_you"/>
+    </bean>                       
+    
     <bean name="adminCtrl"
 		class="de.msk.mylivetracker.web.frontend.admin.AdminCtrl"
         p:viewName="admin" >
@@ -232,6 +240,7 @@
         <property name="stPgTrOptsKeepRecentPos" ref="liveTrackingOptsKeepRecentPos" />
 		<property name="stPgTrOptsUpdateInterval" ref="liveTrackingOptsUpdateInterval" />
 		<property name="supportedMaps" ref="supportedMaps" />
+		<property name="smsServiceProviders" ref="smsServiceProviders" />
 		<property name="serverInfo" ref="serverInfo" />
 		<property name="commandClass" 
         	value="de.msk.mylivetracker.web.frontend.options.OptionsCmd"/>

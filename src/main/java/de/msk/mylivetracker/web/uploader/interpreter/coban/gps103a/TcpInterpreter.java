@@ -96,12 +96,18 @@ public class TcpInterpreter extends AbstractDataStrInterpreter {
 			
 		if (dataItems.length == 1) {
 			cobanSpecific = CobanSpecific.HEARTBEAT;
+			String senderId = StringUtils.substringBefore(dataItems[0], ";");
+			if (StringUtils.isEmpty(senderId)) {
+				throw new InterpreterException("senderId is empty: " + dataItems[1]);
+			}
+			dataReceived.getSenderFromRequest().setSenderId(senderId);
+			dataReceived.getPosition().setValid(false);
 		} else if (dataItems.length == 3) {
 			cobanSpecific = CobanSpecific.LOGON;
 			// sender id
 			String senderId = StringUtils.substringAfter(dataItems[1], ":");
 			if (StringUtils.isEmpty(senderId)) {
-				throw new InterpreterException("senderId is empty: " + dataItems[0]);
+				throw new InterpreterException("senderId is empty: " + dataItems[1]);
 			}
 			dataReceived.getSenderFromRequest().setSenderId(senderId);
 			dataReceived.getPosition().setValid(false);

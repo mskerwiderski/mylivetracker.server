@@ -9,9 +9,9 @@
 
 <script type="text/javascript">	
 	$(document).ready(function () {
-		$("#myLiveTracker").buttonset();
-		$("#headerNav").buttonset();
-		$("#headerBack").buttonset();
+		$("#myLiveTracker").controlgroup();
+		$("#headerNav").controlgroup();
+		$("#headerBack").controlgroup();
 	});	
 </script>
 
@@ -21,129 +21,108 @@
 			<table style="padding: 0px;border-spacing: 0px;">
 				<c:choose>
 					<c:when test="${empty currentUser}">
-						<div id = "headerBack" class="mlt-button">					
-							&nbsp;<input type="radio" 
-								id="tracksOverview" 
-								name="radio"						
-								onclick="javascript:window.location.href='tracks_overview.do';" 
-							/>
-							<label for="tracksOverview" style="width: 125px;" >
-								<spring:message code="layout.back" text="Back" />
-							</label>
-						</div>
+						<tr>
+							<td>
+								&nbsp;<img style="vertical-align: middle;width: 65px;" 
+									src="img/logomaker/logo_150_73.png" />&nbsp;
+							</td>
+							<td style="width:100%">
+								&nbsp;
+							</td>
+						</tr>
 					</c:when>
 					<c:when test="${isGuest}">
 						<tr>
-							<td rowspan="2">
-								&nbsp;<img style="vertical-align: middle;width: 50px;" 
+							<td>&nbsp;</td>
+							<td>
+								&nbsp;<img style="vertical-align: middle;width: 65px;" 
 									src="img/logomaker/logo_150_73.png" />&nbsp;
 							</td>
 							<td style="padding: 0px;border-spacing: 0px;font-weight: bold; white-space:nowrap;">
-								&nbsp;<spring:message code="layout.loggedin.user"
+								<spring:message code="layout.loggedin.as.guest" /><spring:message code="layout.loggedin.user"
 									argumentSeparator="," 
 									arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
 								/>
 							</td>
 						</tr>
-						<tr>	
-							<td style="padding: 0px;border-spacing: 0px;white-space:nowrap;font-size: small;">
-								&nbsp;<spring:message code="layout.loggedin.as.guest" />
-							</td>
-						</tr>		
 					</c:when>
 					<c:when test="${isLoggedInAsAdmin}">
 						<tr>
-							<td rowspan="2">
-								&nbsp;<img style="vertical-align: middle;width: 50px;" 
+							<td>&nbsp;</td>
+							<td>
+								&nbsp;<img style="vertical-align: middle;width: 65px;" 
 									src="img/logomaker/logo_150_73.png" />&nbsp;
 							</td>
 							<td style="padding: 0px;border-spacing: 0px;font-weight: bold; white-space:nowrap;">
-								&nbsp;<spring:message code="layout.loggedin.user"
+								&nbsp;<spring:message code="layout.loggedin.as.admin" 
+									arguments="${currentUser.adminUsername}" /><spring:message code="layout.loggedin.user"
 									argumentSeparator="," 
 									arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
 								/>
-							</td>
-						</tr>
-						<tr>	
-							<td style="padding: 0px;border-spacing: 0px;white-space:nowrap;font-size: small;">
-								&nbsp;<spring:message 
-									code="layout.loggedin.as.admin" 
-									arguments="${currentUser.adminUsername}" />
 							</td>
 						</tr>
 					</c:when>
 					<c:otherwise>
 						<tr>
 							<td>
-								&nbsp;<img style="vertical-align: middle;width: 50px;" 
+								&nbsp;<img style="vertical-align: middle;width: 65px;" 
 									src="img/logomaker/logo_150_73.png" />&nbsp;
 							</td>
 							<td style="padding: 0px;border-spacing: 0px;font-weight: bold; white-space:nowrap;">
 								&nbsp;<spring:message code="layout.loggedin.user"
 									argumentSeparator="," 
 									arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
-								/>
+								/>&nbsp;
+							</td>
+							<td>
+								<div style="margin-bottom: -15px">
+								<spring:message code="common.paypal.button" />
+								</div>
 							</td>
 						</tr>
 					</c:otherwise>
 				</c:choose>
 			</table>			
 		</td>
-		<td style="width:100%;">			
-		</td>
-		<td style="text-align:right; white-space: nowrap;">								
-			<div id="headerNav" class="mlt-button" >								
+		<td style="text-align:right; white-space: nowrap;">		
+			<div id="headerNav" class="mlt-button">			
+				<c:choose>
+					<c:when test="${empty currentUser}">
+						<div id="headerNav" class="mlt-button">
+							<button class="mlt-button" style="width: 125px;" onclick="javascript:window.location.href='tracks_overview.do';">
+								<spring:message code="layout.back" text="Back" />
+							</button>
+						</div>
+					</c:when>
+				</c:choose>
 				<security:authorize ifAnyGranted="Admin,User,Guest">
-					<input type="radio" 
-						id="tracksOverview" 
-						name="radio"						
-						onclick="javascript:window.location.href='tracks_overview.do';" 
-						/>
-					<label for="tracksOverview" style="width: 125px;" >
+					<button class="mlt-button" style="width: 125px;" onclick="javascript:window.location.href='tracks_overview.do';">
 						<spring:message code="layout.overview" text="Overview" />
-					</label>
+					</button>
 				</security:authorize>
-				<security:authorize ifAnyGranted="Admin,User">			
-					<input type="radio"  
-						id="options" 
-						name="radio"						
-						onclick="javascript:window.location.href='options.do';" 
-						/>
-					<label for="options" style="width: 125px;">
+				<security:authorize ifAnyGranted="Admin,User">
+					<button class="mlt-button" style="width: 125px;" onclick="javascript:window.location.href='options.do';">
 						<spring:message code="layout.options" text="Options" />
-					</label>
+					</button>			
 				</security:authorize>
 				<security:authorize ifAnyGranted="Admin">
-					<input type="radio" 
-						id="admin" 
-						name="radio"
-						onclick="javascript:window.location.href='admin.do';" 
-						/>
-					<label for="admin" style="width: 125px;" >
+					<button class="mlt-button" style="width: 125px;" onclick="javascript:window.location.href='admin.do';">
 						<spring:message code="layout.admin" text="Admin" />
-					</label>
+					</button>
 				</security:authorize>
 				<security:authorize ifAnyGranted="Admin">
-					<input type="radio" 
-						id="registration" 
-						name="radio"
-						onclick="javascript:window.location.href='registration.do';" 
-						/>
-					<label for="registration" style="width: 125px;" >
+					<button class="mlt-button" style="width: 125px;" onclick="javascript:window.location.href='registration.do';">
 						<spring:message code="layout.registration" text="Registration" />
-					</label>
+					</button>
 				</security:authorize>
 				<security:authorize ifAnyGranted="Admin,User,Guest">
-					<input type="radio" 
-						id="logout" 
-						name="radio"
-						onclick="javascript:window.location.href='logout';" 
-						/>
-					<label for="logout" style="width: 125px;" >
+					<button class="mlt-button" style="width: 125px;" onclick="javascript:window.location.href='logout';">
 						<spring:message code="layout.logout" text="Logout" />
-					</label>
-				</security:authorize>							
+					</button>
+				</security:authorize>		
+				
 			</div>						
-		</td>								
+		</td>	
+		<td>&nbsp;</td>							
 	</tr>	
 </table>

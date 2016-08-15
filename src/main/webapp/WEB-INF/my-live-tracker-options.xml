@@ -2761,89 +2761,91 @@
     	 	<constructor-arg index="0" value="0"/>
     	 	<constructor-arg index="1" value="map.OpenStreetMap.Mapnik"/>
    	 	</bean>
-    	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
     	 	<constructor-arg index="0" value="1"/>
+    	 	<constructor-arg index="1" value="map.OpenStreetMap.BlackAndWhite"/>
+   	 	</bean>
+    	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+    	 	<constructor-arg index="0" value="2"/>
     	 	<constructor-arg index="1" value="map.OpenStreetMap.DE"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="2"/>
-    	 	<constructor-arg index="1" value="map.OpenStreetMap.BlackAndWhite"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
     	 	<constructor-arg index="0" value="3"/>
-    	 	<constructor-arg index="1" value="map.Thunderforest.OpenCycleMap"/>
+    	 	<constructor-arg index="1" value="map.OpenTopoMap"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
     	 	<constructor-arg index="0" value="4"/>
-    	 	<constructor-arg index="1" value="map.Thunderforest.Transport"/>
+    	 	<constructor-arg index="1" value="map.Thunderforest.OpenCycleMap"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
     	 	<constructor-arg index="0" value="5"/>
-    	 	<constructor-arg index="1" value="map.Thunderforest.Landscape"/>
+    	 	<constructor-arg index="1" value="map.Thunderforest.Transport"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
     	 	<constructor-arg index="0" value="6"/>
-    	 	<constructor-arg index="1" value="map.MapQuestOpen.OSM"/>
+    	 	<constructor-arg index="1" value="map.Thunderforest.TransportDark"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
     	 	<constructor-arg index="0" value="7"/>
-    	 	<constructor-arg index="1" value="map.MapQuestOpen.Aerial"/>
+    	 	<constructor-arg index="1" value="map.Thunderforest.Landscape"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
     	 	<constructor-arg index="0" value="8"/>
-    	 	<constructor-arg index="1" value="map.MapBox.Simple"/>
+    	 	<constructor-arg index="1" value="map.Thunderforest.Outdoors"/>
    	 	</bean>
    	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="9"/>
-    	 	<constructor-arg index="1" value="map.MapBox.Streets"/>
+   		    <constructor-arg index="0" value="9"/>
+			<constructor-arg index="1" value="map.Esri.WorldStreetMap"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+		    <constructor-arg index="0" value="10"/>
+			<constructor-arg index="1" value="map.Esri.DeLorme"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+		    <constructor-arg index="0" value="11"/>
+			<constructor-arg index="1" value="map.Esri.WorldTopoMap"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+		    <constructor-arg index="0" value="12"/>
+			<constructor-arg index="1" value="map.Esri.WorldImagery"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+		    <constructor-arg index="0" value="13"/>
+			<constructor-arg index="1" value="map.Esri.WorldTerrain"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+		    <constructor-arg index="0" value="14"/>
+			<constructor-arg index="1" value="map.Esri.WorldShadedRelief"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+		    <constructor-arg index="0" value="15"/>
+			<constructor-arg index="1" value="map.Esri.WorldPhysical"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+		    <constructor-arg index="0" value="16"/>
+			<constructor-arg index="1" value="map.Esri.OceanBaseMap"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+		    <constructor-arg index="0" value="17"/>
+			<constructor-arg index="1" value="map.Esri.NatGeoWorldMap"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+		    <constructor-arg index="0" value="18"/>
+			<constructor-arg index="1" value="map.Esri.WorldGrayCanvas"/>
+		</bean>
+		<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
+		    <constructor-arg index="0" value="19"/>
+			<constructor-arg index="1" value="map.MtbMap"/>
+		</bean>
+	 </util:list>   
+     <util:list id="smsServiceProviders">
+    	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="smscreator.de"/>
+    	 	<constructor-arg index="1" value="sms.service.provider.smscreatorde"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="10"/>
-    	 	<constructor-arg index="1" value="map.MapBox.Light"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="11"/>
-    	 	<constructor-arg index="1" value="map.MapBox.Lacquer"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="12"/>
-    	 	<constructor-arg index="1" value="map.MapBox.Warden"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="13"/>
-    	 	<constructor-arg index="1" value="map.Stamen.Toner"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="14"/>
-    	 	<constructor-arg index="1" value="map.Stamen.Terrain"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="15"/>
-    	 	<constructor-arg index="1" value="map.Stamen.Watercolor"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="16"/>
-    	 	<constructor-arg index="1" value="map.Esri.WorldStreetMap"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="17"/>
-    	 	<constructor-arg index="1" value="map.Esri.DeLorme"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="18"/>
-    	 	<constructor-arg index="1" value="map.Esri.WorldTopoMap"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="19"/>
-    	 	<constructor-arg index="1" value="map.Esri.WorldImagery"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="20"/>
-    	 	<constructor-arg index="1" value="map.Esri.OceanBasemap"/>
-   	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="21"/>
-    	 	<constructor-arg index="1" value="map.Esri.NatGeoWorldMap"/>
-   	 	</bean>
-    </util:list>
+   	 	<!-- bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="smstrade.de"/>
+    	 	<constructor-arg index="1" value="sms.service.provider.smstradede"/>
+   	 	</bean -->
+    </util:list> 	
 </beans>

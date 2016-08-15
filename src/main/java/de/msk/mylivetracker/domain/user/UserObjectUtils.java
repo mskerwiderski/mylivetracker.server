@@ -2,6 +2,7 @@ package de.msk.mylivetracker.domain.user;
 
 import java.util.UUID;
 
+import de.msk.mylivetracker.Global;
 import de.msk.mylivetracker.domain.TrackingFlyToMode;
 import de.msk.mylivetracker.domain.user.UserWithRoleVo.UserRole;
 import de.msk.mylivetracker.security.PasswordEncoder;
@@ -49,7 +50,7 @@ public class UserObjectUtils {
 	
 	public static final String DEF_MAPS_USED_STR = 
 		"0," + // default map id.
-		"11000000000000000000000000000000"; // 32 maps, first two maps are enabled.
+		"11100000000000000000000000000000"; // 32 maps, first thee maps are enabled.
 	
 	private static UserOptionsVo createUserOptions(
 		String language, String timeZone) {
@@ -60,6 +61,7 @@ public class UserObjectUtils {
 		userOptions.setScaleUnit(language);
 		userOptions.setTimeZone(timeZone);
 		userOptions.setMapsUsed(new MapsUsedVo(DEF_MAPS_USED_STR));
+		userOptions.setRoutesUsed(new RoutesUsedVo(null));
 		userOptions.setGeocoderLanguage(language);
 		userOptions.setGeocoderMode(GeocoderMode.emergencySignalsAndMessages);
 		userOptions.setTrackAutoClose(0);
@@ -86,6 +88,7 @@ public class UserObjectUtils {
 		userMasterData.setFirstName(firstName);
 		userMasterData.setEmailAddress(emailAddress);
 		userMasterData.setNewsletterEnabled(true);
+		userMasterData.setLastVersionInfoDisplayed(Global.getVersion());
 		userMasterData.setPassword(hashedPassword);
 		return userMasterData;
 	}
@@ -109,6 +112,7 @@ public class UserObjectUtils {
 		userEmergency.setSmsRecipient("");
 		userEmergency.setSmsLastSent(null);
 		userEmergency.setSmsSentCount(0);
+		//TODO
 		return userEmergency;
 	}
 	

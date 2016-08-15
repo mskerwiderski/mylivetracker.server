@@ -15,7 +15,10 @@
 		callback="de.msk.mylivetracker.dao.typehandler.SenderRadiusUnitTypeHandlerCallback" />		
 	<typeHandler
 		javaType="de.msk.mylivetracker.domain.user.MapsUsedVo"
-		callback="de.msk.mylivetracker.dao.typehandler.MapsUsedTypeHandlerCallback" />	
+		callback="de.msk.mylivetracker.dao.typehandler.MapsUsedTypeHandlerCallback" />
+	<typeHandler
+		javaType="de.msk.mylivetracker.domain.user.RoutesUsedVo"
+		callback="de.msk.mylivetracker.dao.typehandler.RoutesUsedTypeHandlerCallback" />	
 	<typeHandler
 		javaType="de.msk.mylivetracker.domain.user.GeocoderMode"
 		callback="de.msk.mylivetracker.dao.typehandler.GeocoderModeTypeHandlerCallback" />	

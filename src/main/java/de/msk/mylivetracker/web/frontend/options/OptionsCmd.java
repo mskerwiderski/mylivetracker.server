@@ -59,6 +59,9 @@ public class OptionsCmd {
 	private List<IntOptionDsc> stPgTrOptsUpdateInterval;
 	
 	private List<IntOptionDsc> supportedMaps;
+	
+	private List<StrOptionDsc> smsServiceProviders;
+	
 	private ServerInfo serverInfo;
 	
 	private UserMasterDataVo userMasterData;	
@@ -308,6 +311,20 @@ public class OptionsCmd {
 	 */
 	public void setSupportedMaps(List<IntOptionDsc> supportedMaps) {
 		this.supportedMaps = supportedMaps;
+	}
+
+	/**
+	 * @return the smsServiceProviders
+	 */
+	public List<StrOptionDsc> getSmsServiceProviders() {
+		return smsServiceProviders;
+	}
+
+	/**
+	 * @param smsServiceProviders the smsServiceProviders to set
+	 */
+	public void setSmsServiceProviders(List<StrOptionDsc> smsServiceProviders) {
+		this.smsServiceProviders = smsServiceProviders;
 	}
 
 	public ServerInfo getServerInfo() {
@@ -606,5 +623,5 @@ public class OptionsCmd {
 	 */
 	public String getSupportedSenderSwitches() {
 		return supportedSenderSwitches;
-	}				
+	}
 }

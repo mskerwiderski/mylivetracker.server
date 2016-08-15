@@ -93,6 +93,14 @@ table.display tr.even.emergency {
 			$("#divLiveTrackingOptsLabelZoom").hide();
 		}
 	}	
+	function versionInfo(trackId, trackName) {
+		var textTempl = '<spring:message code="overview.version.info.confirm.text" />';
+		var text = textTempl.replace(/\{0\}/g, "<c:out value='${tracksOverviewCmd.versionStr}'/>");
+		text = text.replace(/\{1\}/g, "<c:out value='${tracksOverviewCmd.forumLink}'/>");
+		$confirmVersionInfoDlg.html(text);	
+		$confirmVersionInfoDlg.dialog('open');
+	}
+	var $confirmVersionInfoDlg;
 	function removeTrack(trackId, trackName) {
 		var textTempl = '<spring:message code="overview.track.remove.confirm.text" />';
 		var text = textTempl.replace(/\{0\}/g, trackName);			
@@ -111,24 +119,38 @@ table.display tr.even.emergency {
 	var $confirmResetTrackDlg;
 	 
 	$(document).ready(function() {
-		switchLiveTrackingOnOff();		
+		switchLiveTrackingOnOff();
+		
+		$confirmVersionInfoDlg = $('#versionInfoDialog')
+		.dialog({
+			modal: true,				
+			autoOpen: false,
+			closeOnEscape: true,
+			title: '<spring:message code="overview.version.info.confirm.header" />',
+			buttons: {
+				'<spring:message code="overview.version.info.confirm.ok" />': function() {
+					$(this).dialog('close');
+				}
+			}					
+		});
+		
 		$confirmRemoveTrackDlg = $('#removeTrackDialog')
-			.dialog({
-				modal: true,				
-				autoOpen: false,
-				closeOnEscape: true,
-				title: '<spring:message code="overview.track.remove.confirm.header" />',
-				buttons: {
-					'<spring:message code="overview.track.remove.confirm.no" />': function() {
-						$(this).dialog('close');
-					},
-					'<spring:message code="overview.track.remove.confirm.yes" />': function() {
-						editTrack('RemoveTrack',
-							$(this).dialog('option', 'trackId'));
-						$(this).dialog('close');
-					}										
-				}					
-			});				
+		.dialog({
+			modal: true,				
+			autoOpen: false,
+			closeOnEscape: true,
+			title: '<spring:message code="overview.track.remove.confirm.header" />',
+			buttons: {
+				'<spring:message code="overview.track.remove.confirm.no" />': function() {
+					$(this).dialog('close');
+				},
+				'<spring:message code="overview.track.remove.confirm.yes" />': function() {
+					editTrack('RemoveTrack',
+						$(this).dialog('option', 'trackId'));
+					$(this).dialog('close');
+				}										
+			}					
+		});				
 
 		$confirmResetTrackDlg = $('#resetTrackDialog')
 		.dialog({
@@ -146,7 +168,11 @@ table.display tr.even.emergency {
 					$(this).dialog('close');
 				}										
 			}					
-		});						
+		});	
+		
+		<c:if test="${tracksOverviewCmd.showVersionInfo}">
+			versionInfo();
+		</c:if> 
 	});
 	
 	var mlt_getOnlyActiveTracks = false;
@@ -212,6 +238,9 @@ function autoRefresh() {
 window.onload=startAutoRefresh;
 </script>
 
+<div id="versionInfoDialog" style="display: none">
+</div>
+
 <div id="removeTrackDialog" style="display: none">
 </div>
 
@@ -220,7 +249,6 @@ window.onload=startAutoRefresh;
 
 <form:form id="tracksOverviewForm" name="tracksOverviewForm" 
 	commandName="tracksOverviewCmd" acceptCharset="UTF-8">
-
 	<form:hidden path="actionExecutor"/>
 	<form:hidden path="selectedTracksView"/>
 	<form:hidden path="selectedTrackId"/>	
@@ -490,13 +518,13 @@ window.onload=startAutoRefresh;
 						<div class="mlt-button">
 							<c:choose>
 								<c:when test="${tracksOverviewCmd.selectedTracksView eq 'Table'}">
-									&nbsp;<a href="#" style="width:30px;" onclick="javascript:refreshTrackOverview('Map');">					
-										<img src="img/led/map.png" style="border: none; margin-left: -7px;"/>
+									&nbsp;<a href="#" onclick="javascript:refreshTrackOverview('Map');">					
+										<img src="img/led/map.png" style="border: none;" />
 									</a>&nbsp;
 								</c:when>
 								<c:otherwise>
-									&nbsp;<a href="#" style="width:30px;" onclick="javascript:refreshTrackOverview('Table');">					
-										<img src="img/led/table.png" style="border: none; margin-left: -6.5px;"/>
+									&nbsp;<a href="#" onclick="javascript:refreshTrackOverview('Table');">					
+										<img src="img/led/table.png" style="border: none; "/>
 									</a>&nbsp;
 								</c:otherwise>
 							</c:choose>
@@ -516,8 +544,8 @@ window.onload=startAutoRefresh;
 					</td>
 					<td rowspan="2" style="padding: 0px;border-spacing: 0px;white-space: nowrap;border:none;text-align: center;">	
 						<div class="mlt-button">
-							&nbsp;<a href="#" onclick="javascript:mlt_refreshTracksOverview();" style="width:30px;">					
-								<img id="refreshIcon" src="img/led/arrow_refresh.png" style="border: none; margin-left: -7px;"/>
+							&nbsp;<a href="#" onclick="javascript:mlt_refreshTracksOverview();" >					
+								<img id="refreshIcon" src="img/led/arrow_refresh.png" style="border: none; margin-left: 0px;"/>
 							</a>&nbsp;														
 						</div>						
 					</td>

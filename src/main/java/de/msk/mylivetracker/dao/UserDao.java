@@ -104,15 +104,17 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.IUserDao#updateUserMasterData(de.msk.mylivetracker.domain.UserWithoutRoleVo)
+	 * @see de.msk.mylivetracker.dao.IUserDao#updateUserMasterData(de.msk.mylivetracker.domain.user.UserWithoutRoleVo, boolean)
 	 */
 	@Override
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void updateUserMasterData(UserWithoutRoleVo user) {
-		String passwordPlain = user.getMasterData().getPassword();
-		if (!StringUtils.isEmpty(passwordPlain)) {
-			user.getMasterData().setPassword(
-				this.passwordEncoder.encodePassword(passwordPlain, user));
+	public void updateUserMasterData(UserWithoutRoleVo user,
+		boolean updatePassword) {
+		if (updatePassword) {
+			String passwordPlain = user.getMasterData().getPassword();
+			if (!StringUtils.isEmpty(passwordPlain)) {
+				user.getMasterData().setPassword(
+					this.passwordEncoder.encodePassword(passwordPlain, user));
+			}
 		}
 		this.getSqlMapClientTemplate().update("UserVo.updateUserMasterDataByUserId", user);		
 	}
@@ -169,7 +171,7 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void updateUserOptionsMapsUsed(UserWithoutRoleVo user) {
-		this.getSqlMapClientTemplate().update("UserVo.updateUserOptionsMapsUsedByUserId", user);
+		this.getSqlMapClientTemplate().update("UserVo.updateUserOptionsMapsAndRoutesUsedByUserId", user);
 	}
 
 	@Override

@@ -33,6 +33,10 @@
 	  	<put-attribute name="content" value="/WEB-INF/jsp/impressum.jsp" />
 	</definition>
 	
+	<definition name="thank_you" extends="layout">
+	  	<put-attribute name="content" value="/WEB-INF/jsp/thank_you.jsp" />
+	</definition>
+	
 	<definition name="admin" extends="layout">
 	  	<put-attribute name="content" value="/WEB-INF/jsp/admin.jsp" />
 	</definition>

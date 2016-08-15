@@ -6,15 +6,22 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 
 <script type="text/javascript">
-
 	function saveAllMaps() {
 		actionExecute('SaveAllMaps');
 	}
-
 	function resetAllMaps() {
 		actionExecute('ResetAllMaps');
 	}
-	
+	function selectAllMaps(count) {
+		for (i=0; i< count; i++) {
+			document.getElementById("userOptions.mapsUsed.mapsUsed[" + i + "]1").checked = true;
+		}
+	}
+	function deselectAllMaps(count) {
+		for (i=0; i< count; i++) {
+			document.getElementById("userOptions.mapsUsed.mapsUsed[" + i + "]1").checked = false;
+		}
+	}
 </script>
 
 <table>
@@ -35,6 +42,14 @@
 				</tr>									
 			</c:forEach>
 			</table>
+			<div class="mlt-button">
+			&nbsp;<a href="#" onclick="javascript:selectAllMaps('<c:out value='${optionsCmd.supportedMaps.size()}'/>');">
+				<spring:message code='maps.select.all' />
+			</a>&nbsp;
+			<a href="#" onclick="javascript:deselectAllMaps('<c:out value='${optionsCmd.supportedMaps.size()}'/>');">
+				<spring:message code='maps.deselect.all' />
+			</a>&nbsp;
+			</div>
 		</td>	
 		<td>
 			&nbsp;&nbsp;	
@@ -62,12 +77,26 @@
 						    </c:otherwise>
 						</c:choose>
 					</c:forEach>
-			</select>&nbsp;												
+			</select>&nbsp;		
 		</td>					
 		<td>
 			&nbsp;<form:errors cssClass="ui-state-error"  
 				path="userOptions.mapsUsed.defMapId" />&nbsp;
 		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;<spring:message code="maps.routesUsed" />&nbsp;
+		</td>
+		<td>
+			<form:textarea cssClass="text ui-widget-content ui-corner-all"
+				style="margin-left: 4px;width:98%" rows="4"
+				path="userOptions.routesUsed.routesUsedStr"/>
+		</td>	
+		<td>
+			&nbsp;<form:errors cssClass="ui-state-error"  
+				path="userOptions.routesUsed.routesUsedStr" />&nbsp;	
+		</td>	
 	</tr>
 	<tr>
 		<td style="width:30%;">

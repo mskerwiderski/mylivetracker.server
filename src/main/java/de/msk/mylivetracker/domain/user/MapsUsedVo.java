@@ -21,18 +21,10 @@ public class MapsUsedVo implements Cloneable, Serializable {
 	private static final long serialVersionUID = 4241899850562024489L;
 
 	private static final int MAPS_USED_SIZE = 32;
-	
-	
-	
 	private static final String SEP = ",";
 	private static final int DEF_MAP_ID_DEFAULT = 0;
-	
 	private boolean[] mapsUsed;
 	private int defMapId = DEF_MAP_ID_DEFAULT;
-	
-//	public int getMapsUsedSize() {
-//		return MAPS_USED_SIZE;
-//	}
 	
 	public MapsUsedVo(String mapsUsedStr) {
 		if (StringUtils.isEmpty(mapsUsedStr)) {
@@ -108,10 +100,14 @@ public class MapsUsedVo implements Cloneable, Serializable {
 		return mapsUsed;
 	}
 
-	public String getMapsUsedStr() {
+	public String getMapsUsedStr(int numberOfSupportedMaps) {
 		StringBuffer buf = new StringBuffer(MAPS_USED_SIZE);
 		for (int mapId=0; mapId < MAPS_USED_SIZE; mapId++) {
-			buf.append(BooleanUtils.toInteger(mapsUsed[mapId], 1, 0, 0));
+			if ((numberOfSupportedMaps != -1 ) && (mapId >= numberOfSupportedMaps)) {
+				buf.append("0");
+			} else {
+				buf.append(BooleanUtils.toInteger(mapsUsed[mapId], 1, 0, 0));
+			}
 		}
 		return buf.toString();
 	}
@@ -124,7 +120,7 @@ public class MapsUsedVo implements Cloneable, Serializable {
 	public String toString() {
 		StringBuffer buf = new StringBuffer(MAPS_USED_SIZE * 2);
 		buf.append(this.defMapId).append(",");
-		buf.append(this.getMapsUsedStr());
+		buf.append(this.getMapsUsedStr(-1));
 		return buf.toString();
 	}
 }

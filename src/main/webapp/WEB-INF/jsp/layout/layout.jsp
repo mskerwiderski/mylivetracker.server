@@ -22,7 +22,7 @@
 	<style type="text/css">
 		body, div, table { font-size: small; font-family: Tahoma,Arial,sans-serif; }
 		.ui-state-error { border:0px!important; }
-		.mlt-button { font-size: 85%; font-family: Tahoma,Arial,sans-serif; font-weight: bold;}
+		.mlt-button { font-size: 100%; font-family: Tahoma,Arial,sans-serif; font-weight: bold;}
 		.mlt-dialog { font-size: 80%; font-family: Tahoma,Arial,sans-serif; line-height: normal;}
 		table { width: 100%; }
 		.mlt-header td { border:0px; }

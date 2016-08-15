@@ -199,15 +199,15 @@
 		<div style="visibility: hidden;height:0px;"> 		
 		<table>
 			<tr id="trackTableRow" class="trackRow">
-				<td class="trackRowCol">
+				<td class="trackRowCol" style="width:1px;">
 					<table>
 						<tr>
 							<td style="text-align: center; border: none; white-space: nowrap;">
 								<div class="mlt-button">		
 									<a id="googleMapsButton" href="#" title="<spring:message code="overview.track.table.title.map" />" 
 										onclick="alert('call startTracking()');"
-										style="width:30px">								
-										<img src="img/led/map.png" style="border: none; margin-left: -7px;"/>
+										style="width:16px;height:16px">								
+										<img src="img/led/map.png" style="border: none;"/>
 									</a>
 								</div> 
 							</td>
@@ -216,8 +216,8 @@
 								<div class="mlt-button">
 									<a id="removeTrackButton" href="#" title="<spring:message code="overview.track.table.title.remove" />" 
 										onclick="alert('call removeTrack()');"
-										style="width:30px">
-										<img src="img/led/cross.png" style="border: none; margin-left: -7px;"/>												
+										style="width:16px;height:16px">
+										<img src="img/led/cross.png" style="border: none;"/>												
 									</a>
 								</div>
 								</security:authorize>	
@@ -228,8 +228,8 @@
 								<div class="mlt-button">		
 									<a id="googleEarthButton" href="#"  title="<spring:message code="overview.track.table.title.earth" />"
 										onclick="alert('call startTracking()');"
-										style="width:30px">
-										<img src="img/led/world.png" style="border: none; margin-left: -7px;"/>
+										style="width:16px;height:16px">
+										<img src="img/led/world.png" style="border: none;"/>
 									</a>															 
 								</div>
 							</td>
@@ -237,8 +237,8 @@
 								<div id="resetTrackDiv" class="mlt-button">
 									<a id="resetTrackButton" href="#" title="<spring:message code="overview.track.table.title.reset" />" 
 										onclick="alert('call resetTrack()');"
-										style="width:30px;">
-										<img src="img/led/arrow_undo.png" style="border: none; margin-left: -7px;"/>
+										style="width:16px;height:16px">
+										<img src="img/led/arrow_undo.png" style="border: none;"/>
 									</a>
 								</div>	
 							</td>
@@ -248,8 +248,8 @@
 								<div class="mlt-button">		
 									<a id="kmlExportButton" href="#"  title="<spring:message code="overview.track.table.title.export.kml" />"
 										onclick="alert('call startTracking()');"
-										style="width:30px">
-										<font style="color:rgb(115,154,58);font-size: xx-small;margin-left: -7px;font-weight: bold;">kml</font>
+										style="width:16px;height:16px;">
+										<img src="img/others/document.png" style="border: none;"/>
 									</a>															 
 								</div>
 							</td>
@@ -257,8 +257,8 @@
 								<div class="mlt-button">		
 									<a id="gpxExportButton" href="#"  title="<spring:message code="overview.track.table.title.export.gpx" />"
 										onclick="alert('call startTracking()');"
-										style="width:30px">
-										<font style="color:rgb(115,154,58);font-size: xx-small;margin-left: -7px;font-weight: bold;">gpx</font>
+										style="width:16px;height:16px;">
+										<img src="img/others/document.png" style="border: none;"/>
 									</a>															 
 								</div>	
 							</td>
@@ -332,7 +332,7 @@
 						</tr>
 					</table>						
 				</td>
-				<td class="trackRowCol">
+				<td class="trackRowCol" style="width:1px;">
 					<table style="border-spacing: 0px;">															
 						<tr>
 							<td style="width:20px;height:20px;white-space: nowrap; border-top: none; border-left: none; border-bottom: none;border-right:none;">
