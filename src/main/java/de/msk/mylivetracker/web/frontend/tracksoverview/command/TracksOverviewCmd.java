@@ -50,7 +50,7 @@ public class TracksOverviewCmd {
 	private TracksViewVo selectedTracksView = null;
 	private String mapsUsedStr = null;
 	private int defMapId = 0;
-	private String[] routesUsedArr = null;
+	private RoutesUsedVo routesUsed= null;
 	
 	private List<SenderEntry> senderEntriesForCreateTrack = new ArrayList<SenderEntry>();
 	private String selectedSenderForCreateTrack = null;
@@ -104,8 +104,7 @@ public class TracksOverviewCmd {
 		MapsUsedVo mapsUsed = user.getOptions().getMapsUsed();
 		this.setMapsUsedStr(mapsUsed.getMapsUsedStr(this.supportedMaps.size()));
 		this.setDefMapId(mapsUsed.getDefMapId());
-		RoutesUsedVo routesUsed = user.getOptions().getRoutesUsed();
-		this.setRoutesUsedArr(routesUsed.getRoutesUsedParsed());
+		this.setRoutesUsed(user.getOptions().getRoutesUsed());
 		// sender entries (senders for create track, senders for filter).
 		List<SenderVo> senders = senderService.getSenders(user.getUsername());
 		this.senderEntriesForCreateTrack.clear();
@@ -283,17 +282,17 @@ public class TracksOverviewCmd {
 	}
 
 	/**
-	 * @return the routesUsedArr
+	 * @return the routesUsed
 	 */
-	public String[] getRoutesUsedArr() {
-		return routesUsedArr;
+	public RoutesUsedVo getRoutesUsed() {
+		return routesUsed;
 	}
 
 	/**
-	 * @param routesUsedArr the routesUsedArr to set
+	 * @param routesUsed the routesUsed to set
 	 */
-	public void setRoutesUsedArr(String[] routesUsedArr) {
-		this.routesUsedArr = routesUsedArr;
+	public void setRoutesUsed(RoutesUsedVo routesUsed) {
+		this.routesUsed = routesUsed;
 	}
 
 	public String getSelectedSenderForCreateTrack() {

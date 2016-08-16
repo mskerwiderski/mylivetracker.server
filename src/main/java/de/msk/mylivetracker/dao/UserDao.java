@@ -166,11 +166,11 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.dao.IUserDao#updateUserOptionsMapsUsed(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
+	 * @see de.msk.mylivetracker.dao.IUserDao#updateUserOptionsMapsAndRoutesUsed(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
 	 */
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void updateUserOptionsMapsUsed(UserWithoutRoleVo user) {
+	public void updateUserOptionsMapsAndRoutesUsed(UserWithoutRoleVo user) {
 		this.getSqlMapClientTemplate().update("UserVo.updateUserOptionsMapsAndRoutesUsedByUserId", user);
 	}
 

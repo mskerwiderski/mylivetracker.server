@@ -61,7 +61,7 @@ public class UserObjectUtils {
 		userOptions.setScaleUnit(language);
 		userOptions.setTimeZone(timeZone);
 		userOptions.setMapsUsed(new MapsUsedVo(DEF_MAPS_USED_STR));
-		userOptions.setRoutesUsed(new RoutesUsedVo(null));
+		userOptions.setRoutesUsed(new RoutesUsedVo());
 		userOptions.setGeocoderLanguage(language);
 		userOptions.setGeocoderMode(GeocoderMode.emergencySignalsAndMessages);
 		userOptions.setTrackAutoClose(0);
@@ -106,13 +106,16 @@ public class UserObjectUtils {
 
 	private static UserEmergencyVo createUserEmergency() {
 		UserEmergencyVo userEmergency = new UserEmergencyVo();
-		userEmergency.setSmsUnlocked(false);
 		userEmergency.setSmsEnabled(false);
 		userEmergency.setSmsSender("");
 		userEmergency.setSmsRecipient("");
 		userEmergency.setSmsLastSent(null);
 		userEmergency.setSmsSentCount(0);
-		//TODO
+		userEmergency.setSmsMessageTemplate("SOS * Position: #GOO");
+		userEmergency.setSmsServiceProvider("smscreator.de");
+		userEmergency.setSmsServiceUsername("");
+		userEmergency.setSmsServicePassword("");
+		userEmergency.setSmsServiceParams("");
 		return userEmergency;
 	}
 	

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
@@ -204,9 +205,37 @@
            		"<c:out value='${tracksOverviewCmd.defMapId}' />",
            		mlt_DEFAULT_CENTER, mlt_DEFAULT_ZOOM,
            		mlt_supportedLayerNames);
-           	<c:forEach var="routeUsed" items="${tracksOverviewCmd.routesUsedArr}">
-				new L.GPX('<c:out value="${routeUsed}"/>', {async: true}).on('loaded', function(e) {
-			  		mlt_map.fitBounds(e.target.getBounds());
+           	var bounds = null;
+   			var count = <c:out value="${fn:length(tracksOverviewCmd.routesUsed.routesUsedParsed)}" />;
+   			var idx = 0;
+           	<c:forEach var="route" items="${tracksOverviewCmd.routesUsed.routesUsedParsed}">
+				new L.GPX('<c:out value="${route}"/>',
+					{async: true, 
+					 marker_options: {
+						 startIconUrl: 'img/map/star.png',
+						 endIconUrl: 'img/map/star.png',
+						 shadowUrl: '',
+						 wptIconUrls : {},
+						 iconSize: [32, 37],
+						 shadowSize: [0, 0],
+						 iconAnchor: [16, 45],
+						 shadowAnchor: [16, 47]
+					 },
+					 polyline_options: {
+						 color:'#<c:out value='${tracksOverviewCmd.routesUsed.routeColor}' />',
+						 width: '<c:out value='${tracksOverviewCmd.routesUsed.routeWidth}' />px',
+						 opacity: 0.7
+					 }
+				}).on('loaded', function(e) {
+					idx++;
+					if (bounds == null) {
+						bounds = L.latLngBounds(e.target.getBounds());
+					} else {
+		  				bounds.extend(e.target.getBounds());
+					}
+					if (idx == count) {
+						mlt_map.fitBounds(bounds);				
+					}
 				}).addTo(mlt_map);
 			</c:forEach>
            	$(window).resize();

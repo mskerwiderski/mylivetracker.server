@@ -58,7 +58,6 @@
 		<result property="statusPage.showTrackInfo" column="STATUS_PAGE_SHOW_TRACK_INFO" />                        
 		<result property="statusPage.cssStyle" column="STATUS_PAGE_CSS_STYLE" />  
 		<result property="statusPage.lastParamsId" column="STATUS_PAGE_LAST_PARAMS_ID" />
-		<result property="emergency.smsUnlocked" column="EMERGENCY_SMS_UNLOCKED" />
 		<result property="emergency.smsEnabled" column="EMERGENCY_SMS_ENABLED" />
 	    <result property="emergency.smsSender" column="EMERGENCY_SMS_SENDER" /> 
 	    <result property="emergency.smsRecipient" column="EMERGENCY_SMS_RECIPIENT" /> 
@@ -252,7 +251,6 @@
 			STATUS_PAGE_SHOW_TRACK_INFO,                        
 			STATUS_PAGE_CSS_STYLE,  
 			STATUS_PAGE_LAST_PARAMS_ID,
-			EMERGENCY_SMS_UNLOCKED,
 			EMERGENCY_SMS_ENABLED,
 		    EMERGENCY_SMS_SENDER, 
 		    EMERGENCY_SMS_RECIPIENT, 
@@ -312,7 +310,6 @@
 			#statusPage.showTrackInfo#,
 			#statusPage.cssStyle#,
 			#statusPage.lastParamsId#,
-			#emergency.smsUnlocked#,
 			#emergency.smsEnabled#,
 			#emergency.smsSender#,
 			#emergency.smsRecipient#,

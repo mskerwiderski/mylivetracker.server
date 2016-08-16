@@ -27,9 +27,6 @@ public class SaveAllEmergency implements IAction {
 		UserWithoutRoleVo user, OptionsCmd cmd,
 		MessageSource messageSource, Locale locale)
 		throws ActionExecutionException {
-		if (!user.getEmergency().getSmsUnlocked()) {
-			throw new ActionExecutionException("user is not unlocked for sms features.");
-		}
 		user.setEmergency(cmd.getUserEmergency().copy());	
 		services.getUserService().updateUserEmergency(user);
 		cmd.setInfoMessage(messageSource.getMessage(

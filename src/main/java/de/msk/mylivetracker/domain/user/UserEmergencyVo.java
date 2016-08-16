@@ -22,7 +22,6 @@ public class UserEmergencyVo implements Cloneable, Serializable {
 		
 	private static final long serialVersionUID = 263326226253162501L;
 	
-	private Boolean smsUnlocked;
 	private Boolean smsEnabled;
 	private String smsSender;
 	private String smsRecipient;
@@ -50,20 +49,6 @@ public class UserEmergencyVo implements Cloneable, Serializable {
 		this.smsSentCount += sentSms;
 	}
 		
-	/**
-	 * @return the smsUnlocked
-	 */
-	public Boolean getSmsUnlocked() {
-		return smsUnlocked;
-	}
-
-	/**
-	 * @param smsUnlocked the smsUnlocked to set
-	 */
-	public void setSmsUnlocked(Boolean smsUnlocked) {
-		this.smsUnlocked = smsUnlocked;
-	}
-
 	/**
 	 * @return the smsEnabled
 	 */

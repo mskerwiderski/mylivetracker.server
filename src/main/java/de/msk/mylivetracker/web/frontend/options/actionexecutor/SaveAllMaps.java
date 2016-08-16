@@ -29,7 +29,7 @@ public class SaveAllMaps implements IAction {
 		throws ActionExecutionException {		
 		user.getOptions().setMapsUsed(cmd.getUserOptions().getMapsUsed().copy());
 		user.getOptions().setRoutesUsed(cmd.getUserOptions().getRoutesUsed().copy());
-		services.getUserService().updateUserOptionsMapsUsed(user);
+		services.getUserService().updateUserOptionsMapsAndRoutesUsed(user);
 		cmd.setInfoMessage(messageSource.getMessage(
 			"maps.success.saved", null, locale));
 		return null;

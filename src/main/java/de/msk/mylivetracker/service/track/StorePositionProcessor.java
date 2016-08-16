@@ -558,7 +558,6 @@ public class StorePositionProcessor extends Thread {
 			}	
 			
 			if (dataReceived.hasValidEmergencySignal() &&
-				storePositionDsc.getUser().getEmergency().getSmsUnlocked() &&
 				storePositionDsc.getUser().getEmergency().getSmsEnabled()) {
 				sendSmsResult = sendSmsIfEmergencySignalReceived(
 					storePositionDsc.getUser(), dataReceived);

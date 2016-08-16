@@ -33,17 +33,9 @@
 <table>
 	<tr>
 		<td colspan="3">
-			<c:choose>
-				<c:when test="${optionsCmd.userEmergency.smsUnlocked}">
-					&nbsp;<spring:message code="emergency.sms.unlocked" />&nbsp;
-				</c:when>
-				<c:otherwise>
-					&nbsp;<spring:message code="emergency.sms.not.unlocked" />&nbsp;
-				</c:otherwise>			
-			</c:choose>
+			&nbsp;<spring:message code="emergency.sms.headerline" />&nbsp;
 		</td>
 	</tr>
-	<c:if test="${optionsCmd.userEmergency.smsUnlocked}">
 	<tr>
 		<td style="width:30%;">
 			&nbsp;<spring:message code="emergency.sms.info" />&nbsp;
@@ -217,5 +209,4 @@
 			</c:otherwise>
 		</c:choose>								
 	</tr>
-	</c:if>	
 </table>	

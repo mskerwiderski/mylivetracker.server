@@ -27,9 +27,6 @@ public class ResetAllEmergency implements IAction {
 		UserWithoutRoleVo user, OptionsCmd cmd,
 		MessageSource messageSource, Locale locale)
 		throws ActionExecutionException {
-		if (!user.getEmergency().getSmsUnlocked()) {
-			throw new ActionExecutionException("user is not unlocked for sms features.");
-		}
 		cmd.setUserEmergency(user.getEmergency().copy());	
 		cmd.setInfoMessage(messageSource.getMessage(
 			"emergency.success.resetted", null, locale));

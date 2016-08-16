@@ -91,12 +91,44 @@
 		<td>
 			<form:textarea cssClass="text ui-widget-content ui-corner-all"
 				style="margin-left: 4px;width:98%" rows="4"
-				path="userOptions.routesUsed.routesUsedStr"/>
+				path="userOptions.routesUsed.routesUsed"/>
 		</td>	
 		<td>
 			&nbsp;<form:errors cssClass="ui-state-error"  
-				path="userOptions.routesUsed.routesUsedStr" />&nbsp;	
+				path="userOptions.routesUsed.routesUsed" />&nbsp;	
 		</td>	
+	</tr>
+	<tr>
+		<td>
+			&nbsp;<spring:message code="maps.routes.options" />&nbsp;
+		</td>
+		<td>
+			&nbsp;<form:input path="userOptions.routesUsed.routeColor"
+				cssClass="color text ui-corner-all" readonly="true"
+				cssStyle="width:100px" 														 
+			/>&nbsp;														
+			<c:set var="selRoutesUsedRouteWidth">${optionsCmd.userOptions.routesUsed.routeWidth}</c:set>
+			<select id="userOptions.routesUsed.routeWidth" name="userOptions.routesUsed.routeWidth" 
+				class="text ui-widget-content ui-corner-all"> 
+				<c:forEach var="routesUsedRouteWidth" items="${optionsCmd.trackRouteOptsWidth}">
+ 						<c:choose>
+   						<c:when test="${routesUsedRouteWidth.value == selRoutesUsedRouteWidth}">
+					    	<option value="${routesUsedRouteWidth.value}" selected>
+					        	<spring:message code="${routesUsedRouteWidth.label}" />
+					      	</option>
+					    </c:when>
+				    	<c:otherwise>
+				      		<option value="${routesUsedRouteWidth.value}" >
+					        	<spring:message code="${routesUsedRouteWidth.label}" />
+					      	</option>
+					    </c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</select>&nbsp;
+		</td>
+		<td>
+			&nbsp;
+		</td>
 	</tr>
 	<tr>
 		<td style="width:30%;">

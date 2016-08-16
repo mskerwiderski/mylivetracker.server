@@ -177,9 +177,6 @@
 					sms = "<spring:message code='sms.transport.success' />";
 				} else {
 					<c:choose>
-						<c:when test="${!currentUser.emergency.smsUnlocked}" >
-							sms = "<spring:message code='sms.transport.not.active' />"
-						</c:when>
 						<c:when test="${!currentUser.emergency.smsEnabled}" >
 							sms = "<spring:message code='sms.transport.not.active' />";
 						</c:when>

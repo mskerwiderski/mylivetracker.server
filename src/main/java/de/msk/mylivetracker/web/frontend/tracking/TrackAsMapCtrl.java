@@ -53,7 +53,7 @@ public class TrackAsMapCtrl extends AbstractTrackingCtrl {
 		UserAndRoleDsc userAndRoleDsc, Map<String, Object> model) {
 		model.put("supportedMaps", supportedMaps);
 		model.put("mapsUsedStr", userAndRoleDsc.user.getOptions().getMapsUsed().getMapsUsedStr(supportedMaps.size()));
-		model.put("routesUsedArr", userAndRoleDsc.user.getOptions().getRoutesUsed().getRoutesUsedParsed());
+		model.put("routesUsed", userAndRoleDsc.user.getOptions().getRoutesUsed());
 		model.put("defMapId", userAndRoleDsc.user.getOptions().getMapsUsed().getDefMapId());
 		model.put("showTrackInfo", (Boolean)model.get(PARAM_SHOW_TRACK_INFO.getName()));		
 	}

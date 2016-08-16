@@ -105,12 +105,12 @@ public class UserService implements
 	}
 
 	/* (non-Javadoc)
-	 * @see de.msk.mylivetracker.service.IUserService#updateUserOptionsMapsUsed(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
+	 * @see de.msk.mylivetracker.service.IUserService#updateUserOptionsMapsAndRoutesUsed(de.msk.mylivetracker.domain.user.UserWithoutRoleVo)
 	 */
 	@Override
-	public void updateUserOptionsMapsUsed(UserWithoutRoleVo user) {
+	public void updateUserOptionsMapsAndRoutesUsed(UserWithoutRoleVo user) {
 		userWithoutRoleCache.remove(user.getUserId());
-		userDao.updateUserOptionsMapsUsed(user);		
+		userDao.updateUserOptionsMapsAndRoutesUsed(user);		
 	}
 
 	/* (non-Javadoc)

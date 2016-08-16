@@ -23,7 +23,7 @@ public interface IUserDao {
 	public UserWithRoleVo getUserWithRoleByAutoLoginTicketForUser(String autoLoginTicket);
 	public UserWithRoleVo getUserWithRoleByAutoLoginTicketForGuest(String autoLoginTicket);
 	public void updateUserOptions(UserWithoutRoleVo user);
-	public void updateUserOptionsMapsUsed(UserWithoutRoleVo user);
+	public void updateUserOptionsMapsAndRoutesUsed(UserWithoutRoleVo user);
 	public void updateUserMasterData(UserWithoutRoleVo user, boolean updatePassword);
 	public void updateUserAutoLogin(UserWithoutRoleVo user);
 	public void updateUserStatusPage(UserWithoutRoleVo user);

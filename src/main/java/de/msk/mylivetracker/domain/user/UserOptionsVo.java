@@ -422,11 +422,4 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	public void setRoutesUsed(RoutesUsedVo routesUsed) {
 		this.routesUsed = routesUsed;
 	}
-	
-	public String getRoutesUsedStr() {
-		return this.routesUsed.getRoutesUsedStr();
-	}
-	public void setRoutesUsedStr(String routesUsedStr) {
-		this.routesUsed = new RoutesUsedVo(routesUsedStr);
-	}
 }

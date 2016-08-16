@@ -27,14 +27,14 @@ public class RoutesUsedTypeHandlerCallback implements TypeHandlerCallback {
 			setter.setString("");
 		} else {
 			RoutesUsedVo routesUsed = (RoutesUsedVo)parameter;
-			setter.setString(routesUsed.toString());
+			setter.setString(RoutesUsedVo.serializeToString(routesUsed));
 		}
 	}
 
 	@Override
 	public Object getResult(ResultGetter getter) throws SQLException {
-		String routesUsedStr = getter.getString();
-		return new RoutesUsedVo(routesUsedStr);
+		String routesUsedAsStr = getter.getString();
+		return RoutesUsedVo.deserializeFromString(routesUsedAsStr);
 	}
 
 	@Override

@@ -139,7 +139,7 @@ public class TracksOverviewCtrl extends SimpleFormController {
 			cmd.setMapsUsedStr(mapsUsed.getMapsUsedStr(this.supportedMaps.size()));
 			cmd.setDefMapId(mapsUsed.getDefMapId());
 			RoutesUsedVo routesUsed = WebUtils.getCurrentUserWithRole().getOptions().getRoutesUsed();
-			cmd.setRoutesUsedArr(routesUsed.getRoutesUsedParsed());
+			cmd.setRoutesUsed(routesUsed);
 			request.getSession().setAttribute(this.getCommandName(), cmd);
 		}
 		checkIfVersionInfoMustBeDisplayed(cmd);

@@ -93,8 +93,6 @@ public class OptionsVdtor implements Validator {
 	
 	@Override
 	public void validate(Object target, Errors errors) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void validate(HttpServletRequest request, Object target, Errors errors) {
