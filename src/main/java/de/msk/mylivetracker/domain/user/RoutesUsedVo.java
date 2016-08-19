@@ -1,6 +1,7 @@
 package de.msk.mylivetracker.domain.user;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -24,7 +25,8 @@ public class RoutesUsedVo implements Cloneable, Serializable {
 	
 	private String[] routesUsed = null;
 	private String routeColor = null;
-	private Integer routeWidth = null;
+	private String routeWidth = null;
+	private String routeOpacity = null;
 
 	public RoutesUsedVo() {
 	}
@@ -33,12 +35,13 @@ public class RoutesUsedVo implements Cloneable, Serializable {
 		RoutesUsedVo routesUsed = new RoutesUsedVo();
 		if (!StringUtils.isEmpty(routesUsedStr)) {
 			String[] parts = StringUtils.splitPreserveAllTokens(routesUsedStr, SEP);
-			if (parts.length < 3) {
+			if (parts.length < 4) {
 				throw new IllegalArgumentException("invalid routesUsedStr='" + routesUsedStr + "'.");
 			} 
 			routesUsed.routeColor = parts[0];
-			routesUsed.routeWidth = Integer.valueOf(parts[1]);
-			routesUsed.routesUsed = ArrayUtils.subarray(parts, 2, parts.length-1);
+			routesUsed.routeWidth = parts[1];
+			routesUsed.routeOpacity = parts[2];
+			routesUsed.routesUsed = ArrayUtils.subarray(parts, 3, parts.length-1);
 		}
 		return routesUsed;
 	}
@@ -47,6 +50,7 @@ public class RoutesUsedVo implements Cloneable, Serializable {
 		StringBuffer buf = new StringBuffer();
 		buf.append(routesUsed.routeColor == null ? "" : routesUsed.routeColor).append(SEP);
 		buf.append(routesUsed.routeWidth == null ? "" : routesUsed.routeWidth).append(SEP);
+		buf.append(routesUsed.routeOpacity == null ? "" : routesUsed.routeOpacity).append(SEP);
 		buf.append(routesUsed.getRoutesUsed());
 		return buf.toString();		
 	}
@@ -122,19 +126,41 @@ public class RoutesUsedVo implements Cloneable, Serializable {
 	/**
 	 * @return the routeWidth
 	 */
-	public Integer getRouteWidth() {
+	public String getRouteWidth() {
 		return routeWidth;
 	}
 
 	/**
 	 * @param routeWidth the routeWidth to set
 	 */
-	public void setRouteWidth(Integer routeWidth) {
+	public void setRouteWidth(String routeWidth) {
 		this.routeWidth = routeWidth;
 	}
 
-	
-	
+	/**
+	 * @return the routeOpacity
+	 */
+	public String getRouteOpacity() {
+		return routeOpacity;
+	}
+
+	/**
+	 * @param routeOpacity the routeOpacity to set
+	 */
+	public void setRouteOpacity(String routeOpacity) {
+		this.routeOpacity = routeOpacity;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "RoutesUsedVo [routesUsed=" + Arrays.toString(routesUsed)
+			+ ", routeColor=" + routeColor + ", routeWidth=" + routeWidth
+			+ ", routeOpacity=" + routeOpacity + "]";
+	}
+
 	private static final String LINK_DROPBOX = "www.dropbox.com";
 	private static final String DIRECT_ACCESS_LINK_DROPBOX = "dl.dropboxusercontent.com";
 	

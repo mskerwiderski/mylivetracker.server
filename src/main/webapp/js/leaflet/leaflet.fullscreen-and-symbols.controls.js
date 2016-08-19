@@ -44,7 +44,6 @@ L.Control.FullscreenAndSymbols = L.Control.Zoom.extend({
 		this._isSymbolsOn = true;
 		
 		return container;
-
 	},
 	symbols: function() {
 		if (this._isSymbolsOn) {

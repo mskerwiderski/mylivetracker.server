@@ -109,7 +109,9 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 		UserOptionsVo options = userAndRoleDsc.user.getOptions();
 		
 		String routeColor = htmlColorToGoogleColor(options.getTrackRouteColor());
-		Integer routeWidth = options.getTrackRouteWidth();
+		String routeWidth = options.getTrackRouteWidth();
+		routeWidth = StringUtils.remove(routeWidth, "px");
+		Integer routeWidthInt = Integer.valueOf(routeWidth);
 				
 		String description = "";
 		
@@ -184,7 +186,7 @@ public class TrackExporterKml implements ITrackExporter<UserAndRoleDsc> {
 				lookAt.setTilt(0d); // look directly from above.				
 			}
 		} else {		
-			addRoute(request, track, document, routeColor, routeWidth);
+			addRoute(request, track, document, routeColor, routeWidthInt);
 			UserWithoutRoleVo user = userAndRoleDsc.user;
 			
 			if ((keepRecPos.intValue() == 0) && 

@@ -230,6 +230,7 @@
         <property name="trackOptsReleaseStatus" ref="trackOptsReleaseStatus" />
         <property name="trackOptsAutoClose" ref="trackOptsAutoClose" />
         <property name="trackRouteOptsWidth" ref="trackRouteOptsWidth" />
+        <property name="trackRouteOptsOpacity" ref="trackRouteOptsOpacity" />
         <property name="commonsOptsYesNo" ref="commonsOptsYesNo" />
         <property name="commonsOptsOnOff" ref="commonsOptsOnOff" />
         <property name="commonsOptsEnDisabled" ref="commonsOptsEnDisabled" />        

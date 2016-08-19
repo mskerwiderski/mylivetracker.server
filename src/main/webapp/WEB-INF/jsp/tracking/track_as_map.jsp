@@ -8,9 +8,6 @@
 <%@ page import="de.msk.mylivetracker.web.util.WebUtils" %>
 
 <link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet-0.7.7.css'/>" />
-<!--[if lte IE 8]>
-     <link rel="stylesheet" href="<c:url value='/js/leaflet/leaflet.ie-0.4.4.css'/>" />
-<![endif]-->
 <link rel="stylesheet" href="<c:url value='/style/map-and-controls.css'/>" />
 <script type="text/javascript" src="<c:url value='/js/leaflet/leaflet-0.7.7.min.js'/>"></script>
 <script src="<c:url value='/js/leaflet/leaflet.fullscreen-and-symbols.controls.js'/>"></script>
@@ -284,8 +281,8 @@ body.loading .modal {
 	   			L.polyline(mlt_positions, {
 	   				color: "#" + mlt_data.user.routeColor,
 	   				weight: mlt_data.user.routeWidth,
-	   				opacity: 0.7,
-	   			}).addTo(mlt_map);
+	   				opacity: mlt_data.user.routeOpacity,
+	   			}).addTo(mlt_map).bringToFront();
 	   	} else {
 		   	mlt_polyline = null;
 	   	}
@@ -653,7 +650,7 @@ body.loading .modal {
    			var idx = 0;
    			<c:forEach var="route" items="${routesUsed.routesUsedParsed}">
 				new L.GPX('<c:out value="${route}"/>',
-					{async: true, 
+					{async: true,
 					 marker_options: {
 						 startIconUrl: 'img/map/star.png',
 						 endIconUrl: 'img/map/star.png',
@@ -662,12 +659,12 @@ body.loading .modal {
 						 iconSize: [32, 37],
 						 shadowSize: [0, 0],
 						 iconAnchor: [16, 45],
-						 shadowAnchor: [16, 47]
+						 shadowAnchor: [16, 47],
 					 },
 					 polyline_options: {
 						 color:'#<c:out value='${routesUsed.routeColor}' />',
-						 width: '<c:out value='${routesUsed.routeWidth}' />px',
-						 opacity: 0.7
+						 weight:'<c:out value='${routesUsed.routeWidth}' />',
+						 opacity:'<c:out value='${routesUsed.routeOpacity}' />',
 					 }
 					}).on('loaded', function(e) {
 						idx++;
@@ -720,7 +717,7 @@ body.loading .modal {
    		function mlt_processRequest() {
    			showLoadingWindow();
    			mlt_refreshTracksOverview();
-   		}   	   		   	   	   		
+   		}   		   	   	   		
     ); 	
 
     var autoRefreshTimer = null;
@@ -958,7 +955,7 @@ body.loading .modal {
 	function mlt_createMarkerAux(icon, lat, lon, clickable) {  	
    	   	var marker = new L.Marker(
 	    	new L.LatLng(lat, lon), 
-    		{ icon:icon, clickable:clickable, opacity:0.7 });	    
+    		{ icon:icon, clickable:clickable, opacity:1.0, zIndexOffset: 999 });	    
 	    return marker; 
    	}
 	

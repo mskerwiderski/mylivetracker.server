@@ -45,7 +45,8 @@ public class OptionsCtrl extends SimpleFormController {
 	private List<StrOptionDsc> userOptsGeocoder;
 	private List<BoolOptionDsc> trackOptsReleaseStatus;
 	private List<IntOptionDsc> trackOptsAutoClose;
-	private List<IntOptionDsc> trackRouteOptsWidth;
+	private List<StrOptionDsc> trackRouteOptsWidth;
+	private List<StrOptionDsc> trackRouteOptsOpacity;
 	private List<BoolOptionDsc> commonsOptsYesNo;
 	private List<BoolOptionDsc> commonsOptsOnOff;
 	private List<BoolOptionDsc> commonsOptsEnDisabled;
@@ -89,7 +90,8 @@ public class OptionsCtrl extends SimpleFormController {
 			cmd.setUserOptsGeocoder(userOptsGeocoder);
 			cmd.setTrackOptsReleaseStatus(trackOptsReleaseStatus);
 			cmd.setTrackOptsAutoClose(trackOptsAutoClose);
-			cmd.setTrackRouteOptsWidth(trackRouteOptsWidth);			
+			cmd.setTrackRouteOptsWidth(trackRouteOptsWidth);
+			cmd.setTrackRouteOptsOpacity(trackRouteOptsOpacity);
 			UserWithoutRoleVo user = 
 				this.services.getUserService().getUserWithoutRole(
 				WebUtils.getCurrentUserWithRole().getUserId());
@@ -259,15 +261,29 @@ public class OptionsCtrl extends SimpleFormController {
 	/**
 	 * @return the trackRouteOptsWidth
 	 */
-	public List<IntOptionDsc> getTrackRouteOptsWidth() {
+	public List<StrOptionDsc> getTrackRouteOptsWidth() {
 		return trackRouteOptsWidth;
 	}
 
 	/**
 	 * @param trackRouteOptsWidth the trackRouteOptsWidth to set
 	 */
-	public void setTrackRouteOptsWidth(List<IntOptionDsc> trackRouteOptsWidth) {
+	public void setTrackRouteOptsWidth(List<StrOptionDsc> trackRouteOptsWidth) {
 		this.trackRouteOptsWidth = trackRouteOptsWidth;
+	}
+
+	/**
+	 * @return the trackRouteOptsOpacity
+	 */
+	public List<StrOptionDsc> getTrackRouteOptsOpacity() {
+		return trackRouteOptsOpacity;
+	}
+
+	/**
+	 * @param trackRouteOptsOpacity the trackRouteOptsOpacity to set
+	 */
+	public void setTrackRouteOptsOpacity(List<StrOptionDsc> trackRouteOptsOpacity) {
+		this.trackRouteOptsOpacity = trackRouteOptsOpacity;
 	}
 
 	/**

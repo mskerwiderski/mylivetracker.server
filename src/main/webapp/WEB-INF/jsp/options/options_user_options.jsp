@@ -355,6 +355,24 @@
 					</c:choose>
 				</c:forEach>
 			</select>&nbsp;
+			<c:set var="selTrackRouteOpacity">${optionsCmd.userOptions.trackRouteOpacity}</c:set>
+			<select id="userOptions.trackRouteOpacity" name="userOptions.trackRouteOpacity" 
+				class="text ui-widget-content ui-corner-all"> 
+				<c:forEach var="trackRouteOpacity" items="${optionsCmd.trackRouteOptsOpacity}">
+ 						<c:choose>
+   						<c:when test="${trackRouteOpacity.value == selTrackRouteOpacity}">
+					    	<option value="${trackRouteOpacity.value}" selected>
+					        	<spring:message code="${trackRouteOpacity.label}" />
+					      	</option>
+					    </c:when>
+				    	<c:otherwise>
+				      		<option value="${trackRouteOpacity.value}" >
+					        	<spring:message code="${trackRouteOpacity.label}" />
+					      	</option>
+					    </c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</select>&nbsp;
 		</td>
 		<td>
 			&nbsp;

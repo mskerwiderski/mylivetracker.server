@@ -223,8 +223,8 @@
 					 },
 					 polyline_options: {
 						 color:'#<c:out value='${tracksOverviewCmd.routesUsed.routeColor}' />',
-						 width: '<c:out value='${tracksOverviewCmd.routesUsed.routeWidth}' />px',
-						 opacity: 0.7
+						 weight:'<c:out value='${tracksOverviewCmd.routesUsed.routeWidth}' />',
+						 opacity:'<c:out value='${tracksOverviewCmd.routesUsed.routeOpacity}' />',
 					 }
 				}).on('loaded', function(e) {
 					idx++;
@@ -267,8 +267,9 @@
 		name = "<b style='color:"+ senderNameColor + ";'>" + name + "</b>";
 	   	var marker = new L.Marker(
     	new L.LatLng(lat, lon), 
-			{ icon: new SenderIcon({ labelText: name }), 
-    		clickable:true, opacity: 0.8, });
+			{ icon: new SenderIcon({ labelText: name }),
+    		zIndexOffset: 999,
+    		clickable:true, opacity: 1.0 });
 	   	
 	   	marker.bindPopup(info);
     	return marker; 

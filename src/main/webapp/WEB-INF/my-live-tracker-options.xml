@@ -2630,45 +2630,88 @@
    	</util:list>     	
    	
    	<util:list id="trackRouteOptsWidth">
-    	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="1"/>
+    	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="1px"/>
     	 	<constructor-arg index="1" value="track.route.width.1pixel"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="2"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="2px"/>
     	 	<constructor-arg index="1" value="track.route.width.2pixel"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="3"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="3px"/>
     	 	<constructor-arg index="1" value="track.route.width.3pixel"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="4"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="4px"/>
     	 	<constructor-arg index="1" value="track.route.width.4pixel"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="5"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="5px"/>
     	 	<constructor-arg index="1" value="track.route.width.5pixel"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="6"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="6px"/>
     	 	<constructor-arg index="1" value="track.route.width.6pixel"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="7"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="7px"/>
     	 	<constructor-arg index="1" value="track.route.width.7pixel"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="8"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="8px"/>
     	 	<constructor-arg index="1" value="track.route.width.8pixel"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="9"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="9px"/>
     	 	<constructor-arg index="1" value="track.route.width.9pixel"/>
    	 	</bean>
-   	 	<bean class="de.msk.mylivetracker.web.options.IntOptionDsc">
-    	 	<constructor-arg index="0" value="10"/>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="10px"/>
     	 	<constructor-arg index="1" value="track.route.width.10pixel"/>
+   	 	</bean>
+   	</util:list>
+   	
+   	<util:list id="trackRouteOptsOpacity">
+    	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="0.1"/>
+    	 	<constructor-arg index="1" value="track.route.opacity.10percent"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="0.2"/>
+    	 	<constructor-arg index="1" value="track.route.opacity.20percent"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="0.3"/>
+    	 	<constructor-arg index="1" value="track.route.opacity.30percent"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="0.4"/>
+    	 	<constructor-arg index="1" value="track.route.opacity.40percent"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="0.5"/>
+    	 	<constructor-arg index="1" value="track.route.opacity.50percent"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="0.6"/>
+    	 	<constructor-arg index="1" value="track.route.opacity.60percent"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="0.7"/>
+    	 	<constructor-arg index="1" value="track.route.opacity.70percent"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="0.8"/>
+    	 	<constructor-arg index="1" value="track.route.opacity.80percent"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="0.9"/>
+    	 	<constructor-arg index="1" value="track.route.opacity.90percent"/>
+   	 	</bean>
+   	 	<bean class="de.msk.mylivetracker.web.options.StrOptionDsc">
+    	 	<constructor-arg index="0" value="1.0"/>
+    	 	<constructor-arg index="1" value="track.route.opacity.100percent"/>
    	 	</bean>
    	</util:list>
    	

@@ -57,7 +57,7 @@ function mlt_initMap(anker, mapsUsedStr, defMapId, defCenter, defZoom, supported
 		center: defCenter,
 		zoom: defZoom,
 		attributionControl: true,
-		zoomControl: true,
+		zoomControl: false,
 	});
 	var defaultLayer = supportedLayers[defMapId];
 	map.addLayer(defaultLayer);

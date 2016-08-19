@@ -61,12 +61,13 @@ public class UserObjectUtils {
 		userOptions.setScaleUnit(language);
 		userOptions.setTimeZone(timeZone);
 		userOptions.setMapsUsed(new MapsUsedVo(DEF_MAPS_USED_STR));
-		userOptions.setRoutesUsed(new RoutesUsedVo());
+		userOptions.setRoutesUsed(RoutesUsedVo.deserializeFromString("FF3300;3px;0.7;"));
 		userOptions.setGeocoderLanguage(language);
 		userOptions.setGeocoderMode(GeocoderMode.emergencySignalsAndMessages);
 		userOptions.setTrackAutoClose(0);
 		userOptions.setTrackRouteColor("FF3300");
-		userOptions.setTrackRouteWidth(3);
+		userOptions.setTrackRouteWidth("3px");
+		userOptions.setTrackRouteOpacity("0.7");
 		userOptions.setRecTrAccCode(UUID.randomUUID().toString());
 		userOptions.setRecTrAccEnabled(false);
 		userOptions.setRecTrAccPrivTrEnabled(false);

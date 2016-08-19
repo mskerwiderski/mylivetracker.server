@@ -281,7 +281,7 @@ L.GPX = L.FeatureGroup.extend({
         if (options.marker_options.startIconUrl) {
           // add start pin
           var p = new L.Marker(coords[0], {
-            clickable: false,
+        	  clickable: false,
               icon: new L.GPXTrackIcon({iconUrl: options.marker_options.startIconUrl})
           });
           this.fire('addpoint', { point: p });

@@ -34,7 +34,8 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	private String recTrAccCode;
 	private Boolean recTrAccPrivTrEnabled;
 	private String trackRouteColor;
-	private Integer trackRouteWidth;
+	private String trackRouteWidth;
+	private String trackRouteOpacity;
 	private GeocoderMode geocoderMode;
 	private MapsUsedVo mapsUsed;
 	private RoutesUsedVo routesUsed;
@@ -352,15 +353,26 @@ public class UserOptionsVo implements Cloneable, Serializable {
 	/**
 	 * @return the trackRouteWidth
 	 */
-	public Integer getTrackRouteWidth() {
+	public String getTrackRouteWidth() {
 		return trackRouteWidth;
 	}
-
 	/**
 	 * @param trackRouteWidth the trackRouteWidth to set
 	 */
-	public void setTrackRouteWidth(Integer trackRouteWidth) {
+	public void setTrackRouteWidth(String trackRouteWidth) {
 		this.trackRouteWidth = trackRouteWidth;
+	}
+	/**
+	 * @return the trackRouteOpacity
+	 */
+	public String getTrackRouteOpacity() {
+		return trackRouteOpacity;
+	}
+	/**
+	 * @param trackRouteOpacity the trackRouteOpacity to set
+	 */
+	public void setTrackRouteOpacity(String trackRouteOpacity) {
+		this.trackRouteOpacity = trackRouteOpacity;
 	}
 	/**
 	 * @return the geocoderMode

@@ -71,7 +71,8 @@ public class UserVoJsonSerializer<T extends UserWithoutRoleVo> extends AbstractV
 			FmtUtils.getHomePositionAsStr(user, this.getLocale(), true, false));
 		jsonUser.addProperty("routeColor", options.getTrackRouteColor());
 		jsonUser.addProperty("routeWidth", options.getTrackRouteWidth());
-				
+		jsonUser.addProperty("routeOpacity", options.getTrackRouteOpacity());
+		
 		return jsonUser;
 	}		
 }

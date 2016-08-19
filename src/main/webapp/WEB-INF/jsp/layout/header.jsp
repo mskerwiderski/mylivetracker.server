@@ -39,7 +39,7 @@
 									src="img/logomaker/logo_150_73.png" />&nbsp;
 							</td>
 							<td style="padding: 0px;border-spacing: 0px;font-weight: bold; white-space:nowrap;">
-								<spring:message code="layout.loggedin.as.guest" /><spring:message code="layout.loggedin.user"
+								<spring:message code="layout.loggedin.as.guest" />&nbsp;<spring:message code="layout.loggedin.user"
 									argumentSeparator="," 
 									arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
 								/>
@@ -55,7 +55,7 @@
 							</td>
 							<td style="padding: 0px;border-spacing: 0px;font-weight: bold; white-space:nowrap;">
 								&nbsp;<spring:message code="layout.loggedin.as.admin" 
-									arguments="${currentUser.adminUsername}" /><spring:message code="layout.loggedin.user"
+									arguments="${currentUser.adminUsername}" />&nbsp;<spring:message code="layout.loggedin.user"
 									argumentSeparator="," 
 									arguments="${currentUser.masterData.firstName},${currentUser.masterData.lastName},${currentUser.userId}"
 								/>
@@ -84,7 +84,7 @@
 				</c:choose>
 			</table>			
 		</td>
-		<td style="text-align:right; white-space: nowrap;">		
+		<td style="text-align:right; white-space: nowrap;width:100%">		
 			<div id="headerNav" class="mlt-button">			
 				<c:choose>
 					<c:when test="${empty currentUser}">
@@ -120,7 +120,6 @@
 						<spring:message code="layout.logout" text="Logout" />
 					</button>
 				</security:authorize>		
-				
 			</div>						
 		</td>	
 		<td>&nbsp;</td>							
