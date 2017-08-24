@@ -3,8 +3,10 @@ package de.msk.mylivetracker.web.uploader.interpreter.coban.gps103a;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 import de.msk.mylivetracker.domain.DataReceivedVo;
+import de.msk.mylivetracker.web.uploader.deviceactionexecutor.DeviceActionExecutor;
 import de.msk.mylivetracker.web.uploader.processor.IDeviceSpecific;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.CommonUtils;
 import de.msk.mylivetracker.web.uploader.processor.interpreter.util.InterpreterException;
@@ -32,7 +34,7 @@ public class TcpInterpreter extends AbstractDataStrInterpreter {
 	// o ##,imei:353451044755393,A;
 	//
 	// 00: imei:353451044755393	: imei.
-	// 01: tracker				: tracker name.
+	// 01: tracker				: status.
 	// 02: 1111092257			: date time (yymmddhhmm)
 	// 03: ? 					: ?
 	// 04: F					: gps signal indicator (F=good, L=bad).
@@ -61,12 +63,13 @@ public class TcpInterpreter extends AbstractDataStrInterpreter {
 	}		
 	
 	private static final class CobanSpecific implements IDeviceSpecific {
-		public final static CobanSpecific LOGON = new CobanSpecific(RecordType.LogOn);
+		public final static String STATUS_HELP_ME = "help me";
+		public final static CobanSpecific LOGON = new CobanSpecific(RecordType.Logon);
 		public final static CobanSpecific HEARTBEAT = new CobanSpecific(RecordType.Hearbeat);
 		public final static CobanSpecific DATA = new CobanSpecific(RecordType.Data);
 		
 		public enum RecordType {
-			LogOn, Hearbeat, Data
+			Logon, Hearbeat, Data
 		};
 		private RecordType recordType;
 		private CobanSpecific(RecordType recordType) {
@@ -102,6 +105,7 @@ public class TcpInterpreter extends AbstractDataStrInterpreter {
 			}
 			dataReceived.getSenderFromRequest().setSenderId(senderId);
 			dataReceived.getPosition().setValid(false);
+			dataReceived.getSenderState().addState("heartbeat");
 		} else if (dataItems.length == 3) {
 			cobanSpecific = CobanSpecific.LOGON;
 			// sender id
@@ -111,12 +115,20 @@ public class TcpInterpreter extends AbstractDataStrInterpreter {
 			}
 			dataReceived.getSenderFromRequest().setSenderId(senderId);
 			dataReceived.getPosition().setValid(false);
+			dataReceived.getSenderState().addState("logon");
 		} else {
 			cobanSpecific = CobanSpecific.DATA;
 			// sender id
 			String senderId = StringUtils.substringAfter(dataItems[0], ":");
 			if (StringUtils.isEmpty(senderId)) {
 				throw new InterpreterException("senderId is empty: " + dataItems[0]);
+			}
+			// status
+			String status = dataItems[1];
+			dataReceived.getSenderState().addState(status);
+			if (StringUtils.equals(status, CobanSpecific.STATUS_HELP_ME)) {
+				dataReceived.getEmergencySignal().setActive(true);
+				dataReceived.setDeviceActionExecutor(DeviceActionExecutor.EmergencyActivated);
 			}
 			dataReceived.getSenderFromRequest().setSenderId(senderId);
 			// gprmc string.
@@ -137,7 +149,6 @@ public class TcpInterpreter extends AbstractDataStrInterpreter {
 			boolean locValid = StringUtils.equals(dataItems[4], "F");		
 			dataReceived.getPosition().setValid(locValid);
 		}
-		
 		return cobanSpecific;
 	}
 
@@ -146,12 +157,16 @@ public class TcpInterpreter extends AbstractDataStrInterpreter {
 		IDeviceSpecific deviceSpecific) throws InterpreterException {
 		String res = null;
 		CobanSpecific cobanSpecific = (CobanSpecific)deviceSpecific;
-		if (cobanSpecific.getRecordType().equals(CobanSpecific.RecordType.LogOn)) {
+		if (cobanSpecific.getRecordType().equals(CobanSpecific.RecordType.Logon)) {
 			res = "LOAD";
 		} else if (cobanSpecific.getRecordType().equals(CobanSpecific.RecordType.Hearbeat)) {
 			res = "ON";
 		} else if (cobanSpecific.getRecordType().equals(CobanSpecific.RecordType.Data)) {
 			res = null;
+			if (BooleanUtils.isTrue(dataReceived.getEmergencySignal().getActive())) {
+				// disable sos alarm.
+				res = "**,imei:" + dataReceived.getSenderFromRequest().getSenderId() + ",E;";
+			}
 		} else {
 			// noop.
 		}
